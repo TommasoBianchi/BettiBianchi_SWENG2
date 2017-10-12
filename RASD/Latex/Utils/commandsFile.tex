@@ -24,8 +24,8 @@
 
 \pagestyle{fancy}
 \fancyhf{}
-\lhead{\color{Gray}{\small{Travlendar+ project by Federico Betti Tommaso Bianchi}}}
-\lfoot{\textcolor{Gray}{\small{Copyright © 2017, Federico Betti Tommaso Bianchi – All rights reserved}}}
+\lhead{\color{Gray}{\small{Travlendar+ project by \names}}}
+\lfoot{\textcolor{Gray}{\small{Copyright © 2017, \names – All rights reserved}}}
 \rfoot{\textcolor{Gray}{\thepage}}
 \renewcommand{\headrulewidth}{0pt}
 
@@ -120,10 +120,23 @@
 \usepackage{enumitem}
 \usepackage{amssymb}
 \usepackage{hyperref}
+
+% links configuration
 \hypersetup{
 	colorlinks = true,
 	linkcolor = Black
 }
+
+% titles configuration
+\documentclass{article}
+\usepackage{titlesec}
+
+\titleformat{\section}
+  {\normalfont\fontfamily{phv}\fontsize{18}{22}\bfseries}{\thesection}{1em}{}
+\titleformat{\subsection}
+  {\normalfont\fontfamily{phv}\fontsize{16}{19}\selectfont}{\thesubsection}{1em}{}
+\titleformat{\subsubsection}
+  {\normalfont\fontfamily{phv}\fontsize{13}{16}\selectfont}{\thesubsubsection}{1em}{}
 
 \newcommand{\comment}[1]{{\color{Red}$\blacktriangleright$ Comment: #1 $\blacktriangleleft$}}
 
@@ -131,7 +144,5 @@
 % Some utilities\ldots
 \input{Utils/highlight}
 \input{Utils/abbrev}
-
-
 
 \date{}

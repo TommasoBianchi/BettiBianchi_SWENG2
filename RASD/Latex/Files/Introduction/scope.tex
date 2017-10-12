@@ -1,2 +1,40 @@
 \subsubsection{Description of the project}
+
+\projectname is a calendar-based service that helps users in managing the scheduling of their meetings, whether for work or personal reasons.
+The goal of this project is to create an application that: 
+\begin{itemize}
+\item automatically computes and accounts for travel time between meetings to make sure that the user is never late
+\item supports the user in his/her travels, for example by identifying the best mobility option (e.g., use the train from A to B and then the metro to C) while taking into account his preferences (e.g., do not make me walk for more than 15 minutes)
+\end{itemize}
+Users can create meetings, and when meetings are created at locations that are unreachable in the allotted time, a warning is created. \projectname should support a multitude of travel means, including walking, biking (own or shared), public transportation (including taxis), driving (own or shared), etc. A particular user may globally activate or deactivate each travel means. A user should also be able to provide reasonable constraints on different travel means (e.g., walking distances should be less than a given distance, or public transportation should not be used after a given time of day). Additional features could also be envisioned, for instance allowing a user to specify a flexible `lunch'. For instance, a user could be able to specify that lunch must be possible every day between 11:30- 2:30, and it must be at least half an hour long, but the specific timing is flexible. The app would then be sure to reserve at least 30 minutes for lunch each day. Similarly, other types of breaks might be scheduled in a customizable way.
+\\
+\\
+Some complementar services, such as planners or maps, already exists on the market; however they do not offer both the possibility to schedule events and to have meaningful information on how to travel between them.
+
 \subsubsection{Goals}
+
+\begin{description}
+\item[G1] Allow someone to visit the homepage of the system and to register himself providing a valid email, a password and a unique nickname (or via a third-party login system such as Google+).
+\begin{description}
+\item[G1.1] Allow a user to edit all information in its profile, while enforcing validation (i.e. valid email, unique nickname).
+\item[G1.2] Allow a user to add another one to its contacts.
+\item[G1.3] Allow a user to create a group and to invite other users into it.
+\item[G1.4] Allow a user to set his status to auto-decline meetings in a certain period.
+\item[G1.5] Allow a user to set a position (such as the work place) where he will always be by default in a certain time slot.
+\item[G1.6] Allow a user to set privacy and notification settings.
+\end{description}
+\item[G2] Allow a user to create a meeting and to invite other users (at least one) to attend it.
+\begin{description}
+\item[G2.1] Allow the administrator to categorize the meeting.
+\item[G2.2] Allow the administrator to manage settings and invitations to the meeting.
+\item[G2.3] Allow the meeting’s team to communicate between them, to share files and to save personal notes about the meeting.
+\item[G2.4] Allow the invited users to accept or decline the meeting or to propose a rescheduling of it in a different time slot.
+\item[G2.5] Allow the administrator to create a new meeting with the same users and settings as the one that has already taken place.
+\item[G2.6] Allow the administrator to see who’s late at the meeting.
+\end{description}
+\item[G3] Allow a user to specify flexible breaks during the day.
+\item[G4] Manage users’ travels between subsequent meetings.
+\begin{description}
+\item[G4.1] Allow a user to create a preference list and constraints about the way he wants to travel.
+\end{description}
+\end{description}

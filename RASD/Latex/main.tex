@@ -7,26 +7,23 @@
 
 \begin{titlepage}
 
-
 %LOGO
 
-{\begin{table}[t!]
-\centering
-\begin{tabu} to \textwidth { X[1.3,r,p] X[1.7,l,p] }
-\textcolor{Blue}
-{\textbf{\small{\projectname project \names}}} & \includegraphics[scale=0.5]{Images/PolimiLogo}
-\end{tabu}
-\end{table}}~\newline [7cm]
+\begin{center}
+\includegraphics{Images/PolimiLogo}
+\end{center}
 
 %TITLE 
 
-\begin{flushleft}
+\begin{center}
 
 %Replace the text string with your title
-{\textcolor{Blue}{\textbf{\Huge{Requirement Analysis and Specification
+{\textcolor{Black}{\textbf{\Huge{Requirement Analysis and Specification
         Document}}}} \\ [1cm]
+{\textcolor{Black}{\textbf{\VeryBig{\projectname project}}}} \\ [1cm]
+{\textcolor{Black}{\textbf{\Big{\names}}}} \\ [1cm]
 
-\end{flushleft}
+\end{center}
 
 \end{titlepage}
 
@@ -65,31 +62,31 @@
 
 %------------------------------------------------------------------------------------------------------------------------------------------------
 \clearpage
-{\color{Blue}{\section{Introduction}}}
+\section{Introduction}
 \label{sect:introduction}
 \input{Files/Introduction/main}
 
 %------------------------------------------------------------------------------------------------------------------------------------------------
 \clearpage
-{\color{Blue}{\section{Overall Description}}}
+\section{Overall Description}
 \label{sect:overview}
 \input{Files/Overview/main}
 
 %------------------------------------------------------------------------------------------------------------------------------------------------
 \clearpage
-{\color{Blue}{\section{Specific Requirements}}}
+\section{Specific Requirements}
 \label{sect:requirements}
 \input{Files/Requirements/main}
 
 %------------------------------------------------------------------------------------------------------------------------------------------------
 \clearpage
-{\color{Blue}{\section{Formal Analysis Using Alloy}}}
+\section{Formal Analysis Using Alloy}
 \label{sect:alloy}
 \input{Files/Alloy/main}
 
 %------------------------------------------------------------------------------------------------------------------------------------------------
 \clearpage
-{\color{Blue}{\section{Effort Spent}}}
+\section{Effort Spent}
 \label{sect:effort}
 \input{Files/Effort/main}
 
@@ -100,8 +97,5 @@
 \bibliographystyle{plain}
 \bibliography{main}
 %------------------------------------------------------------------------------------------------------------------------------------------------
-
-
-
 
 \end{document}
