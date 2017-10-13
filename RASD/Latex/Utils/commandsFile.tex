@@ -124,7 +124,8 @@
 % links configuration
 \hypersetup{
 	colorlinks = true,
-	linkcolor = Black
+	linkcolor = Black,
+    urlcolor = Black,
 }
 
 % titles configuration
@@ -138,6 +139,19 @@
   {\normalfont\fontfamily{phv}\fontsize{13}{16}\selectfont}{\thesubsubsection}{1em}{}
 
 \newcommand{\comment}[1]{{\color{Red}$\blacktriangleright$ Comment: #1 $\blacktriangleleft$}}
+
+% hack to be able to nameref items in description list
+\makeatletter
+\let\orgdescriptionlabel\descriptionlabel
+\renewcommand*{\descriptionlabel}[1]{
+  \let\orglabel\label
+  \let\label\@gobble
+  \phantomsection
+  \edef\@currentlabel{#1}
+  \let\label\orglabel
+  \orgdescriptionlabel{#1}
+}
+\makeatother
 
 
 % Some utilities\ldots
