@@ -1,22 +1,47 @@
 \subsubsection{Domain Assumptions}
 
+\newcounter{countDom}
+\stepcounter{countDom}
 \begin{description}
-\item[D1] (G1) All emails are valid according to RFC3696~\cite{RFC3696} standard
-\item[D2] (G1) All emails belong to the user who enters them into the system
-\item[D2] (G1) External login systems don’t fail and always provide a vaild email to identify the registered user
-\item[D3] (G1) All users complete their profile right after the regitration phase \\ [0.1cm]
-motivazionee motivazionee motivazionee motivazionee motivazionee motivazionee
-\item[D4] (G1) Each user has at least one default location \\ [0.1cm]
-motivazionee motivazionee motivazionee motivazionee motivazionee motivazionee
-\item[D5] (G3) User can have lunch everywhere \\ [0.1cm]
-motivazionee motivazionee motivazionee motivazionee motivazionee motivazionee
-\item[D6] (G4) Each user has a preference list
-\item[D7] (G4) All users always have a position \\ [0.1cm]
-motivazionee motivazionee motivazionee motivazionee motivazionee motivazionee
-\item[D8] (G4) External shortest path provider is alyars able to retrive a path between any two locations
-\item[D9] (G1-G4) Each user is always able to communicate with our servers
-\item[D10] (G4) The system does not differentiate between a travel mean that is shared and one that is owned \\ [0.1cm]
-\small{motivazionee motivazionee motivazionee motivazionee motivazionee motivazionee}
-\item[D11] (G4) The system treats the taxis as a driving travel mean and not as public transportation \\ [0.1cm]
-motivazionee motivazionee motivazionee motivazionee motivazionee motivazionee
+
+\item[D\thecountDom]  All emails are valid according to RFC3696~\cite{RFC3696} standard
+\stepcounter{countDom}
+\item[D\thecountDom]  All emails belong to the user who enters them into the system
+
+\stepcounter{countDom}
+\item[D\thecountDom]  External login systems don’t fail and always provide a vaild email to identify the registered user
+
+\stepcounter{countDom}
+\item[D\thecountDom]  All users complete their profile right after the regitration phase \\ [0.1cm]
+After registration, users must complete the profile to get the best functionality from the system. They have to add a nickname, which must be unique, and complete the preference list about travel means.
+
+\stepcounter{countDom}
+\item[D\thecountDom]  Each user has at least one default location \\ [0.1cm]
+This default position is considered where the users should be located during the day. The system will compute the time when the user should start the travel to a meeting from the default location. Only after that time, the system will trace the user's position to provide real-time information.
+
+\stepcounter{countDom}
+\item[D\thecountDom]  User can have lunch everywhere \\ [0.1cm]
+This assumption allows the system to consider that you can always have a break without any necessary movement
+
+\stepcounter{countDom}
+\item[D\thecountDom]  Each user has a preference list
+
+\stepcounter{countDom}
+\item[D\thecountDom]  All users always have a position \\ [0.1cm]
+This assumption is useful when the system must provide the user real time informations about the trip
+
+\stepcounter{countDom}
+\item[D\thecountDom]  External shortest path provider is always able to retrieve a path between any two locations
+
+\stepcounter{countDom}
+\item[D\thecountDom] Each user is always able to communicate with our servers
+
+\stepcounter{countDom}
+\item[D\thecountDom] The system does not differentiate between a travel mean that is shared and one that is owned \\ [0.1cm]
+\small{A shared car can be considered exactly equal to a owned car because it takes the same amount of time to complete a certain path and it would be in the same position in the preference list}
+\normalsize
+
+\stepcounter{countDom}
+\item[D\thecountDom] The system treats the taxis as a driving travel mean and not as public transportation \\ [0.1cm]
+This assumption is supported by the fact that taxis will take the same amount of time as a car to complete the path and, exactly like cars, can be considered to be always present in the same location of the user
 \end{description}
