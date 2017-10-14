@@ -1,39 +1,43 @@
+\subsubsection{Definitions}
+
+The following list contains all the main terms we will refer to in the rest of the document, toghether with a brief explanation of their meaning in this context.
+
 \begin{itemize}
-\item User
-\item Nickname [unique]
-\item User’s Credentials
-\item Guest
-\item Contact
-\item Break
-\item Group
-\item Status
+\item User: anyone that is registered into the system.
+\item Nickname: an alphanumerical string uniquely identifying a user.
+\item User’s Credentials: either the pair <email, password> or the pair <nickname, password> belonging to a user; they have to be provided in order to log into the system.
+\item Guest: anyone that is not registered into the system.
+\item Contact: users will have the possibility to save other users as their contacts to find them more easily when needed.
+\item Break: a time slot in which a user does not want to have meetings; its exact starting and ending time may vary in a fixed interval to achieve more flexibility.
+\item Group: a collection of users; it may be used to simplify the creation of recurring meetings among the same people.
+\item Status: a flag indicating if a user is in normal or auto-decline status; in the latter case, all incoming request of meeting will automatically be declined.
 
-\item Position [GPS/Real Time]
-\item Location [Machine phenomenon/Known a priori/both for meetings and users]
-\item Default Location [only start time]
+\item Position: the real-time latitude and longitude representing where a user is.
+\item Location: the latitude and longitude of a meeting or a user as inferred by the information known a priori by the system (e.g. the location inserted when a meeting is created).
+\item Default Location: users can provide default locations to indicate where they are when not at a meeting (e.g. the office); they are represented by a location and a start time and they are assumed to be valid until the start time of another default location.
 
-\item Meeting
-\item Category
-\item Administrator
-\item Title
-\item Abstract
-\item Partecipant
-\item Team [Partecipants]
+\item Meeting: an event involving at least two users taking place in a specific location and in a specific date.
+\item Category: a tag representing the type of meeting (e.g. work, family).
+\item Administrator: a user that can manage most of the settings and data regarding a meeting.
+\item Title: a string to shortly describe the purpose of a meeting.
+\item Abstract: a text to give information about a meeting (e.g. agenda of the day).
+\item Partecipant: a user that has accepted an invitation to a meeting.
+\item Team: the collection of all partecipants of a given meeting.
 
-\item Warning
+\item Warning: a message displayed to a user indicating that he has been invited to two different meetings that overlap or that are too distant to reach the second one in time without having to leave before time the first one.
 
-\item Travel mean
-\item Walking
-\item Biking [owned + shared]
-\item Driving [owned + shared + taxi]
-\item Public Transportation [metro + bus + tram]
+\item Travel mean: a way to travel between different locations.
+\item Walking: a travel mean in which you always go by foot.
+\item Biking: a travel mean in which you use your bike or a bike sharing service.
+\item Driving: a travel mean in which you use your car, a car sharing service or a taxi.
+\item Public Transportation: a travel mean in which you use metros, trains, buses and/or trams.
 
-\item Constraint
-\item Constraint Subject
-\item Constraint Operator
-\item Constraint Value
-\item Constraint Target
+\item Constraint: a restriction on when the system is allowed to suggest a specific travel mean; it will be composed as \texttt{subject operator value - target} (e.g. weather is rainy - walking, time > 21 - public transportation) and works as follows: if the operator applied to the observed state of the subject and the value yields true, then the target cannot be selected as suggested travel mean.
+\item Constraint Subject: a term representing to an element of the world to which the constraint refer (e.g. the weather, the time of the day); it has to be fully observable by the system.
+\item Constraint Operator: a binary function from a pair of subject states to a boolean value.
+\item Constraint Value: an item of the set of states that characterize a constraint subject (e.g. rainy, an integer).
+\item Constraint Target: the travel mean affected by the constraint.
 
-\item Preference List
-\item Weighted Preference List
+\item Preference Lists: an ordered list of the travel means where the highest ones are those preferred by a user; travel means that do not appear on this list are considered as non-usable by the user to whom the list belongs.
+\item Weighted Preference List: a particular instance of the preference list where all the travel times with the various travel means have been calculated, (i * k) minutes have been added to the travel time of the i\textsuperscript{th} element of the list and it has been sorted according to travel times; it is a way not to suggest a user very long travels with their preferred travel means if a much shorter one is possible even though further down the list (e.g. if a user can walk for 4 hours or drive for half an hour suggest to drive even if walking is higher in the priority list than driving).
 \end{itemize}
