@@ -1,9 +1,9 @@
-\newcounter{count}
-\setcounter{count}{1}
+\newcounter{countReq}
+\setcounter{countReq}{1}
 
 \begin{description}
-\item[G\thecount] Allow someone to visit the homepage of the system and to register himself providing a valid email, a password and a unique nickname (or via a third-party login system such as Google+)
-\stepcounter{count}
+\item[G\thecountReq] Allow someone to visit the homepage of the system and to register himself providing a valid email, a password and a unique nickname (or via a third-party login system such as Google+)
+\stepcounter{countReq}
 
 \begin{itemize}
 \item~[R] Each user must provide an email that is not already present in the system
@@ -17,8 +17,8 @@
 \item~[D] All users complete their profile right after the regitration phase
 \end{itemize}
 
-\item[G\thecount] Users can log into the system
-\stepcounter{count}
+\item[G\thecountReq] Users can log into the system
+\stepcounter{countReq}
 
 \begin{itemize}
 \item~[R] Users have to be registered into the system before logging in
@@ -29,8 +29,8 @@
 \item~[D] External login systems don’t fail and always provide a vaild email to identify the registered user
 \end{itemize}
 
-\item[G\thecount] Allow a user to edit all information in its profile, while enforcing validation (i.e. valid email, unique nickname)
-\stepcounter{count}
+\item[G\thecountReq] Allow a user to edit all information in its profile, while enforcing validation (i.e. valid email, unique nickname)
+\stepcounter{countReq}
 
 \begin{itemize}
 \item~[R] Users cannot have meetings while their status is set to auto-decline
@@ -38,8 +38,8 @@
 \item~[R] A user must be logged into the system to perform any action except registering and logging in
 \end{itemize}
 
-\item[G\thecount] Allow a user to create a meeting and to invite other users (at least one) to attend it
-\stepcounter{count}
+\item[G\thecountReq] Allow a user to create a meeting and to invite other users (at least one) to attend it
+\stepcounter{countReq}
 
 \begin{itemize}
 \item~[R] A user must be logged into the system to perform any action except registering and logging in
@@ -51,11 +51,11 @@
 \item~[R] Users do not partecipate in a meeting if they decline the invitation
 \end{itemize}
 
-\item[G\thecount] Create a warning each time it is not possible to reach a meeting location from the previous one
-\stepcounter{count}
+\item[G\thecountReq] Create a warning each time it is not possible to reach a meeting location from the previous one
+\stepcounter{countReq}
 
-\item[G\thecount] Allow a user to specify flexible breaks during the day
-\stepcounter{count}
+\item[G\thecountReq] Allow a user to specify flexible breaks during the day
+\stepcounter{countReq}
 
 \begin{itemize}
 \item~[R] A user must be logged into the system to perform any action except registering and logging in
@@ -66,8 +66,8 @@
 \item~[D] Users can have lunch everywhere
 \end{itemize}
 
-\item[G\thecount] Manage users’ travels between subsequent meetings
-\stepcounter{count}
+\item[G\thecountReq] Manage users’ travels between subsequent meetings
+\stepcounter{countReq}
 
 \begin{itemize}
 \item~[R] A user must be logged into the system to perform any action except registering and logging in
