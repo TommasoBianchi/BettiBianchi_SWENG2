@@ -1,15 +1,15 @@
 \subsubsection{Description of the project}
 
 \projectname~ is a calendar-based service that helps users in managing the scheduling of their meetings, whether for work or personal reasons.
-The goal of this project is to create an application that: 
+The goal of this project is to create a system that: 
 \begin{itemize}
 \item automatically computes and accounts for travel time between meetings to make sure that the user is never late
 \item supports the user in his/her travels, for example by identifying the best mobility option (e.g., use the train from A to B and then the metro to C) while taking into account his preferences (e.g., do not make me walk for more than 15 minutes)
 \end{itemize}
-Users can create meetings, and when meetings are created at locations that are unreachable in the allotted time, a warning is created. \projectname~ should support a multitude of travel means, including walking, biking (own or shared), public transportation (including taxis), driving (own or shared), etc. A particular user may globally activate or deactivate each travel means. A user should also be able to provide reasonable constraints on different travel means (e.g., walking distances should be less than a given distance, or public transportation should not be used after a given time of day). Additional features could also be envisioned, for instance allowing a user to specify a flexible `lunch'. For instance, a user could be able to specify that lunch must be possible every day between 11:30- 2:30, and it must be at least half an hour long, but the specific timing is flexible. The app would then be sure to reserve at least 30 minutes for lunch each day. Similarly, other types of breaks might be scheduled in a customizable way.
+Users can create meetings, and when meetings are created at locations that are unreachable in the allotted time, a warning is created. \projectname~ should support a multitude of travel means, including walking, biking (own or shared), public transportation (including taxis), driving (own or shared), etc. A particular user may globally activate or deactivate each travel means. A user should also be able to provide reasonable constraints on different travel means (e.g., walking distances should be less than a given distance, or public transportation should not be used after a given time of day). Additional features could also be envisioned, for instance allowing a user to specify a flexible "lunch". For instance, a user could be able to specify that lunch must be possible every day between 11:30- 14:30, and it must be at least half an hour long, but the specific timing is flexible. The system would then be sure to reserve at least 30 minutes for lunch each day. Similarly, other types of breaks might be scheduled in a customizable way.
 \\
 \\
-Some complementar services, such as planners or maps, already exists on the market; however they do not offer both the possibility to schedule events and to have meaningful information on how to travel between them.
+Some complementary services, such as planners or maps, already exists on the market; however they do not offer both the possibility to schedule events and to have meaningful information on how to travel between them.
 
 \subsubsection{Goals}
 
@@ -19,74 +19,74 @@ Some complementar services, such as planners or maps, already exists on the mark
 \stepcounter{countin}
 
 \begin{description}
-\item[G\thecount\label{itm:G1}] Allow someone to visit the homepage of the system and to register himself providing a valid email, a password and a unique nickname (or via a third-party login system such as Google+)
+\item[G\thecount\label{itm:G1}] Allow someone to visit the homepage of the system and to register himself providing a valid email, a password and a unique nickname. As an alternative, an external login provider, such as Google+, can be used.
 
 \stepcounter{count}
 \setcounter{countin}{1}
 
-\item[G\thecount] Users can log into the system
+\item[G\thecount] Users can log into the system.
 
 \stepcounter{count}
 \setcounter{countin}{1}
 
-\item[G\thecount] Allow a user to edit all information in its profile, while enforcing validation (i.e. valid email, unique nickname)
+\item[G\thecount] Allow a user to edit all information in its profile (e.g. displayed name, phone number, company, website, social accounts).
 \begin{description}
-\item[G\thecount.\thecountin] Allow a user to add another one to its contacts
+\item[G\thecount.\thecountin] Allow a user to add another one to its contacts.
 \stepcounter{countin}
-\item[G\thecount.\thecountin] Allow a user to create a group and to invite other users into it
+\item[G\thecount.\thecountin] Allow a user to create a group and to invite other users into it.
 \stepcounter{countin}
-\item[G\thecount.\thecountin] Allow a user to set his status to auto-decline meetings in a certain period
+\item[G\thecount.\thecountin] Allow a user to set his status to auto-decline meetings in a certain period.
 \stepcounter{countin}
-\item[G\thecount.\thecountin] Allow a user to set a default location (such as the work place) where he will always be in a certain time slot
+\item[G\thecount.\thecountin] Allow a user to set default locations where he is supposed to be in certain time slots.
 \stepcounter{countin}
-\item[G\thecount.\thecountin] Allow a user to set privacy and notification settings
+\item[G\thecount.\thecountin] Allow a user to set privacy and notification settings.
 \end{description}
 
 \stepcounter{count}
 \setcounter{countin}{1}
 
-\item[G\thecount] Allow a user to create a meeting and to invite other users (at least one) to attend it
+\item[G\thecount] Allow a user to create a meeting and to invite other users to attend it.
 \begin{description}
-\item[G\thecount.\thecountin] Allow the administrator to categorize the meeting
+\item[G\thecount.\thecountin] Allow the administrator to categorize the meeting.
 \stepcounter{countin}
-\item[G\thecount.\thecountin] Allow the administrator to manage settings as change title, abstract and location of the meeting
+\item[G\thecount.\thecountin] Allow the administrator to change title, abstract and location of the meeting.
 \stepcounter{countin}
-\item[G\thecount.\thecountin] Allow the adminsitrator to nominate other administrators
+\item[G\thecount.\thecountin] Allow the administrator to nominate other administrators.
 \stepcounter{countin}   
-\item[G\thecount.\thecountin] Allow the administrator to send invitations to the meeting and remove partecipants
+\item[G\thecount.\thecountin] Allow the administrator to send invitations and remove participants.
 \stepcounter{countin}
-\item[G\thecount.\thecountin] Allow the meeting’s team to communicate between them, to share files and to save personal notes about the meeting
+\item[G\thecount.\thecountin] Allow the team to communicate between them, to share files and to save personal notes about the meeting.
 \stepcounter{countin}
-\item[G\thecount.\thecountin] Allow the invited users to accept or decline the meeting or to propose a rescheduling of it in a different time slot
+\item[G\thecount.\thecountin] Allow the invited users to accept or decline the meeting or to propose a rescheduling in a different time slot.
 \stepcounter{countin}
-\item[G\thecount.\thecountin] Allow the administrator to change the date of the meeting after a rescheduling has been proposed
+\item[G\thecount.\thecountin] Allow the administrator to change the date of the meeting after a rescheduling has been proposed.
 \stepcounter{countin}
-\item[G\thecount.\thecountin] Allow the administrator to poll the team to reschedule the meeting; if everyone accepts the rescheduling, the date changes
+\item[G\thecount.\thecountin] Allow the administrator to poll the team to reschedule the meeting; if everyone accepts the rescheduling, the date changes.
 \stepcounter{countin}
-\item[G\thecount.\thecountin] Allow the administrator to create a new meeting with the same users and settings as one that has already taken place
+\item[G\thecount.\thecountin] Allow the administrator to create a copy of a meeting with the same team and settings on another date.
 \stepcounter{countin}
-\item[G\thecount.\thecountin] Allow the administrator to see who’s late at the meeting
+\item[G\thecount.\thecountin] Allow the administrator to see who’s late at the meeting.
 \end{description}
 
 \stepcounter{count}
 \setcounter{countin}{1}
 
-\item[G\thecount] Create a warning each time it is not possible to reach a meeting location from the previous one
+\item[G\thecount] Create a warning each time it is not possible to reach a meeting location from the previous one in time.
 \begin{description}
-\item[G\thecount.\thecountin] Allow a user to decline or reschedule overlapping meetings in order to remove the warning
+\item[G\thecount.\thecountin] Allow a user to decline or reschedule overlapping meetings in order to remove the warning.
 \end{description}
 
 \stepcounter{count}
 \setcounter{countin}{1}
 
-\item[G\thecount] Allow a user to specify flexible breaks during the day
+\item[G\thecount] Allow a user to specify flexible breaks during the day.
 
 \stepcounter{count}
 \setcounter{countin}{1}
 
-\item[G\thecount] Manage users’ travels between subsequent meetings
+\item[G\thecount] Manage users’ travels between subsequent meetings, suggesting the best mobility option according to their preference list.
 \begin{description}
-\item[G\thecount.\thecountin] Allow a user to create a preference list and constraints about the way he wants to travel
+\item[G\thecount.\thecountin] Allow a user to create a preference list and constraints about the way he wants to travel.
 \end{description}
 \end{description}
 
