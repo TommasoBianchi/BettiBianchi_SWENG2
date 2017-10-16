@@ -23,6 +23,7 @@ The following list contains all the main terms we will refer to in the rest of t
 \item \textbf{Abstract}: a text to give information about a meeting (e.g. agenda of the day).
 \item \textbf{Participant}: a user that has accepted an invitation to a meeting.
 \item \textbf{Team}: the collection of all participants of a given meeting.
+\item \textbf{Instant Meeting}: a special type of meeting that has only one participant and the same start and end time. It may be useful for organizing everything that has not a real duration (such as picking up someone or something) or that do not require interaction with other users. For all other aspects it is a meeting like normal ones, and in particular it can be incompatible and raise warnings.
 
 \item \textbf{Incompatible Meeting}: a meeting that overlaps with another one, that cannot be reached from the previous one in time or that prevents the correct placement of a break.
 \item \textbf{Warning}: a message displayed to a user indicating that he has been invited to an incompatible meeting.
@@ -41,6 +42,14 @@ The following list contains all the main terms we will refer to in the rest of t
 
 \item \textbf{Preference List}: an ordered list of the travel means where the highest ones are those preferred by a user; travel means that do not appear on this list are considered as non-usable by the user.
 \item \textbf{Weighted Preference List}: a sorted list of travel times calculated from the travel means of the preference list where (i * k) minutes have been added to the i\textsuperscript{th} element; it is a way not to suggest a user very long travels with their preferred travel means if a much shorter one is possible (e.g. if a user can walk for 4 hours or drive for half an hour suggest to drive even if walking is higher in the priority list than driving).
+\end{itemize}
+
+\subsubsection{Acronyms}
+
+\begin{itemize}
+\item~\textbf{RASD}: Requirement Analysis and Specification Document (the present document).
+\item~\textbf{UML}: Unified Modeling Language (a specification defining a graphical language for visualizing, specifying, constructing, and documenting the artifacts of distributed object systems).
+ 
 \end{itemize}
 
 \subsubsection{Abbreviations}
