@@ -2,86 +2,86 @@
 \setcounter{countReq}{1}
 
 \begin{description}
-\item[G\thecountReq] Allow someone to visit the homepage of the system and to register himself providing a valid email, a password and a unique nickname (or via a third-party login system such as Google+)
+\item[G\thecountReq] Allow someone to visit the homepage of the system and to register himself providing a valid email, a password and a unique nickname (or via a third-party login system such as Google+).
 \stepcounter{countReq}
 
 \begin{itemize}
-\item~[R] Each user must provide an email that is not already present in the system
-\item~[R] Each user must provide a nickname that is not already present in the system
+\item~[R] Each user must provide an email that is not already present in the system.
+\item~[R] Each user must provide a nickname that is not already present in the system.
 \end{itemize}
 
 \begin{itemize}
-\item~[D] All emails are valid according to RFC3696~\cite{RFC3696} standard
-\item~[D] All emails belong to the user who enters them into the system
-\item~[D] External login systems don’t fail and always provide a valid email to identify the registered user
-\item~[D] All users complete their profile right after the registration phase
+\item~[D] All emails are valid according to RFC3696~\cite{RFC3696} standard.
+\item~[D] All emails belong to the user who enters them into the system.
+\item~[D] External login systems don’t fail and always provide a valid email to identify the registered user.
+\item~[D] All users complete their profile right after the registration phase.
 \end{itemize}
 
-\item[G\thecountReq] Users can log into the system
+\item[G\thecountReq] Users can log into the system.
 \stepcounter{countReq}
 
 \begin{itemize}
-\item~[R] Users have to be registered into the system before logging in
-\item~[R] Users have to provide an existing email or nickname and the associated password in order to log in; in alternative they can use a supported external login system
+\item~[R] Users have to be registered into the system before logging in.
+\item~[R] Users have to provide an existing email or nickname and the associated password in order to log in; in alternative they can use a supported external login system.
 \end{itemize}
 
 \begin{itemize}
-\item~[D] External login systems don’t fail and always provide a valid email to identify the registered user
+\item~[D] External login systems don’t fail and always provide a valid email to identify the registered user.
 \end{itemize}
 
 \item[G\thecountReq] Allow a user to edit all information in its profile (e.g. displayed name, phone number, company, website, social accounts).
 \stepcounter{countReq}
 
 \begin{itemize}
-\item~[R] Each user must provide an email that is not already present in the system
-\item~[R] Each user must provide a nickname that is not already present in the system
-\item~[R] Users cannot have meetings while their status is set to auto-decline
-\item~[R] A user cannot have different default locations sharing the start time
-\item~[R] A user must be logged into the system to perform any action except registering and logging in
+\item~[R] Each user must provide an email that is not already present in the system.
+\item~[R] Each user must provide a nickname that is not already present in the system.
+\item~[R] Users cannot have meetings while their status is set to auto-decline.
+\item~[R] A user cannot have different default locations sharing the start time.
+\item~[R] A user must be logged into the system to perform any action except registering and logging in.
 \end{itemize}
 
-\item[G\thecountReq] Allow a user to create a meeting and to invite other users (at least one) to attend it
+\item[G\thecountReq] Allow a user to create a meeting and to invite other users (at least one) to attend it.
 \stepcounter{countReq}
 
 \begin{itemize}
-\item~[R] A user must be logged into the system to perform any action except registering and logging in
-\item~[R] Each meeting has at least two participants
-\item~[R] Each meeting has at least one administrator
-\item~[R] Each meeting has a title, a date and a location
-\item~[R] Each participant in a meeting can access shared files and the chat
-\item~[R] Users participate in a meeting if and only if they accept the invitation
-\item~[R] Users do not participate in a meeting if they decline the invitation
+\item~[R] A user must be logged into the system to perform any action except registering and logging in.
+\item~[R] Each meeting has at least two participants.
+\item~[R] Each meeting has at least one administrator.
+\item~[R] Each meeting has a title, a date and a location.
+\item~[R] Each participant in a meeting can access shared files and the chat.
+\item~[R] Users participate in a meeting if and only if they accept the invitation.
+\item~[R] Users do not participate in a meeting if they decline the invitation.
 \end{itemize}
 
-\item[G\thecountReq] Create a warning each time it is not possible to reach a meeting location from the previous one
+\item[G\thecountReq] Create a warning each time it is not possible to reach a meeting location from the previous one.
 \stepcounter{countReq}
 
-\item[G\thecountReq] Allow a user to specify flexible breaks during the day
-\stepcounter{countReq}
-
-\begin{itemize}
-\item~[R] A user must be logged into the system to perform any action except registering and logging in
-\item~[R] The system suggests you a time, according to your settings, to have a break such that no meeting overlaps with it; if no time slot is valid, a warning is generated
-\end{itemize}
-
-\begin{itemize}
-\item~[D] Users can have lunch everywhere
-\end{itemize}
-
-\item[G\thecountReq] Manage users’ travels between subsequent meetings
+\item[G\thecountReq] Allow a user to specify flexible breaks during the day.
 \stepcounter{countReq}
 
 \begin{itemize}
-\item~[R] A user must be logged into the system to perform any action except registering and logging in
-\item~[R] The travel mean suggested by the system is always the first in the weighted preference list that satisfied all the constraints; if no travel mean satsfied all the constraints than the system suggests the fastest one
+\item~[R] A user must be logged into the system to perform any action except registering and logging in.
+\item~[R] The system suggests you a time, according to your settings, to have a break such that no meeting overlaps with it; if no time slot is valid, a warning is generated.
 \end{itemize}
 
 \begin{itemize}
-\item~[D] Each user has a preference list
-\item~[D] All users always have a position
-\item~[D] External shortest path provider is always able to retrieve a path between any two locations
-\item~[D] Each user is always able to communicate with our servers
-\item~[D] The system does not differentiate between a travel mean that is shared and one that is owned
-\item~[D] The system treats the taxis as a driving travel mean and not as public transportation
+\item~[D] Users can have lunch everywhere.
+\end{itemize}
+
+\item[G\thecountReq] Manage users’ travels between subsequent meetings.
+\stepcounter{countReq}
+
+\begin{itemize}
+\item~[R] A user must be logged into the system to perform any action except registering and logging in.
+\item~[R] The travel mean suggested by the system is always the first in the weighted preference list that satisfied all the constraints; if no travel mean satisfied all the constraints than the system suggests the fastest one.
+\end{itemize}
+
+\begin{itemize}
+\item~[D] Each user has a preference list.
+\item~[D] All users always have a position.
+\item~[D] External shortest path provider is always able to retrieve a path between any two locations.
+\item~[D] Each user is always able to communicate with our servers.
+\item~[D] The system does not differentiate between a travel mean that is shared and one that is owned.
+\item~[D] The system treats the taxis as a driving travel mean and not as public transportation.
 \end{itemize}
 \end{description}
