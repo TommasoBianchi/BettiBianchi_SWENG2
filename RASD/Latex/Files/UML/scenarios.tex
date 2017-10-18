@@ -1,3 +1,8 @@
+\newcounter{countScenarios}
+\stepcounter{countScenarios}
+
+\subsubsection{Scenario \thecountScenarios }
+\stepcounter{countScenarios}
 --- guest registration  to the system + edit user's profile adding another email, phone number, website, social networks, company, position \\
 
 Alice is a manager of a large company and mother of two children. She is always on the go, both to attend meetings all around the city and to bring her sons around. Up until now, she has tried her best to manage all this with her old style agenda, with the only result of being often late and under constant stress. Yesterday a colleague told her about a fantastic new service, \projectname~, that seems to be a perfect fit for her needs, so she immediately decides to try it out. Now she has a few minutes of break, so she decides to register to the system and customize her profile.
@@ -5,6 +10,9 @@ Alice is a manager of a large company and mother of two children. She is always 
 - adding a user to your contact after having meet him in a meeting \\
 - after a meeting create a group with the team to organize meeting more frequently \\
 
+
+\subsubsection{Scenario \thecountScenarios }
+\stepcounter{countScenarios}
 --- create a meeting with other users, some of them taken from your contacts\\
 
 Bob is the CEO of a new, innovative startup, still substantially unheard of. His main concern now is to attract potential investors by describing his idea to as many of them as possible, so he is constantly around to attend meetings and to meet new people. To reach his goal, he has used \projectname~ throughout last month and now he has a good number of contacts saved. Now he feels ready to try to arrange a meeting with the executives of a large company that he thinks should be interested in what he does; thereby he create a meeting on \projectname~ inviting both them and a couple of his contacts, who he would like to get into his team if things were to get going.
@@ -12,10 +20,16 @@ Bob is the CEO of a new, innovative startup, still substantially unheard of. His
 - administrator add files before and after and they could be seen from the team or use chat\\
 - administrator see who is late, after a threshold\\
 
+
+\subsubsection{Scenario \thecountScenarios }
+\stepcounter{countScenarios}
 --- user try to reschedule a meeting and the admin send the request to other participants\\
 
 Charlie is a freelance web developer, so he has to frequently meet with all the different companies that hire him. To do so, he uses a popular service named \projectname~, which allows him to always avoid to arrange meetings in a way that will make impossible for him to attend them all. Today, he received an invitation from Dave, social media manager of a company for which Charlie maintains a website since years. All Dave's team has been invited, since they have to discuss some fairly substantial improvement on the graphics. The proposed date for the meeting is Thursday at 7 PM, but Charlie is a commuter so for him it is a problem as he has to take a train. Therefore he propose to reschedule the meeting on the subsequent day, at 4 PM, and Dave forwards this request to his team as he knows that it may be a problem for some of them to work till late also on Friday.
 
+
+\subsubsection{Scenario \thecountScenarios }
+\stepcounter{countScenarios}
 --- user has been invited and this meeting cause a warning, accept one and reschedule the other (maybe with 3 meetings involved)\\
 
 Eve
@@ -23,6 +37,9 @@ Eve
 - user has been invited to a meeting but a warning is generated because this meeting would block all the possible time slots for a break, choose something\\
 - the system informs the user that he has to take a break, have a break (maybe lunch) with other users and after that user add some of the others to his contacts (from the lunch you know someone and add him to your contacts)(maybe similar to the second)\\
 
+
+\subsubsection{Scenario \thecountScenarios }
+\stepcounter{countScenarios}
 --- the system calculate when it should start to give real time indication to the user, process all possible path and select the best one\\
 
 Freddie is a pretty busy university professor. His \projectname~ schedule is always full of meetings everywhere in London. He's deeply aware of today's pollution problems, so he always tries to use cars as less as possible. He's also somehow uncomfortable in getting by bike to formal meetings, so his preference list looks as follows:
@@ -46,6 +63,9 @@ Now he has just accepted a meeting for Tuesday morning on 11 AM and the system h
 \end{enumerate}
 Then, all constraints are taken into account, eliminating the possibility to go by foot from the office as it is longer than 2 km. The previous meeting ends at 10 AM, so no warning has to be created. The selected travel means are walking from the previous meeting and public transportation from the office; as the slowest of the two takes 23 minutes, this value is saved for later use. On the day of the meeting, starting from a little before than 23 minutes before 11 AM, the real-time position of Freddie is used to calculate the distance to the meeting location and, if necessary, to notify him that he needs to leave in order not to be late.
 
+
+\subsubsection{Scenario \thecountScenarios }
+\stepcounter{countScenarios}
 --- the system provide the indication for the first meeting of the day starting from a default location and change the travel mean used according to some constraints (ex bad weather)\\
 
 George
