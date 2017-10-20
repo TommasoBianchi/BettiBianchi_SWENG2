@@ -68,11 +68,16 @@
 	\begin{tabular}{|p{7cm}|p{7cm}|}
 		\hline
 		\textbf{Actors}            & User		    \\ \hline
-		\textbf{Goals}             &            \\ \hline
-		\textbf{Input Conditions}  &            \\ \hline
-		\textbf{Events Flow}       &            \\ \hline
-		\textbf{Output Conditions} &            \\ \hline
-		\textbf{Exceptions}        &            \\ \hline
+		\textbf{Goals}             & ?           \\ \hline
+		\textbf{Input Conditions}  & The user has already been authenticated by the system.           \\ \hline
+		\textbf{Events Flow}       & 
+			\begin{enumerate}[topsep=0pt, leftmargin=*]
+				\item The user clicks on the "Calendar" button in the menu
+				\item The system generate a page containing all the meetings and the travels of the day
+				\item The user may navigate to a week view and to a month view
+			\end{enumerate}	           \\ \hline
+		\textbf{Output Conditions} & This use case does not modify anything, so the state of the output is equal to the state of the input.           \\ \hline
+		\textbf{Exceptions}        & There are no exceptions.           \\ \hline
 	\end{tabular}
 	\caption{Show Calendar}
 \end{table}
@@ -83,13 +88,19 @@
 	\begin{tabular}{|p{7cm}|p{7cm}|}
 		\hline
 		\textbf{Actors}            & User		    \\ \hline
-		\textbf{Goals}             &            \\ \hline
-		\textbf{Input Conditions}  &            \\ \hline
-		\textbf{Events Flow}       &            \\ \hline
-		\textbf{Output Conditions} &            \\ \hline
-		\textbf{Exceptions}        &            \\ \hline
+		\textbf{Goals}             & G4 - G5           \\ \hline
+		\textbf{Input Conditions}  & The user has already been authenticated by the system.           \\ \hline
+		\textbf{Events Flow}       & 
+			\begin{enumerate}[topsep=0pt, leftmargin=*]
+				\item The user selects a meeting it wants to manage by clicking on it in the "Calendar" page
+				\item The system displays all the information about the selected meeting, such as the title, the date, the location and the other invited users
+				\item The user clicks on the "Accept", "Decline" or "Reschedule" button
+				\item In the latter case, the user selects a new proposed start date
+			\end{enumerate}           \\ \hline
+		\textbf{Output Conditions} & The acceptance, refusal or rescheduling proposal of the meeting is recorded by the system. In the latter case, it is forwarded to the meeting administrator.           \\ \hline
+		\textbf{Exceptions}        & The user selects an invalid start date (e.g. a date which is in the past). The system shows the user a message reporting the error and wait for a new date to be inserted.           \\ \hline
 	\end{tabular}
-	\caption{Manage Meetings}
+	\caption{Manage Meeting Participation}
 \end{table}
 
 \begin{table}[H]
@@ -98,11 +109,16 @@
 	\begin{tabular}{|p{7cm}|p{7cm}|}
 		\hline
 		\textbf{Actors}            & User, External Geolocalization Provider		    \\ \hline
-		\textbf{Goals}             &            \\ \hline
-		\textbf{Input Conditions}  &            \\ \hline
-		\textbf{Events Flow}       & 	        \\ \hline
-		\textbf{Output Conditions} &            \\ \hline
-		\textbf{Exceptions}        &            \\ \hline
+		\textbf{Goals}             & G7           \\ \hline
+		\textbf{Input Conditions}  & The user has already been authenticated by the system and the system has detected that the start time of one of its meeting is approaching.           \\ \hline
+		\textbf{Events Flow}       & 
+			\begin{enumerate}[topsep=0pt, leftmargin=*]
+				\item The system notifies the user that it's time for him to leave
+				\item By using the real-time position of the user, the system keeps giving him indications on where to go and what travel means to use
+				\item The user can click on the "I won't go" to stop the system giving him travel indications
+			\end{enumerate}	        \\ \hline
+		\textbf{Output Conditions} & The user has reached the meeting location or the user has clicked the "I won't go" button.           \\ \hline
+		\textbf{Exceptions}        & There are no exceptions.           \\ \hline
 	\end{tabular}
 	\caption{Receive Real-Time Indications}
 \end{table}
