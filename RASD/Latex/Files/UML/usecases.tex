@@ -135,10 +135,18 @@
 		\hline
 		\textbf{Actors}            & Administrator    \\ \hline
 		\textbf{Goals}             & G4           \\ \hline
-		\textbf{Input Conditions}  & Un meeting è stato creato ed effettuato normalmente.           \\ \hline
-		\textbf{Events Flow}       &            \\ \hline
-		\textbf{Output Conditions} & Il sistema invia un invito ai parteciapnti, che devono decidere se accettare, declinnare o rischedulare, del nuovo meeting            \\ \hline
-		\textbf{Exceptions}        &            \\ \hline
+		\textbf{Input Conditions}  & A meeting has been created and completed normally. The team decides that another meeting is necessary to complete their goals. \\ \hline
+		\textbf{Events Flow}       & 
+		\begin{enumerate}[topsep=0pt, leftmargin=*]
+			\item One of the administrators click on the button that allows to recreate a meeting.
+			\item The system shows a new meeting page where title, abstract, uploaded file and participants forms are pre-filled with previous values.
+			\item The administrator chooses the location and the date for the new meeting
+			\item The administrator clicks on the "Create" button.
+		\end{enumerate}              \\ \hline
+		\textbf{Output Conditions} & A new meeting is created and an invitation is sent to all the selected users.           \\ \hline
+		\textbf{Exceptions}        & The location of the meeting may be incorrect or the start and end date may be inconsistent i.e. the start is after the end). The system shows the user a message reporting the errors,
+		clears the incorrect fields and restart the event
+		flow from point 1.           \\ \hline
 	\end{tabular}
 	\caption{Recreate Meeting}
 \end{table}
@@ -149,11 +157,26 @@
 	\begin{tabular}{|p{7cm}|p{7cm}|}
 		\hline
 		\textbf{Actors}            & Administrator    \\ \hline
-		\textbf{Goals}             &            \\ \hline
-		\textbf{Input Conditions}  &            \\ \hline
-		\textbf{Events Flow}       &            \\ \hline
-		\textbf{Output Conditions} &            \\ \hline
-		\textbf{Exceptions}        &            \\ \hline
+		\textbf{Goals}             & G4           \\ \hline
+		\textbf{Input Conditions}  & A meeting is created.           \\ \hline
+		\textbf{Events Flow}       & Invite 
+		\begin{enumerate}[topsep=0pt, leftmargin=*]
+			\item One of the administrator clicks on the button "Add Participants" on the meeting page.
+			\item The administrator can select a user either by choosing from its contacts or by inserting their nickname or email.
+			\item The Administrator clicks on the button "Send" to send invitations
+		\end{enumerate}   
+		Remove 
+		\begin{enumerate}[topsep=0pt, leftmargin=*]
+			\item One of the administrator clicks on the button "Show Participants" on the meeting page.
+			\item The system shows the list of all participants that has been invited to the meeting.
+			\item The administrator can delete users from the participants' list by clicking on the "Delete" button next to their name.
+		\end{enumerate}            \\ \hline
+		\textbf{Output Conditions} & Some users receive meeting's invitation and others are removed from the team.            \\ \hline
+		\textbf{Exceptions}        & Input \newline
+		The administrator may have write a wrong or non-existent email or nickname. The system shows the user a message reporting the errors and
+		clears the incorrect fields. \newline
+		Remove \newline
+		A participant may have decided to leave the meeting while the "Show Participant" page is open. In this case, if the participant is selected to be deleted, the system signaled it to the administrator with a warning with the words "this participant has already left the meeting"         \\ \hline
 	\end{tabular}
 	\caption{Invite/Remove Users}
 \end{table}
@@ -164,11 +187,15 @@
 	\begin{tabular}{|p{7cm}|p{7cm}|}
 		\hline
 		\textbf{Actors}            & Administrator    \\ \hline
-		\textbf{Goals}             &            \\ \hline
-		\textbf{Input Conditions}  &            \\ \hline
-		\textbf{Events Flow}       &            \\ \hline
-		\textbf{Output Conditions} &            \\ \hline
-		\textbf{Exceptions}        &            \\ \hline
+		\textbf{Goals}             & G4           \\ \hline
+		\textbf{Input Conditions}  & A meeting is created and its start time has passed by more than 15 minutes. \underline{(to check if we want this feature to work from start time or some minutes later)}           \\ \hline
+		\textbf{Events Flow}       &  
+		\begin{enumerate}[topsep=0pt, leftmargin=*]
+			\item One of the administrator open the section on the meeting page that allows him to see who is late.
+			\item The administrator can contact one of the late participant, clicking on his, name asking if the team can begin without him.
+		\end{enumerate}             \\ \hline
+		\textbf{Output Conditions} & The administrator knows who is late and can take decisions on that.           \\ \hline
+		\textbf{Exceptions}        & None           \\ \hline
 	\end{tabular}
 	\caption{View Late Users}
 \end{table}
@@ -179,13 +206,39 @@
 	\begin{tabular}{|p{7cm}|p{7cm}|}
 		\hline
 		\textbf{Actors}            & Administrator    \\ \hline
-		\textbf{Goals}             &            \\ \hline
-		\textbf{Input Conditions}  &            \\ \hline
-		\textbf{Events Flow}       &            \\ \hline
-		\textbf{Output Conditions} &            \\ \hline
-		\textbf{Exceptions}        &            \\ \hline
+		\textbf{Goals}             & G4.3           \\ \hline
+		\textbf{Input Conditions}  & A meeting is created           \\ \hline
+		\textbf{Events Flow}       &  
+		\begin{enumerate}[topsep=0pt, leftmargin=*]
+			\item One of the administrator clicks on the button "Show Participants".
+			\item The system shows the list of all the participants who has been invited to the meeting with a "Nominate" button available only next to who has accepted the invitation.
+			\item The administrator click on the "Nominate" button next to users who want to nominate administrator.
+		\end{enumerate}             \\ \hline
+		\textbf{Output Conditions} & Users selected become administrator and gain all the functionalities of the role.           \\ \hline
+		\textbf{Exceptions}        & A participant may have decided to leave the meeting while the "Show Participant" page is open. In this case, if the participant is selected to be nominated as administrator, the system signaled it with a waring with the words "this participant has left the meeting"      \\ \hline
 	\end{tabular}
 	\caption{Nominate Administrators}
+\end{table}
+
+
+\begin{table}[H]
+\centering
+\def\arraystretch{1.5}
+\begin{tabular}{|p{7cm}|p{7cm}|}
+	\hline
+	\textbf{Actors}            & Administrator    \\ \hline
+	\textbf{Goals}             & G4.2, G4.5           \\ \hline
+	\textbf{Input Conditions}  & A meeting has been created           \\ \hline
+	\textbf{Events Flow}       &  
+	\begin{enumerate}[topsep=0pt, leftmargin=*]
+		\item One of the administrator clicks on the button "Meeting Settings".
+		\item The system shows all the functionalities available, such as edit title, modify abstract or upload files.
+		\item The administrator \textbf{SONO ARRIVATO QUA}click on the "Nominate" button next to users who want to nominate administrator.
+	\end{enumerate}             \\ \hline
+	\textbf{Output Conditions} & Users selected become administrator and gain all the functionalities of the role.           \\ \hline
+	\textbf{Exceptions}        & A participant may have decided to leave the meeting while the "Show Participant" page is open. In this case, if the participant is selected to be nominated as administrator, the system signaled it with a waring with the words "this participant has left the meeting"      \\ \hline
+\end{tabular}
+\caption{Manage Meeting}
 \end{table}
 
 \begin{table}[H]
@@ -194,11 +247,27 @@
 	\begin{tabular}{|p{7cm}|p{7cm}|}
 		\hline
 		\textbf{Actors}            & Administrator    \\ \hline
-		\textbf{Goals}             &            \\ \hline
-		\textbf{Input Conditions}  &            \\ \hline
-		\textbf{Events Flow}       &            \\ \hline
-		\textbf{Output Conditions} &            \\ \hline
-		\textbf{Exceptions}        &            \\ \hline
+		\textbf{Goals}             & G4.7, G4.8           \\ \hline
+		\textbf{Input Conditions}  & A meeting has been created and an invited user propose a reschedule (only for G4.7).           \\ \hline
+		\textbf{Events Flow}       & Only for G4.7
+		\begin{enumerate}[topsep=0pt, leftmargin=*]				
+			\item One of the administrator receives a rescheduling proposal from an invited user that asks to modify meeting time.
+			\item The system shows a warning to the administrator. He/She can decide to poll  or decline the request.
+			\item The administrator clicks on the button "Send Reschedule Proposal"\underline{(nome bottone maybe da cambiare)}.
+			\item The system shows the reschedule form, pre-filled with user's values that can be edited (only for G4.7).
+			\item The administrator decides what to write in the form and send to the team the request.
+		\end{enumerate}
+		Only for G4.8
+		\begin{enumerate}[topsep=0pt, leftmargin=*]
+			\item One of the administrator wants to edit meeting's date and time (\underline{or location.?}) He/She clicks on the button "Propose A Reschedule".
+		\end{enumerate}  
+		Both
+		\begin{enumerate}[topsep=0pt, leftmargin=*]
+			\item The system shows the reschedule form, pre-filled with user's values that can be edited (only for G4.7).
+			\item The administrator decides what to write in the form and send to the team the request.
+		\end{enumerate}                         \\ \hline
+		\textbf{Output Conditions} & A rescheduling proposal is sent to all the participants. If everyone accepts than the meeting change time.         \\ \hline
+		\textbf{Exceptions}        & The administrator hasn't written a different time compared to before\underline{(brutta frase)}; the system signaled it with a popUp.        \\ \hline
 	\end{tabular}
 	\caption{Propose Rescheduling}
 \end{table}
