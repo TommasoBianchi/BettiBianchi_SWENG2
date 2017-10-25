@@ -1,6 +1,7 @@
 \includegraphics[height=\textheight, width=\textwidth]{Images/UseCaseDiagram.png}
 
 \begin{table}[H]
+	
 	\centering
 	\def\arraystretch{1.5}
 	\begin{tabular}{|p{7cm}|p{7cm}|}
@@ -14,17 +15,11 @@
 			\item The guest inserts its main email address.
 			\item The guest enters its password.
 			\item The guest clicks on the "Sign Up" button.
-		\end{enumerate}
-		Registration via External Service Provider
-		\begin{enumerate}
-			\item The guest clicks on the "Log in with \texttt{Service name}" button.
-			\item The guest is taken to an external page where it has to follow the authentication procedure of the external login provider.
-			\item The guest is redirected to our system with a valid token.
-		\end{enumerate}       \\ \hline
-		\textbf{Output Conditions} & The guest is registered into the system with a pair <email, password> or with a token given by the external provider. The guest is redirected to a page where it can add to its profile the compulsory information needed to use the system, that are: the preference list, a unique nickname and at least one default location.      \\ \hline
-		\textbf{Exceptions}        & The guest inserts a wrong or already-used email or the external login provider procedure cannot be completed correctly. In either case the system shows the user a message reporting the errors and waits for another attempt.            \\ \hline
+		\end{enumerate}    \\ \hline
+		\textbf{Output Conditions} & The guest is registered into the system with a pair <email, password>. The guest is redirected to a page where it can add to its profile the compulsory information needed to use the system, that are: the preference list, a unique nickname and at least one default location.      \\ \hline
+		\textbf{Exceptions}        & The guest inserts a wrong or already-used email. In this case the system shows the user a message reporting the errors and waits for another attempt.            \\ \hline
 	\end{tabular}
-	\caption{Register}
+	\caption{Register\label{UseCaseDescr:Registration}}
 \end{table}
 
 \begin{table}[H]
@@ -36,22 +31,36 @@
 		\textbf{Goals}             & \ref{goal:Login}           \\ \hline
 		\textbf{Input Conditions}  & User is on the homepage of the system and it has not yet been authenticated.           \\ \hline
 		\textbf{Events Flow}       &    
+		\begin{enumerate}
+			\item The user clicks on the "Log in with \texttt{Service name}" button.
+			\item The user is taken to an external page where it has to follow the authentication procedure of the external login provider.
+			\item The user is redirected to our system with a valid token.
+		\end{enumerate} \\ \hline
+		\textbf{Output Conditions} & User is logged into the system.          \\ \hline
+		\textbf{Exceptions}        & The external login provider procedure cannot be completed correctly. In this case the system shows the user a message reporting the error.         \\ \hline
+	\end{tabular}
+	\caption{Login\label{UseCaseDescr:LoginExternal}}
+\end{table}
+
+\begin{table}[H]
+	\centering
+	\def\arraystretch{1.5}
+	\begin{tabular}{|p{7cm}|p{7cm}|}
+		\hline
+		\textbf{Actors}            & User	    \\ \hline
+		\textbf{Goals}             & \ref{goal:Login}           \\ \hline
+		\textbf{Input Conditions}  & User is on the homepage of the system and it has not yet been authenticated.           \\ \hline
+		\textbf{Events Flow}       &    
 		 	Login via user credentials
 			 	\begin{enumerate}
 			 		\item The user inserts its main email address or its nickname.
 			 		\item The user inserts its password.
 			 		\item The user clicks on the "Log in" button.
-			 	\end{enumerate}
-		 	Login via External Service Provider
-			 	\begin{enumerate}
-				 	\item The user clicks on the "Log in with \texttt{Service name}" button.
-				 	\item The user is taken to an external page where it has to follow the authentication procedure of the external login provider.
-				 	\item The user is redirected to our system with a valid token.
-			 	\end{enumerate} \\ \hline
+			 	\end{enumerate}\\ \hline
 		\textbf{Output Conditions} & User is logged into the system.          \\ \hline
-		\textbf{Exceptions}        & The user credentials are wrong or the external login provider procedure cannot be completed correctly. In either case the system shows the user a message reporting the errors and waits for another attempt.         \\ \hline
+		\textbf{Exceptions}        & The user credentials are wrong. The system shows the user a message reporting the errors and waits for another attempt.         \\ \hline
 	\end{tabular}
-	\caption{Login}
+	\caption{Login\label{UseCaseDescr:LoginNormal}}
 \end{table}
 
 \begin{table}[H]
@@ -73,7 +82,7 @@
 		\textbf{Output Conditions} & The selected fields are updated with the new data inserted by the user.          \\ \hline
 		\textbf{Exceptions}        &  The data inserted in a field are wrong (e.g. a non-unique nickname, a non-unique email, a syntactically wrong website, etc.). The system shows the user a message reporting the errors, clears the incorrect fields and restarts the event flow from point 2.               \\ \hline
 	\end{tabular}
-	\caption{Edit Profile}
+	\caption{Edit Profile\label{UseCaseDescr:EditProfile}}
 \end{table}
 
 \begin{table}[H]
@@ -94,7 +103,7 @@
 		\textbf{Output Conditions} & This use case does not modify anything, so the state of the output is equal to the state of the input.           \\ \hline
 		\textbf{Exceptions}        & There are no exceptions.           \\ \hline
 	\end{tabular}
-	\caption{Show Calendar}
+	\caption{Show Calendar\label{UseCaseDescr:ShowCalendar}}
 \end{table}
 
 \begin{table}[H]
@@ -115,7 +124,7 @@
 		\textbf{Output Conditions} & The acceptance, refusal or rescheduling proposal of the meeting is recorded by the system. In the latter case, it is forwarded to the meeting administrator.           \\ \hline
 		\textbf{Exceptions}        & The user selects an invalid start date (e.g. a date which is in the past). The system shows the user a message reporting the errors and wait for a new date to be inserted.           \\ \hline
 	\end{tabular}
-	\caption{Manage Meeting Participation}
+	\caption{Manage Meeting Participation\label{UseCaseDescr:MeetingPart}}
 \end{table}
 
 \begin{table}[H]
@@ -135,7 +144,7 @@
 		\textbf{Output Conditions} & The user has reached the meeting location or the user has clicked the "Stop Notifications" button.           \\ \hline
 		\textbf{Exceptions}        & There are no exceptions.           \\ \hline
 	\end{tabular}
-	\caption{Receive Real-Time Indications}
+	\caption{Receive Real-Time Indications\label{UseCaseDescr:RealTimeInd}}
 \end{table}
 
 \begin{table}[H]
@@ -158,7 +167,7 @@
 		\textbf{Output Conditions} & A new meeting is created and an invitation is sent to all the selected users.           \\ \hline
 		\textbf{Exceptions}        & The location of the meeting may be incorrect or the start and end date may be inconsistent (i.e. the start is after the end). The system shows the user a message reporting the errors, clears the incorrect fields and restart the event flow from point 2.          \\ \hline
 	\end{tabular}
-	\caption{Create Meeting}
+	\caption{Create Meeting\label{UseCaseDescr:CreateMeeting}}
 \end{table}
 
 \begin{table}[H]
@@ -180,7 +189,7 @@
 		\textbf{Exceptions}        & The location of the meeting may be incorrect or the start and end date may be inconsistent (i.e. the start is after the end). The system shows the user a message reporting the errors, clears the incorrect fields and restart the event
 		flow from point 2.           \\ \hline
 	\end{tabular}
-	\caption{Recreate Meeting}
+	\caption{Recreate Meeting\label{UseCaseDescr:RecreateMeeting}}
 \end{table}
 
 \begin{table}[H]
@@ -201,7 +210,7 @@
 		\textbf{Exceptions}        & 
 		The administrator may have write a wrong or non-existent email or nickname. The system shows the administrator a message reporting the errors, clears the incorrect fields and restarts the event flow from point 2.     \\ \hline
 	\end{tabular}
-	\caption{Invite Users}
+	\caption{Invite Users\label{UseCaseDescr:InviteUsers}}
 \end{table}
 
 \begin{table}[H]
@@ -222,7 +231,7 @@
 		\textbf{Exceptions}        & 
 		There are no exceptions.         \\ \hline
 	\end{tabular}
-	\caption{Remove Users}
+	\caption{Remove Users\label{UseCaseDescr:RemoveUsers}}
 \end{table}
 
 \begin{table}[H]
@@ -241,7 +250,7 @@
 		\textbf{Output Conditions} & The administrator knows who is late and can take decisions based on that.           \\ \hline
 		\textbf{Exceptions}        & There are no exceptions.           \\ \hline
 	\end{tabular}
-	\caption{View Late Users}
+	\caption{View Late Users\label{UseCaseDescr:LateUsers}}
 \end{table}
 
 \begin{table}[H]
@@ -261,7 +270,7 @@
 		\textbf{Output Conditions} & Selected users become administrators and gain all the functionalities of the role.           \\ \hline
 		\textbf{Exceptions}        & A participant may have decided to leave the meeting while the administrator's "Show Participant" page is open. In this case, if the participant is selected to be nominated as administrator, the system signals it with a message saying "this participant has left the meeting".      \\ \hline
 	\end{tabular}
-	\caption{Nominate Administrators}
+	\caption{Nominate Administrators\label{UseCaseDescr:NominateAdmin}}
 \end{table}
 
 
@@ -285,7 +294,7 @@
 	\textbf{Output Conditions} & The fields are updated and the selected files are uploaded.          \\ \hline
 	\textbf{Exceptions}        & The administrator wants  to upload a huge file or a file with an invalid extension. In this case, the system stops the upload of the file and shows the user a message saying "The file is not supported". \\ \hline
 \end{tabular}
-\caption{Manage Meeting}
+\caption{Manage Meeting\label{UseCaseDescr:ManageMeeting}}
 \end{table}
 
 \begin{table}[H]
@@ -306,5 +315,7 @@
 		\textbf{Output Conditions} & A rescheduling proposal is sent to all the participants. If everyone accepts than the meeting's date is changed.         \\ \hline
 		\textbf{Exceptions}        & The inserted date is incorrect (e.g. in the past) or it does not differ from the previous one. The system shows a message reporting the errors, clears the incorrect fields and restarts the event flow from point 3.  \\ \hline
 	\end{tabular}
-	\caption{Propose Rescheduling}
+	\caption{Propose Rescheduling\label{UseCaseDescr:ProposeRes}}
 \end{table}
+
+\newpage
