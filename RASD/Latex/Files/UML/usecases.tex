@@ -6,7 +6,7 @@
 	\begin{tabular}{|p{7cm}|p{7cm}|}
 		\hline
 		\textbf{Actors}            & Guest, External Login Provider		    \\ \hline
-		\textbf{Goals}             & G1           \\ \hline
+		\textbf{Goals}             & \ref{goal:Registration}           \\ \hline
 		\textbf{Input Conditions}  & A guest is on the homepage of the system.           \\ \hline
 		\textbf{Events Flow}       &   
 		Registration via user credentials
@@ -33,7 +33,7 @@
 	\begin{tabular}{|p{7cm}|p{7cm}|}
 		\hline
 		\textbf{Actors}            & User, External Login Provider		    \\ \hline
-		\textbf{Goals}             & G2           \\ \hline
+		\textbf{Goals}             & \ref{goal:Login}           \\ \hline
 		\textbf{Input Conditions}  & User is on the homepage of the system and it has not yet been authenticated.           \\ \hline
 		\textbf{Events Flow}       &    
 		 	Login via user credentials
@@ -60,7 +60,7 @@
 	\begin{tabular}{|p{7cm}|p{7cm}|}
 		\hline
 		\textbf{Actors}            & User		    \\ \hline
-		\textbf{Goals}             & G4           \\ \hline
+		\textbf{Goals}             & \ref{goal:EditProfile}          \\ \hline
 		\textbf{Input Conditions}  & The user has already been authenticated by the system.           \\ \hline
 		\textbf{Events Flow}       & 
 			\begin{enumerate}[topsep=0pt, leftmargin=*]
@@ -82,7 +82,7 @@
 	\begin{tabular}{|p{7cm}|p{7cm}|}
 		\hline
 		\textbf{Actors}            & User		    \\ \hline
-		\textbf{Goals}             & G3           \\ \hline
+		\textbf{Goals}             & \ref{goal:SeeSchedule}           \\ \hline
 		\textbf{Input Conditions}  & The user has already been authenticated by the system.           \\ \hline
 		\textbf{Events Flow}       & 
 			\begin{enumerate}[topsep=0pt, leftmargin=*]
@@ -103,7 +103,7 @@
 	\begin{tabular}{|p{7cm}|p{7cm}|}
 		\hline
 		\textbf{Actors}            & User		    \\ \hline
-		\textbf{Goals}             & G5.6           \\ \hline
+		\textbf{Goals}             & \ref{goal:MeetingParticipation}           \\ \hline
 		\textbf{Input Conditions}  & The user has already been authenticated by the system.           \\ \hline
 		\textbf{Events Flow}       & 
 			\begin{enumerate}[topsep=0pt, leftmargin=*]
@@ -124,7 +124,7 @@
 	\begin{tabular}{|p{7cm}|p{7cm}|}
 		\hline
 		\textbf{Actors}            & User, External Geolocalization Provider, External Shortest Path Provider		    \\ \hline
-		\textbf{Goals}             & G7           \\ \hline
+		\textbf{Goals}             & \ref{goal:Travel}         \\ \hline
 		\textbf{Input Conditions}  & The user has already been authenticated by the system and the system has detected that the start time of one of its meeting is approaching.           \\ \hline
 		\textbf{Events Flow}       & 
 			\begin{enumerate}[topsep=0pt, leftmargin=*]
@@ -144,7 +144,7 @@
 	\begin{tabular}{|p{7cm}|p{7cm}|}
 		\hline
 		\textbf{Actors}            & User		    \\ \hline
-		\textbf{Goals}             & G5           \\ \hline
+		\textbf{Goals}             & \ref{goal:ManageMeeting}           \\ \hline
 		\textbf{Input Conditions}  & The user has already been authenticated by the system.           \\ \hline
 		\textbf{Events Flow}       & 
 			\begin{enumerate}[topsep=0pt, leftmargin=*]
@@ -167,7 +167,7 @@
 	\begin{tabular}{|p{7cm}|p{7cm}|}
 		\hline
 		\textbf{Actors}            & Administrator    \\ \hline
-		\textbf{Goals}             & G5.9           \\ \hline
+		\textbf{Goals}             & \ref{goal:RecreateMeeting}           \\ \hline
 		\textbf{Input Conditions}  & A meeting has been created and completed normally. The team decides that another meeting is necessary to fulfill their goals. \\ \hline
 		\textbf{Events Flow}       & 
 		\begin{enumerate}[topsep=0pt, leftmargin=*]
@@ -189,7 +189,7 @@
 	\begin{tabular}{|p{7cm}|p{7cm}|}
 		\hline
 		\textbf{Actors}            & Administrator    \\ \hline
-		\textbf{Goals}             & G5.4           \\ \hline
+		\textbf{Goals}             & \ref{goal:InviteUsers}           \\ \hline
 		\textbf{Input Conditions}  & A meeting has been created.           \\ \hline
 		\textbf{Events Flow}       &  
 		\begin{enumerate}[topsep=0pt, leftmargin=*]
@@ -210,7 +210,7 @@
 	\begin{tabular}{|p{7cm}|p{7cm}|}
 		\hline
 		\textbf{Actors}            & Administrator    \\ \hline
-		\textbf{Goals}             & G5.4           \\ \hline
+		\textbf{Goals}             & \ref{goal:InviteUsers}           \\ \hline
 		\textbf{Input Conditions}  & A meeting has been created.           \\ \hline
 		\textbf{Events Flow}       & 
 		\begin{enumerate}[topsep=0pt, leftmargin=*]
@@ -231,7 +231,7 @@
 	\begin{tabular}{|p{7cm}|p{7cm}|}
 		\hline
 		\textbf{Actors}            & Administrator    \\ \hline
-		\textbf{Goals}             & G5.10           \\ \hline
+		\textbf{Goals}             & \ref{goal:ViewLateUsers}           \\ \hline
 		\textbf{Input Conditions}  & A meeting has been created and its start time has passed.         \\ \hline
 		\textbf{Events Flow}       &  
 		\begin{enumerate}[topsep=0pt, leftmargin=*]
@@ -250,7 +250,7 @@
 	\begin{tabular}{|p{7cm}|p{7cm}|}
 		\hline
 		\textbf{Actors}            & Administrator    \\ \hline
-		\textbf{Goals}             & G5.3           \\ \hline
+		\textbf{Goals}             & \ref{goal:NominateAdmin}           \\ \hline
 		\textbf{Input Conditions}  & A meeting has been created.           \\ \hline
 		\textbf{Events Flow}       &  
 		\begin{enumerate}[topsep=0pt, leftmargin=*]
@@ -271,7 +271,7 @@
 \begin{tabular}{|p{7cm}|p{7cm}|}
 	\hline
 	\textbf{Actors}            & Administrator    \\ \hline
-	\textbf{Goals}             & G5.2, G5.5           \\ \hline
+	\textbf{Goals}             & \ref{goal:EditMeeting}~, \ref{goal:ShareFiles}           \\ \hline
 	\textbf{Input Conditions}  & A meeting has been created.           \\ \hline
 	\textbf{Events Flow}       &  
 	\begin{enumerate}[topsep=0pt, leftmargin=*]
@@ -294,7 +294,7 @@
 	\begin{tabular}{|p{7cm}|p{7cm}|}
 		\hline
 		\textbf{Actors}           & Administrator    \\ \hline
-		\textbf{Goals}            & G5.7, G5.8           \\ \hline
+		\textbf{Goals}            & \ref{goal:RescheduleFromUser}, \ref{goal:RescheduleFromAdmin}           \\ \hline
 		{\textbf{Input Conditions}}  & A meeting has been created.           \\ \hline
 		{\textbf{Events Flow}}       &
 		\begin{enumerate}[topsep=0pt, leftmargin=*]					
