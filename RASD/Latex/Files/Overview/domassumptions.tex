@@ -45,4 +45,8 @@ A shared car can be considered exactly equal to a owned car because it takes the
 \stepcounter{countDom}
 \item[D\thecountDom] The system treats taxis as a driving travel mean and not as public transportation. \\ [0.1cm]
 This assumption is supported by the fact that taxis will take the same amount of time as a car to complete the path and, exactly like cars, can be considered to be always present in the same location of the user. This will also simplify the development process as most of external shortest path providers available on the market take the same assumption.
+
+\stepcounter{countDom}
+\item[D\thecountDom] If a user accepts the invitation to a meeting, then he really attends to it.  \\ [0.1cm]
+This assumption is needed to always correctly infer the location of a user. In fact, without this assumption a user could not attend a meeting and therefore the travel indications to go from that meeting to the following one could be completely wrong.
 \end{description}
