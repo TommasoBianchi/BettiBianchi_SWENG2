@@ -66,10 +66,16 @@ sig Group {
 sig DefaultLocation {
 	startingHour: one Int,
 	dayOfTheWeek: one Day,
-	defaultLocation: one Location
+	defaultLocation: one Location,
+	nextDefaultLocation: one DefaultLocation
 }{
 	#(defaultLocations.this) = 1	// each defaultLocation belongs to one and only one user
+	#(@nextDefaultLocation.this) = 1
+	(defaultLocations.this.defaultLocations -> defaultLocations.this.defaultLocations) in (^(@nextDefaultLocation))
 	startingHour >= 0
+	one t: Travel | t.departure = defaultLocation and t.arrival = nextDefaultLocation.@defaultLocation //a travel from subsequent locations
+	LocationAfter[this, nextDefaultLocation] //QUESTO NON GARANTISCE IL GIUSTO ORDINE, BISOGNA USARE NextLocation DOPO AVERLO FIXXATO
+	
 }
 
 sig Location {
@@ -216,7 +222,7 @@ sig Travel {
 	endTime: one Date
 }{
 	arrival != departure
-	//#((arrivingTravel + leavingTravel).this) = 1	// each travel belongs to one and only one meetingParticipation
+	//#((arrivingTravel + leavingTravel).this) > 0 // each travel belongs to at least one meetingParticipation
 	//#(steps.fromLocation + steps.toLocation) = #(steps) + 1
 	departure in steps.fromLocation
 	departure not in steps.toLocation
@@ -228,7 +234,7 @@ sig TravelStep {
 	toLocation: one Location,
 	nextStep: lone TravelStep
 }{
-	#(steps.this) = 1	// each travelStep belongs to one and only one travel
+	#(steps.this) = 1	// each  belongs to one and only one travel
 	fromLocation != toLocation
 	#(nextStep) = 1 implies toLocation = nextStep.@fromLocation
 	#(nextStep) = 1 implies steps.this = steps.nextStep
@@ -244,15 +250,25 @@ sig Date {
 	_next: lone Date
 }{ _next = this.@next }
 
-abstract sig Day {}
-one sig Monday extends Day {}
-one sig Tuesday extends Day {}
-one sig Wednesday extends Day {}
-one sig Thursday extends Day {}
-one sig Friday extends Day {}
-one sig Saturday extends Day {}
-one sig Sunday extends Day {}
+abstract sig Day {
+	nextDay: Day
+}
+one sig Monday extends Day {
+}
+one sig Tuesday extends Day {
+}
+one sig Wednesday extends Day {
+}
+one sig Thursday extends Day {
+}
+one sig Friday extends Day {
+}
+one sig Saturday extends Day {
+}
+one sig Sunday extends Day {
+}
 
+sig AutoDecline extends Status{}
 /*
 *	FACTS
 */
@@ -263,6 +279,38 @@ fact {
 	all m: Meeting | some mp: MeetingParticipation | m = mp.meeting and mp.isAdministrator = True
 }
 
+//Users cannot have meetings while their status is set to auto-decline. (Done)
+//HO MESSO SOLO MEETING QUINDI PUO VIAGGIARE IN QUEL PERIODO, SE VOGLIAMO MODIFICARLO BASTA 
+//CAMBIARE M COME MEETINGPARTECIPATION E METTERE DA DATA INIZIO VIAGGIO DI PARTENZA A DATA FINE VIAGGIO DI ARRIVO
+fact {
+	all u: User | all ad: statuses[u] | no m: u.meetingParticipations.meeting| 
+		ad in AutoDecline and (IncludingDates[m.startDate,ad.from,ad.to] or IncludingDates[m.endDate, ad.from, ad.to])
+}
+
+//A user cannot have different default locations sharing the start time. (Done)
+fact{
+	all u: User | no d1,d2: u.defaultLocations | 
+		d1 != d2 and d1.dayOfTheWeek = d2.dayOfTheWeek and d1.startingHour = d2.startingHour
+}
+
+fact nextDay{
+	Monday.nextDay in Tuesday
+	Tuesday.nextDay in Wednesday
+	Wednesday.nextDay in Thursday
+	Thursday.nextDay in Friday
+	Friday.nextDay in Saturday
+	Saturday.nextDay in Sunday
+	Sunday.nextDay in Monday //ho lasciato sunday sunday. Con sunday sunday però ci mette troppo
+}
+// Time travel between subsequent default locations should be less than the difference between their start time.
+//PER ORA HO IMPOSTO CHE CI SONO UN TRAVEL TRA TUTTE LE DEFAULT LOCATION
+//fact {
+//	all u: User | ( (#(u.defaultLocations)>1) implies
+//		( all d1, d2: u.defaultLocations | (d1!= d2 and NextLocation[d1,d2] ) implies
+//			(one t: Travel | t.departure = d1.defaultLocation and t.arrival = d2.defaultLocation)
+//			)
+//		)
+//}
 
 /*
 *	PREDICATES
@@ -278,6 +326,22 @@ pred OverlappingDates[s1: Date, e1: Date, s2: Date, e2: Date] {
 	s1 = s2 or e1 = e2
 }
 
+//d1 is incuded between d2 and d3
+pred IncludingDates[d1:Date, d2:Date, d3:Date]{
+	DateInOrder[d2,d1] and DateInOrder[d1,d3]
+}
+
+//default location d2 is after default location d1
+pred NextLocation[d1: DefaultLocation, d2: DefaultLocation]{
+	LocationAfter[d1, d2]	and
+	(no d3: DefaultLocation| LocationAfter[d1,d3] and LocationAfter[d3,d2])
+}
+
+//location after
+pred LocationAfter[d1: DefaultLocation, d2: DefaultLocation]{
+	(d1.dayOfTheWeek != d2.dayOfTheWeek and d2.dayOfTheWeek in d1.dayOfTheWeek.^nextDay) or
+		(d1.dayOfTheWeek = d2.dayOfTheWeek and d1.startingHour < d2.startingHour)
+}
 /*
 *	FUNCTIONS
 */
@@ -303,17 +367,19 @@ pred OverlappingDates[s1: Date, e1: Date, s2: Date, e2: Date] {
 fact {
 	//some m: Meeting | #(MeetingParticipation.meeting & m) > 1
 	#User = 1
-	#Meeting > 0
+	#Meeting >1
 	
 	//all t: Travel | #(t.steps) > 3
 	
 	//#{mp: MeetingParticipation | mp.isMeetingConsistent = False} > 1
 	//#{mp: MeetingParticipation | mp.isMeetingConsistent = True} > 1
-	no mp: MeetingParticipation | mp.isMeetingConsistent = False
-	some mp1: MeetingParticipation, mp2: MeetingParticipation | mp1.leavingTravel = mp2.arrivingTravel
-	#MeetingParticipation > 2
+	//no mp: MeetingParticipation | mp.isMeetingConsistent = False
+	//some mp1: MeetingParticipation, mp2: MeetingParticipation | mp1.leavingTravel = mp2.arrivingTravel
+	//#MeetingParticipation > 2
+	
+
 }
 
 pred show{}
 
-run show for 8 but 8 Int, 16 Date
+run show for 8 but 8 Int
