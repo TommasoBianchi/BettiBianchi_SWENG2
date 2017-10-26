@@ -36,13 +36,16 @@ sig Break {
 	defaultTime: one Date,
 	duration: one Int,
 	startTimeSlot: one Date,
-	endTimeSlot: one Date
+	endTimeSlot: one Date,
+	isDoable: one Bool
 }{
 	duration > 0
 	#(breaks.this) = 1	// each break belongs to one and only one user
 	DateInOrder[startTimeSlot, endTimeSlot]
 	DateInOrder[defaultTime, endTimeSlot]
 	DateInOrder[startTimeSlot, defaultTime]
+	isDoable = True iff (some d: Date | // A break is doable iff there is a "free" date in between startTimeSlot and endTimeSlot
+		IncludingDates[d, startTimeSlot, endTimeSlot] and (no m: breaks.this.meetingParticipations.meeting | IncludingDates[d, m.startDate, m.endDate]))
 }
 
 sig Status {
@@ -75,8 +78,20 @@ sig DefaultLocation {
 	startingHour >= 0
 	one t: Travel | t.departure = defaultLocation and t.arrival = nextDefaultLocation.@defaultLocation //a travel from subsequent locations
 	LocationAfter[this, nextDefaultLocation] //QUESTO NON GARANTISCE IL GIUSTO ORDINE, BISOGNA USARE NextLocation DOPO AVERLO FIXXATO
-	
+	defaultLocations.this = defaultLocations.nextDefaultLocation // the user owning this default location and the next one must be the same
 }
+
+// TEST DI TOMMY NON ANDATI A BUON FINE
+/*fact {
+	all df1: DefaultLocation, df2: DefaultLocation, df3: DefaultLocation |	
+		(defaultLocations.df1 = defaultLocations.df2 and defaultLocations.df2 = defaultLocations.df3 and 
+		df1.nextDefaultLocation = df2 and df2.nextDefaultLocation = df3) implies
+		(DaysInOrder[df1.dayOfTheWeek, df2.dayOfTheWeek, df3.dayOfTheWeek])
+}
+
+pred DaysInOrder[d1: Day, d2: Day, d3: Day]{
+	//d1 = d2 or d2 = d3 
+}*/
 
 sig Location {
 
@@ -123,6 +138,10 @@ sig MeetingParticipation {
 			(OverlappingDates[arrivingTravel.startTime, leavingTravel.endTime, mp.@arrivingTravel.startTime, mp.@leavingTravel.endTime] and leavingTravel != mp.@arrivingTravel and arrivingTravel != mp.@leavingTravel) or
 			(OverlappingDates[arrivingTravel.startTime, leavingTravel.endTime, mp.@meeting.startDate, mp.@leavingTravel.endTime] and leavingTravel = mp.@arrivingTravel and arrivingTravel != mp.@leavingTravel) or
 			(OverlappingDates[arrivingTravel.startTime, leavingTravel.endTime, mp.@arrivingTravel.startTime, mp.@meeting.endDate] and leavingTravel != mp.@arrivingTravel and arrivingTravel = mp.@leavingTravel)
+		) or
+		// There is a break that cannot be done
+		some b: meetingParticipations.this.breaks | (
+			b.isDoable = False and OverlappingDates[b.startTimeSlot, b.endTimeSlot, meeting.startDate, meeting.endDate]
 		)
 	)
 }
@@ -251,7 +270,7 @@ sig Date {
 }{ _next = this.@next }
 
 abstract sig Day {
-	nextDay: Day
+	nextDay: one Day
 }
 one sig Monday extends Day {
 }
@@ -269,6 +288,7 @@ one sig Sunday extends Day {
 }
 
 sig AutoDecline extends Status{}
+
 /*
 *	FACTS
 */
@@ -366,8 +386,8 @@ pred LocationAfter[d1: DefaultLocation, d2: DefaultLocation]{
 
 fact {
 	//some m: Meeting | #(MeetingParticipation.meeting & m) > 1
-	#User = 1
-	#Meeting >1
+	#User > 0
+	#Meeting > 0
 	
 	//all t: Travel | #(t.steps) > 3
 	
@@ -376,10 +396,10 @@ fact {
 	//no mp: MeetingParticipation | mp.isMeetingConsistent = False
 	//some mp1: MeetingParticipation, mp2: MeetingParticipation | mp1.leavingTravel = mp2.arrivingTravel
 	//#MeetingParticipation > 2
-	
-
+	#Break > 2
+	some b: Break | b.isDoable = False
 }
 
 pred show{}
 
-run show for 8 but 8 Int
+run show for 6 but 8 Int
