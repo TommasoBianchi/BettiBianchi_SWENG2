@@ -14,7 +14,7 @@ sig User {
 	//groups: set Group,
 	statuses: set Status,
 	preferenceList: one PreferenceList,
-	defaultLocation: some DefaultLocation,
+	defaultLocations: some DefaultLocation,
 	contacts: set User,
 	constraints: set Constraint,
 	messagesSent: set Message,
@@ -30,6 +30,8 @@ sig User {
 
 sig Email {
 
+}{
+	#(emails.this) = 1	// each email belongs to one and only one user
 }
 
 sig Break {
@@ -39,7 +41,7 @@ sig Break {
 	endTimeSlot: one Date
 }{
 	duration > 0
-	#Break = #User.breaks
+	#(breaks.this) = 1	// each break belongs to one and only one user
 	DateInOrder[startTimeSlot, endTimeSlot]
 	DateInOrder[defaultTime, endTimeSlot]
 	DateInOrder[startTimeSlot, defaultTime]
@@ -49,14 +51,14 @@ sig Status {
 	from: one Date,
 	to: one Date
 }{
-	#Status = #User.statuses
+	#(statuses.this) = 1	// each status belongs to one and only one user
 	DateInOrder[from, to]
 }
 
 sig SocialAccount {
 
 }{
-	#SocialAccount = #User.socialAccounts
+	#(socialAccounts.this) = 1	// each socialAccount belongs to one and only one user
 }
 
 sig Group {
@@ -65,7 +67,11 @@ sig Group {
 
 sig DefaultLocation {
 	startingHour: one Int,
-	dayOfTheWeek: one Day
+	dayOfTheWeek: one Day,
+	defaultLocation: one Location
+}{
+	#(defaultLocations.this) = 1	// each defaultLocation belongs to one and only one user
+	startingHour >= 0
 }
 
 sig Location {
@@ -74,9 +80,14 @@ sig Location {
 
 sig MeetingParticipation {
 	isAdministrator: one Bool,
-	meeting: one Meeting
+	meeting: one Meeting,
+	arrivingTravel: one Travel,
+	leavingTravel: one Travel
 }{
-	#MeetingParticipation = #User.meetingParticipations
+	#(meetingParticipations.this) = 1	// each meetingParticipation belongs to one and only one user
+	arrivingTravel.arrival = meeting.location
+	leavingTravel.departure = meeting.location
+	leavingTravel.arrival in ((meetingParticipations.this).defaultLocations.defaultLocation + NextMeetingParticipations[this].@meeting.location)
 }
 
 // Meeting related signatures
@@ -88,22 +99,20 @@ sig Meeting {
 	chat: one Chat,
 	location: one Location,
 	files: set File,
-	arrivingTravel: one Travel,
-	leavingTravel: one Travel
 }{
 	DateInOrder[startDate, endDate]
-	arrivingTravel.arrival = location
-	leavingTravel.departure = location
 }
 
 sig Message {
 
 }{
-	#Message = #Chat.messages
+	#(messages.this) = 1	// each message belongs to one and only one user
 }
 
 sig Chat {
 	messages: set Message
+}{
+		#(chat.this) = 1	// each chat belongs to one and only one meeting
 }
 
 sig Category {
@@ -116,7 +125,7 @@ sig Category {
 sig File {
 
 }{
-	#File = #Meeting.files
+	#(files.this) = 1	// each file belongs to one and only one meeting
 }
 
 // Travel related signatures
@@ -130,7 +139,7 @@ one sig PublicTransportation extends TravelMean {}
 sig PreferenceList {
 	travelMeans: seq TravelMean
 }{
-	#PreferenceList = #User
+	#(preferenceList.this) = 1	// each preferenceList belongs to one and only one user
 	#travelMeans <= 4
 }
 
@@ -139,6 +148,10 @@ sig Constraint {
 	operator: one Operator,
 	value: one Value,
 	target: one TravelMean
+}{
+	#(constraints.this) = 1	// each constraint belongs to one and only one user
+	operator in subject.operators
+	value in subject.values
 }
 
 sig Subject {
@@ -148,10 +161,14 @@ sig Subject {
 
 sig Operator {
 
+}{
+	#(operators.this) = 1	// each operator belongs to one and only one subject
 }
 
 sig Value {
 
+}{
+	#(values.this) = 1	// each value belongs to one and only one subject
 }
 
 sig Travel {
@@ -159,12 +176,27 @@ sig Travel {
 	travelMean: one TravelMean,
 	departure: one Location,
 	arrival: one Location
+}{
+	arrival != departure
+	#((arrivingTravel + leavingTravel).this) = 1	// each travel belongs to one and only one meetingParticipation
+	//#(steps.fromLocation + steps.toLocation) = #(steps) + 1
+	departure in steps.fromLocation
+	departure not in steps.toLocation
 }
 
 sig TravelStep {
-
+	fromLocation: one Location,
+	toLocation: one Location,
+	nextStep: lone TravelStep
 }{
-	#TravelStep = #Travel.steps
+	#(steps.this) = 1	// each travelStep belongs to one and only one travel
+	fromLocation != toLocation
+	#(nextStep) = 1 implies toLocation = nextStep.@fromLocation
+	#(nextStep) = 1 implies steps.this = steps.nextStep
+	#(nextStep) = 0 implies toLocation = steps.this.arrival//(some t: Travel | toLocation = t.arrival and this in t.steps)
+	#(nextStep) = 0 implies (no ts: TravelStep | ts != this and ts in steps.this.steps and #(ts.@nextStep) = 0)
+	fromLocation not in (this.^@nextStep).@toLocation
+	#(@nextStep.this) <= 1
 }
 
 // Helper signatures
@@ -196,22 +228,36 @@ fact {
 	all m: Meeting | some mp: MeetingParticipation | m = mp.meeting and mp.isAdministrator = True
 }
 
-// There exists a meeting with more participants
-fact {
-	//some m: Meeting | #(MeetingParticipation.meeting & m) > 1
-	#User = 3
-	#MeetingParticipation = 6
-	#Meeting = 3
-}
 
 /*
 *	PREDICATES
 */
 
 pred DateInOrder[a: Date, b: Date] {
-	a not in b.^next
+	a not in b.^next and a != b
+}
+
+/*
+*	FUNCTIONS
+*/
+
+fun NextMeetingParticipations[mp: MeetingParticipation]: set MeetingParticipation {
+	{mps: meetingParticipations.mp.meetingParticipations | 
+		meetingParticipations.mp.meetingParticipations.meeting.startDate in mp.meeting.endDate.^next}
+}
+
+/*
+*	DEBUG STUFF
+*/
+
+fact {
+	//some m: Meeting | #(MeetingParticipation.meeting & m) > 1
+	#User > 0
+	#Meeting > 0
+	
+	all t: Travel | #(t.steps) > 3
 }
 
 pred show{}
 
-run show for 16
+run show for 8 but 8 Int
