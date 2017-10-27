@@ -1,0 +1,53 @@
+\definecolor{dkgreen}{rgb}{0,0.6,0}
+
+\lstdefinestyle{alloy}{
+	language=C,
+	keywordstyle=\color{blue},
+	commentstyle=\color{dkgreen},
+	breaklines=true,
+	morekeywords={
+		assert, pred, all, no, lone, one, some, check, run,
+		but, let, implies, not, iff, in, and, or, set, sig, Int, int,
+		if, then, else, exactly, disj, fact, fun, module, abstract,
+		extends, open, none, univ, iden, seq
+	}	
+}
+
+%\begin{lstlisting}[style=alloy, xleftmargin=8pt,xrightmargin=8pt,basicstyle=\ttfamily,columns=fixed]
+\begin{lstlisting}[style=alloy]
+open util/ordering [Date]
+open util/boolean
+
+/*
+*	SIGNATURES
+*/
+
+// User related signatures
+
+sig User {
+primaryEmail: one Email,
+emails: some Email,
+breaks: set Break,
+socialAccounts: set SocialAccount,
+//groups: set Group,
+statuses: set Status,
+preferenceList: one PreferenceList,
+defaultLocations: some DefaultLocation,
+contacts: set User,
+constraints: set Constraint,
+messagesSent: set Message,
+meetingParticipations: set MeetingParticipation
+}{
+primaryEmail in emails
+this not in contacts
+//#(meetingParticipations.meeting) = #meetingParticipations
+}
+
+sig Email {
+
+}{
+#(emails.this) = 1	// each email belongs to one and only one user
+}
+
+
+// .......\end{lstlisting}
