@@ -12,7 +12,6 @@ sig User {
 	emails: some Email,
 	breaks: set Break,
 	socialAccounts: set SocialAccount,
-	//groups: set Group,
 	statuses: set Status,
 	preferenceList: one PreferenceList,
 	defaultLocations: some DefaultLocation,
@@ -22,8 +21,7 @@ sig User {
 	meetingParticipations: set MeetingParticipation
 }{
 	primaryEmail in emails
-	this not in contacts
-	//#(meetingParticipations.meeting) = #meetingParticipations
+	this not in contacts	
 }
 
 sig Email {
@@ -39,16 +37,18 @@ sig Break {
 	endTimeSlot: one Date,
 	isDoable: one Bool
 }{
-	duration > 0
 	#(breaks.this) = 1	// each break belongs to one and only one user
+	duration > 0
 	DateInOrder[startTimeSlot, endTimeSlot]
 	DateInOrder[defaultTime, endTimeSlot]
 	DateInOrder[startTimeSlot, defaultTime]
-	isDoable = True iff (some d: Date | // A break is doable iff there is a "free" date in between startTimeSlot and endTimeSlot
-		IncludingDates[d, startTimeSlot, endTimeSlot] and (no m: breaks.this.meetingParticipations.meeting | IncludingDates[d, m.startDate, m.endDate]))
+	 // A break is doable iff there are two consecutive "free" dates in between startTimeSlot and endTimeSlot
+	isDoable = True iff (some d1: Date, d2: d1.next |
+		(IncludingDates[d1, startTimeSlot, endTimeSlot] or d1 = startTimeSlot) and 
+		(no mp: breaks.this.meetingParticipations | OverlappingDates[d1, d2, mp.arrivingTravel.startTime, mp.leavingTravel.endTime]))
 }
 
-sig Status {
+abstract sig Status {
 	from: one Date,
 	to: one Date
 }{
@@ -56,9 +56,9 @@ sig Status {
 	DateInOrder[from, to]
 }
 
-sig SocialAccount {
+sig AutoDecline extends Status {}
 
-}{
+sig SocialAccount {}{
 	#(socialAccounts.this) = 1	// each socialAccount belongs to one and only one user
 }
 
@@ -66,41 +66,57 @@ sig Group {
 	members: some User
 }
 
+abstract sig ResponseStatus {}
+one sig Accepted extends ResponseStatus {}
+one sig Declined extends ResponseStatus {}
+one sig Rescheduled extends ResponseStatus {}
+
+// Locations related signatures
+
 sig DefaultLocation {
 	startingHour: one Int,
 	dayOfTheWeek: one Day,
 	defaultLocation: one Location,
-	nextDefaultLocation: one DefaultLocation
+	nextDefaultLocation: one DefaultLocation,
+	travelToNext: lone Travel
 }{
 	#(defaultLocations.this) = 1	// each defaultLocation belongs to one and only one user
 	#(@nextDefaultLocation.this) = 1
+	FirstLocationAfter[this, nextDefaultLocation] or (nextDefaultLocation = this)
 	(defaultLocations.this.defaultLocations -> defaultLocations.this.defaultLocations) in (^(@nextDefaultLocation))
-	startingHour >= 0
-	one t: Travel | t.departure = defaultLocation and t.arrival = nextDefaultLocation.@defaultLocation //a travel from subsequent locations
-	LocationAfter[this, nextDefaultLocation] //QUESTO NON GARANTISCE IL GIUSTO ORDINE, BISOGNA USARE NextLocation DOPO AVERLO FIXXATO
 	defaultLocations.this = defaultLocations.nextDefaultLocation // the user owning this default location and the next one must be the same
+	startingHour >= 0
+	startingHour <= 24
+	 // travel from subsequent locations
+	(one t: travelToNext | t.departure = defaultLocation and t.arrival = nextDefaultLocation.@defaultLocation) or 
+		(nextDefaultLocation = this and #(travelToNext) = 0)
 }
 
-// TEST DI TOMMY NON ANDATI A BUON FINE
-/*fact {
-	all df1: DefaultLocation, df2: DefaultLocation, df3: DefaultLocation |	
-		(defaultLocations.df1 = defaultLocations.df2 and defaultLocations.df2 = defaultLocations.df3 and 
-		df1.nextDefaultLocation = df2 and df2.nextDefaultLocation = df3) implies
-		(DaysInOrder[df1.dayOfTheWeek, df2.dayOfTheWeek, df3.dayOfTheWeek])
+sig Location {}
+
+// Meeting related signatures
+
+abstract sig BaseMeeting {
+	startDate: one Date,
+	endDate: one Date,
+	category: one Category,
+	chat: one Chat,
+	location: one Location,
+	files: set File,
 }
 
-pred DaysInOrder[d1: Day, d2: Day, d3: Day]{
-	//d1 = d2 or d2 = d3 
-}*/
+sig Meeting extends BaseMeeting {}{
+	DateInOrder[startDate, endDate]
+}
 
-sig Location {
-
+sig InstantMeeting extends BaseMeeting {}{
+	startDate = endDate
 }
 
 sig MeetingParticipation {
 	isAdministrator: one Bool,
 	isMeetingConsistent: one Bool,
-	meeting: one Meeting,
+	meeting: one BaseMeeting,
 	arrivingTravel: one Travel,
 	leavingTravel: one Travel,
 	responseStatus: one ResponseStatus
@@ -109,87 +125,82 @@ sig MeetingParticipation {
 	no mp: meetingParticipations.this.meetingParticipations | mp != this and mp.@meeting = meeting	// each user participates to a meeting at most once
 	arrivingTravel.arrival = meeting.location
 	leavingTravel.departure = meeting.location
-	leavingTravel.arrival in ((meetingParticipations.this).defaultLocations.defaultLocation + NextMeetingParticipation[this].@meeting.location)
-	(leavingTravel.arrival in NextMeetingParticipation[this].@meeting.location) implies (leavingTravel = NextMeetingParticipation[this].@arrivingTravel)
 	arrivingTravel.endTime = meeting.startDate
 	leavingTravel.startTime = meeting.endDate
-	
-	////////////
-	/*#(NextMeetingParticipation[this]) >= 1 implies (
-	((some m: meetingParticipations.this.meetingParticipations | 
-		m != this and OverlappingDates[meeting.startDate, meeting.endDate, m.@meeting.startDate, m.@meeting.endDate]) or
-		//(OverlappingDates[NextMeetingParticipation[this].@arrivingTravel.startTime, NextMeetingParticipation[this]. @arrivingTravel.endTime, leavingTravel.startTime, leavingTravel.endTime]) or
-		//(OverlappingDates[NextMeetingParticipation[this].@arrivingTravel.startTime, NextMeetingParticipation[this]. @arrivingTravel.endTime, meeting.startDate, meeting.endDate])) implies
-		(OverlappingDates[arrivingTravel.startTime, leavingTravel.endTime, NextMeetingParticipation[this].@arrivingTravel.startTime, NextMeetingParticipation[this]. @leavingTravel.endTime])) iff
-			isMeetingConsistent = False)
-	/////////////
-	//((OverlappingDates[NextMeetingParticipation[this].@arrivingTravel.startTime, NextMeetingParticipation[this]. @arrivingTravel.endTime, leavingTravel.startTime, leavingTravel.endTime]) or
-	//(OverlappingDates[NextMeetingParticipation[this].@arrivingTravel.startTime, NextMeetingParticipation[this]. @arrivingTravel.endTime, meeting.startDate, meeting.endDate])) implies
-	#(NextMeetingParticipation[this]) = 0 implies (
-		isMeetingConsistent = False iff (some m: meetingParticipations.this.meetingParticipations |
-			this in NextMeetingParticipation[m] and OverlappingDates[m.@arrivingTravel.startTime, m.@leavingTravel.endTime, arrivingTravel.startTime, leavingTravel.endTime]) and
-			#(meetingParticipations.this.meetingParticipations) > 1)		
-
-	//	((OverlappingDates[arrivingTravel.startTime, leavingTravel.endTime, NextMeetingParticipation[this].@arrivingTravel.startTime, NextMeetingParticipation[this]. @leavingTravel.endTime]) implies
-		//	(NextMeetingParticipation[this].@isMeetingConsistent = False)))*/
-
+	// a leaving travel can arrive in a default location or in the location of the subsequent meeting
+	leavingTravel.arrival in ((meetingParticipations.this).defaultLocations.defaultLocation + NextMeetingParticipation[this].@meeting.location)
+	// if a leaving travel arrives in a meeting than the leaving travel is exactly the arriving travel of that meeting
+	leavingTravel.arrival in NextMeetingParticipation[this].@meeting.location implies 
+		(leavingTravel = NextMeetingParticipation[this].@arrivingTravel)
 	isMeetingConsistent = False iff (
+		// There is another meeting that overlaps
 		some mp: (meetingParticipations.this.meetingParticipations - this) | ( 
-			(OverlappingDates[arrivingTravel.startTime, leavingTravel.endTime, mp.@arrivingTravel.startTime, mp.@leavingTravel.endTime] and leavingTravel != mp.@arrivingTravel and arrivingTravel != mp.@leavingTravel) or
-			(OverlappingDates[arrivingTravel.startTime, leavingTravel.endTime, mp.@meeting.startDate, mp.@leavingTravel.endTime] and leavingTravel = mp.@arrivingTravel and arrivingTravel != mp.@leavingTravel) or
-			(OverlappingDates[arrivingTravel.startTime, leavingTravel.endTime, mp.@arrivingTravel.startTime, mp.@meeting.endDate] and leavingTravel != mp.@arrivingTravel and arrivingTravel = mp.@leavingTravel)
+			(OverlappingDates[arrivingTravel.startTime, leavingTravel.endTime, mp.@arrivingTravel.startTime, mp.@leavingTravel.endTime] 
+				and leavingTravel != mp.@arrivingTravel and arrivingTravel != mp.@leavingTravel) or
+			(OverlappingDates[arrivingTravel.startTime, leavingTravel.endTime, mp.@meeting.startDate, mp.@leavingTravel.endTime] 
+				and leavingTravel = mp.@arrivingTravel and arrivingTravel != mp.@leavingTravel) or
+			(OverlappingDates[arrivingTravel.startTime, leavingTravel.endTime, mp.@arrivingTravel.startTime, mp.@meeting.endDate] 
+				and leavingTravel != mp.@arrivingTravel and arrivingTravel = mp.@leavingTravel)
 		) or
 		// There is a break that cannot be done
 		some b: meetingParticipations.this.breaks | (
-			b.isDoable = False and OverlappingDates[b.startTimeSlot, b.endTimeSlot, meeting.startDate, meeting.endDate]
+			b.isDoable = False and OverlappingDates[b.startTimeSlot, b.endTimeSlot, arrivingTravel.startTime, leavingTravel.endTime]
 		)
 	)
 }
 
-abstract sig ResponseStatus {}
-one sig Accepted extends ResponseStatus {}
-one sig Declined extends ResponseStatus {}
-one sig Rescheduled extends ResponseStatus {}
-
-// Meeting related signatures
-
-sig Meeting {
-	startDate: one Date,
-	endDate: one Date,
-	category: one Category,
-	chat: one Chat,
-	location: one Location,
-	files: set File,
-}{
-	DateInOrder[startDate, endDate]
-}
-
-sig Message {
-
-}{
-	#(messages.this) = 1	// each message belongs to one and only one user
+sig Message {}{
+	#(messagesSent.this) = 1	// each message belongs to one and only one user
+	#(messages.this) = 1	// each message belongs to one and only one chat
 }
 
 sig Chat {
 	messages: set Message
 }{
-		#(chat.this) = 1	// each chat belongs to one and only one meeting
+	#(chat.this) = 1	// each chat belongs to one and only one meeting
 }
 
 sig Category {
 	superCategory: lone Category
 }{
 	superCategory != this
-	some m: Meeting | this = m.category
+	some m: BaseMeeting | this = m.category // categories are not empty
 }
 
-sig File {
-
-}{
+sig File {}{
 	#(files.this) = 1	// each file belongs to one and only one meeting
 }
 
 // Travel related signatures
+
+sig Travel {
+	steps: some TravelStep,
+	travelMean: one TravelMean,
+	departure: one Location,
+	arrival: one Location,
+	startTime: one Date,
+	endTime: one Date
+}{
+	plus[plus[#(arrivingTravel.this), #(leavingTravel.this)], #(travelToNext.this)] = 1
+	arrival != departure
+	departure in steps.fromLocation
+	departure not in steps.toLocation
+	DateInOrder[startTime, endTime]
+}
+
+sig TravelStep {
+	fromLocation: one Location,
+	toLocation: one Location,
+	nextStep: lone TravelStep
+}{
+	#(steps.this) = 1	// each  belongs to one and only one travel
+	fromLocation != toLocation
+	#(@nextStep.this) <= 1
+	fromLocation not in (this.^@nextStep).@toLocation
+	#(nextStep) = 1 implies toLocation = nextStep.@fromLocation and steps.this = steps.nextStep // if it is not the last
+	#(nextStep) = 0 implies toLocation = steps.this.arrival 
+		and (no ts: TravelStep | ts != this and ts in steps.this.steps and #(ts.@nextStep) = 0) // if it is the last
+}
 
 abstract sig TravelMean {}
 one sig Walking extends TravelMean {}
@@ -201,6 +212,7 @@ sig PreferenceList {
 	travelMeans: seq TravelMean
 }{
 	#(preferenceList.this) = 1	// each preferenceList belongs to one and only one user
+	#travelMeans > 0
 	#travelMeans <= 4
 }
 
@@ -220,47 +232,12 @@ sig Subject {
 	operators: some Operator
 }
 
-sig Operator {
-
-}{
+sig Operator {}{
 	#(operators.this) = 1	// each operator belongs to one and only one subject
 }
 
-sig Value {
-
-}{
+sig Value {}{
 	#(values.this) = 1	// each value belongs to one and only one subject
-}
-
-sig Travel {
-	steps: some TravelStep,
-	travelMean: one TravelMean,
-	departure: one Location,
-	arrival: one Location,
-	startTime: one Date,
-	endTime: one Date
-}{
-	arrival != departure
-	//#((arrivingTravel + leavingTravel).this) > 0 // each travel belongs to at least one meetingParticipation
-	//#(steps.fromLocation + steps.toLocation) = #(steps) + 1
-	departure in steps.fromLocation
-	departure not in steps.toLocation
-	DateInOrder[startTime, endTime]
-}
-
-sig TravelStep {
-	fromLocation: one Location,
-	toLocation: one Location,
-	nextStep: lone TravelStep
-}{
-	#(steps.this) = 1	// each  belongs to one and only one travel
-	fromLocation != toLocation
-	#(nextStep) = 1 implies toLocation = nextStep.@fromLocation
-	#(nextStep) = 1 implies steps.this = steps.nextStep
-	#(nextStep) = 0 implies toLocation = steps.this.arrival//(some t: Travel | toLocation = t.arrival and this in t.steps)
-	#(nextStep) = 0 implies (no ts: TravelStep | ts != this and ts in steps.this.steps and #(ts.@nextStep) = 0)
-	fromLocation not in (this.^@nextStep).@toLocation
-	#(@nextStep.this) <= 1
 }
 
 // Helper signatures
@@ -270,47 +247,48 @@ sig Date {
 }{ _next = this.@next }
 
 abstract sig Day {
-	nextDay: one Day
-}
-one sig Monday extends Day {
-}
-one sig Tuesday extends Day {
-}
-one sig Wednesday extends Day {
-}
-one sig Thursday extends Day {
-}
-one sig Friday extends Day {
-}
-one sig Saturday extends Day {
-}
-one sig Sunday extends Day {
+	nextDay: one Day,
+	distances: Day -> one Int
 }
 
-sig AutoDecline extends Status{}
+one sig Monday extends Day {}
+one sig Tuesday extends Day {}
+one sig Wednesday extends Day {}
+one sig Thursday extends Day {}
+one sig Friday extends Day {}
+one sig Saturday extends Day {}
+one sig Sunday extends Day {}
 
 /*
 *	FACTS
 */
 
 // Each meeting as at least a participant and an administrator
-fact {
-	no m: Meeting | m not in MeetingParticipation.meeting
-	all m: Meeting | some mp: MeetingParticipation | m = mp.meeting and mp.isAdministrator = True
+fact oneParticipantAndAdministrator{
+	no m: BaseMeeting | m not in MeetingParticipation.meeting
+	all m: BaseMeeting | some mp: MeetingParticipation | m = mp.meeting and mp.isAdministrator = True
 }
 
 //Users cannot have meetings while their status is set to auto-decline. (Done)
-//HO MESSO SOLO MEETING QUINDI PUO VIAGGIARE IN QUEL PERIODO, SE VOGLIAMO MODIFICARLO BASTA 
-//CAMBIARE M COME MEETINGPARTECIPATION E METTERE DA DATA INIZIO VIAGGIO DI PARTENZA A DATA FINE VIAGGIO DI ARRIVO
-fact {
-	all u: User | all ad: statuses[u] | no m: u.meetingParticipations.meeting| 
-		ad in AutoDecline and (IncludingDates[m.startDate,ad.from,ad.to] or IncludingDates[m.endDate, ad.from, ad.to])
+fact autodecline{
+	all u: User | all ad: statuses[u] | no m: u.meetingParticipations.meeting | 
+		ad in AutoDecline and (OverlappingDates[m.startDate, m.endDate, ad.from, ad.to])
 }
 
 //A user cannot have different default locations sharing the start time. (Done)
-fact{
+fact noSimultaneusDefaultLocations{
 	all u: User | no d1,d2: u.defaultLocations | 
 		d1 != d2 and d1.dayOfTheWeek = d2.dayOfTheWeek and d1.startingHour = d2.startingHour
+}
+
+// each message of a chat belongs to a user who has accepted the invitation to the meeting of the chat
+fact allMessagesFromUserInChat {
+	all m: BaseMeeting | messagesSent.(m.chat.messages) in  (UserParticipations[MeetingParticipationsByStatus[Accepted]]).meeting.m
+}
+
+// each user uses only travel means in its preference list
+fact travelMeansInPrefernceList{
+	all u: User | u.meetingParticipations.(arrivingTravel + leavingTravel).travelMean in u.preferenceList.travelMeans[Int]
 }
 
 fact nextDay{
@@ -320,65 +298,69 @@ fact nextDay{
 	Thursday.nextDay in Friday
 	Friday.nextDay in Saturday
 	Saturday.nextDay in Sunday
-	Sunday.nextDay in Monday //ho lasciato sunday sunday. Con sunday sunday però ci mette troppo
+	Sunday.nextDay in Monday
 }
-// Time travel between subsequent default locations should be less than the difference between their start time.
-//PER ORA HO IMPOSTO CHE CI SONO UN TRAVEL TRA TUTTE LE DEFAULT LOCATION
-//fact {
-//	all u: User | ( (#(u.defaultLocations)>1) implies
-//		( all d1, d2: u.defaultLocations | (d1!= d2 and NextLocation[d1,d2] ) implies
-//			(one t: Travel | t.departure = d1.defaultLocation and t.arrival = d2.defaultLocation)
-//			)
-//		)
-//}
+
+fact nextDayDistances {
+	all d: Day | d.distances[d] = 0
+	all d: Day | d.distances[d.nextDay] = 1
+	all d: Day | d.distances[d.nextDay.nextDay] = 2
+	all d: Day | d.distances[d.nextDay.nextDay.nextDay] = 3
+	all d: Day | d.distances[d.nextDay.nextDay.nextDay.nextDay] = 4
+	all d: Day | d.distances[d.nextDay.nextDay.nextDay.nextDay.nextDay] = 5
+	all d: Day | d.distances[d.nextDay.nextDay.nextDay.nextDay.nextDay.nextDay] = 6
+	//all d1: Day, d2: (Day - d1) | d1.distances[d2] = plus[1, d1.nextDay.distances[d2]]    IN OFFICIAL RASD!!
+}
 
 /*
 *	PREDICATES
 */
 
+// Date a is before Date b
 pred DateInOrder[a: Date, b: Date] {
 	a not in b.^next and a != b
 }
 
+// two events (s1,e1) and (s2,e2) overlaps
 pred OverlappingDates[s1: Date, e1: Date, s2: Date, e2: Date] {
 	(DateInOrder[s1, s2] and DateInOrder[s2, e1]) or
 	(DateInOrder[s2, s1] and DateInOrder[s1, e2]) or
 	s1 = s2 or e1 = e2
 }
 
-//d1 is incuded between d2 and d3
+// d1 is incuded between d2 and d3
 pred IncludingDates[d1:Date, d2:Date, d3:Date]{
 	DateInOrder[d2,d1] and DateInOrder[d1,d3]
 }
 
-//default location d2 is after default location d1
-pred NextLocation[d1: DefaultLocation, d2: DefaultLocation]{
-	LocationAfter[d1, d2]	and
-	(no d3: DefaultLocation| LocationAfter[d1,d3] and LocationAfter[d3,d2])
+// location after
+pred FirstLocationAfter[d1: DefaultLocation, d2: DefaultLocation]{
+	(no d3: defaultLocations.d1.defaultLocations | 
+			d1 != d3 and d2 != d3 and d1.dayOfTheWeek != d3.dayOfTheWeek and 
+			d1.dayOfTheWeek.distances[d3.dayOfTheWeek] < d1.dayOfTheWeek.distances[d2.dayOfTheWeek]) and
+	(d1.dayOfTheWeek = d2.dayOfTheWeek implies d1.startingHour < d2.startingHour)
 }
 
-//location after
-pred LocationAfter[d1: DefaultLocation, d2: DefaultLocation]{
-	(d1.dayOfTheWeek != d2.dayOfTheWeek and d2.dayOfTheWeek in d1.dayOfTheWeek.^nextDay) or
-		(d1.dayOfTheWeek = d2.dayOfTheWeek and d1.startingHour < d2.startingHour)
-}
 /*
 *	FUNCTIONS
 */
 
-// computes the next meeting a user is participating to (if any)
-// MI SA CHE NON SERVE PIù
-	fun NextMeetingParticipation[mp: MeetingParticipation]: lone MeetingParticipation {
-		{mp1: meetingParticipations.mp.meetingParticipations | 
-			DateInOrder[mp.meeting.endDate, mp1.meeting.startDate] or mp.meeting.endDate = mp1.meeting.startDate}
+// returns a set of MeetingParticipations with a certain response status
+fun MeetingParticipationsByStatus[rs: ResponseStatus]: set MeetingParticipation{
+	{mp: MeetingParticipation | mp.responseStatus = rs}
 }
 
-/*fun NextMeetingParticipation[mp: MeetingParticipation]: lone MeetingParticipation {
+// returns existing binary relationships between any User and the given MeetingParticipation
+fun UserParticipations[mp: MeetingParticipation]: User -> MeetingParticipation {
+	(meetingParticipations.mp -> mp) & meetingParticipations
+}
+
+
+// computes the next meeting a user is participating to (if any)
+fun NextMeetingParticipation[mp: MeetingParticipation]: lone MeetingParticipation {
 	{mp1: meetingParticipations.mp.meetingParticipations | 
-		DateInOrder[mp.meeting.endDate, mp1.meeting.startDate] and
-			(no mp2: meetingParticipations.mp.meetingParticipations | 
-				DateInOrder[mp.meeting.endDate, mp2.meeting.startDate] and DateInOrder[mp2.meeting.endDate, mp1.meeting.endDate])}
-}*/
+		DateInOrder[mp.meeting.endDate, mp1.meeting.startDate] or mp.meeting.endDate = mp1.meeting.startDate}
+}
 
 /*
 *	DEBUG STUFF
@@ -387,19 +369,35 @@ pred LocationAfter[d1: DefaultLocation, d2: DefaultLocation]{
 fact {
 	//some m: Meeting | #(MeetingParticipation.meeting & m) > 1
 	#User > 0
-	#Meeting > 0
-	
+	//#BaseMeeting > 2
+	some u: User | #(u.defaultLocations) > 2
 	//all t: Travel | #(t.steps) > 3
-	
-	//#{mp: MeetingParticipation | mp.isMeetingConsistent = False} > 1
-	//#{mp: MeetingParticipation | mp.isMeetingConsistent = True} > 1
+	//#Break > 0
+	//#{mp: MeetingParticipation | mp.isMeetingConsistent = False} > 0
+	//#{mp: MeetingParticipation | mp.isMeetingConsistent = True} > 0
 	//no mp: MeetingParticipation | mp.isMeetingConsistent = False
 	//some mp1: MeetingParticipation, mp2: MeetingParticipation | mp1.leavingTravel = mp2.arrivingTravel
 	//#MeetingParticipation > 2
-	#Break > 2
-	some b: Break | b.isDoable = False
+	//#Break > 2
+	//#(DefaultLocation) > 3
+	//some u: User | #(u.defaultLocations) = 1
+	//some d1,d2: DefaultLocation | d1.dayOfTheWeek = d2.dayOfTheWeek and d1 != d2
+	//some b: Break | b.isDoable = False
+	//some b: Break | b.isDoable = True
+	//#(AutoDecline) > 0
+	//#Message > 3
+	//#Chat > 2
+	//#(InstantMeeting) > 0
+	//#(Meeting) > 0
+	//#Travel > 2
+	
 }
+
+/*
+*  PREDICATE TO SHOW
+*/
+
 
 pred show{}
 
-run show for 6 but 8 Int
+run show for 8 but 8 Int
