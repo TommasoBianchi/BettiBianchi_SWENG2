@@ -92,7 +92,9 @@ sig DefaultLocation {
 		(nextDefaultLocation = this and #(travelToNext) = 0)
 }
 
-sig Location {}
+sig Location {}{
+	all l: Location | (some ts: TravelStep | l = ts.fromLocation or l = ts.toLocation) // there are no location that are not used by the system
+}
 
 // Meeting related signatures
 
@@ -366,7 +368,7 @@ fun NextMeetingParticipation[mp: MeetingParticipation]: lone MeetingParticipatio
 *	DEBUG STUFF
 */
 
-fact {
+fact {		// DELETE THIS
 	//some m: Meeting | #(MeetingParticipation.meeting & m) > 1
 	//#User > 0
 	//#BaseMeeting > 2
@@ -390,8 +392,7 @@ fact {
 	//#(InstantMeeting) > 0
 	//#(Meeting) > 0
 	//#Travel > 2
-	
-}
+}		// DELETE THIS
 
 /*
 *	ASSERTIONS
@@ -408,11 +409,16 @@ assert arrivingAndLeavingTravelAreDifferent {
 	no mp: MeetingParticipation | mp.arrivingTravel = mp.leavingTravel
 }
 
+// the presence of a single non consistent meeting implies that is has been made inconstistent by the presence of a non doable break
+assert singleInconsistentMeetingEntailsNotDoableBreak {
+	#{mp: MeetingParticipation | mp.isMeetingConsistent = False} = 1 implies #{b: Break | b.isDoable = False} > 0
+}
+
 /*
 *  PREDICATE TO SHOW
 */
 
-pred show{}
+pred show{}		// DELETE THIS
 
 pred showUser {
 	#User > 1
@@ -436,12 +442,27 @@ pred showMeeting {
 	some mp : MeetingParticipation | mp.responseStatus = Declined
 }
 
-run show for 8 but 8 Int
+pred showChat {
+	some m: Meeting | #(messagesSent.(m.chat.messages)) > 1
+}
+
+pred showTravel {
+	#{t: Travel | #(t.steps) > 1} = 1
+	some t: Travel | #(t.steps) > 4
+}
+
+run show for 8 but 8 Int		// DELETE THIS
 
 run showUser for 8 but 8 Int
 
 run showMeeting for 8 but 8 Int
 
+run showChat for 8 but 8 Int
+
+run showTravel for 8 but 8 Int
+
 check messageInMeetingEntailsAcceptedParticipation for 8 but 8 Int
 
 check arrivingAndLeavingTravelAreDifferent for 8 but 8 Int
+
+check singleInconsistentMeetingEntailsNotDoableBreak for 8 but 8 Int
