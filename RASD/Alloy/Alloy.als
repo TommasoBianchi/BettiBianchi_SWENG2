@@ -368,9 +368,9 @@ fun NextMeetingParticipation[mp: MeetingParticipation]: lone MeetingParticipatio
 
 fact {
 	//some m: Meeting | #(MeetingParticipation.meeting & m) > 1
-	#User > 0
+	//#User > 0
 	//#BaseMeeting > 2
-	some u: User | #(u.defaultLocations) > 2
+	//some u: User | #(u.defaultLocations) > 2
 	//all t: Travel | #(t.steps) > 3
 	//#Break > 0
 	//#{mp: MeetingParticipation | mp.isMeetingConsistent = False} > 0
@@ -394,10 +394,54 @@ fact {
 }
 
 /*
+*	ASSERTIONS
+*/
+
+// if there is a message in a meeting, then there is also a user with the accepted status
+assert messageInMeetingEntailsAcceptedParticipation {
+	all m: Meeting | 
+		#(m.chat.messages) > 0 implies (some mp: MeetingParticipation | mp.meeting = m and mp.responseStatus = Accepted)
+}
+
+// the arriving and leaving travel of a meetingParticipation are never equal
+assert arrivingAndLeavingTravelAreDifferent {
+	no mp: MeetingParticipation | mp.arrivingTravel = mp.leavingTravel
+}
+
+/*
 *  PREDICATE TO SHOW
 */
 
-
 pred show{}
 
+pred showUser {
+	#User > 1
+	#Break > 1
+	#Status > 1
+	#SocialAccount > 1
+	#Group > 1
+	#contacts > 1
+	#Constraint > 1
+	#MeetingParticipation = 0
+}
+
+pred showMeeting {
+	#BaseMeeting = 1
+	#Meeting = 1
+	#MeetingParticipation > 2
+	#Message > 4
+	#File > 2
+	some mp : MeetingParticipation | mp.responseStatus = Accepted
+	some mp : MeetingParticipation | mp.responseStatus = Rescheduled
+	some mp : MeetingParticipation | mp.responseStatus = Declined
+}
+
 run show for 8 but 8 Int
+
+run showUser for 8 but 8 Int
+
+run showMeeting for 8 but 8 Int
+
+check messageInMeetingEntailsAcceptedParticipation for 8 but 8 Int
+
+check arrivingAndLeavingTravelAreDifferent for 8 but 8 Int
