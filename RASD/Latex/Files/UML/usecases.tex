@@ -10,14 +10,14 @@
 		\textbf{Input Conditions}  & A guest is on the homepage of the system.           \\ \hline
 		\textbf{Events Flow}       &   
 		\begin{enumerate}
-			\item The guest inserts its main email address.
+			\item The guest inserts its main emailaddress.
 			\item The guest enters its password.
 			\item The guest clicks on the "Sign Up" button.
 		\end{enumerate}    \\ \hline
 		\textbf{Output Conditions} & The guest is registered into the system with a pair <email, password>. The guest is redirected to a page where it can add to its profile the compulsory information needed to use the system, that are: the preference list, a unique nickname and at least one default location.      \\ \hline
 		\textbf{Exceptions}        & The guest inserts a wrong or already-used email. In this case the system shows the user a message reporting the errors and waits for another attempt.            \\ \hline
 	\end{tabular}
-	\caption{Register\label{UseCaseDescr:Registration}}
+	\caption[Registration]{{Registration}\label{UseCaseDescr:Registration} (view \hyperref[SeqDiagr:Registration]{Sequence Diagram})}
 \end{table}
 
 \begin{table}[H]
@@ -37,7 +37,7 @@
 		\textbf{Output Conditions} & User is logged into the system.          \\ \hline
 		\textbf{Exceptions}        & The external login provider procedure cannot be completed correctly. In this case the system shows the user a message reporting the error.         \\ \hline
 	\end{tabular}
-	\caption{Login with External Provider\label{UseCaseDescr:LoginExternal}}
+	\caption[Login with External Provider]{{Login with External Provider}\label{UseCaseDescr:LoginExternal} (view \hyperref[SeqDiagr:LoginExternal]{Sequence Diagram})}
 \end{table}
 
 \begin{table}[H]
@@ -57,7 +57,7 @@
 		\textbf{Output Conditions} & User is logged into the system.          \\ \hline
 		\textbf{Exceptions}        & The user credentials are wrong. The system shows the user a message reporting the errors and waits for another attempt.         \\ \hline
 	\end{tabular}
-	\caption{Login\label{UseCaseDescr:LoginNormal}}
+	\caption[Login]{{Login}\label{UseCaseDescr:LoginNormal} (view \hyperref[SeqDiagr:LoginNormal]{Sequence Diagram})}
 \end{table}
 
 \begin{table}[H]
@@ -79,7 +79,7 @@
 		\textbf{Output Conditions} & The selected fields are updated with the new data inserted by the user.          \\ \hline
 		\textbf{Exceptions}        &  The data inserted in a field are wrong (e.g. a non-unique nickname, a non-unique email, a syntactically wrong website, etc.). The system shows the user a message reporting the errors, clears the incorrect fields and restarts the event flow from point 2.               \\ \hline
 	\end{tabular}
-	\caption{Edit Profile\label{UseCaseDescr:EditProfile}}
+	\caption[Edit Profile]{{Edit Profile}\label{UseCaseDescr:EditProfile} (view \hyperref[SeqDiagr:EditProfile]{Sequence Diagram})}
 \end{table}
 
 \begin{table}[H]
@@ -100,7 +100,7 @@
 		\textbf{Output Conditions} & This use case does not modify anything, so the state of the output is equal to the state of the input.           \\ \hline
 		\textbf{Exceptions}        & There are no exceptions.           \\ \hline
 	\end{tabular}
-	\caption{Show Calendar\label{UseCaseDescr:ShowCalendar}}
+	\caption[Show Calendar]{{Show Calendar}\label{UseCaseDescr:ShowCalendar} (view \hyperref[SeqDiagr:ShowCalendar]{Sequence Diagram})}
 \end{table}
 
 \begin{table}[H]
@@ -121,7 +121,7 @@
 		\textbf{Output Conditions} & The acceptance, refusal or rescheduling proposal of the meeting is recorded by the system. In the latter case, it is forwarded to the meeting administrator.           \\ \hline
 		\textbf{Exceptions}        & The user selects an invalid start date (e.g. a date which is in the past). The system shows the user a message reporting the errors and wait for a new date to be inserted.           \\ \hline
 	\end{tabular}
-	\caption{Manage Meeting Participation\label{UseCaseDescr:MeetingPart}}
+	\caption[Manage Meeting Participation]{{Manage Meeting Participation}\label{UseCaseDescr:MeetingPart} (view \hyperref[SeqDiagr:MeetingPart]{Sequence Diagram})}
 \end{table}
 
 \begin{table}[H]
@@ -141,7 +141,7 @@
 		\textbf{Output Conditions} & The user has reached the meeting location or the user has clicked the "Stop Notifications" button.           \\ \hline
 		\textbf{Exceptions}        & There are no exceptions.           \\ \hline
 	\end{tabular}
-	\caption{Receive Real-Time Indications\label{UseCaseDescr:RealTimeInd}}
+	\caption[Receive Real-Time Indications]{{Receive Real-Time Indications}\label{UseCaseDescr:RealTimeInd} (view \hyperref[SeqDiagr:RealTimeInd]{Receive Real-Sequence Diagram})}
 \end{table}
 
 \begin{table}[H]
@@ -164,7 +164,7 @@
 		\textbf{Output Conditions} & A new meeting is created and an invitation is sent to all the selected users.           \\ \hline
 		\textbf{Exceptions}        & The location of the meeting may be incorrect or the start and end date may be inconsistent (i.e. the start is after the end). The system shows the user a message reporting the errors, clears the incorrect fields and restart the event flow from point 2.          \\ \hline
 	\end{tabular}
-	\caption{Create Meeting\label{UseCaseDescr:CreateMeeting}}
+	\caption[Create Meeting]{{Create Meeting}\label{UseCaseDescr:CreateMeeting} (view \hyperref[SeqDiagr:CreateMeeting]{Sequence Diagram})}
 \end{table}
 
 \begin{table}[H]
@@ -186,7 +186,7 @@
 		\textbf{Exceptions}        & The location of the meeting may be incorrect or the start and end date may be inconsistent (i.e. the start is after the end). The system shows the user a message reporting the errors, clears the incorrect fields and restart the event
 		flow from point 2.           \\ \hline
 	\end{tabular}
-	\caption{Recreate Meeting\label{UseCaseDescr:RecreateMeeting}}
+	\caption[Recreate Meeting]{{Recreate Meeting}\label{UseCaseDescr:RecreateMeeting} (view \hyperref[SeqDiagr:RecreateMeeting]{Sequence Diagram})}
 \end{table}
 
 \begin{table}[H]
@@ -207,7 +207,7 @@
 		\textbf{Exceptions}        & 
 		The administrator may have write a wrong or non-existent email or nickname. The system shows the administrator a message reporting the errors, clears the incorrect fields and restarts the event flow from point 2.     \\ \hline
 	\end{tabular}
-	\caption{Invite Users\label{UseCaseDescr:InviteUsers}}
+	\caption[Invite Users]{{Invite Users}\label{UseCaseDescr:InviteUsers} (view \hyperref[SeqDiagr:InviteUsers]{Sequence Diagram})}
 \end{table}
 
 \begin{table}[H]
@@ -228,7 +228,7 @@
 		\textbf{Exceptions}        & 
 		There are no exceptions.         \\ \hline
 	\end{tabular}
-	\caption{Remove Users\label{UseCaseDescr:RemoveUsers}}
+	\caption[Remove Users]{{Remove Users}\label{UseCaseDescr:RemoveUsers} (view \hyperref[SeqDiagr:RemoveUsers]{Sequence Diagram})}
 \end{table}
 
 \begin{table}[H]
@@ -247,7 +247,7 @@
 		\textbf{Output Conditions} & The administrator knows who is late and can take decisions based on that.           \\ \hline
 		\textbf{Exceptions}        & There are no exceptions.           \\ \hline
 	\end{tabular}
-	\caption{View Late Users\label{UseCaseDescr:LateUsers}}
+	\caption[View Late Users]{{View Late Users}\label{UseCaseDescr:LateUsers} (view \hyperref[SeqDiagr:LateUsers]{Sequence Diagram})}
 \end{table}
 
 \begin{table}[H]
@@ -267,7 +267,7 @@
 		\textbf{Output Conditions} & Selected users become administrators and gain all the functionalities of the role.           \\ \hline
 		\textbf{Exceptions}        & A participant may have decided to leave the meeting while the administrator's "Show Participant" page is open. In this case, if the participant is selected to be nominated as administrator, the system signals it with a message saying "this participant has left the meeting".      \\ \hline
 	\end{tabular}
-	\caption{Nominate Administrators\label{UseCaseDescr:NominateAdmin}}
+	\caption[Nominate Administrators]{{Nominate Administrators}\label{UseCaseDescr:NominateAdmin} (view \hyperref[SeqDiagr:NominateAdmin]{Sequence Diagram})}
 \end{table}
 
 
@@ -291,7 +291,7 @@
 	\textbf{Output Conditions} & The fields are updated and the selected files are uploaded.          \\ \hline
 	\textbf{Exceptions}        & The administrator wants  to upload a huge file or a file with an invalid extension. In this case, the system stops the upload of the file and shows the user a message saying "The file is not supported". \\ \hline
 \end{tabular}
-\caption{Manage Meeting\label{UseCaseDescr:ManageMeeting}}
+\caption[Manage Meeting]{{Manage Meeting}\label{UseCaseDescr:ManageMeeting} (view \hyperref[SeqDiagr:ManageMeeting]{Sequence Diagram})}
 \end{table}
 
 \begin{table}[H]
@@ -312,7 +312,7 @@
 		\textbf{Output Conditions} & A rescheduling proposal is sent to all the participants. If everyone accepts than the meeting's date is changed.         \\ \hline
 		\textbf{Exceptions}        & The inserted date is incorrect (e.g. in the past) or it does not differ from the previous one. The system shows a message reporting the errors, clears the incorrect fields and restarts the event flow from point 3.  \\ \hline
 	\end{tabular}
-	\caption{Propose Rescheduling\label{UseCaseDescr:ProposeRes}}
+	\caption[Propose Rescheduling]{{Propose Rescheduling}\label{UseCaseDescr:ProposeRes} (view \hyperref[SeqDiagr:ProposeRes]{Sequence Diagram})}
 \end{table}
 
 \newpage
