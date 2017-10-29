@@ -13,14 +13,9 @@
 	}	
 }
 
-%\begin{lstlisting}[style=alloy, xleftmargin=8pt,xrightmargin=8pt,basicstyle=\ttfamily,columns=fixed]
 \begin{lstlisting}[style=alloy]
 open util/ordering [Date]
 open util/boolean
-
-/*
-*	SIGNATURES
-*/
 
 // User related signatures
 
@@ -29,7 +24,6 @@ primaryEmail: one Email,
 emails: some Email,
 breaks: set Break,
 socialAccounts: set SocialAccount,
-//groups: set Group,
 statuses: set Status,
 preferenceList: one PreferenceList,
 defaultLocations: some DefaultLocation,
@@ -39,8 +33,7 @@ messagesSent: set Message,
 meetingParticipations: set MeetingParticipation
 }{
 primaryEmail in emails
-this not in contacts
-//#(meetingParticipations.meeting) = #meetingParticipations
+this not in contacts	
 }
 
 sig Email {
@@ -49,5 +42,234 @@ sig Email {
 #(emails.this) = 1	// each email belongs to one and only one user
 }
 
+sig Break {
+defaultTime: one Date,
+duration: one Int,
+startTimeSlot: one Date,
+endTimeSlot: one Date,
+isDoable: one Bool
+}{
+#(breaks.this) = 1	// each break belongs to one and only one user
+duration > 0
+DateInOrder[startTimeSlot, endTimeSlot]
+DateInOrder[defaultTime, endTimeSlot]
+DateInOrder[startTimeSlot, defaultTime]
+// A break is doable iff there are two consecutive "free" dates in between startTimeSlot and endTimeSlot
+isDoable = True iff (some d1: Date, d2: d1.next |
+(IncludingDates[d1, startTimeSlot, endTimeSlot] or d1 = startTimeSlot) and 
+(no mp: breaks.this.meetingParticipations | OverlappingDates[d1, d2, mp.arrivingTravel.startTime, mp.leavingTravel.endTime]))
+}
 
-// .......\end{lstlisting}
+abstract sig Status {
+from: one Date,
+to: one Date
+}{
+#(statuses.this) = 1	// each status belongs to one and only one user
+DateInOrder[from, to]
+}
+
+sig AutoDecline extends Status {}
+
+sig SocialAccount {}{
+#(socialAccounts.this) = 1	// each socialAccount belongs to one and only one user
+}
+
+sig Group {
+members: some User
+}
+
+abstract sig ResponseStatus {}
+one sig Accepted extends ResponseStatus {}
+one sig Declined extends ResponseStatus {}
+one sig Rescheduled extends ResponseStatus {}
+
+// Locations related signatures
+
+sig DefaultLocation {
+startingHour: one Int,
+dayOfTheWeek: one Day,
+defaultLocation: one Location,
+nextDefaultLocation: one DefaultLocation,
+travelToNext: lone Travel
+}{
+#(defaultLocations.this) = 1	// each defaultLocation belongs to one and only one user
+#(@nextDefaultLocation.this) = 1
+FirstLocationAfter[this, nextDefaultLocation] or (nextDefaultLocation = this)
+(defaultLocations.this.defaultLocations -> defaultLocations.this.defaultLocations) in (^(@nextDefaultLocation))
+defaultLocations.this = defaultLocations.nextDefaultLocation // the user owning this default location and the next one must be the same
+startingHour >= 0
+startingHour <= 24
+// travel from subsequent locations
+(one t: travelToNext | t.departure = defaultLocation and t.arrival = nextDefaultLocation.@defaultLocation) or 
+(nextDefaultLocation = this and #(travelToNext) = 0)
+}
+
+sig Location {}{
+all l: Location | (some ts: TravelStep | l = ts.fromLocation or l = ts.toLocation) // there are no location that are not used by the system
+}
+
+// Meeting related signatures
+
+abstract sig BaseMeeting {
+startDate: one Date,
+endDate: one Date,
+category: one Category,
+chat: one Chat,
+location: one Location,
+files: set File,
+}
+
+sig Meeting extends BaseMeeting {}{
+DateInOrder[startDate, endDate]
+}
+
+sig InstantMeeting extends BaseMeeting {}{
+startDate = endDate
+}
+
+sig MeetingParticipation {
+isAdministrator: one Bool,
+isMeetingConsistent: one Bool,
+meeting: one BaseMeeting,
+arrivingTravel: one Travel,
+leavingTravel: one Travel,
+responseStatus: one ResponseStatus
+}{
+#(meetingParticipations.this) = 1	// each meetingParticipation belongs to one and only one user
+no mp: meetingParticipations.this.meetingParticipations | mp != this and mp.@meeting = meeting	// each user participates to a meeting at most once
+arrivingTravel.arrival = meeting.location
+leavingTravel.departure = meeting.location
+arrivingTravel.endTime = meeting.startDate
+leavingTravel.startTime = meeting.endDate
+// a leaving travel can arrive in a default location or in the location of the subsequent meeting
+leavingTravel.arrival in ((meetingParticipations.this).defaultLocations.defaultLocation + NextMeetingParticipation[this].@meeting.location)
+// if a leaving travel arrives in a meeting than the leaving travel is exactly the arriving travel of that meeting
+leavingTravel.arrival in NextMeetingParticipation[this].@meeting.location implies 
+(leavingTravel = NextMeetingParticipation[this].@arrivingTravel)
+isMeetingConsistent = False iff (
+// There is another meeting that overlaps
+some mp: (meetingParticipations.this.meetingParticipations - this) | ( 
+(OverlappingDates[arrivingTravel.startTime, leavingTravel.endTime, mp.@arrivingTravel.startTime, mp.@leavingTravel.endTime] 
+and leavingTravel != mp.@arrivingTravel and arrivingTravel != mp.@leavingTravel) or
+(OverlappingDates[arrivingTravel.startTime, leavingTravel.endTime, mp.@meeting.startDate, mp.@leavingTravel.endTime] 
+and leavingTravel = mp.@arrivingTravel and arrivingTravel != mp.@leavingTravel) or
+(OverlappingDates[arrivingTravel.startTime, leavingTravel.endTime, mp.@arrivingTravel.startTime, mp.@meeting.endDate] 
+and leavingTravel != mp.@arrivingTravel and arrivingTravel = mp.@leavingTravel)
+) or
+// There is a break that cannot be done
+some b: meetingParticipations.this.breaks | (
+b.isDoable = False and OverlappingDates[b.startTimeSlot, b.endTimeSlot, arrivingTravel.startTime, leavingTravel.endTime]
+)
+)
+}
+
+sig Message {}{
+#(messagesSent.this) = 1	// each message belongs to one and only one user
+#(messages.this) = 1	// each message belongs to one and only one chat
+}
+
+sig Chat {
+messages: set Message
+}{
+#(chat.this) = 1	// each chat belongs to one and only one meeting
+}
+
+sig Category {
+superCategory: lone Category
+}{
+superCategory != this
+some m: BaseMeeting | this = m.category // categories are not empty
+}
+
+sig File {}{
+#(files.this) = 1	// each file belongs to one and only one meeting
+}
+
+// Travel related signatures
+
+sig Travel {
+steps: some TravelStep,
+travelMean: one TravelMean,
+departure: one Location,
+arrival: one Location,
+startTime: one Date,
+endTime: one Date
+}{
+plus[plus[#(arrivingTravel.this), #(leavingTravel.this)], #(travelToNext.this)] = 1
+arrival != departure
+departure in steps.fromLocation
+departure not in steps.toLocation
+DateInOrder[startTime, endTime]
+}
+
+sig TravelStep {
+fromLocation: one Location,
+toLocation: one Location,
+nextStep: lone TravelStep
+}{
+#(steps.this) = 1	// each  belongs to one and only one travel
+fromLocation != toLocation
+#(@nextStep.this) <= 1
+fromLocation not in (this.^@nextStep).@toLocation
+#(nextStep) = 1 implies toLocation = nextStep.@fromLocation and steps.this = steps.nextStep // if it is not the last
+#(nextStep) = 0 implies toLocation = steps.this.arrival 
+and (no ts: TravelStep | ts != this and ts in steps.this.steps and #(ts.@nextStep) = 0) // if it is the last
+}
+
+abstract sig TravelMean {}
+one sig Walking extends TravelMean {}
+one sig Driving extends TravelMean {}
+one sig Biking extends TravelMean {}
+one sig PublicTransportation extends TravelMean {}
+
+sig PreferenceList {
+travelMeans: seq TravelMean
+}{
+#(preferenceList.this) = 1	// each preferenceList belongs to one and only one user
+#travelMeans > 0
+#travelMeans <= 4
+}
+
+sig Constraint {
+subject: one Subject,
+operator: one Operator,
+value: one Value,
+target: one TravelMean
+}{
+#(constraints.this) = 1	// each constraint belongs to one and only one user
+operator in subject.operators
+value in subject.values
+}
+
+sig Subject {
+values: some Value,
+operators: some Operator
+}
+
+sig Operator {}{
+#(operators.this) = 1	// each operator belongs to one and only one subject
+}
+
+sig Value {}{
+#(values.this) = 1	// each value belongs to one and only one subject
+}
+
+// Helper signatures
+
+sig Date {
+_next: lone Date
+}{ _next = this.@next }
+
+abstract sig Day {
+nextDay: one Day,
+distances: Day -> one Int
+}
+
+one sig Monday extends Day {}
+one sig Tuesday extends Day {}
+one sig Wednesday extends Day {}
+one sig Thursday extends Day {}
+one sig Friday extends Day {}
+one sig Saturday extends Day {}
+one sig Sunday extends Day {}
+\end{lstlisting}
