@@ -365,36 +365,6 @@ fun NextMeetingParticipation[mp: MeetingParticipation]: lone MeetingParticipatio
 }
 
 /*
-*	DEBUG STUFF
-*/
-
-fact {		// DELETE THIS
-	//some m: Meeting | #(MeetingParticipation.meeting & m) > 1
-	//#User > 0
-	//#BaseMeeting > 2
-	//some u: User | #(u.defaultLocations) > 2
-	//all t: Travel | #(t.steps) > 3
-	//#Break > 0
-	//#{mp: MeetingParticipation | mp.isMeetingConsistent = False} > 0
-	//#{mp: MeetingParticipation | mp.isMeetingConsistent = True} > 0
-	//no mp: MeetingParticipation | mp.isMeetingConsistent = False
-	//some mp1: MeetingParticipation, mp2: MeetingParticipation | mp1.leavingTravel = mp2.arrivingTravel
-	//#MeetingParticipation > 2
-	//#Break > 2
-	//#(DefaultLocation) > 3
-	//some u: User | #(u.defaultLocations) = 1
-	//some d1,d2: DefaultLocation | d1.dayOfTheWeek = d2.dayOfTheWeek and d1 != d2
-	//some b: Break | b.isDoable = False
-	//some b: Break | b.isDoable = True
-	//#(AutoDecline) > 0
-	//#Message > 3
-	//#Chat > 2
-	//#(InstantMeeting) > 0
-	//#(Meeting) > 0
-	//#Travel > 2
-}		// DELETE THIS
-
-/*
 *	ASSERTIONS
 */
 
@@ -417,8 +387,6 @@ assert singleInconsistentMeetingEntailsNotDoableBreak {
 /*
 *  PREDICATE TO SHOW
 */
-
-pred show{}		// DELETE THIS
 
 pred showUser {
 	#User > 1
@@ -450,8 +418,6 @@ pred showTravel {
 	#{t: Travel | #(t.steps) > 1} = 1
 	some t: Travel | #(t.steps) > 4
 }
-
-run show for 8 but 8 Int		// DELETE THIS
 
 run showUser for 8 but 8 Int
 
