@@ -123,7 +123,13 @@
 \usepackage[superscript,biblabel]{cite} % superscript citations
 \usepackage{float}	% make figures and table stay where I want them to be
 \usepackage{soul}	% horizontally cross words
-\usepackage{listings}% code syntax highlighting for alloy
+\usepackage{listings} % code syntax highlighting for alloy
+\usepackage{algorithmicx} % algorithm pseudocode
+\usepackage{algpseudocode}
+\makeatletter
+\renewcommand{\ALG@beginalgorithmic}{\small}
+\makeatother
+\algrenewcommand\algorithmicindent{0.8em}
 
 
 % links configuration

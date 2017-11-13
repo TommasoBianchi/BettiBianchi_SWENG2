@@ -34,3 +34,62 @@ Mark Meeting as Inconsistent
 
 - flip a bit on the meeting
 - create a warning
+
+\clearpage
+
+\begin{algorithmic}[1]
+\Function{insert\_meeting}{$new\_meeting$, $user$}
+	\State $overlapping\_meetings$ := all meetings of $user$ such that they overlap in time with $new\_meeting$
+	\ForAll{$meeting$ \textbf{in} $overlapping\_meetings$}
+		\State mark $meeting$ as inconsistent
+	\EndFor
+	\If{$overlapping\_meetings$ is not empty}
+		\State mark $new\_meeting$ as inconsistent
+		\State \textbf{return}
+	\EndIf
+	\Statex
+	\State $defloc\_before$ := the default location before the beginning of $new\_meeting$
+	\State $defloc\_after$ := the default location after the end of $new\_meeting$
+	\Statex
+	\State $arriving\_travel$ := \Call{best\_travel}{$defloc\_before.location$, $new\_meeting.location$}
+	\State $leaving\_travel$ := \Call{best\_travel}{$new\_meeting.location$, $defloc\_after.location$}
+	\Statex
+	\State $before\_meeting$ := the last consistent meeting such that its end date is before the start date of $new\_meeting$
+	\State $after\_meeting$ := the first consistent meeting such that its start date is after the end date of $new\_meeting$
+	\Statex
+	\If{$before\_meeting$ is not NULL \textbf{and} $arriving\_travel.duration$ > $new\_meeting.start\_date$ - $before\_meeting.leaving\_travel.end\_time$}
+		\State $arriving\_travel$ := \Call{best\_travel}{$before\_meeting.leaving\_travel.arrival$, $new\_meeting.location$}
+		\If{$arriving\_travel.duration$ > $new\_meeting.start\_date$ - $before\_meeting.leaving\_travel.end\_time$}
+			\State $arriving\_travel$ := \Call{best\_travel}{$before\_meeting.location$, $new\_meeting.location$}
+			\If{$arriving\_travel.duration$ > $new\_meeting.start\_date$ - $before\_meeting.end\_date$}
+				\State mark $new\_meeting$ as inconsistent
+				\State \textbf{return}				
+			\EndIf
+		\EndIf
+	\EndIf
+	\If{$after\_meeting$ is not NULL \textbf{and} $leaving\_travel$.$duration$ > $after\_meeting$.$arriving\_travel$.$start\_time$ - $new\_meeting$.$end\_date$}
+		\State $leaving\_travel$ := \Call{best\_travel}{$new\_meeting.location$, $after\_meeting.arriving\_travel.departure$}
+		\If{$leaving\_travel.duration$ > $after\_meeting.arriving\_travel.start\_time$ - $new\_meeting.end\_date$}
+			\State $leaving\_travel$ := \Call{best\_travel}{$new\_meeting.location$, $before\_meeting.location$}
+			\If{$leaving\_travel.duration$ > $after\_meeting.start\_date$ - $new\_meeting.end\_date$}
+				\State mark $new\_meeting$ as inconsistent
+				\State \textbf{return}				
+			\EndIf
+		\EndIf
+	\EndIf
+	\Statex
+	\State $overlapping\_breaks$ := all breaks of $user$ such that they overlap in time with $new\_meeting$ and its travels
+	\ForAll{$break$ \textbf{in} $overlapping\_breaks$}
+		\State \Call{update\_break}{$break$, $new\_meeting$ ,$arriving\_travel$, $leaving\_travel$}
+		\If{$break$ is not doable}
+			\State mark $new\_meeting$ as inconsistent
+			\State \textbf{return}	
+		\EndIf
+	\EndFor
+	\Statex
+	\State $new\_meeting.arriving\_travel$ := $arriving\_travel$
+	\State $new\_meeting.leaving\_travel$ := $leaving\_travel$
+	%\State \Call{store}{$new\_meeting$} % probably we need to store it anyway
+	\State \textbf{return}
+\EndFunction
+\end{algorithmic}
