@@ -1,4 +1,19 @@
-mvc
-client - server 3 tiers
-publish subscribe
+\subsubsection{Architectural Styles}
+
+The main architectural style adopted for \projectname system is the client-server one, the most well known and used architectural style for
+distributed applications. It will be adopted in the 3-tier variant, with the presentation layer on the client (the web browser), the application layer on the web server and the data layer on the database server. The main advantages of this choice are the clear decoupling between data and logic, the possibility to reach almost all clients and the availability of a lot of COTS components to develop the system in a very cost-effective way. \\
+Given that we will have to develop a chat component for the meetings and the real-time indications components, the client will have to be a little more than a thin client: in fact, it will be enhanced by some lightweight logic in order to support long polling or HTTP server push. \\
+
+client - server 3 tiers \\
+microservices (?) -> chat as microservice? \\
+HTTP server push as instance of an event-based system?
+
+\subsubsection{Design Patterns}
+
+The main design pattern that will support our client-server architecture is the MVC (Model-View-Controller), as it is the best fit because it closely follows the division between data (the model), logic (the controller) and presentation (the view) present also in the 3-tier architecture. \\
+The observer or publish-subscribe pattern will also be used, allowing the various components of the system to register themselves and react to event raised by other components. This will be useful in implementing the real-time indications components, that need to activate itself only when the beginning of a travel is close. \\
+Finally, the adapter pattern may be followed in implementing the interface with the various external providers, as they will all provide different interaction protocol that need to cooperate with our system in the same way; for example, we will have multiple External Login Providers, but our system will operate with one or another in a very transparent way. \\
+
+mvc \\
+publish subscribe \\
 long-short polling
