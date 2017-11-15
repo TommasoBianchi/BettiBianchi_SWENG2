@@ -2,16 +2,16 @@ The work of the algorithm is divided in two main functions: \texttt{insert\_meet
 \\
 The first function, \texttt{insert\_meeting}, does its job following this steps:
 \begin{enumerate}
-\item Find all the meetings overlapping with the one that we are inserting and mark them as inconsistent because they are clearly in conflict with one another; if at least a meeting is found, mark also the new one as inconsistent and terminate the function.
-\item Try to compute a travel for arriving and for leaving the newly inserted meeting taking into account both the last meeting before it, the first meeting after it and the default locations; if this is not possible, terminate the function marking the new meeting as inconsistent.
-\item Adjust the effective time of all the flexible breaks overlapping with the new meeting; if this is not possible, terminate the function marking the new meeting as inconsistent.
-\item If we have arrived here it means that it is possible to insert the new meeting into the schedule and that we have also computed its arriving and leaving travel; link the travels to the meeting and store everything, then terminate successfully.
+\item Find all the meetings overlapping with the one that we are inserting and mark them as inconsistent because they are clearly in conflict; if at least a meeting is found, mark also the new one as inconsistent and terminate the function. While doing this, keep track of all overlaps and store them; we will need this information to update meetings' consistency after a conflict is solved.
+\item Try to compute a travel for arriving and for leaving the newly inserted meeting taking into account the previous meeting, the following one and the default locations; if this is not possible, terminate the function marking the new meeting and the conflicting one as inconsistent.
+\item Adjust the effective time of all the flexible breaks overlapping with the new meeting; if this is not possible, mark the break as not doable. While doing this, keep track of all overlaps and store them; we will need this information to update breaks' doability after a conflict is solved.
+\item Link the travels to the meeting and store everything, then terminate successfully.
 \end{enumerate}
-
+\\
 The second function, \texttt{best\_travel}, does its job following this steps:
 \begin{enumerate}
 \item Fetch a path from the External Shortest Path Provider for each travel means in the user's preference list.
 \item Discard all the paths that are not compatible with the user's constraints.
-\item Build the preference list with the path calculated above.
-\item Return the path corresponding to the first item of the weighted preference list
+\item Build the wighted preference list with the path calculated above.
+\item Return the path corresponding to the first item of the weighted preference list.
 \end{enumerate}
