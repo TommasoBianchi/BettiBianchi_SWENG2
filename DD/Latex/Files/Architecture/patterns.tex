@@ -1,6 +1,6 @@
 \subsubsection{Architectural Styles}
 
-The main architectural style adopted for \projectname system is the client-server one, the most well known and used architectural style for
+The main architectural style adopted for \projectname~system is the client-server one, the most well known and used architectural style for
 distributed applications. It will be adopted in the 3-tier variant, with the presentation layer on the client (the web browser), the application layer on the web server and the data layer on the database server. The main advantages of this choice are the clear decoupling between data and logic, the possibility to reach almost all clients and the availability of a lot of COTS components to develop the system in a very cost-effective way. \\
 Given that we will have to develop a chat component for the meetings and the real-time indications components, the client will have to be a little more than a thin client: in fact, it will be enhanced by some lightweight logic in order to support long polling or HTTP server push. \\
 
