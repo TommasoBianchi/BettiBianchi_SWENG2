@@ -1,9 +1,17 @@
+The work of the algorithm is divided in two main functions: \texttt{insert\_meeting} to insert a new meeting into the user's schedule and \texttt{best\_travel} to compute the best travel between two locations with a given travel mean, taking into account the user's preference list and constraints. To simplify the execution of the algorithm and to speed it up, inconsistent meetings will be treated as non-existent, so that we can avoid to consider them when calculating travels; this is a fairly strong assumption, but it is needed to avoid all sort of problems tied to overlapping meetings, where it is unclear how to travel between them. \\
+\\
+The first function, \texttt{insert\_meeting}, does its job following this steps:
+\begin{enumerate}
+\item Find all the meetings overlapping with the one that we are inserting and mark them as inconsistent because they are clearly in conflict with one another; if at least a meeting is found, mark also the new one as inconsistent and terminate the function.
+\item Try to compute a travel for arriving and for leaving the newly inserted meeting taking into account both the last meeting before it, the first meeting after it and the default locations; if this is not possible, terminate the function marking the new meeting as inconsistent.
+\item Adjust the effective time of all the flexible breaks overlapping with the new meeting; if this is not possible, terminate the function marking the new meeting as inconsistent.
+\item If we have arrived here it means that it is possible to insert the new meeting into the schedule and that we have also computed its arriving and leaving travel; link the travels to the meeting and store everything, then terminate successfully.
+\end{enumerate}
 
-The work of the algorithm is divided in two main functions: insert\_meeting to insert a new meeting into the user's schedule and best\_travel to compute the best travel between two locations taking into account the user's preference list and constraints. To simplify the execution of the algorithm and to speed it up, inconsistent meetings will be treated as non-existent, so that we can avoid to consider them when calculating travels; this is a fairly strong assumption, but it is needed to avoid all sort of problems tied to overlapping meetings, where it is unclear how to connect them with travels.
-
-insert\_meeting
-
-
-
-best\_travel
-
+The second function, \texttt{best\_travel}, does its job following this steps:
+\begin{enumerate}
+\item Fetch a path from the External Shortest Path Provider for each travel means in the user's preference list.
+\item Discard all the paths that are not compatible with the user's constraints.
+\item Build the preference list with the path calculated above.
+\item Return the path corresponding to the first item of the weighted preference list
+\end{enumerate}
