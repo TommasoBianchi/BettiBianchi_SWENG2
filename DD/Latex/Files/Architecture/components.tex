@@ -5,9 +5,15 @@ The two component diagrams expose how the system architecture is build at two di
 \caption{High Level Component Diagram}
 \end{figure}
 
+\begin{itemize}
+\item Route Manager: manages the mapping between URLs and core system interfaces; it is the gateway for every request incoming from the clients.
+\item Webpage Engine: manages the building of the web pages and the storage and retrieval of their templates.
+\item Query Manager: manages the interfaces towards the storage of persistent data (i.e. the database), allowing the rest of the system to interact with them in a more abstract way.
+\end{itemize}
+
 \begin{figure}[h]
 \centering\includegraphics[width=\textwidth]{Images/UMLDiagrams/ApplicationComponentDiagram.png}
-\caption{Detailed Component Diagram of the Application Server}
+\caption{System Core Component Diagram}
 \end{figure}
 
 \begin{itemize}
