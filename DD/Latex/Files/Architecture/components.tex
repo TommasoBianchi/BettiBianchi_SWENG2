@@ -1,7 +1,7 @@
 The two component diagrams expose how the system architecture is build at two different level of abstraction: the High Level Component Diagram shows how the main subsystems are arranged and interconnected and what interfaces they use to communicate; the System Core Component Diagram, instead, contains a more detailed description of which software components have to be implemented to build the core of our system.\\
 Under each diagram there are descriptions of the main functionalities performed by every component shown.
 
-\begin{figure}[H]
+\begin{figure}[!h]
 \centering\includegraphics[width=\textwidth]{Images/UMLDiagrams/HighLevelComponentDiagram.png}
 \caption{High Level Component Diagram}
 \end{figure}
@@ -12,7 +12,7 @@ Under each diagram there are descriptions of the main functionalities performed 
 \item \textbf{Query Manager}: manages the interface towards the database, allowing the System Core to interact with it in a more abstract way.
 \end{itemize}
 
-\begin{figure}[H]
+\begin{figure}[!h]
 \centering\includegraphics[width=\textwidth]{Images/UMLDiagrams/ApplicationComponentDiagram.png}
 \caption{System Core Component Diagram}
 \end{figure}
@@ -36,3 +36,5 @@ Under each diagram there are descriptions of the main functionalities performed 
 \item \textbf{Rescheduling Engine}: manages rescheduling proposals and their responses.
 \item \textbf{Notification Engine}: manages all the notifications that are sent to users, such as warnings and meeting invitations.
 \end{itemize}
+
+\clearpage
