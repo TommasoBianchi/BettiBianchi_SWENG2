@@ -1,93 +1,443 @@
-This section does not aim to be complete.
+Continuous and automated testing will be done from the very beginning of the implementation phase of the \projectname~project. This way, as soon as the development of a component is done we can know if it performs well and, if so, move on rapidly to the next one and perform integration testing shortly after all the involved components are ready. \\
+In this section we list for each component in the system core a list of tests to absolutely be done while implementing it, toghether with the main integration tests. This does not aim to be a complete list of all possible test cases, so developerts should still add some more specific ones while writing down the code. \\ [1cm]
 
 \textbf{Authentication Engine}
 
-Test registration and login.
-Integration: test login via external login provider.
+\begin{itemize}
+\item Test registration.
+\item Test login.
+\item Test fetching the user that sent a request.
+\item Integration: test login via external login provider.
+\end{itemize}
+
+\begin{table}[H]	
+	\centering
+	\def\arraystretch{1.5}
+	\begin{tabular}{|m{4cm}|m{12cm}|}
+		\hline
+		\textbf{Component} & Authentication Engine \\ \hline
+		\textbf{Unit tests} & 
+			\begin{itemize}
+			\item Test registration.
+			\item Test login.
+			\item Test fetching the user that sent a request.
+			\end{itemize} \\ \hline
+		\textbf{Integration tests} &
+			\begin{itemize} 
+			\item Test login via external login provider. 
+			\end{itemize} \\ \hline
+	\end{tabular}
+	\caption{Authentication Engine Tests}
+\end{table}
 
 \textbf{External Login Adapter}
 
-Test login via external login provider, both for first time user and already registered user.
-Test different external login provider.
+\begin{itemize}
+\item Test registration (i.e. first time login) via external login provider.
+\item Test login via external login provider.
+\item Test login different external login providers.
+\end{itemize}
+
+\begin{table}[H]	
+	\centering
+	\def\arraystretch{1.5}
+	\begin{tabular}{|m{4cm}|m{12cm}|}
+		\hline
+		\textbf{Component} & External Login Adapter \\ \hline
+		\textbf{Unit tests} & 
+			\begin{itemize}
+			\item Test registration (i.e. first time login) via external login provider.
+			\item Test login via external login provider.
+			\item Test login different external login providers.
+			\end{itemize} \\ \hline
+		%\textbf{Integration tests} &  \\ \hline
+	\end{tabular}
+	\caption{External Login Adapter}
+\end{table}
 
 \textbf{User Controller}
 
-Test the creation of a user and the editing of its profile (in particular change the password and the primary mail).
-Test the addition/removal of a contact, the creation of a group and the signup to an existing group.
-Test the addition of an auto-decline status and the refusal of all meeting invitations in its period.
-Test the edit of the preference list.
-Test the addition/removal/modification of a default location.
+\begin{itemize}
+\item Test the creation of a user.
+\item Test the editing of a user's profile (in particular the change of password and primary mail).
+\item Test the addition/removal of a contact
+\item Test the creation of a group.
+\item Test the signup to an existing group.
+\item Test the addition of an auto-decline status and the refusal of all meeting invitations in its period.
+\item Test the edit of the preference list.
+\item Test the addition/removal/modification of a default location.
+\end{itemize}
+
+\begin{table}[H]	
+	\centering
+	\def\arraystretch{1.5}
+	\begin{tabular}{|m{4cm}|m{12cm}|}
+		\hline
+		\textbf{Component} & User Controller \\ \hline
+		\textbf{Unit tests} & 
+			\begin{itemize}
+			\item Test the creation of a user.
+			\item Test the editing of a user's profile (in particular the change of password and primary mail).
+			\item Test the addition/removal of a contact
+			\item Test the creation of a group.
+			\item Test the signup to an existing group.
+			\item Test the addition of an auto-decline status and the refusal of all meeting invitations in its period.
+			\item Test the edit of the preference list.
+			\item Test the addition/removal/modification of a default location.
+			\end{itemize} \\ \hline
+		%\textbf{Integration tests} &  \\ \hline
+	\end{tabular}
+	\caption{User Controller}
+\end{table}
 
 \textbf{User Search Engine}
 
-Test searching for a user given its nickname, its email or parts of it.
-Test searching for a non-existent user.
+\begin{itemize}
+\item Test searching for a user given its nickname, its email or parts of it.
+\item Test searching for a non-existent user.
+\end{itemize}
+
+\begin{table}[H]	
+	\centering
+	\def\arraystretch{1.5}
+	\begin{tabular}{|m{4cm}|m{12cm}|}
+		\hline
+		\textbf{Component} & User Search Engine \\ \hline
+		\textbf{Unit tests} & 
+			\begin{itemize}
+			\item Test searching for a user given its nickname, its email or parts of it.
+			\item Test searching for a non-existent user.
+			\end{itemize} \\ \hline
+		%\textbf{Integration tests} &  \\ \hline
+	\end{tabular}
+	\caption{User Search Engine}
+\end{table}
 
 \textbf{Constraint Engine}
 
-Test checking for constraint that holds and for constraints that does not hold.
-Integration: test adding/removing a constraint for a user.
+\begin{itemize}
+\item Test checking for constraints that holds and for constraints that does not hold.
+\item Integration: test adding/removing a constraint for a user.
+\end{itemize}
+
+\begin{table}[H]	
+	\centering
+	\def\arraystretch{1.5}
+	\begin{tabular}{|m{4cm}|m{12cm}|}
+		\hline
+		\textbf{Component} & Constraint Engine \\ \hline
+		\textbf{Unit tests} & 
+			\begin{itemize}
+			\item Test checking for constraints that holds and for constraints that does not hold.
+			\end{itemize} \\ \hline
+		\textbf{Integration tests} & 
+			\begin{itemize}
+			\item Test adding/removing a constraint for a user.
+			\end{itemize} \\ \hline
+	\end{tabular}
+	\caption{Constraint Engine}
+\end{table}
 
 \textbf{Meeting Controller}
 
-Test the creation of a meeting and the editing of all its fields.
-Test the recreation of a meeting.
-Test the invitation of user from both the contacts of an administrator of by searching them.
-Test the approval/refusal/rescheduling of a meeting.
-Integration: test the receipt of a meeting invitation that triggers an update of the schedule.
+\begin{itemize}
+\item Test the creation of a meeting.
+\item Test the editing of the fields of a meeting.
+\item Test the recreation of a meeting.
+\item Test the invitation of user from both the contacts of an administrator of by searching it.
+\item Test the approval/refusal/rescheduling of a meeting.
+\item Integration: test the receipt of a meeting invitation that triggers an update of the schedule.
+\end{itemize}
+
+\begin{table}[H]	
+	\centering
+	\def\arraystretch{1.5}
+	\begin{tabular}{|m{4cm}|m{12cm}|}
+		\hline
+		\textbf{Component} & Meeting Controller \\ \hline
+		\textbf{Unit tests} & 
+			\begin{itemize}
+			\item Test the creation of a meeting.
+			\item Test the editing of the fields of a meeting.
+			\item Test the recreation of a meeting.
+			\item Test the invitation of user from both the contacts of an administrator of by searching it.
+			\item Test the approval/refusal/rescheduling of a meeting.
+			\end{itemize} \\ \hline
+		\textbf{Integration tests} & 
+			\begin{itemize}
+			\item Test the receipt of a meeting invitation that triggers an update of the schedule.
+			\end{itemize} \\ \hline
+	\end{tabular}
+	\caption{Meeting Controller}
+\end{table}
 
 \textbf{Chat Engine}
 
-Test sending messages and retrieving them, both one at a time and in bursts.
-Test sending messages from different users at the same time.
-Integration: test sending messages from a user who's not in the meeting.
+\begin{itemize}
+\item Test sending messages.
+\item Test retrieving messages, both one at a time and in bursts.
+\item Test sending messages from different users at the same time.
+\item Integration: test sending messages from a user who's not in the meeting.
+\end{itemize}
+
+\begin{table}[H]	
+	\centering
+	\def\arraystretch{1.5}
+	\begin{tabular}{|m{4cm}|m{12cm}|}
+		\hline
+		\textbf{Component} & Chat Engine \\ \hline
+		\textbf{Unit tests} & 
+			\begin{itemize}
+			\item Test sending messages.
+			\item Test retrieving messages, both one at a time and in bursts.
+			\item Test sending messages from different users at the same time.
+			\end{itemize} \\ \hline
+		\textbf{Integration tests} & 
+			\begin{itemize}
+			\item Test sending messages from a user who's not in the meeting.
+			\end{itemize} \\ \hline
+	\end{tabular}
+	\caption{Chat Engine}
+\end{table}
 
 \textbf{Late User Engine}
 
-Test the visualization and the dispatch of messages to late users.
-Integration: test accessing the dashboard with a non-administrator.
+\begin{itemize}
+\item Test the visualization of the late user dashboard.
+\item Test the dispatch of messages to late users.
+\item Integration: test accessing the dashboard with a non-administrator (it should not be possible).
+\end{itemize}
+
+\begin{table}[H]	
+	\centering
+	\def\arraystretch{1.5}
+	\begin{tabular}{|m{4cm}|m{12cm}|}
+		\hline
+		\textbf{Component} & Late User Engine \\ \hline
+		\textbf{Unit tests} & 
+			\begin{itemize}
+			\item Test the visualization of the late user dashboard.
+			\item Test the dispatch of messages to late users.
+			\end{itemize} \\ \hline
+		\textbf{Integration tests} & 
+			\begin{itemize}
+			\item Test accessing the dashboard with a non-administrator (it should not be possible).
+			\end{itemize} \\ \hline
+	\end{tabular}
+	\caption{Late User Engine}
+\end{table}
 
 \textbf{File Uploader}
 
-Test uploading files with different extensions and different sizes.
-Test downloading them.
-Test uploading malaware.
+\begin{itemize}
+\item Test uploading files with different extensions and different sizes.
+\item Test downloading files.
+\item Test uploading malaware (it should not be possible).
+\end{itemize}
+
+\begin{table}[H]	
+	\centering
+	\def\arraystretch{1.5}
+	\begin{tabular}{|m{4cm}|m{12cm}|}
+		\hline
+		\textbf{Component} & File Uploader \\ \hline
+		\textbf{Unit tests} & 
+			\begin{itemize}
+			\item Test uploading files with different extensions and different sizes.
+			\item Test downloading files.
+			\item Test uploading malaware (it should not be possible).
+			\end{itemize} \\ \hline
+		%\textbf{Integration tests} &  \\ \hline
+	\end{tabular}
+	\caption{File Uploader}
+\end{table}
 
 \textbf{Travel Planner}
 
-Test planning travels between random points and check that at least one is always returned.
+\begin{itemize}
+\item Test planning travels between random points.
+\end{itemize}
+
+\begin{table}[H]	
+	\centering
+	\def\arraystretch{1.5}
+	\begin{tabular}{|m{4cm}|m{12cm}|}
+		\hline
+		\textbf{Component} & Travel Planner \\ \hline
+		\textbf{Unit tests} & 
+			\begin{itemize}
+			\item Test planning travels between random points.
+			\end{itemize} \\ \hline
+		%\textbf{Integration tests} &  \\ \hline
+	\end{tabular}
+	\caption{Travel Planner}
+\end{table}
 
 \textbf{Real-Time Indications Engine}
 
-Test the activation of this component when a meeting is approaching.
-Test the indications by following them and checking they are right; requires someone physically going around.
+\begin{itemize}
+\item Test the activation of the real-time indications engine component when a meeting is approaching.
+\item Test the indications by following them and checking they are right; requires someone physically going around.
+\end{itemize}
+
+\begin{table}[H]	
+	\centering
+	\def\arraystretch{1.5}
+	\begin{tabular}{|m{4cm}|m{12cm}|}
+		\hline
+		\textbf{Component} & Real-Time Indications Engine \\ \hline
+		\textbf{Unit tests} & 
+			\begin{itemize}
+			\item Test the activation of the real-time indications engine component when a meeting is approaching.
+			\item Test the indications by following them and checking they are right; requires someone physically going around.
+			\end{itemize} \\ \hline
+		%\textbf{Integration tests} &  \\ \hline
+	\end{tabular}
+	\caption{Real-Time Indications Engine}
+\end{table}
 
 \textbf{External Shortest Path Adapter}
 
-Test toghether with the Travel Planner.
+\begin{itemize}
+\item Test toghether with the Travel Planner.
+\end{itemize}
+
+\begin{table}[H]	
+	\centering
+	\def\arraystretch{1.5}
+	\begin{tabular}{|m{4cm}|m{12cm}|}
+		\hline
+		\textbf{Component} & External Shortest Path Adapter \\ \hline
+		\textbf{Unit tests} & 
+			\begin{itemize}
+			\item Test toghether with the Travel Planner.
+			\end{itemize} \\ \hline
+		%\textbf{Integration tests} &  \\ \hline
+	\end{tabular}
+	\caption{External Shortest Path Adapter}
+\end{table}
 
 \textbf{External Geolocalization Adapter}
 
-Test that the position of a user is always updated and precise; requires someone physically going around.
+\begin{itemize}
+\item Test that the position of a user is always updated and precise; requires someone physically going around.
+\end{itemize}
+
+\begin{table}[H]	
+	\centering
+	\def\arraystretch{1.5}
+	\begin{tabular}{|m{4cm}|m{12cm}|}
+		\hline
+		\textbf{Component} & External Geolocalization Adapter \\ \hline
+		\textbf{Unit tests} & 
+			\begin{itemize}
+			\item Test that the position of a user is always updated and precise; requires someone physically going around.
+			\end{itemize} \\ \hline
+		%\textbf{Integration tests} &  \\ \hline
+	\end{tabular}
+	\caption{External Geolocalization Adapter}
+\end{table}
 
 \textbf{Meeting Scheduler}
 
-Test inserting a meeting in an empty schedule and in one with already a lot of meetings.
-Test schedule update after a warning is solved.
-Test the correct visualization of a schedule.
-Integration: test inserting a meeting in an empty schedule with a lot of breaks.
+\begin{itemize}
+\item Test inserting a meeting in an empty schedule and in one with already a lot of meetings.
+\item Test schedule update after a warning is solved.
+\item Test the correct visualization of a schedule.
+\item Integration: test inserting a meeting in an empty schedule with a lot of breaks.
+\end{itemize}
+
+\begin{table}[H]	
+	\centering
+	\def\arraystretch{1.5}
+	\begin{tabular}{|m{4cm}|m{12cm}|}
+		\hline
+		\textbf{Component} & Meeting Scheduler \\ \hline
+		\textbf{Unit tests} & 
+			\begin{itemize}
+			\item Test inserting a meeting in an empty schedule and in one with already a lot of meetings.
+			\item Test schedule update after a warning is solved.
+			\item Test the correct visualization of a schedule.
+			\end{itemize} \\ \hline
+		\textbf{Integration tests} & 
+			\begin{itemize}
+			\item Test inserting a meeting in an empty schedule with a lot of breaks.
+			\end{itemize} \\ \hline
+	\end{tabular}
+	\caption{Meeting Scheduler}
+\end{table}
 
 \textbf{Break Manager}
 
-Test the update of a break multiple times by different meetings.
+\begin{itemize}
+\item Test the update of a break multiple times by different meetings.
+\end{itemize}
+
+\begin{table}[H]	
+	\centering
+	\def\arraystretch{1.5}
+	\begin{tabular}{|m{4cm}|m{12cm}|}
+		\hline
+		\textbf{Component} & Break Manager \\ \hline
+		\textbf{Unit tests} & 
+			\begin{itemize}
+			\item Test the update of a break multiple times by different meetings.
+			\end{itemize} \\ \hline
+		%\textbf{Integration tests} & \\ \hline
+	\end{tabular}
+	\caption{Break Manager}
+\end{table}
 
 \textbf{Rescheduling Engine}
 
-Test the creation of a new rescheduling proposal, the approval/rejection by an administrator and the polling.
-Test voting on a poll and sending the last vote, that should trigger an automatic rescheduling approval/rejection.
+\begin{itemize}
+\item Test the creation of a new rescheduling proposal.
+\item Test the approval/rejection of a rescheduling proposal by an administrator.
+\item Test and the polling of a rescheduling proposal by an administrator.
+\item Test voting on a poll and sending the last vote, that should trigger an automatic rescheduling approval/rejection.
+\end{itemize}
+
+\begin{table}[H]	
+	\centering
+	\def\arraystretch{1.5}
+	\begin{tabular}{|m{4cm}|m{12cm}|}
+		\hline
+		\textbf{Component} & Rescheduling Engine \\ \hline
+		\textbf{Unit tests} & 
+			\begin{itemize}
+			\item Test the creation of a new rescheduling proposal.
+			\item Test the approval/rejection of a rescheduling proposal by an administrator.
+			\item Test and the polling of a rescheduling proposal by an administrator.
+			\item Test voting on a poll and sending the last vote, that should trigger an automatic rescheduling approval/rejection.
+			\end{itemize} \\ \hline
+		%\textbf{Integration tests} & \\ \hline
+	\end{tabular}
+	\caption{Rescheduling Engine}
+\end{table}
 
 \textbf{Notification Engine}
 
-Test the gathering of all the notification for a user who has lots of meetings, breaks, messages not read, ....
-Test the automatic push of notifications on the application client.
-Integration: test the approval/refusal/rescheduling of a meeting via the Notification Engine.
+\begin{itemize}
+\item Test the gathering of all the notification for a user who has lots of meetings, breaks, messages not read, ....
+\item Test the automatic push of notifications on the application client.
+\item Integration: test the approval/refusal/rescheduling of a meeting via the Notification Engine.
+\end{itemize}
+
+\begin{table}[H]	
+	\centering
+	\def\arraystretch{1.5}
+	\begin{tabular}{|m{4cm}|m{12cm}|}
+		\hline
+		\textbf{Component} & Notification Engine \\ \hline
+		\textbf{Unit tests} & 
+			\begin{itemize}
+			\item Test the gathering of all the notification for a user who has lots of meetings, breaks, messages not read, ....
+			\item Test the automatic push of notifications on the application client.
+			\end{itemize} \\ \hline
+		\textbf{Integration tests} & 
+			\begin{itemize}
+			\item Integration: test the approval/refusal/rescheduling of a meeting via the Notification Engine. 
+			\end{itemize} \\ \hline
+	\end{tabular}
+	\caption{Notification Engine}
+\end{table}
