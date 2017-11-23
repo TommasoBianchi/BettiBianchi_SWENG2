@@ -1,0 +1,93 @@
+This section does not aim to be complete.
+
+\textbf{Authentication Engine}
+
+Test registration and login.
+Integration: test login via external login provider.
+
+\textbf{External Login Adapter}
+
+Test login via external login provider, both for first time user and already registered user.
+Test different external login provider.
+
+\textbf{User Controller}
+
+Test the creation of a user and the editing of its profile (in particular change the password and the primary mail).
+Test the addition/removal of a contact, the creation of a group and the signup to an existing group.
+Test the addition of an auto-decline status and the refusal of all meeting invitations in its period.
+Test the edit of the preference list.
+Test the addition/removal/modification of a default location.
+
+\textbf{User Search Engine}
+
+Test searching for a user given its nickname, its email or parts of it.
+Test searching for a non-existent user.
+
+\textbf{Constraint Engine}
+
+Test checking for constraint that holds and for constraints that does not hold.
+Integration: test adding/removing a constraint for a user.
+
+\textbf{Meeting Controller}
+
+Test the creation of a meeting and the editing of all its fields.
+Test the recreation of a meeting.
+Test the invitation of user from both the contacts of an administrator of by searching them.
+Test the approval/refusal/rescheduling of a meeting.
+Integration: test the receipt of a meeting invitation that triggers an update of the schedule.
+
+\textbf{Chat Engine}
+
+Test sending messages and retrieving them, both one at a time and in bursts.
+Test sending messages from different users at the same time.
+Integration: test sending messages from a user who's not in the meeting.
+
+\textbf{Late User Engine}
+
+Test the visualization and the dispatch of messages to late users.
+Integration: test accessing the dashboard with a non-administrator.
+
+\textbf{File Uploader}
+
+Test uploading files with different extensions and different sizes.
+Test downloading them.
+Test uploading malaware.
+
+\textbf{Travel Planner}
+
+Test planning travels between random points and check that at least one is always returned.
+
+\textbf{Real-Time Indications Engine}
+
+Test the activation of this component when a meeting is approaching.
+Test the indications by following them and checking they are right; requires someone physically going around.
+
+\textbf{External Shortest Path Adapter}
+
+Test toghether with the Travel Planner.
+
+\textbf{External Geolocalization Adapter}
+
+Test that the position of a user is always updated and precise; requires someone physically going around.
+
+\textbf{Meeting Scheduler}
+
+Test inserting a meeting in an empty schedule and in one with already a lot of meetings.
+Test schedule update after a warning is solved.
+Test the correct visualization of a schedule.
+Integration: test inserting a meeting in an empty schedule with a lot of breaks.
+
+\textbf{Break Manager}
+
+Test the update of a break multiple times by different meetings.
+
+\textbf{Rescheduling Engine}
+
+Test the creation of a new rescheduling proposal, the approval/rejection by an administrator and the polling.
+Test voting on a poll and sending the last vote, that should trigger an automatic rescheduling approval/rejection.
+
+\textbf{Notification Engine}
+
+Test the gathering of all the notification for a user who has lots of meetings, breaks, messages not read, ....
+Test the automatic push of notifications on the application client.
+Integration: test the approval/refusal/rescheduling of a meeting via the Notification Engine.
