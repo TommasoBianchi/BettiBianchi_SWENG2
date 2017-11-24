@@ -1,24 +1,41 @@
-In this section we are going to present the strategy that the development team should use to implement \projectname~system. As we can see in the Component Dependency Diagram all the system's components have been created in such a way that they can be perfectly developed in parallels with the right dependency. All the components that are in the same column of the graph can be easily implemented together. Following this process, every time that a component need an interface from another one, it should been already implemented. However, this development strategy would lead to build a testable system only at the end, following a waterfall model, because the Meeting Controller component, that is the main component that manages meeting, would be implemented almost at the end of the process. This model doesn't fit with modern correct implementation strategies because it will not show any prototype (alpha and beta versions) until the end of the process, denying the possibility of corrections and modifications on the go.\\
+In this section we are going to present the strategy that the development team should follow to implement \projectname~system. As we can see in the Component Dependency Diagram all the system's components have been designed in such a way that they have the least amount of dependencies, and for this reason a lot of them can be developed in parallel. In fact, all the components that are in the same column of the graph can be easily implemented by different teams. Following this process, every time that a component needs an interface from another one, that one should have been already implemented. However, this development strategy would lead to build a testable system only at the end, like in a Waterfall model, because the Meeting Controller component, that is the one of the core components of the system, would be implemented almost at the end of the process. Since modern implementation strategies are based on mid-term versions of the system, that can be shown to stakeholders, it would be very limiting to adopt this model because it will not build any prototype (e.g. alpha and beta versions) until the end of the process, denying the possibility of corrections and modifications on the go. \\
+For this reasons we propose the following plan to implement the \projectname~project:
+
+\begin{longtable}{|m{16cm}|}
+	\hline Develop the Constraint Engine, the External Shortest Path Adapter and the Break Manager in parallel in order to have a solid foundation for the development of the other components.
+	\\ \hline Develop the Travel Planner component.
+	\\ \hline Integrate the Travel Planner with the Constraint Engine and the External Shortest Path Adapter.
+	\\ \hline
+	\textbf{At this point the system should be able to find the best travel between pairs of locations. subject to given constraints.}
+	\\ \hline Develop Meeting Scheduler component. 
+	\\ \hline Integrate the Meeting Scheduler with the Travel Planner component.
+	\\ \hline
+	\textbf{At this point the system should be able to properly build and update schedules.}
+	\\ \hline Develop the Meeting Controller component. Since it has still some unsolved dependencies, we will use stubs to simulate the behaviour of all the component that are not been developed yet. We will do this to be able to reach a point in which the core of the system is testable sooner.
+	\\ \hline Integrate the Meeting Controller with the Meeting Scheduler.
+	\\ \hline
+	\textbf{At this point the main functionality of the system (i.e. create meeting to organize daily schedule) should be completed.}
+	\\ \hline Develop the External Login Adapter and the Authentication Engine integrating them toghether.
+	\\ \hline Develop the User Search Engine.
+	\\ \hline Integrate the User Search Engine with the Meeting Controller component.
+	\\ \hline Develop User Controller.
+	\\ \hline Integrate the User Controller with the User Search Engine, the Constraint Engine and the Authentication Engine.
+	\\ \hline
+	\textbf{At this point a user should be able to use out system.}
+	\\ \hline Develop Rescheduling Engine and integrate it with Meeting Controller.
+	\\ \hline Develop Notification Engine and integrate it with the Meeting Controller and the Rescheduling Engine.
+	\\ \hline
+	\textbf{At this point a Beta version could be shipped.}
+	\\ \hline Develop the File Uploader, the Chat Engine and the Late User Engine in parallel.
+	\\ \hline Integrate the File Uploader, the Chat Engine and the Late User Engine with the Meeting Controller, replacing the previously inserted stubs.
+	\\ \hline Develop the External Geolocalization Adaper and the Real-Time Indications Engine integrating them toghether.
+	\\ \hline
+	\textbf{At this point the first working version of \projectname~can be considered completed.} \hline
+\end{longtable}
 
 \begin{figure}[!h]
-	\centering\includegraphics[scale = 0.22]{Images/UMLDiagrams/DependencyDiagramColored.png}
+	\centering\includegraphics[scale = 0.20]{Images/UMLDiagrams/DependencyDiagramColored.png}
 	\caption{Component Dependency Diagram}
 \end{figure}
-
-For this reason the best way to complete \projectname~ project is:
-\begin{itemize}
-	\item Develop Constraint Engine, External Shortest Path Adapter and Break Manager in parallels in order to have a complete background for the future development of other components.
-	\item Develop all the Travel Planner component and integrate it with Constraint Engine and External Shortest Path Adapter following the integration test of the next chapters.
-	\item Develop the Meeting Controller component. Since it is the most important component of the system, it is possible to implement it defying exactly the interfaces needed. Than, all the other components must be created such as they fit properly with the interfaces chosen by the Meeting Controller. 
-	\item Develop Meeting Scheduler component and test it. Integrate it with the Travel Planner and the Meeting Controller component. After this process the main functionality of the system (i.e. organize daily schedule) should be completed. This must be tested properly.
-	\item Develop External Login Adapter followed by the Authentication Engine and integrate it testing login and registration process.
-	\item Develop User Search Engine and integrate it with Meeting Controller component.
-	\item Develop User Controller, test it and integrate it with User Search Engine, Constraint Engine and Authentication Engine. After this process all the features related with user profile must be completed.
-	\item Develop Reschedule Engine and integrate it with Meeting Controller.
-	\item Develop Notification Engine and integrate it with the other components. This process must be tested properly .
-	\item Develop all the features related with Meeting Controller such as File Uploader, Chat Engine and Late User Engine and integrate it with Meeting Controller, paying attention to fit with interfaces previously chosen by Meeting Controller component.
-\end{itemize}
-All the developing and integration processes must be immediately followed by their test.
-After this process the system is completed with all its funciotnalites..... COLORARE IL DIAGRAMMA
 
 \clearpage
