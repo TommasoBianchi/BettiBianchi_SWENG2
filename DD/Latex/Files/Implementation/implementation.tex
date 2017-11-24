@@ -2,33 +2,33 @@ In this section we are going to present the strategy that the development team s
 For this reasons we propose the following plan to implement the \projectname~project:
 
 \begin{longtable}{|m{16cm}|}
-	\hline Develop the Constraint Engine, the External Shortest Path Adapter and the Break Manager in parallel in order to have a solid foundation for the development of the other components.
-	\\ \hline Develop the Travel Planner component.
+	\hline Implement the Constraint Engine, the External Shortest Path Adapter and the Break Manager in parallel in order to have a solid foundation for the development of the other components.
+	\\ \hline Implement the Travel Planner component.
 	\\ \hline Integrate the Travel Planner with the Constraint Engine and the External Shortest Path Adapter.
 	\\ \hline
 	\textbf{At this point the system should be able to find the best travel between pairs of locations. subject to given constraints.}
-	\\ \hline Develop Meeting Scheduler component. 
+	\\ \hline Implement Meeting Scheduler component. 
 	\\ \hline Integrate the Meeting Scheduler with the Travel Planner component.
 	\\ \hline
 	\textbf{At this point the system should be able to properly build and update schedules.}
-	\\ \hline Develop the Meeting Controller component. Since it has still some unsolved dependencies, we will use stubs to simulate the behaviour of all the component that are not been developed yet. We will do this to be able to reach a point in which the core of the system is testable sooner.
+	\\ \hline Implement the Meeting Controller component. Since it has still some unsolved dependencies, we will use stubs to simulate the behaviour of all the component that are not been developed yet. We will do this to be able to reach a point in which the core of the system is testable sooner.
 	\\ \hline Integrate the Meeting Controller with the Meeting Scheduler.
 	\\ \hline
 	\textbf{At this point the main functionality of the system (i.e. create meeting to organize daily schedule) should be completed.}
-	\\ \hline Develop the External Login Adapter and the Authentication Engine integrating them toghether.
-	\\ \hline Develop the User Search Engine.
+	\\ \hline Implement the External Login Adapter and the Authentication Engine integrating them toghether.
+	\\ \hline Implement the User Search Engine.
 	\\ \hline Integrate the User Search Engine with the Meeting Controller component.
-	\\ \hline Develop User Controller.
+	\\ \hline Implement User Controller.
 	\\ \hline Integrate the User Controller with the User Search Engine, the Constraint Engine and the Authentication Engine.
 	\\ \hline
 	\textbf{At this point a user should be able to use out system.}
-	\\ \hline Develop Rescheduling Engine and integrate it with Meeting Controller.
-	\\ \hline Develop Notification Engine and integrate it with the Meeting Controller and the Rescheduling Engine.
+	\\ \hline Implement Rescheduling Engine and integrate it with Meeting Controller.
+	\\ \hline Implement Notification Engine and integrate it with the Meeting Controller and the Rescheduling Engine.
 	\\ \hline
 	\textbf{At this point a Beta version could be shipped.}
-	\\ \hline Develop the File Uploader, the Chat Engine and the Late User Engine in parallel.
+	\\ \hline Implement the File Uploader, the Chat Engine and the Late User Engine in parallel.
 	\\ \hline Integrate the File Uploader, the Chat Engine and the Late User Engine with the Meeting Controller, replacing the previously inserted stubs.
-	\\ \hline Develop the External Geolocalization Adaper and the Real-Time Indications Engine integrating them toghether.
+	\\ \hline Implement the External Geolocalization Adaper and the Real-Time Indications Engine integrating them toghether.
 	\\ \hline
 	\textbf{At this point the first working version of \projectname~can be considered completed.} \hline
 \end{longtable}

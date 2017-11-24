@@ -1,16 +1,7 @@
-Continuous and automated testing will be done from the very beginning of the implementation phase of the \projectname~project. This way, as soon as the development of a component is done we can know if it performs well and, if so, move on rapidly to the next one and perform integration testing shortly after all the involved components are ready. \\
-In this section we list for each component in the system core a list of tests to absolutely be done while implementing it, toghether with the main integration tests. This does not aim to be a complete list of all possible test cases, so developerts should still add some more specific ones while writing down the code. \\ [1cm]
+Continuous and automated testing will be done from the very beginning of the implementation phase of the \projectname~project. This way, as soon as the development of a component is finished we can know if it works as expected and, if so, we can move on rapidly to the next step. We can also perform integration testing shortly after all the involved components are ready. \\
+In this section for each component in the system core we present a list of tests to perform during the implementation phase, toghether with the main integration tests. This does not aim to be a complete list of all possible test cases, hence developers should still add some more specific ones while writing down the code. \\
 
-\textbf{Authentication Engine}
-
-\begin{itemize}
-\item Test registration.
-\item Test login.
-\item Test fetching the user that sent a request.
-\item Integration: test login via external login provider.
-\end{itemize}
-
-\begin{table}[H]	
+\begin{table}[h]	
 	\centering
 	\def\arraystretch{1.5}
 	\begin{tabular}{|m{4cm}|m{12cm}|}
@@ -30,15 +21,7 @@ In this section we list for each component in the system core a list of tests to
 	\caption{Authentication Engine Tests}
 \end{table}
 
-\textbf{External Login Adapter}
-
-\begin{itemize}
-\item Test registration (i.e. first time login) via external login provider.
-\item Test login via external login provider.
-\item Test login different external login providers.
-\end{itemize}
-
-\begin{table}[H]	
+\begin{table}[h]	
 	\centering
 	\def\arraystretch{1.5}
 	\begin{tabular}{|m{4cm}|m{12cm}|}
@@ -55,20 +38,7 @@ In this section we list for each component in the system core a list of tests to
 	\caption{External Login Adapter}
 \end{table}
 
-\textbf{User Controller}
-
-\begin{itemize}
-\item Test the creation of a user.
-\item Test the editing of a user's profile (in particular the change of password and primary mail).
-\item Test the addition/removal of a contact
-\item Test the creation of a group.
-\item Test the signup to an existing group.
-\item Test the addition of an auto-decline status and the refusal of all meeting invitations in its period.
-\item Test the edit of the preference list.
-\item Test the addition/removal/modification of a default location.
-\end{itemize}
-
-\begin{table}[H]	
+\begin{table}[h]	
 	\centering
 	\def\arraystretch{1.5}
 	\begin{tabular}{|m{4cm}|m{12cm}|}
@@ -90,14 +60,7 @@ In this section we list for each component in the system core a list of tests to
 	\caption{User Controller}
 \end{table}
 
-\textbf{User Search Engine}
-
-\begin{itemize}
-\item Test searching for a user given its nickname, its email or parts of it.
-\item Test searching for a non-existent user.
-\end{itemize}
-
-\begin{table}[H]	
+\begin{table}[h]	
 	\centering
 	\def\arraystretch{1.5}
 	\begin{tabular}{|m{4cm}|m{12cm}|}
@@ -113,14 +76,7 @@ In this section we list for each component in the system core a list of tests to
 	\caption{User Search Engine}
 \end{table}
 
-\textbf{Constraint Engine}
-
-\begin{itemize}
-\item Test checking for constraints that holds and for constraints that does not hold.
-\item Integration: test adding/removing a constraint for a user.
-\end{itemize}
-
-\begin{table}[H]	
+\begin{table}[h]	
 	\centering
 	\def\arraystretch{1.5}
 	\begin{tabular}{|m{4cm}|m{12cm}|}
@@ -138,18 +94,7 @@ In this section we list for each component in the system core a list of tests to
 	\caption{Constraint Engine}
 \end{table}
 
-\textbf{Meeting Controller}
-
-\begin{itemize}
-\item Test the creation of a meeting.
-\item Test the editing of the fields of a meeting.
-\item Test the recreation of a meeting.
-\item Test the invitation of user from both the contacts of an administrator of by searching it.
-\item Test the approval/refusal/rescheduling of a meeting.
-\item Integration: test the receipt of a meeting invitation that triggers an update of the schedule.
-\end{itemize}
-
-\begin{table}[H]	
+\begin{table}[h]	
 	\centering
 	\def\arraystretch{1.5}
 	\begin{tabular}{|m{4cm}|m{12cm}|}
@@ -171,16 +116,7 @@ In this section we list for each component in the system core a list of tests to
 	\caption{Meeting Controller}
 \end{table}
 
-\textbf{Chat Engine}
-
-\begin{itemize}
-\item Test sending messages.
-\item Test retrieving messages, both one at a time and in bursts.
-\item Test sending messages from different users at the same time.
-\item Integration: test sending messages from a user who's not in the meeting.
-\end{itemize}
-
-\begin{table}[H]	
+\begin{table}[h]	
 	\centering
 	\def\arraystretch{1.5}
 	\begin{tabular}{|m{4cm}|m{12cm}|}
@@ -200,15 +136,7 @@ In this section we list for each component in the system core a list of tests to
 	\caption{Chat Engine}
 \end{table}
 
-\textbf{Late User Engine}
-
-\begin{itemize}
-\item Test the visualization of the late user dashboard.
-\item Test the dispatch of messages to late users.
-\item Integration: test accessing the dashboard with a non-administrator (it should not be possible).
-\end{itemize}
-
-\begin{table}[H]	
+\begin{table}[h]	
 	\centering
 	\def\arraystretch{1.5}
 	\begin{tabular}{|m{4cm}|m{12cm}|}
@@ -227,15 +155,7 @@ In this section we list for each component in the system core a list of tests to
 	\caption{Late User Engine}
 \end{table}
 
-\textbf{File Uploader}
-
-\begin{itemize}
-\item Test uploading files with different extensions and different sizes.
-\item Test downloading files.
-\item Test uploading malaware (it should not be possible).
-\end{itemize}
-
-\begin{table}[H]	
+\begin{table}[h]	
 	\centering
 	\def\arraystretch{1.5}
 	\begin{tabular}{|m{4cm}|m{12cm}|}
@@ -252,13 +172,7 @@ In this section we list for each component in the system core a list of tests to
 	\caption{File Uploader}
 \end{table}
 
-\textbf{Travel Planner}
-
-\begin{itemize}
-\item Test planning travels between random points.
-\end{itemize}
-
-\begin{table}[H]	
+\begin{table}[h]	
 	\centering
 	\def\arraystretch{1.5}
 	\begin{tabular}{|m{4cm}|m{12cm}|}
@@ -273,14 +187,7 @@ In this section we list for each component in the system core a list of tests to
 	\caption{Travel Planner}
 \end{table}
 
-\textbf{Real-Time Indications Engine}
-
-\begin{itemize}
-\item Test the activation of the real-time indications engine component when a meeting is approaching.
-\item Test the indications by following them and checking they are right; requires someone physically going around.
-\end{itemize}
-
-\begin{table}[H]	
+\begin{table}[h]	
 	\centering
 	\def\arraystretch{1.5}
 	\begin{tabular}{|m{4cm}|m{12cm}|}
@@ -296,13 +203,7 @@ In this section we list for each component in the system core a list of tests to
 	\caption{Real-Time Indications Engine}
 \end{table}
 
-\textbf{External Shortest Path Adapter}
-
-\begin{itemize}
-\item Test toghether with the Travel Planner.
-\end{itemize}
-
-\begin{table}[H]	
+\begin{table}[h]	
 	\centering
 	\def\arraystretch{1.5}
 	\begin{tabular}{|m{4cm}|m{12cm}|}
@@ -317,13 +218,7 @@ In this section we list for each component in the system core a list of tests to
 	\caption{External Shortest Path Adapter}
 \end{table}
 
-\textbf{External Geolocalization Adapter}
-
-\begin{itemize}
-\item Test that the position of a user is always updated and precise; requires someone physically going around.
-\end{itemize}
-
-\begin{table}[H]	
+\begin{table}[h]	
 	\centering
 	\def\arraystretch{1.5}
 	\begin{tabular}{|m{4cm}|m{12cm}|}
@@ -338,16 +233,7 @@ In this section we list for each component in the system core a list of tests to
 	\caption{External Geolocalization Adapter}
 \end{table}
 
-\textbf{Meeting Scheduler}
-
-\begin{itemize}
-\item Test inserting a meeting in an empty schedule and in one with already a lot of meetings.
-\item Test schedule update after a warning is solved.
-\item Test the correct visualization of a schedule.
-\item Integration: test inserting a meeting in an empty schedule with a lot of breaks.
-\end{itemize}
-
-\begin{table}[H]	
+\begin{table}[h]	
 	\centering
 	\def\arraystretch{1.5}
 	\begin{tabular}{|m{4cm}|m{12cm}|}
@@ -367,13 +253,7 @@ In this section we list for each component in the system core a list of tests to
 	\caption{Meeting Scheduler}
 \end{table}
 
-\textbf{Break Manager}
-
-\begin{itemize}
-\item Test the update of a break multiple times by different meetings.
-\end{itemize}
-
-\begin{table}[H]	
+\begin{table}[h]	
 	\centering
 	\def\arraystretch{1.5}
 	\begin{tabular}{|m{4cm}|m{12cm}|}
@@ -388,16 +268,7 @@ In this section we list for each component in the system core a list of tests to
 	\caption{Break Manager}
 \end{table}
 
-\textbf{Rescheduling Engine}
-
-\begin{itemize}
-\item Test the creation of a new rescheduling proposal.
-\item Test the approval/rejection of a rescheduling proposal by an administrator.
-\item Test and the polling of a rescheduling proposal by an administrator.
-\item Test voting on a poll and sending the last vote, that should trigger an automatic rescheduling approval/rejection.
-\end{itemize}
-
-\begin{table}[H]	
+\begin{table}[h]	
 	\centering
 	\def\arraystretch{1.5}
 	\begin{tabular}{|m{4cm}|m{12cm}|}
@@ -415,15 +286,7 @@ In this section we list for each component in the system core a list of tests to
 	\caption{Rescheduling Engine}
 \end{table}
 
-\textbf{Notification Engine}
-
-\begin{itemize}
-\item Test the gathering of all the notification for a user who has lots of meetings, breaks, messages not read, ....
-\item Test the automatic push of notifications on the application client.
-\item Integration: test the approval/refusal/rescheduling of a meeting via the Notification Engine.
-\end{itemize}
-
-\begin{table}[H]	
+\begin{table}[h]	
 	\centering
 	\def\arraystretch{1.5}
 	\begin{tabular}{|m{4cm}|m{12cm}|}
@@ -441,3 +304,5 @@ In this section we list for each component in the system core a list of tests to
 	\end{tabular}
 	\caption{Notification Engine}
 \end{table}
+
+\clearpage
