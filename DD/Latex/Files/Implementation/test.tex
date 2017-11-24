@@ -1,6 +1,8 @@
 Continuous and automated testing will be done from the very beginning of the implementation phase of the \projectname~project. This way, as soon as the development of a component is finished we can know if it works as expected and, if so, we can move on rapidly to the next step. We can also perform integration testing shortly after all the involved components are ready. \\
 In this section for each component in the system core we present a list of tests to perform during the implementation phase, toghether with the main integration tests. This does not aim to be a complete list of all possible test cases, hence developers should still add some more specific ones while writing down the code. \\
 
+\subsubsection{Unit Tests}
+
 \begin{table}[h]	
 	\centering
 	\def\arraystretch{1.5}
@@ -12,9 +14,11 @@ In this section for each component in the system core we present a list of tests
 			\item Test registration.
 			\item Test login.
 			\item Test fetching the user that sent a request.
+			\item Test the redirect to the Complete Registration page.
 			\end{itemize} \\ \hline
 		\textbf{Integration tests} &
 			\begin{itemize} 
+			\item Test registration (i.e. first time login) via external login provider.
 			\item Test login via external login provider. 
 			\end{itemize} \\ \hline
 	\end{tabular}
@@ -29,9 +33,8 @@ In this section for each component in the system core we present a list of tests
 		\textbf{Component} & External Login Adapter \\ \hline
 		\textbf{Unit tests} & 
 			\begin{itemize}
-			\item Test registration (i.e. first time login) via external login provider.
-			\item Test login via external login provider.
-			\item Test login different external login providers.
+			\item Test [change this word](login) via external login provider.
+			\item Test [change this word](login) with different external login providers.
 			\end{itemize} \\ \hline
 		%\textbf{Integration tests} &  \\ \hline
 	\end{tabular}
@@ -48,12 +51,12 @@ In this section for each component in the system core we present a list of tests
 			\begin{itemize}
 			\item Test the creation of a user.
 			\item Test the editing of a user's profile (in particular the change of password and primary mail).
-			\item Test the addition/removal of a contact
+			\item Test the addition/removal of a contact.
 			\item Test the creation of a group.
 			\item Test the signup to an existing group.
-			\item Test the addition of an auto-decline status and the refusal of all meeting invitations in its period.
+			\item Test the addition of an auto-decline status and the refusal of all meeting invitations in that period.
 			\item Test the edit of the preference list.
-			\item Test the addition/removal/modification of a default location.
+			\item Test the addition/removal/modification of default locations.
 			\end{itemize} \\ \hline
 		%\textbf{Integration tests} &  \\ \hline
 	\end{tabular}
@@ -68,7 +71,7 @@ In this section for each component in the system core we present a list of tests
 		\textbf{Component} & User Search Engine \\ \hline
 		\textbf{Unit tests} & 
 			\begin{itemize}
-			\item Test searching for a user given its nickname, its email or parts of it.
+			\item Test searching for a user given its nickname, its email or parts of them.
 			\item Test searching for a non-existent user.
 			\end{itemize} \\ \hline
 		%\textbf{Integration tests} &  \\ \hline
@@ -84,7 +87,7 @@ In this section for each component in the system core we present a list of tests
 		\textbf{Component} & Constraint Engine \\ \hline
 		\textbf{Unit tests} & 
 			\begin{itemize}
-			\item Test checking for constraints that holds and for constraints that does not hold.
+			\item Test checking if a constraint holds or not.
 			\end{itemize} \\ \hline
 		\textbf{Integration tests} & 
 			\begin{itemize}
@@ -105,12 +108,13 @@ In this section for each component in the system core we present a list of tests
 			\item Test the creation of a meeting.
 			\item Test the editing of the fields of a meeting.
 			\item Test the recreation of a meeting.
-			\item Test the invitation of user from both the contacts of an administrator of by searching it.
 			\item Test the approval/refusal/rescheduling of a meeting.
+			\item Test the invitation of a user selecting it from the contacts of an administrator.
 			\end{itemize} \\ \hline
 		\textbf{Integration tests} & 
 			\begin{itemize}
 			\item Test the receipt of a meeting invitation that triggers an update of the schedule.
+			\item Test the invitation of a user by searching it.
 			\end{itemize} \\ \hline
 	\end{tabular}
 	\caption{Meeting Controller}
@@ -130,7 +134,7 @@ In this section for each component in the system core we present a list of tests
 			\end{itemize} \\ \hline
 		\textbf{Integration tests} & 
 			\begin{itemize}
-			\item Test sending messages from a user who's not in the meeting.
+			\item Test that it is not possible to send messages by a user who's not in the meeting. (with meeting controller)
 			\end{itemize} \\ \hline
 	\end{tabular}
 	\caption{Chat Engine}
@@ -149,7 +153,8 @@ In this section for each component in the system core we present a list of tests
 			\end{itemize} \\ \hline
 		\textbf{Integration tests} & 
 			\begin{itemize}
-			\item Test accessing the dashboard with a non-administrator (it should not be possible).
+			\item Test that it is not possible to access the dashboard by a non-administrator. (with meeting controller)
+			\item Test that it is not possible to access the dashboard long before the starting time of the meeting.
 			\end{itemize} \\ \hline
 	\end{tabular}
 	\caption{Late User Engine}
@@ -165,9 +170,11 @@ In this section for each component in the system core we present a list of tests
 			\begin{itemize}
 			\item Test uploading files with different extensions and different sizes.
 			\item Test downloading files.
-			\item Test uploading malaware (it should not be possible).
 			\end{itemize} \\ \hline
-		%\textbf{Integration tests} &  \\ \hline
+		\textbf{Integration tests} & 
+			\begin{itemize}
+			\item Test that it is not possible to download a file by a user who's not in the meeting. (with meeting controller)
+			\end{itemize}  \\ \hline
 	\end{tabular}
 	\caption{File Uploader}
 \end{table}
@@ -182,7 +189,10 @@ In this section for each component in the system core we present a list of tests
 			\begin{itemize}
 			\item Test planning travels between random points.
 			\end{itemize} \\ \hline
-		%\textbf{Integration tests} &  \\ \hline
+		\textbf{Integration tests} & 
+			\begin{itemize}
+			\item Test planning a travel subject to a given set of constraints.
+			\end{itemize} \\ \hline
 	\end{tabular}
 	\caption{Travel Planner}
 \end{table}
@@ -196,9 +206,11 @@ In this section for each component in the system core we present a list of tests
 		\textbf{Unit tests} & 
 			\begin{itemize}
 			\item Test the activation of the real-time indications engine component when a meeting is approaching.
-			\item Test the indications by following them and checking they are right; requires someone physically going around.
 			\end{itemize} \\ \hline
-		%\textbf{Integration tests} &  \\ \hline
+		\textbf{Integration tests} & 
+			\begin{itemize}
+			\item Test the indications by following them and checking they are right; requires someone physically going around.
+			\end{itemize}   \\ \hline
 	\end{tabular}
 	\caption{Real-Time Indications Engine}
 \end{table}
@@ -211,7 +223,7 @@ In this section for each component in the system core we present a list of tests
 		\textbf{Component} & External Shortest Path Adapter \\ \hline
 		\textbf{Unit tests} & 
 			\begin{itemize}
-			\item Test toghether with the Travel Planner.
+			\item Test ``connection'' (cfr external login adapter).
 			\end{itemize} \\ \hline
 		%\textbf{Integration tests} &  \\ \hline
 	\end{tabular}
@@ -226,7 +238,8 @@ In this section for each component in the system core we present a list of tests
 		\textbf{Component} & External Geolocalization Adapter \\ \hline
 		\textbf{Unit tests} & 
 			\begin{itemize}
-			\item Test that the position of a user is always updated and precise; requires someone physically going around.
+			\item Test ``connection'' (cfr external login adapter).
+			%\item Test that the position of a user is always updated and precise; requires someone physically going around.
 			\end{itemize} \\ \hline
 		%\textbf{Integration tests} &  \\ \hline
 	\end{tabular}
@@ -262,6 +275,7 @@ In this section for each component in the system core we present a list of tests
 		\textbf{Unit tests} & 
 			\begin{itemize}
 			\item Test the update of a break multiple times by different meetings.
+			\item Test the update of a break by a meeting that makes it undoable and creates a warning.
 			\end{itemize} \\ \hline
 		%\textbf{Integration tests} & \\ \hline
 	\end{tabular}
@@ -277,11 +291,13 @@ In this section for each component in the system core we present a list of tests
 		\textbf{Unit tests} & 
 			\begin{itemize}
 			\item Test the creation of a new rescheduling proposal.
-			\item Test the approval/rejection of a rescheduling proposal by an administrator.
-			\item Test and the polling of a rescheduling proposal by an administrator.
+			\item Test the polling of a rescheduling proposal by an administrator.
 			\item Test voting on a poll and sending the last vote, that should trigger an automatic rescheduling approval/rejection.
 			\end{itemize} \\ \hline
-		%\textbf{Integration tests} & \\ \hline
+		\textbf{Integration tests} & 
+			\begin{itemize}
+			\item Test the approval/rejection of a rescheduling proposal by an administrator.
+			\end{itemize} \\ \hline
 	\end{tabular}
 	\caption{Rescheduling Engine}
 \end{table}
@@ -294,15 +310,17 @@ In this section for each component in the system core we present a list of tests
 		\textbf{Component} & Notification Engine \\ \hline
 		\textbf{Unit tests} & 
 			\begin{itemize}
-			\item Test the gathering of all the notification for a user who has lots of meetings, breaks, messages not read, ....
+			\item Test the gathering of all the notification for a user who has lots of meeting invitations, breaks, warnings, etc.
 			\item Test the automatic push of notifications on the application client.
 			\end{itemize} \\ \hline
 		\textbf{Integration tests} & 
 			\begin{itemize}
-			\item Integration: test the approval/refusal/rescheduling of a meeting via the Notification Engine. 
+			\item Test the approval/refusal/rescheduling of a meeting via the Notification Engine.
 			\end{itemize} \\ \hline
 	\end{tabular}
 	\caption{Notification Engine}
 \end{table}
+
+\subsubsection{Integration Tests}
 
 \clearpage
