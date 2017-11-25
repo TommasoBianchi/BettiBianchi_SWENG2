@@ -28,8 +28,8 @@ In this section for each component in the system core we present a list of tests
 		\textbf{Component} & External Login Adapter \\ \hline
 		\textbf{Unit tests} & 
 			\begin{itemize}
-			\item Test [change this word](login) via external login provider.
-			\item Test [change this word](login) with different external login providers.
+			\item Test correct communication towards an external login provider.
+			\item Test correct communication towards multiple different external login providers.
 			\end{itemize} \\ \hline
 	\end{tabular}
 	\caption{External Login Adapter Test}
@@ -185,7 +185,8 @@ In this section for each component in the system core we present a list of tests
 		\textbf{Component} & External Shortest Path Adapter \\ \hline
 		\textbf{Unit tests} & 
 			\begin{itemize}
-			\item Test ``connection'' (cfr external login adapter).
+			\item Test correct communication towards the external shortest path provider.
+			\item Test that a path is always returned by the external shortest path provider. 
 			\end{itemize} \\ \hline
 	\end{tabular}
 	\caption{External Shortest Path Adapter Tests}
@@ -199,8 +200,8 @@ In this section for each component in the system core we present a list of tests
 		\textbf{Component} & External Geolocalization Adapter \\ \hline
 		\textbf{Unit tests} & 
 			\begin{itemize}
-			\item Test ``connection'' (cfr external login adapter).
-			%\item Test that the position of a user is always updated and precise; requires someone physically going around.
+			\item Test correct communication towards the external geolocalization provider.
+			\item Test that is always possible to retrieve the correct position of a user via the external geolocalization provider; requires someone physically going around.
 			\end{itemize} \\ \hline
 	\end{tabular}
 	\caption{External Geolocalization Adapter Tests}
