@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  starting_hour: 2017-11-28 15:47:26
+  day_of_the_week: 1
+  name: MyString
+
+two:
+  starting_hour: 2017-11-28 15:47:26
+  day_of_the_week: 1
+  name: MyString

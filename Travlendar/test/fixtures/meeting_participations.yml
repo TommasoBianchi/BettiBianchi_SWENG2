@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  is_admin: false
+  is_consistent: false
+  response_status: 1
+
+two:
+  is_admin: false
+  is_consistent: false
+  response_status: 1

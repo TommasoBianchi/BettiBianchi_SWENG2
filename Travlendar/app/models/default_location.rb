@@ -1,0 +1,3 @@
+class DefaultLocation < ApplicationRecord
+	
+end

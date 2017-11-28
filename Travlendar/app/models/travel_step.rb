@@ -1,0 +1,2 @@
+class TravelStep < ApplicationRecord
+end

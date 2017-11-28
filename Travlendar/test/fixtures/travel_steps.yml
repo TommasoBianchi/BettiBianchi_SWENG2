@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  travel_mean: 1
+  start_time: 2017-11-28 15:55:04
+  end_time: 2017-11-28 15:55:04
+  distance: 
+
+two:
+  travel_mean: 1
+  start_time: 2017-11-28 15:55:04
+  end_time: 2017-11-28 15:55:04
+  distance: 

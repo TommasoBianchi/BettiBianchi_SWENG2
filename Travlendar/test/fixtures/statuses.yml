@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  type: 1
+  from: 2017-11-28 15:33:27
+  to: 2017-11-28 15:33:27
+
+two:
+  type: 1
+  from: 2017-11-28 15:33:27
+  to: 2017-11-28 15:33:27
