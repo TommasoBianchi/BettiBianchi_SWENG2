@@ -19,3 +19,5 @@ end
 for i in 1..10 do
 	user = User.create({name: 'Pinco' + i.to_s, surname: 'Pallo' + i.to_s, password: '0000', nickname: 'PP' + i.to_s})
 end
+
+email = Email.create({email: 'bettix44@gmail.com'}) 
