@@ -4,9 +4,17 @@ class User < ApplicationRecord
 	has_many :social_users
 	has_many :socials, through: :social_users
 	has_many :emails
+	has_one :email, foreign_key: :primary_email
 	has_many :breaks
 	has_many :statuses
-	has_many :contacts
-	has_many :users, through: :contacts
-	has_one :email
+
+	has_and_belongs_to_many :contacts, class_name: "User", 
+                                     join_table: "contacts",
+                                     foreign_key: "from_user",
+                                     association_foreign_key: "to_user"
+
+
+	#has_many :contacts, foreign_key: :from_user
+	#has_many :users, through: :contacts #, foreign_key: :from_user
+	#has_many :users, through: :contacts, foreign_key: :to_user
 end
