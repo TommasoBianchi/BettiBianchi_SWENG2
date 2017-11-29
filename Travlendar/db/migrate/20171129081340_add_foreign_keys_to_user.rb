@@ -25,6 +25,6 @@ class AddForeignKeysToUser < ActiveRecord::Migration[5.1]
   	add_column :contacts, :from_user, :integer 
   	add_foreign_key :contacts, :users, column: :from_user
   	add_column :contacts, :to_user, :integer 
-  	add_foreign_key :contacts, :groups, column: :to_user
+  	add_foreign_key :contacts, :users, column: :to_user
   end
 end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171128151444) do
+ActiveRecord::Schema.define(version: 20171129081340) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -25,6 +25,7 @@ ActiveRecord::Schema.define(version: 20171128151444) do
     t.integer "day_of_the_week"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "user_id"
   end
 
   create_table "categories", force: :cascade do |t|
@@ -42,6 +43,8 @@ ActiveRecord::Schema.define(version: 20171128151444) do
   create_table "contacts", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "from_user"
+    t.integer "to_user"
   end
 
   create_table "default_locations", force: :cascade do |t|
@@ -56,11 +59,14 @@ ActiveRecord::Schema.define(version: 20171128151444) do
     t.string "email"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "user_id"
   end
 
   create_table "group_users", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "user_id"
+    t.integer "group_id"
   end
 
   create_table "groups", force: :cascade do |t|
@@ -105,6 +111,8 @@ ActiveRecord::Schema.define(version: 20171128151444) do
     t.string "link"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "user_id"
+    t.integer "social_id"
   end
 
   create_table "socials", force: :cascade do |t|
@@ -120,6 +128,7 @@ ActiveRecord::Schema.define(version: 20171128151444) do
     t.datetime "to"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "user_id"
   end
 
   create_table "subjects", force: :cascade do |t|
@@ -158,6 +167,7 @@ ActiveRecord::Schema.define(version: 20171128151444) do
     t.string "preference_list"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "primary_email"
   end
 
   create_table "values", force: :cascade do |t|
@@ -166,4 +176,14 @@ ActiveRecord::Schema.define(version: 20171128151444) do
     t.datetime "updated_at", null: false
   end
 
+  add_foreign_key "breaks", "users"
+  add_foreign_key "contacts", "users", column: "from_user"
+  add_foreign_key "contacts", "users", column: "to_user"
+  add_foreign_key "emails", "users"
+  add_foreign_key "group_users", "groups"
+  add_foreign_key "group_users", "users"
+  add_foreign_key "social_users", "socials"
+  add_foreign_key "social_users", "users"
+  add_foreign_key "statuses", "users"
+  add_foreign_key "users", "emails", column: "primary_email"
 end
