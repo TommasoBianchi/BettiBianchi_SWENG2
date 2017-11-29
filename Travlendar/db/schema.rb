@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171129081340) do
+ActiveRecord::Schema.define(version: 20171129230531) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -38,6 +38,7 @@ ActiveRecord::Schema.define(version: 20171129081340) do
     t.integer "travel_mean"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "user_id"
   end
 
   create_table "contacts", force: :cascade do |t|
@@ -53,6 +54,8 @@ ActiveRecord::Schema.define(version: 20171129081340) do
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "user_id"
+    t.integer "location_id"
   end
 
   create_table "emails", force: :cascade do |t|
@@ -89,6 +92,8 @@ ActiveRecord::Schema.define(version: 20171129081340) do
     t.integer "response_status"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "user_id"
+    t.integer "meeting_id"
   end
 
   create_table "meetings", force: :cascade do |t|
@@ -98,6 +103,7 @@ ActiveRecord::Schema.define(version: 20171129081340) do
     t.text "abstract"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "location_id"
   end
 
   create_table "operators", force: :cascade do |t|
@@ -144,6 +150,7 @@ ActiveRecord::Schema.define(version: 20171129081340) do
     t.decimal "distance"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "travel_id"
   end
 
   create_table "travels", force: :cascade do |t|
@@ -153,6 +160,7 @@ ActiveRecord::Schema.define(version: 20171129081340) do
     t.decimal "distance"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "meeting_participation_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -177,13 +185,21 @@ ActiveRecord::Schema.define(version: 20171129081340) do
   end
 
   add_foreign_key "breaks", "users"
+  add_foreign_key "constraints", "users"
   add_foreign_key "contacts", "users", column: "from_user"
   add_foreign_key "contacts", "users", column: "to_user"
+  add_foreign_key "default_locations", "locations"
+  add_foreign_key "default_locations", "users"
   add_foreign_key "emails", "users"
   add_foreign_key "group_users", "groups"
   add_foreign_key "group_users", "users"
+  add_foreign_key "meeting_participations", "meetings"
+  add_foreign_key "meeting_participations", "users"
+  add_foreign_key "meetings", "locations"
   add_foreign_key "social_users", "socials"
   add_foreign_key "social_users", "users"
   add_foreign_key "statuses", "users"
+  add_foreign_key "travel_steps", "travels"
+  add_foreign_key "travels", "meeting_participations"
   add_foreign_key "users", "emails", column: "primary_email"
 end
