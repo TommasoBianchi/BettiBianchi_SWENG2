@@ -23,6 +23,7 @@ NUM_EMAILS_PER_USER = 2
 #NUM_STATUSES_PER_USER = 2
 NUM_CONTACTS_PER_USER = 3
 NUM_USERS = 10
+NUM_MEETINGS = 4
 
 for i in 1..NUM_GROUPS do
 	Group.create({name: 'Group' + i.to_s})
@@ -54,4 +55,13 @@ for i in 1..NUM_USERS do
 		end
 		user.contacts.push(User.find(j))
 	end
+end
+
+location = Location.create({longitude: 0, latitude: 0, description: "Polo Nord"})
+
+for i in 1..NUM_MEETINGS do
+  new_start_date = DateTime.new(2017, 6+i, 29, 12, 35, 0)
+  end_date = DateTime.new(2017, 6+i, 29, 14, 35, 0)
+	meeting = Meeting.create({location_id: location.id, title: 'NewMeeting' + i.to_s})
+  meeting.start_date.push(new_start_date)
 end

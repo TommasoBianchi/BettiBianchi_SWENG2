@@ -8,12 +8,14 @@ class User < ApplicationRecord
 	has_many :breaks
 	has_many :statuses
 
-	has_and_belongs_to_many :contacts, class_name: "User", 
+	has_and_belongs_to_many :contacts, class_name: "User",
                                      join_table: "contacts",
                                      foreign_key: "from_user",
                                      association_foreign_key: "to_user"
 
-
+  has_many :default_locations
+	has_many :meeting_participations
+	has_many :constraints
 	#has_many :contacts, foreign_key: :from_user
 	#has_many :users, through: :contacts #, foreign_key: :from_user
 	#has_many :users, through: :contacts, foreign_key: :to_user
