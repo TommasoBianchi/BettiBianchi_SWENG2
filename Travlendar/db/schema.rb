@@ -16,7 +16,7 @@ ActiveRecord::Schema.define(version: 20171130204914) do
   enable_extension "plpgsql"
 
   create_table "breaks", force: :cascade do |t|
-    t.integer "duration", default: 0, null: false
+    t.integer "duration", null: false
     t.string "name", null: false
     t.integer "day_of_the_week"
     t.datetime "created_at", null: false
