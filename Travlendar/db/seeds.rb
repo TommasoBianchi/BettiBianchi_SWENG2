@@ -25,6 +25,7 @@ NUM_CONTACTS_PER_USER = 3
 NUM_BREAKS_PER_USER = 1
 NUM_USERS = 10
 NUM_MEETINGS = 4
+NUM_CATEGORIES = 10
 
 for i in 1..NUM_GROUPS do
 	Group.create({name: 'Group' + i.to_s})
@@ -49,7 +50,7 @@ for i in 1..NUM_USERS do
 		end_time_slot = (j * 200) % (24 * 60)	# represented in minutes after midnight
 		default_time = (start_time_slot + end_time_slot) / 2
 		duration = (end_time_slot - start_time_slot) / 10
-		b = Break.create({default_time: default_time, start_time_slot: start_time_slot, end_time_slot: end_time_slot, 
+		b = Break.create({default_time: default_time, start_time_slot: start_time_slot, end_time_slot: end_time_slot,
 			duration: duration, name: 'Break' + j.to_s, day_of_the_week: j % 7, user_id: i})
 	end
 
@@ -73,4 +74,21 @@ for i in 1..NUM_USERS do
 		end
 		user.contacts.push(User.find(j))
 	end
+
+  for i in 1..NUM_CATEGORIES do
+    cat = Category.create({name: 'category' + i.to_s, superclass_id: 1})
+  end
+
+#  for i in 1..NUM_CATEGORIES do
+#    j = rand(1..NUM_CATEGORIES)
+#    while j == i do
+#			j = rand(1..NUM_CATEGORIES)
+#		end
+#    Category.find(i).superclass_id = Category.find(j).id
+#  end
+
+  subject = Subject.create({name: "firstSubject"})
+  operator = Operator.create({description: "firstOperator", subject_id: subject.id})
+  value = Value.create({value: "firstValue", subject_id: subject.id})
+  constraint = Constraint.create({travel_mean: 1, user_id: User.find(1).id, subject_id: subject.id, operator_id: operator.id, value_id: value.id})
 end
