@@ -57,7 +57,7 @@ for i in 1..NUM_USERS do
 	end
 end
 
-location = Location.create({longitude: 0, latitude: 0, description: "Polo Nord"})
+location = Location.create({latitude: 37.4133028, longitude: -122.1513074, description: "Mountain View"})
 
 for i in 1..NUM_MEETINGS do
   new_start_date = DateTime.new(2017, 6+i, 29, 12, 35, 0)
