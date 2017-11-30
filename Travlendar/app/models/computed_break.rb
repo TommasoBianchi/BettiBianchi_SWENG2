@@ -1,0 +1,2 @@
+class ComputedBreak < ApplicationRecord
+end

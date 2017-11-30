@@ -22,6 +22,7 @@ NUM_EMAILS_PER_USER = 2
 #NUM_BREAKS_PER_USER = 2
 #NUM_STATUSES_PER_USER = 2
 NUM_CONTACTS_PER_USER = 3
+NUM_BREAKS_PER_USER = 1
 NUM_USERS = 10
 NUM_MEETINGS = 4
 
@@ -43,7 +44,24 @@ for i in 1..NUM_USERS do
 		user.emails.push(email)
 	end
 
+	for j in 1..NUM_BREAKS_PER_USER do
+		start_time_slot = (j * 100) % (24 * 60)	# represented in minutes after midnight
+		end_time_slot = (j * 200) % (24 * 60)	# represented in minutes after midnight
+		default_time = (start_time_slot + end_time_slot) / 2
+		duration = (end_time_slot - start_time_slot) / 10
+		b = Break.create({default_time: default_time, start_time_slot: start_time_slot, end_time_slot: end_time_slot, 
+			duration: duration, name: 'Break' + j.to_s, day_of_the_week: j % 7, user_id: i})
+	end
+
 	user.primary_email = Email.create({email: 'Pinco' + i.to_s + '.Pallo@travlendar.com', user_id: user.id})
+end
+
+location = Location.create({latitude: 37.4133028, longitude: -122.1513074, description: "Mountain View"})
+
+for i in 1..NUM_MEETINGS do
+  new_start_date = DateTime.new(2017, i % 12, i % 28, 12, 35, 0)
+  end_date = DateTime.new(2017, i % 12, i % 28, 14, 35, 0)
+	meeting = Meeting.create({location_id: location.id, title: 'NewMeeting' + i.to_s, start_date: new_start_date, end_date: end_date})
 end
 
 for i in 1..NUM_USERS do
@@ -55,12 +73,4 @@ for i in 1..NUM_USERS do
 		end
 		user.contacts.push(User.find(j))
 	end
-end
-
-location = Location.create({latitude: 37.4133028, longitude: -122.1513074, description: "Mountain View"})
-
-for i in 1..NUM_MEETINGS do
-  new_start_date = DateTime.new(2017, 6+i, 29, 12, 35, 0)
-  end_date = DateTime.new(2017, 6+i, 29, 14, 35, 0)
-	meeting = Meeting.create({location_id: location.id, title: 'NewMeeting' + i.to_s, start_date: new_start_date, end_date: end_date})
 end

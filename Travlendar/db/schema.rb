@@ -10,26 +10,37 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171129230531) do
+ActiveRecord::Schema.define(version: 20171130091733) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "breaks", force: :cascade do |t|
-    t.time "default_time"
     t.integer "duration"
-    t.time "start_time_slot"
-    t.time "end_time_slot"
     t.string "name"
-    t.time "computed_time"
     t.integer "day_of_the_week"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "user_id"
+    t.integer "default_time"
+    t.integer "start_time_slot"
+    t.integer "end_time_slot"
   end
 
   create_table "categories", force: :cascade do |t|
     t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "computed_breaks", force: :cascade do |t|
+    t.datetime "computed_time"
+    t.datetime "start_time_slot"
+    t.datetime "end_time_slot"
+    t.integer "duration"
+    t.string "name"
+    t.boolean "is_doable"
+    t.integer "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -185,6 +196,7 @@ ActiveRecord::Schema.define(version: 20171129230531) do
   end
 
   add_foreign_key "breaks", "users"
+  add_foreign_key "computed_breaks", "users"
   add_foreign_key "constraints", "users"
   add_foreign_key "contacts", "users", column: "from_user"
   add_foreign_key "contacts", "users", column: "to_user"
