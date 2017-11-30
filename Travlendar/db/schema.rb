@@ -31,6 +31,7 @@ ActiveRecord::Schema.define(version: 20171130091733) do
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "superclass_id"
   end
 
   create_table "computed_breaks", force: :cascade do |t|
@@ -50,6 +51,9 @@ ActiveRecord::Schema.define(version: 20171130091733) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "user_id"
+    t.integer "subject_id"
+    t.integer "operator_id"
+    t.integer "value_id"
   end
 
   create_table "contacts", force: :cascade do |t|
@@ -122,6 +126,7 @@ ActiveRecord::Schema.define(version: 20171130091733) do
     t.integer "operator"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "subject_id"
   end
 
   create_table "social_users", force: :cascade do |t|
@@ -193,10 +198,14 @@ ActiveRecord::Schema.define(version: 20171130091733) do
     t.string "value"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "subject_id"
   end
 
   add_foreign_key "breaks", "users"
   add_foreign_key "computed_breaks", "users"
+  add_foreign_key "constraints", "\"values\"", column: "value_id"
+  add_foreign_key "constraints", "operators"
+  add_foreign_key "constraints", "subjects"
   add_foreign_key "constraints", "users"
   add_foreign_key "contacts", "users", column: "from_user"
   add_foreign_key "contacts", "users", column: "to_user"
@@ -208,10 +217,12 @@ ActiveRecord::Schema.define(version: 20171130091733) do
   add_foreign_key "meeting_participations", "meetings"
   add_foreign_key "meeting_participations", "users"
   add_foreign_key "meetings", "locations"
+  add_foreign_key "operators", "subjects"
   add_foreign_key "social_users", "socials"
   add_foreign_key "social_users", "users"
   add_foreign_key "statuses", "users"
   add_foreign_key "travel_steps", "travels"
   add_foreign_key "travels", "meeting_participations"
   add_foreign_key "users", "emails", column: "primary_email"
+  add_foreign_key "values", "subjects"
 end
