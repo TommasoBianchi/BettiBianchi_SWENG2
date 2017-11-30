@@ -10,44 +10,44 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171130091733) do
+ActiveRecord::Schema.define(version: 20171130204914) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "breaks", force: :cascade do |t|
-    t.integer "duration"
-    t.string "name"
+    t.integer "duration", default: 0, null: false
+    t.string "name", null: false
     t.integer "day_of_the_week"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "user_id"
-    t.integer "default_time"
-    t.integer "start_time_slot"
-    t.integer "end_time_slot"
+    t.integer "default_time", null: false
+    t.integer "start_time_slot", null: false
+    t.integer "end_time_slot", null: false
   end
 
   create_table "categories", force: :cascade do |t|
-    t.string "name"
+    t.string "name", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "superclass_id"
   end
 
   create_table "computed_breaks", force: :cascade do |t|
-    t.datetime "computed_time"
-    t.datetime "start_time_slot"
-    t.datetime "end_time_slot"
-    t.integer "duration"
-    t.string "name"
-    t.boolean "is_doable"
+    t.datetime "computed_time", null: false
+    t.datetime "start_time_slot", null: false
+    t.datetime "end_time_slot", null: false
+    t.integer "duration", null: false
+    t.string "name", null: false
+    t.boolean "is_doable", default: true, null: false
     t.integer "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
   create_table "constraints", force: :cascade do |t|
-    t.integer "travel_mean"
+    t.integer "travel_mean", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "user_id"
@@ -64,9 +64,9 @@ ActiveRecord::Schema.define(version: 20171130091733) do
   end
 
   create_table "default_locations", force: :cascade do |t|
-    t.time "starting_hour"
-    t.integer "day_of_the_week"
-    t.string "name"
+    t.integer "starting_hour", null: false
+    t.integer "day_of_the_week", null: false
+    t.string "name", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "user_id"
@@ -74,10 +74,11 @@ ActiveRecord::Schema.define(version: 20171130091733) do
   end
 
   create_table "emails", force: :cascade do |t|
-    t.string "email"
+    t.string "email", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "user_id"
+    t.index ["email"], name: "index_emails_on_email", unique: true
   end
 
   create_table "group_users", force: :cascade do |t|
@@ -88,23 +89,31 @@ ActiveRecord::Schema.define(version: 20171130091733) do
   end
 
   create_table "groups", force: :cascade do |t|
-    t.string "name"
+    t.string "name", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
+  create_table "incomplete_users", force: :cascade do |t|
+    t.string "password", null: false
+    t.string "email", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["email"], name: "index_incomplete_users_on_email", unique: true
+  end
+
   create_table "locations", force: :cascade do |t|
-    t.decimal "longitude"
-    t.decimal "latitude"
-    t.string "description"
+    t.decimal "longitude", null: false
+    t.decimal "latitude", null: false
+    t.string "description", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
   create_table "meeting_participations", force: :cascade do |t|
-    t.boolean "is_admin"
-    t.boolean "is_consistent"
-    t.integer "response_status"
+    t.boolean "is_admin", default: false, null: false
+    t.boolean "is_consistent", null: false
+    t.integer "response_status", default: 0
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "user_id"
@@ -112,9 +121,9 @@ ActiveRecord::Schema.define(version: 20171130091733) do
   end
 
   create_table "meetings", force: :cascade do |t|
-    t.datetime "start_date"
-    t.datetime "end_date"
-    t.string "title"
+    t.datetime "start_date", null: false
+    t.datetime "end_date", null: false
+    t.string "title", null: false
     t.text "abstract"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -122,15 +131,15 @@ ActiveRecord::Schema.define(version: 20171130091733) do
   end
 
   create_table "operators", force: :cascade do |t|
-    t.string "description"
-    t.integer "operator"
+    t.string "description", null: false
+    t.integer "operator", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "subject_id"
   end
 
   create_table "social_users", force: :cascade do |t|
-    t.string "link"
+    t.string "link", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "user_id"
@@ -138,64 +147,65 @@ ActiveRecord::Schema.define(version: 20171130091733) do
   end
 
   create_table "socials", force: :cascade do |t|
-    t.string "name"
-    t.string "icon_path"
+    t.string "name", null: false
+    t.string "icon_path", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
   create_table "statuses", force: :cascade do |t|
-    t.integer "type"
-    t.datetime "from"
-    t.datetime "to"
+    t.integer "type", default: 0, null: false
+    t.datetime "from", null: false
+    t.datetime "to", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "user_id"
   end
 
   create_table "subjects", force: :cascade do |t|
-    t.string "name"
+    t.string "name", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
   create_table "travel_steps", force: :cascade do |t|
-    t.integer "travel_mean"
-    t.datetime "start_time"
-    t.datetime "end_time"
-    t.decimal "distance"
+    t.integer "travel_mean", null: false
+    t.datetime "start_time", null: false
+    t.datetime "end_time", null: false
+    t.decimal "distance", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "travel_id"
   end
 
   create_table "travels", force: :cascade do |t|
-    t.datetime "start_time"
-    t.datetime "end_time"
-    t.integer "travel_mean"
-    t.decimal "distance"
+    t.datetime "start_time", null: false
+    t.datetime "end_time", null: false
+    t.integer "travel_mean", null: false
+    t.decimal "distance", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "meeting_participation_id"
   end
 
   create_table "users", force: :cascade do |t|
-    t.string "name"
-    t.string "surname"
-    t.string "nickname"
-    t.string "password"
+    t.string "name", null: false
+    t.string "surname", null: false
+    t.string "nickname", null: false
+    t.string "password", null: false
     t.string "company"
     t.string "website"
     t.text "brief"
     t.string "phone_number"
-    t.string "preference_list"
+    t.string "preference_list", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "primary_email"
+    t.index ["nickname"], name: "index_users_on_nickname", unique: true
   end
 
   create_table "values", force: :cascade do |t|
-    t.string "value"
+    t.string "value", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "subject_id"

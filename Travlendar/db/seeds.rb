@@ -103,13 +103,13 @@ for i in 1..NUM_CATEGORIES do
   cat = Category.create({name: 'category' + i.to_s, superclass_id: 1})
 end
 
-#  for i in 1..NUM_CATEGORIES do
-#    j = rand(1..NUM_CATEGORIES)
-#    while j == i do
-#			j = rand(1..NUM_CATEGORIES)
-#		end
-#    Category.find(i).superclass_id = Category.find(j).id
-#  end
+for i in 1..NUM_CATEGORIES do
+	j = rand(1..NUM_CATEGORIES)
+	while j == i do
+		j = rand(1..NUM_CATEGORIES)
+	end
+	Category.find(i).superclass_id = Category.find(j).id
+end
 
 subject = Subject.create({name: "firstSubject"})
 operator = Operator.create({description: "firstOperator", subject_id: subject.id})
