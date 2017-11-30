@@ -26,6 +26,8 @@ NUM_BREAKS_PER_USER = 1
 NUM_USERS = 10
 NUM_MEETINGS = 4
 NUM_CATEGORIES = 10
+NUM_LOCATIONS = 5
+NUM_TRAVELS = 5
 
 for i in 1..NUM_GROUPS do
 	Group.create({name: 'Group' + i.to_s})
@@ -57,14 +59,6 @@ for i in 1..NUM_USERS do
 	user.primary_email = Email.create({email: 'Pinco' + i.to_s + '.Pallo@travlendar.com', user_id: user.id})
 end
 
-location = Location.create({latitude: 37.4133028, longitude: -122.1513074, description: "Mountain View"})
-
-for i in 1..NUM_MEETINGS do
-  new_start_date = DateTime.new(2017, i % 12, i % 28, 12, 35, 0)
-  end_date = DateTime.new(2017, i % 12, i % 28, 14, 35, 0)
-	meeting = Meeting.create({location_id: location.id, title: 'NewMeeting' + i.to_s, start_date: new_start_date, end_date: end_date})
-end
-
 for i in 1..NUM_USERS do
 	user = User.find(i)
 	for k in 1..NUM_CONTACTS_PER_USER do
@@ -74,10 +68,40 @@ for i in 1..NUM_USERS do
 		end
 		user.contacts.push(User.find(j))
 	end
+end
 
-  for i in 1..NUM_CATEGORIES do
-    cat = Category.create({name: 'category' + i.to_s, superclass_id: 1})
-  end
+location = Location.create({latitude: 37.4133028, longitude: -122.1513074, description: "Mountain View"})
+
+for i in 1..NUM_MEETINGS do
+  new_start_date = DateTime.new(2017, i % 12, i % 28, 12, 35, 0)
+  end_date = DateTime.new(2017, i % 12, i % 28, 14, 35, 0)
+	meeting = Meeting.create({location_id: location.id, title: 'NewMeeting' + i.to_s, start_date: new_start_date, end_date: end_date})
+end
+
+meetingParticipationNumber = 0
+for i in 1..NUM_USERS do
+	for j in 1..NUM_MEETINGS do
+		k = rand(1..10)
+		if k > 8
+			MeetingParticipation.create({meeting_id: Meeting.find(j).id, user_id: User.find(i).id})
+			meetingParticipationNumber = meetingParticipationNumber + 1
+		end
+	end
+end
+
+for i in 1..NUM_TRAVELS do
+	Travel.create({meeting_participation_id: MeetingParticipation.find(i % meetingParticipationNumber)})
+end
+
+for i in 1..NUM_LOCATIONS do
+	r1 = rand(-179..179)
+	r2 = rand(-179..179)
+	Location.create({latitude: r1, longitude: r2})
+end
+
+for i in 1..NUM_CATEGORIES do
+  cat = Category.create({name: 'category' + i.to_s, superclass_id: 1})
+end
 
 #  for i in 1..NUM_CATEGORIES do
 #    j = rand(1..NUM_CATEGORIES)
@@ -87,8 +111,7 @@ for i in 1..NUM_USERS do
 #    Category.find(i).superclass_id = Category.find(j).id
 #  end
 
-  subject = Subject.create({name: "firstSubject"})
-  operator = Operator.create({description: "firstOperator", subject_id: subject.id})
-  value = Value.create({value: "firstValue", subject_id: subject.id})
-  constraint = Constraint.create({travel_mean: 1, user_id: User.find(1).id, subject_id: subject.id, operator_id: operator.id, value_id: value.id})
-end
+subject = Subject.create({name: "firstSubject"})
+operator = Operator.create({description: "firstOperator", subject_id: subject.id})
+value = Value.create({value: "firstValue", subject_id: subject.id})
+constraint = Constraint.create({travel_mean: 1, user_id: User.find(1).id, subject_id: subject.id, operator_id: operator.id, value_id: value.id})
