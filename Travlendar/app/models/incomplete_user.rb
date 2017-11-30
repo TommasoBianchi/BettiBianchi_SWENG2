@@ -1,0 +1,2 @@
+class IncompleteUser < ApplicationRecord
+end
