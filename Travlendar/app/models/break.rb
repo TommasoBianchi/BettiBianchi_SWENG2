@@ -9,7 +9,6 @@ class Break < ApplicationRecord
 	private
 	def date_consistency
 		if [default_time.blank?, start_time_slot.blank?, end_time_slot.blank?].any?
-			errors.add(:break, 'default_time, start_time_slot and end_time_slot must be present')
 			return
 		end
 		if default_time < start_time_slot or default_time > end_time_slot
@@ -19,7 +18,6 @@ class Break < ApplicationRecord
 
 	def day_of_the_week_correctness
 		if day_of_the_week.blank?
-			errors.add(:day_of_the_week, 'must be present')
 			return
 		end
 		if day_of_the_week < 0 or day_of_the_week > 6
