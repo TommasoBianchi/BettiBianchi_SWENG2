@@ -10,13 +10,13 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171130204914) do
+ActiveRecord::Schema.define(version: 20171201093110) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "breaks", force: :cascade do |t|
-    t.integer "duration", default: 0, null: false
+    t.integer "duration", null: false
     t.string "name", null: false
     t.integer "day_of_the_week"
     t.datetime "created_at", null: false
@@ -200,7 +200,7 @@ ActiveRecord::Schema.define(version: 20171130204914) do
     t.string "preference_list", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "primary_email"
+    t.integer "primary_email_id"
     t.index ["nickname"], name: "index_users_on_nickname", unique: true
   end
 
@@ -233,6 +233,6 @@ ActiveRecord::Schema.define(version: 20171130204914) do
   add_foreign_key "statuses", "users"
   add_foreign_key "travel_steps", "travels"
   add_foreign_key "travels", "meeting_participations"
-  add_foreign_key "users", "emails", column: "primary_email"
+  add_foreign_key "users", "emails", column: "primary_email_id"
   add_foreign_key "values", "subjects"
 end
