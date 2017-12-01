@@ -14,11 +14,24 @@ class User < ApplicationRecord
 
   	has_many :default_locations
 	has_many :meeting_participations
-	has_many :constraints
-
-	
+	has_many :constraints	
 
 	def primary_email
 		return Email.find(self.primary_email_id)
+	end
+
+	validates :name, :surname, :nickname, :password, :preference_list, presence: true
+	validates :nickname, :primary_email_id, uniqueness: true
+
+	validate :primary_email_in_emails
+
+	private
+	def primary_email_in_emails
+		if primary_email_id.blank?
+			return
+		end
+		unless emails.where(id: primary_email_id).count == 1
+			errors.add(:primary_email_id, 'must be included in emails')
+		end
 	end
 end
