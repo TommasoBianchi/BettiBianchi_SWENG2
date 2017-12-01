@@ -11,7 +11,7 @@ class Social < ApplicationRecord
 		if icon_path.blank?
 			return
 		end
-		if File.file? icon_path
+		unless File.file? icon_path
 			errors.add(:icon_path, 'must point to an existing valid file')
 		end
 	end

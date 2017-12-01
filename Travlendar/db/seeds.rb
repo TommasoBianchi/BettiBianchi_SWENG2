@@ -44,12 +44,12 @@ for i in 1..NUM_SOCIALS do
 end
 
 for i in 1..NUM_USERS do
-	user = User.create({name: 'Pinco' + i.to_s, surname: 'Pallo' + i.to_s, password: '0000', nickname: 'PP' + i.to_s, preference_list: '1302'})
+	user = User.new({name: 'Pinco' + i.to_s, surname: 'Pallo' + i.to_s, password: '0000', nickname: 'PP' + i.to_s, preference_list: '1302'})
 	user.groups.push(Group.find(i % NUM_GROUPS + 1))
 	SocialUser.create({social_id: Social.find(i % NUM_SOCIALS + 1).id, link: 'www.linkedin.com/PincoPallo' + i.to_s, user_id: user.id})
-
+	
 	for j in 1..NUM_EMAILS_PER_USER do
-		email = Email.create({email: 'Pinco' + i.to_s + '.Pallo.' + j.to_s + '@travlendar.com', user_id: user.id})
+		email = Email.create({email: 'Pinco' + i.to_s + '.Pallo.' + j.to_s + '@travlendar.com', user_id: i})
 		user.emails.push(email)
 	end
 
@@ -61,9 +61,17 @@ for i in 1..NUM_USERS do
 		b = Break.create({default_time: default_time, start_time_slot: start_time_slot, end_time_slot: end_time_slot,
 			duration: duration, name: 'Break' + j.to_s, day_of_the_week: j % 7, user_id: i})
 	end
-
-	user.primary_email_id = Email.create({email: 'Pinco' + i.to_s + '.Pallo@travlendar.com', user_id: user.id})
+	primary_email = Email.create({email: 'Pinco' + i.to_s + '.Pallo@travlendar.com', user_id: i})
+	puts(primary_email)
+	user.primary_email_id = primary_email.id
+	
+	unless user.save()
+		user.errors.full_messages.each do |message|
+			puts(message)
+		end
+	end
 end
+
 
 for i in 1..NUM_USERS do
 	user = User.find(i)
