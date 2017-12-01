@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171201093110) do
+ActiveRecord::Schema.define(version: 20171201100833) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -118,6 +118,8 @@ ActiveRecord::Schema.define(version: 20171201093110) do
     t.datetime "updated_at", null: false
     t.integer "user_id"
     t.integer "meeting_id"
+    t.integer "arriving_travel_id"
+    t.integer "leaving_travel_id"
   end
 
   create_table "meetings", force: :cascade do |t|
@@ -185,7 +187,6 @@ ActiveRecord::Schema.define(version: 20171201093110) do
     t.decimal "distance", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "meeting_participation_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -225,6 +226,8 @@ ActiveRecord::Schema.define(version: 20171201093110) do
   add_foreign_key "group_users", "groups"
   add_foreign_key "group_users", "users"
   add_foreign_key "meeting_participations", "meetings"
+  add_foreign_key "meeting_participations", "travels", column: "arriving_travel_id"
+  add_foreign_key "meeting_participations", "travels", column: "leaving_travel_id"
   add_foreign_key "meeting_participations", "users"
   add_foreign_key "meetings", "locations"
   add_foreign_key "operators", "subjects"
@@ -232,7 +235,6 @@ ActiveRecord::Schema.define(version: 20171201093110) do
   add_foreign_key "social_users", "users"
   add_foreign_key "statuses", "users"
   add_foreign_key "travel_steps", "travels"
-  add_foreign_key "travels", "meeting_participations"
   add_foreign_key "users", "emails", column: "primary_email_id"
   add_foreign_key "values", "subjects"
 end
