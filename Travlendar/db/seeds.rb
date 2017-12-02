@@ -29,10 +29,10 @@ NUM_CATEGORIES = 10
 NUM_LOCATIONS = 5
 NUM_TRAVELS = 5
 NUM_SUBJECTS = 5
-NUM_OPERATORS = 4
+NUM_OPERATORS = 3
 NUM_VALUES = 10
 NUM_CONSTRAINTS = 15
-NUM_TRAVEL_MEANS = 4
+NUM_TRAVEL_MEANS = 3
 MAX_DISTANCE = 20
 
 for i in 1..NUM_GROUPS do
@@ -44,10 +44,10 @@ for i in 1..NUM_SOCIALS do
 end
 
 for i in 1..NUM_USERS do
-	user = User.new({name: 'Pinco' + i.to_s, surname: 'Pallo' + i.to_s, password: '0000', nickname: 'PP' + i.to_s, preference_list: '1302'})
+	user = User.create({name: 'Pinco' + i.to_s, surname: 'Pallo' + i.to_s, password: '0000', nickname: 'PP' + i.to_s, preference_list: '1302'})
 	user.groups.push(Group.find(i % NUM_GROUPS + 1))
 	SocialUser.create({social_id: Social.find(i % NUM_SOCIALS + 1).id, link: 'www.linkedin.com/PincoPallo' + i.to_s, user_id: user.id})
-	
+
 	for j in 1..NUM_EMAILS_PER_USER do
 		email = Email.create({email: 'Pinco' + i.to_s + '.Pallo.' + j.to_s + '@travlendar.com', user_id: i})
 		user.emails.push(email)
@@ -61,10 +61,14 @@ for i in 1..NUM_USERS do
 		b = Break.create({default_time: default_time, start_time_slot: start_time_slot, end_time_slot: end_time_slot,
 			duration: duration, name: 'Break' + j.to_s, day_of_the_week: j % 7, user_id: i})
 	end
+  puts("sono prima dell'email create")
+  Email.create({email: 'Pincoo' + i.to_s + '.Pallo@travlendar.com', user_id: i}).errors.full_messages.each do |message|
+    puts(message)
+  end
 	primary_email = Email.create({email: 'Pinco' + i.to_s + '.Pallo@travlendar.com', user_id: i})
-	puts(primary_email)
+	puts(primary_email.id)
 	user.primary_email_id = primary_email.id
-	
+  puts("sono prima del save")
 	unless user.save()
 		user.errors.full_messages.each do |message|
 			puts(message)
@@ -95,16 +99,17 @@ end
 for i in 1..NUM_TRAVELS do
 	starting_datetime = DateTime.new(2017, i % 12, i % 28, (10+i) % 24, 35, 0)
 	ending_datetime = DateTime.new(2017, i % 12, i % 28, (11+i) % 24, 35, 0)
-	travel_mean_used = rand(1..NUM_TRAVEL_MEANS)
+	travel_mean_used = rand(0..NUM_TRAVEL_MEANS)
 	distance = rand() * MAX_DISTANCE
 	Travel.create({start_time: starting_datetime, end_time: ending_datetime, travel_mean: travel_mean_used, distance: distance})
 end
+
 
 for i in 1..NUM_USERS do
 	for j in 1..NUM_MEETINGS do
 		k = rand(1..10)
 		if k > 8
-			MeetingParticipation.create({meeting_id: Meeting.find(j % NUM_MEETINGS + 1).id, user_id: User.find(i % NUM_USERS + 1).id, is_consistent: true, 
+			MeetingParticipation.create({meeting_id: Meeting.find(j % NUM_MEETINGS + 1).id, user_id: User.find(i % NUM_USERS + 1).id, is_consistent: true,
 				arriving_travel_id: Travel.find(i % NUM_TRAVELS + 1).id, leaving_travel_id: Travel.find((i+1) % NUM_TRAVELS + 1).id})
 		end
 	end
@@ -132,16 +137,16 @@ for i in 1..NUM_SUBJECTS do
 	subject = Subject.create({name: "Subject" + i.to_s})
 end
 
-for i in 1..NUM_OPERATORS do
-	operator = Operator.create({description: "Operator" + i.to_s, subject_id: Subject.find(i % NUM_SUBJECTS + 1).id, operator: i})	
+for i in 0..NUM_OPERATORS do
+	operator = Operator.create({description: "Operator" + (i+1).to_s, subject_id: Subject.find(i % NUM_SUBJECTS + 1).id, operator: i})
 end
 
 for i in 1..NUM_VALUES do
-	value = Value.create({value: "Value" + i.to_s, subject_id: Subject.find(i % NUM_SUBJECTS + 1).id})	
-end 
+	value = Value.create({value: "Value" + i.to_s, subject_id: Subject.find(i % NUM_SUBJECTS + 1).id})
+end
 
 for i in 1..NUM_CONSTRAINTS do
 	travel_mean_used = rand(1..NUM_TRAVEL_MEANS)
-	Constraint.create({travel_mean: travel_mean_used, user_id: User.find(i % NUM_USERS + 1).id, subject_id: Subject.find(i % NUM_SUBJECTS + 1).id, 
+	Constraint.create({travel_mean: travel_mean_used, user_id: User.find(i % NUM_USERS + 1).id, subject_id: Subject.find(i % NUM_SUBJECTS + 1).id,
 		operator_id: Operator.find(i % NUM_OPERATORS + 1).id, value_id: Value.find(i % NUM_VALUES + 1).id})
 end
