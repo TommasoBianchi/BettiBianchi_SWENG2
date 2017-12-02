@@ -1,18 +1,19 @@
 class Operator < ApplicationRecord
   # This should be a constant
-  Operators = [
-  	method(:equality),
-  	method(:inequality),
-  	method(:lesser_than),
-  	method(:greater_than)
-  ]
+  #Problem that the system desn't find a methd caled equality on the class Operator, why?
+  #Operators = [
+  #	method(:inequality),
+  #  method(:equality),
+  #	method(:lesser_than),
+  #	method(:greater_than)
+  #]
 
   belongs_to :subject
   has_many :constraints
 
   validates :description, :operator, presence: true
 
-  validates :operator_correctness
+  #validate :operator_correctness
 
   private
   def operator_correctness
@@ -30,14 +31,14 @@ class Operator < ApplicationRecord
   end
 
   def inequality(a, b)
-  	return a != b 
+  	return a != b
   end
 
   def lesser_than(a, b)
-  	return a < b 
+  	return a < b
   end
 
   def greater_than(a, b)
-  	return a > b 
+  	return a > b
   end
 end

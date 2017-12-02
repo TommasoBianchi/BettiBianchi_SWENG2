@@ -3,7 +3,7 @@ class Meeting < ApplicationRecord
   has_many :meeting_participations
   has_many :users, through: :meeting_participations
 
-  validates :start_date, :end_date, :title
+  validates :start_date, :end_date, :title, presence: true
 
   validate :date_consistency
 

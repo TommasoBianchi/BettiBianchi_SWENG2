@@ -13,16 +13,17 @@ class MeetingParticipation < ApplicationRecord
 	belongs_to :arriving_travel, class_name: 'Travel', foreign_key: 'arriving_travel_id'
 	belongs_to :leaving_travel, class_name: 'Travel', foreign_key: 'leaving_travel_id'
 
-	validates :is_admin, :is_consistent, :response_status
+	validates :is_admin, :is_consistent, :response_status, presence: true
 
 	validate :response_status_correctness
 
-	private 
+	private
 	def response_status_correctness
 		if response_status.blank?
 			return
 		end
 		unless Response_statuses.values.include? response_status
 			errors.add(:response_status, "must be one between #{Response_statuses.values}")
+		end
 	end
 end

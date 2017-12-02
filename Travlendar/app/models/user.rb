@@ -14,7 +14,7 @@ class User < ApplicationRecord
 
   	has_many :default_locations
 	has_many :meeting_participations
-	has_many :constraints	
+	has_many :constraints
 
 	def primary_email
 		return Email.find(self.primary_email_id)
@@ -27,6 +27,8 @@ class User < ApplicationRecord
 
 	private
 	def primary_email_in_emails
+		puts(primary_email_id)
+		puts "****************************************"
 		if primary_email_id.blank?
 			return
 		end

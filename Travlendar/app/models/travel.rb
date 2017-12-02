@@ -7,7 +7,6 @@ class Travel < ApplicationRecord
 		biking: 3
 	}
 
-	belongs_to :meeting_participation
 	has_many :travel_steps
 
 	validates :start_time, :end_time, :distance, :travel_mean, presence: true

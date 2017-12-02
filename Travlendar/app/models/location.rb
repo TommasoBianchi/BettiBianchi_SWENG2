@@ -2,12 +2,12 @@ class Location < ApplicationRecord
   has_many :default_locations
   has_many :meetings
 
-  validate :longitude, :latitude, presence: true
+  validates :longitude, :latitude, presence: true
 
-  validates :latlong_correctness
+  validate :latlong_correctness
 
   private
-  def latlong_correctness  	
+  def latlong_correctness
 	if [latitude.blank?, longitude.blank?].any?
 		return
 	end
