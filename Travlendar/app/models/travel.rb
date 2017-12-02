@@ -1,7 +1,4 @@
 class Travel < ApplicationRecord
-<<<<<<< HEAD
-  has_many :travel_steps
-=======
 	# This should be a constant
 	Travel_means = {
 		walking: 0,
@@ -36,5 +33,4 @@ class Travel < ApplicationRecord
 			errors.add(:travel_mean, "must be one between #{Travel_means.values}")
 		end
 	end
->>>>>>> ca45ccbc30bc1e522234eee860dcc161eb69f9a8
 end
