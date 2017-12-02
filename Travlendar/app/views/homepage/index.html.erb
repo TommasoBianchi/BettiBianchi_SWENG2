@@ -1,0 +1,38 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Travlendar+: Login</title>
+</head>
+
+<body>
+<div class="outer">
+  <div id="mainWrapper">
+      <!--<div class="logoContainer">
+        <img src="Images/logoImage.jpg" class="logo">
+      </div> -->
+      <div class="logoContainer">
+        <a id="mainTitle"> Travlendar+<br></a>
+        <a id="subtitle">Organize your daily schedule!</a>
+      </div>
+        <%= form_with scope: :user, local: true do |f| %>
+      <div id="emailPasswordContainer">
+      <%= f.email_field :email, placeholder: 'Nickname/Email', type: 'email' %>
+      <%= f.password_field :password, placeholder: 'Password', type: 'password' %>
+      <%= f.submit "SIGNUP", name: 'signup', class: "button" %>
+      <%= f.submit "LOGIN", name: 'login', class: "button" %>
+      </div>
+
+
+      <% end %>
+
+      <div id="loginProvidersContainer">
+        <%= link_to image_tag("homepage/externalLogin1.png", alt: "External login provider 1", class: 'externalLoginProvider'), 'http://www.google.com' %>
+        <%= image_tag("homepage/externalLogin2.png", alt: "External login provider 2", class: 'externalLoginProvider') %>
+        <%= image_tag("homepage/externalLogin3.png", alt: "External login provider 3", class: 'externalLoginProvider') %>
+        <%= image_tag("homepage/externalLogin4.png", alt: "External login provider 4", class: 'externalLoginProvider') %>
+      </div>
+  </div>
+</div>
+</body>
+</html>
