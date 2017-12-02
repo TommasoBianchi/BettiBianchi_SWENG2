@@ -61,14 +61,8 @@ for i in 1..NUM_USERS do
 		b = Break.create({default_time: default_time, start_time_slot: start_time_slot, end_time_slot: end_time_slot,
 			duration: duration, name: 'Break' + j.to_s, day_of_the_week: j % 7, user_id: i})
 	end
-  puts("sono prima dell'email create")
-  Email.create({email: 'Pincoo' + i.to_s + '.Pallo@travlendar.com', user_id: i}).errors.full_messages.each do |message|
-    puts(message)
-  end
 	primary_email = Email.create({email: 'Pinco' + i.to_s + '.Pallo@travlendar.com', user_id: i})
-	puts(primary_email.id)
 	user.primary_email_id = primary_email.id
-  puts("sono prima del save")
 	unless user.save()
 		user.errors.full_messages.each do |message|
 			puts(message)
