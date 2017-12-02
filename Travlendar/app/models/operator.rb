@@ -8,6 +8,13 @@ class Operator < ApplicationRecord
   #	method(:greater_than)
   #]
 
+  enum status: [
+    :inequality,
+    :equality,
+    :lesser_than,
+    :greater_than
+  ]
+
   belongs_to :subject
   has_many :constraints
 

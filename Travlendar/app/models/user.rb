@@ -27,8 +27,6 @@ class User < ApplicationRecord
 
 	private
 	def primary_email_in_emails
-		puts(primary_email_id)
-		puts "****************************************"
 		if primary_email_id.blank?
 			return
 		end
