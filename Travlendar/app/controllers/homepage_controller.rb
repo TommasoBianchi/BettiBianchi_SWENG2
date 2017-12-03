@@ -4,47 +4,38 @@ class HomepageController < ApplicationController
   end
 
   def post_index
-    redirect_to complete_registration_url if params[:signup]
-    end
-
-  def to_delate
-    if
-      @user = User.new
-      email = Email.create(params[:email])
-      params.delete('email')
-      @user.emails.push(email)
-      @user.primary_email_id = email.id
-      # UserController.newSmallUser
-      if @user.save
-        redirect_to complete_registration_path
-      else
-        redirect_to error_path
-      end
+    if params[:signup]
+      flash[:success] = 'Welcome to the new User!'
+      redirect_to new_user_path
     else
-      puts('perform a login')
+      # email = Email.find_by(email: params[:homepage][:email].downcase)
+      email = Email.find_by(email: params[:homepage][:email])
+      puts(email)
+      if email && User.find_by(primary_email_id: email.id)
+        user = User.find_by(primary_email_id: email.id)
+        if user.authenticate(params[:homepage][:password])
+          log_in user
+          redirect_to user
+        end
+      else
+        flash.now[:danger] = 'Invalid email/password combination'
+        render 'index'
+      end
+      ## check presence of the user and redirect him to the homepage
+      puts(params)
     end
   end
+
+  def login; end
+
+  def destroy
+    log_out
+    redirect_to root_get_path
+    end
 
   def complete_registration
+    @old_values = { email: params['email'] }
     puts '****************************************'
-    email_hash = params.slice(:user)['user']['email']
-    params[:user].delete('email')
-    user = User.new(user_params)
-    email = Email.create(email: email_hash, user_id: user.id)
-    user.emails.push(email)
-    user.primary_email_id = email.id
-    # UserController.newSmallUser
-
-    if user.save
-      user.show
-    else
-      redirect_to error_path
-    end
-  end
-
-  private
-
-  def user_params
-    params.require(:user).permit(:name, :surname, :password, :nickname, :preference_list)
+    puts(params)
   end
 end

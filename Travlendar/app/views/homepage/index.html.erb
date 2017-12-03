@@ -14,26 +14,25 @@
       </div> -->
       <div class="logoContainer">
         <a class="mainTitle"> Travlendar+<br></a>
-        <a class="subtitle">Organize your daily schedule!</a>
+        <a class="subtitle">Organize your daily schedule!</a><br>
+        <% flash.each do |message_type, message| %>
+        <div class="alert alert-<%= message_type %>"><%= message %></div>
+      <% end %>
       </div>
       <div id="emailPasswordContainer">
-        <%= text_field_tag 'email', nil, placeholder: 'Nickname/Email', type: 'email' %>
-          <%= text_field_tag 'password', nil, placeholder: 'Password', type: 'password' %>
-
-      </div>
-      <div id="buttonsContainer">
-        <%= button_to 'SIGNUP', complete_registration_path, name: 'signup', class: "confirmationButton" %>
-          <%= button_to 'LOGIN', login_path, name: 'login', class: "confirmationButton" %>
-      </div>
-
-
+        <%= form_for(:homepage) do |f| %>
+  <%= f.text_field :email,  placeholder: 'Nickname/Email', type: 'email', id: 'emailField'%>
+<%= f.text_field :password,  placeholder: 'Password', type: 'password' %>
+  <%= f.submit 'SIGNUP', name: 'signup', class: "confirmationButton" %>
+    <%= f.submit 'LOGIN',  name: 'login', class: "confirmationButton" %>
+<% end %>
+</div>
 
       <div id="loginProvidersContainer">
         <%= link_to image_tag("homepage/externalLogin1.png", alt: "External login provider 1", class: 'externalLoginProvider'), 'http://www.google.com' %>
           <%= image_tag("homepage/externalLogin2.png", alt: "External login provider 2", class: 'externalLoginProvider') %>
             <%= image_tag("homepage/externalLogin3.png", alt: "External login provider 3", class: 'externalLoginProvider') %>
               <%= image_tag("homepage/externalLogin4.png", alt: "External login provider 4", class: 'externalLoginProvider') %>
-      </div>
     </div>
   </div>
 </body>

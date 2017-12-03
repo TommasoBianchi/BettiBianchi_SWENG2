@@ -44,7 +44,7 @@ for i in 1..NUM_SOCIALS do
 end
 
 for i in 1..NUM_USERS do
-  user = User.create(name: 'Pinco' + i.to_s, surname: 'Pallo' + i.to_s, password: '0000', nickname: 'PP' + i.to_s, preference_list: '1302')
+  user = User.create(name: 'Pinco' + i.to_s, surname: 'Pallo' + i.to_s, password: '0000', password_confirmation: '0000', nickname: 'PP' + i.to_s, preference_list: '1302')
   user.groups.push(Group.find(i % NUM_GROUPS + 1))
   SocialUser.create(social_id: Social.find(i % NUM_SOCIALS + 1).id, link: 'www.linkedin.com/PincoPallo' + i.to_s, user_id: user.id)
 

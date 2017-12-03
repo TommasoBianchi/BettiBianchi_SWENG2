@@ -16,7 +16,7 @@
 <%= form_with scope: :user, local: true do |form| %>
 
     <%= form.label :email, class: 'label' %>
-    <%= form.text_field :email, type: 'text' %>
+    <%= form.text_field :email, type: 'text', value: @old_values['email'] %>
     <%= form.label :password, class: 'label' %>
     <%= form.text_field :password, type: 'text' %>
     <%= form.label :name, class: 'label' %>
