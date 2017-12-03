@@ -1,0 +1,45 @@
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>Travlendar+: Complete Registration</title>
+</head>
+
+<body>
+  <div class="outer">
+    <div id="mainWrapper">
+      <div class="logoContainer">
+        <a class="title">Complete your regitration!</a>
+      </div>
+      <div id="emailPasswordContainer">
+
+<%= form_with scope: :user, local: true do |form| %>
+
+    <%= form.label :email, class: 'label' %>
+    <%= form.text_field :email, type: 'text' %>
+    <%= form.label :password, class: 'label' %>
+    <%= form.text_field :password, type: 'text' %>
+    <%= form.label :name, class: 'label' %>
+    <%= form.text_field :name, type: 'text' %>
+    <%= form.label :surname, class: 'label' %>
+    <%= form.text_field :surname, type: 'text' %>
+    <%= form.label :nickname, class: 'label' %>
+    <%= form.text_field :nickname, type: 'text' %>
+    <%= form.label :preference_list, class: 'label' %>
+    <%= form.text_field :preference_list, type: 'text' %>
+
+          <div id="buttonsContainer">
+    <%= form.submit 'Save User', class: 'monoConfirmationButton'%>
+  </div>
+
+<% end %>
+      </div>
+
+
+    </div>
+  </div>
+
+
+</body>
+
+</html>
