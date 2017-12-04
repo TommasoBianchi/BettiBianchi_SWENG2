@@ -1,4 +1,11 @@
-<h1>User#show</h1>
-<p>Find me in app/views/user/show.html.erb</p>
-<%= link_to "Log out", logout_path, method: :delete %>
-<%= link_to "Profile", current_user %>
+<%= render 'shared/header' %>
+<div id="content">
+  <%= render 'shared/sidebar' %>
+  <section class="mainContent">
+    <h1>User#show</h1>
+    <p>Find me in app/views/user/show.html.erb</p>
+    <%= link_to "Log out", logout_path, method: :delete %>
+    <%= link_to "Profile", current_user %>
+    <%= render 'shared/footer' %>
+  </section>
+</div>
