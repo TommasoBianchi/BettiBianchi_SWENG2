@@ -8,9 +8,11 @@ class UserController < ApplicationController
     email_hash = params.slice(:user)['user']['email']
     params[:user].delete('email')
     @user = User.create(user_params)
+
     email = Email.create(email: email_hash, user_id: @user.id)
     @user.emails.push(email)
     @user.primary_email_id = email.id
+
     incomplete_user = IncompleteUser.find_by(email: email.email)
     if @user.save && @user.authenticate(incomplete_user.password)
       log_in @user
@@ -22,19 +24,9 @@ class UserController < ApplicationController
 
   def new
     @unregisterdUser = IncompleteUser.find(session[:tmp_checked])
-    session[:tmp_checked] = nil #
+    session[:tmp_checked] = nil # delate temp variable
     @user = User.new
  end
-
-  def check_presence
-    params[:user].present? &&
-      params[:user][:email].present? &&
-      params[:user][:password].present?
-  end
-
-  def validate_presence
-    puts '****************************************'
-  end
 
   private
 

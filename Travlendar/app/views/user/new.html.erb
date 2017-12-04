@@ -33,10 +33,14 @@
     <%= form.text_field :email, type: 'text', value: if @unregisterdUser
         @unregisterdUser.email
       elsif @user.emails
-        @user.emails.first
+        @user.emails.first.email
     end%>
     <%= form.label :password, class: 'label' %>
-    <%= form.text_field :password, type: 'text' %>
+    <%= form.text_field :password, type: 'text', value: if @unregisterdUser
+        @unregisterdUser.password
+      elsif @user.password
+        @user.password
+    end%>
     <%= form.label :name, class: 'label' %>
     <%= form.text_field :name, type: 'text'%>
     <%= form.label :surname, class: 'label' %>

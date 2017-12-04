@@ -4,11 +4,10 @@ class HomepageController < ApplicationController
   end
 
   def post_index
-    if params[:signup] # user clicks on signup signupbutton
-      email = Email.find_by(email: params[:homepage][:email].downcase)
-      puts(email)
+    email = Email.find_by(email: params[:homepage][:email].downcase)
+    user = User.find_by(primary_email_id: email.id) if email
+    if params[:signup] # button clicked = signup
       if email
-        user = User.find_by(primary_email_id: email.id)
         if user && user.authenticate(params[:homepage][:password]) # normal regitered user
           log_in user
           redirect_to user
@@ -16,24 +15,15 @@ class HomepageController < ApplicationController
           flash.now[:danger] = 'Invalid email/password combination'
           render 'index' # SONO ARRIVATO QUA
         else # unregitered user
-          @unregisterdUser = {}
-          @unregisterdUser['email'] = params[:homepage][:email].downcase
-          render 'user/new'
+          incomplete_user = IncompleteUser.find_by(email: params[:homepage][:email].downcase)
+          go_to_complete_regitration(incomplete_user)
         end
       else # email doesn't exist
         incomplete_user = IncompleteUser.create(email: params[:homepage][:email].downcase, password: params[:homepage][:password])
-        @unregisterdUser = {}
-        @unregisterdUser['email'] = params[:homepage][:email].downcase
-        session[:tmp_checked] = incomplete_user.id
-        redirect_to '/user/new'
-        # se è negli user nrmali login; se la password è corretta login altrimenti error message
-        # else if è negli incomplete_users; se la password è corretta vai alla pagina di complete reg altrimenti errore
+        go_to_complete_regitration(incomplete_user)
       end # end if email
     else # button clicked = login
-      email = Email.find_by(email: params[:homepage][:email].downcase)
-      puts(email)
-      if email && User.find_by(primary_email_id: email.id)
-        user = User.find_by(primary_email_id: email.id)
+      if email && user
         if user.authenticate(params[:homepage][:password]) # user exist and password correct
           log_in user
           redirect_to user
@@ -42,13 +32,10 @@ class HomepageController < ApplicationController
           render 'index'
         end
       else # user doesn't exist
-        puts '****************************************'
         flash.now[:danger] = 'Invalid email/password combination'
         render 'index'
       end
-      ## check presence of the user and redirect him to the homepage
-      puts(params)
-    end
+    end # end button clicked
   end
 
   def login; end
@@ -56,11 +43,12 @@ class HomepageController < ApplicationController
   def destroy
     log_out
     redirect_to root_get_path
-    end
+  end
 
-  def complete_registration
-    @old_values = { email: params['email'] }
-    puts '****************************************'
-    puts(params)
+  private
+
+  def go_to_complete_regitration(incomplete_user)
+    session[:tmp_checked] = incomplete_user.id
+    redirect_to '/user/new'
   end
 end
