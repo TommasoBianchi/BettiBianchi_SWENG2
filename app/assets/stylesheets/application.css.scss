@@ -20,13 +20,16 @@
     font-family: "Trebuchet MS", "Lucida Grande", "Lucida Sans Unicode", "Lucida Sans", Tahoma, sans-serif;
 }
 
+$dark_grey: #575756;
+$light_grey: #B2B2B2;
+$background_image_url: image_url("homepage/sfondo25.png");
 /* Handy little three-lines menu icon */
 .box-shadow-menu {
   content: "";
   width: 1em;
   height: 0.15em;
   background: black;
-  box-shadow: 
+  box-shadow:
     0 0.3em 0 0 black,
     0 0.6em 0 0 black;
 }
@@ -196,11 +199,18 @@ header {
 #content .mainContent {
 	float: left;
 	margin-left: 26%;
-	width: 70%;
+	width: 74%;
+  height: -webkit-fill-available;
 	text-align: center;
-	padding-left: 4%;
 	padding-top: 20px;
+  background-image: $background_image_url;
 }
+
+.innerContent{
+  padding-left: 5%;
+  padding-right: 5%;
+}
+
 /*menubar's properties for menus in sidebar */
 #content .sidebar #menubar {
 	text-align: left;
