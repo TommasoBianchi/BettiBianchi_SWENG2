@@ -5,19 +5,35 @@ class UserController < ApplicationController
 
   def create
     # problems on create user before email and viceversa
+
     email_hash = params.slice(:user)['user']['email']
     params[:user].delete('email')
-    @user = User.create(user_params)
 
-    email = Email.create(email: email_hash, user_id: @user.id)
+    incomplete_user = IncompleteUser.find_by(email: email_hash)
+    # render ' '
+    # return unless incomplete_user # if it is nil return
+    incomplete_user_email = incomplete_user.email
+    incomplete_user_psw = incomplete_user.password
+
+    @user = User.new(user_params)
+    unless email_hash == incomplete_user_email && incomplete_user.authenticate(@user.password)
+      flash.now[:danger] = 'Wrong mail or password'
+      render ' '
+      render 'new'
+    end
+
+    IncompleteUser.delete(incomplete_user.id)
+    email = Email.create(email: email_hash)
     @user.emails.push(email)
     @user.primary_email_id = email.id
+    last_user = User.last
+    email.user_id = User.last.id + 1
 
-    incomplete_user = IncompleteUser.find_by(email: email.email)
-    if @user.save && @user.authenticate(incomplete_user.password)
+    if @user.save
       log_in @user
       redirect_to @user
     else
+      reinsertUser(incomplete_user_email, incomplete_user_psw) # to implement but it would be useless
       render 'new'
     end
   end
@@ -32,5 +48,9 @@ class UserController < ApplicationController
 
   def user_params
     params.require(:user).permit(:name, :surname, :password, :nickname, :preference_list)
+  end
+
+  def reinsertUser(incomplete_user_email, incomplete_user_psw)
+    IncompleteUser.create(email: incomplete_user_email, password: incomplete_user_psw, password_confirmation: incomplete_user_psw)
   end
 end

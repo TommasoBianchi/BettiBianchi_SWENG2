@@ -1,5 +1,5 @@
 class Email < ApplicationRecord
-  belongs_to :user
+  belongs_to :user, optional: true
 
   validates :email, presence: true, uniqueness: true
 

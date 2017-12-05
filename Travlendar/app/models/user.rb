@@ -38,8 +38,5 @@ class User < ApplicationRecord
 
   def primary_email_in_emails
     return if primary_email_id.blank?
-    unless emails.where(id: primary_email_id).count == 1
-      errors.add(:primary_email_id, 'must be included in emails')
-    end
   end
 end
