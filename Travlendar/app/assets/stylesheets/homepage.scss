@@ -5,6 +5,12 @@
 $dark_grey: #575756;
 $light_grey: #B2B2B2;
 
+
+body{
+  margin: 0;
+  height: 100vh;
+}
+
 .outer{
     width: 100%;
     height: 100%;
@@ -50,12 +56,14 @@ input[placeholder]{
 
 #mainWrapper{
     width: 40%;
-    margin-left: auto;
-    margin-right: auto;
-    margin-top: auto;
-    margin-bottom: auto;
+    height: fit-content;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
     text-align: center;
-    padding: 10%;
 }
 
 .logoContainer{

@@ -13,7 +13,7 @@ class HomepageController < ApplicationController
           redirect_to user
         elsif user # registered user that provides a wrong password
           flash.now[:danger] = 'Invalid email/password combination'
-          render 'index' # SONO ARRIVATO QUA
+          render 'index'
         else # unregitered user
           incomplete_user = IncompleteUser.find_by(email: params[:homepage][:email].downcase)
           go_to_complete_regitration(incomplete_user)
