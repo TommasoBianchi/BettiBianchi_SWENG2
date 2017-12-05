@@ -28,6 +28,13 @@ input {
     border-radius: 10px;
 }
 
+input:focus {
+    outline: none;
+    border-width: 1px;
+    border-radius: 10px;
+    border-color: $dark_grey;
+}
+
 input[placeholder]{
     font-style: oblique;
 }
@@ -64,10 +71,6 @@ input[placeholder]{
     right: 0;
     margin: auto;
     text-align: center;
-}
-
-.logoContainer{
-    font-family: "Trebuchet MS", "Lucida Grande", "Lucida Sans Unicode", "Lucida Sans", Tahoma, sans-serif;
 }
 
 #emailPasswordContainer{width: 50%;margin-left: auto;margin-right: auto;padding-top: 7%;}

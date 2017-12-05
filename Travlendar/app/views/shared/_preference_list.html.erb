@@ -1,0 +1,83 @@
+<%= form.label :preference_list, class: 'label' %>
+<%= form.text_field :preference_list, type: 'hidden', value: "", id: "pref-list-hidden" %>
+
+<div>
+	<ul id="prefList_active" class="connectedSortable ui-sortable preference-list-ul">
+		<li class="ui-state-default ui-sortable-handle preference-list-li" value=0>Walking <%= render 'shared/menu_three_lines' %></li>		
+		<li class="ui-state-default ui-sortable-handle preference-list-li" value=1>Driving <%= render 'shared/menu_three_lines' %></li>
+		<li class="ui-state-default ui-sortable-handle preference-list-li" value=2>Public Transportation <%= render 'shared/menu_three_lines' %></li>
+		<li class="ui-state-default ui-sortable-handle preference-list-li" value=3>Biking <%= render 'shared/menu_three_lines' %></li>
+	</ul>
+
+	<ul id="prefList_inactive" class="connectedSortable ui-sortable preference-list-ul">
+	</ul>
+</div>
+
+<script type="text/javascript">
+	<% if(@preference_list == nil) 
+			@preference_list = [0, 1, 2, 3]
+		end
+	%>
+
+	preference_list = <%= @preference_list %>
+
+	if(preference_list != [0, 1, 2, 3]){
+		preference_list.forEach(function(el, index){
+			var element = $('.preference-list-li[value=' + el + ']')
+			$('#prefList_active').append(element)
+		})
+		for (var i = 0; i < 4; i++) {
+			if(preference_list.indexOf(i) < 0){
+				var element = $('.preference-list-li[value=' + i + ']')
+				$('#prefList_inactive').append(element)
+			}
+		}			
+	}
+
+	$( function() {
+		$( "#prefList_active, #prefList_inactive" ).sortable({
+			connectWith: ".connectedSortable",
+			update:  function (event, ui) {
+				$('#pref-list-hidden').val( getPreferenceList())
+			},
+			disabled: false
+		}).disableSelection();
+	} );
+
+	function getPreferenceList(){
+		var prefList = ''
+		$('#prefList_active .preference-list-li').each(function(index, el){
+			prefList += el.value
+		})
+		return prefList
+	}
+</script>
+
+<style>
+	.preference-list-ul{
+		background-color: #9BC8DA;
+	    list-style-type: none;
+	    padding: 5px;
+	    border-radius: 10px;
+	    box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);	
+	    min-height: 30px;	
+	    text-align: left;
+	} 
+
+	.preference-list-li {
+		background-color: #B2B2B2;
+		padding: 5px;
+	    border: none;
+	    margin: 5px;
+	    box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+	    height: 15px;
+	    line-height: 15px;
+	    color: black;
+	    border-radius: 4px;
+	    cursor: pointer;
+	}
+
+	.menu-three-lines {
+		float: right;
+	}
+</style>

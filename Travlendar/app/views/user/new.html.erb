@@ -9,7 +9,7 @@
   <div class="outer">
     <div id="mainWrapper">
       <div class="logoContainer">
-        <a class="title">Complete your regitration!</a>
+        <a class="title">Complete your Registration!</a>
       </div>
       <div id="emailPasswordContainer">
 
@@ -36,7 +36,7 @@
         @user.emails.first.email
     end%>
     <%= form.label :password, class: 'label' %>
-    <%= form.text_field :password, type: 'text', value: if @unregisterdUser
+    <%= form.text_field :password, type: 'password', value: if @unregisterdUser
         @unregisterdUser.password
       elsif @user.password
         @user.password
@@ -47,8 +47,8 @@
     <%= form.text_field :surname, type: 'text' %>
     <%= form.label :nickname, class: 'label' %>
     <%= form.text_field :nickname, type: 'text' %>
-    <%= form.label :preference_list, class: 'label' %>
-    <%= form.text_field :preference_list, type: 'text' %>
+
+    <%= render 'shared/preference_list', form: form %>
 
           <div id="buttonsContainer">
     <%= form.submit 'Save User', class: 'monoConfirmationButton'%>
