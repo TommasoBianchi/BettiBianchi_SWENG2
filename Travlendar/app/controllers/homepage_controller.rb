@@ -4,6 +4,7 @@ class HomepageController < ApplicationController
   end
 
   def post_index
+    return unless validate_input
     email = Email.find_by(email: params[:homepage][:email].downcase)
     user = User.find_by(primary_email_id: email.id) if email
     if params[:signup] # button clicked = signup
@@ -16,7 +17,7 @@ class HomepageController < ApplicationController
           render 'index'
         else # unregitered user
           incomplete_user = IncompleteUser.find_by(email: params[:homepage][:email].downcase)
-          go_to_complete_regitration(incomplete_user)
+          go_to_complete_regitration(incomplete_user) if incomplete_user
         end
       else # email doesn't exist
         incomplete_user = IncompleteUser.create(email: params[:homepage][:email].downcase, password: params[:homepage][:password])
@@ -50,5 +51,15 @@ class HomepageController < ApplicationController
   def go_to_complete_regitration(incomplete_user)
     session[:tmp_checked] = incomplete_user.id
     redirect_to '/user/new'
+  end
+
+  def validate_input
+    if params['homepage']['email'].present? && params['homepage']['password'].present?
+      true
+    else
+      flash.now[:danger] = 'Some fields are not filled properly'
+      render 'index'
+      false
+    end
   end
 end
