@@ -29,7 +29,7 @@ NUM_CATEGORIES = 10
 NUM_LOCATIONS = 5
 NUM_TRAVELS = 5
 NUM_SUBJECTS = 5
-NUM_OPERATORS = 3
+NUM_OPERATORS = 4
 NUM_VALUES = 10
 NUM_CONSTRAINTS = 15
 NUM_TRAVEL_MEANS = 3
@@ -125,8 +125,8 @@ for i in 1..NUM_SUBJECTS do
   subject = Subject.create(name: 'Subject' + i.to_s)
 end
 
-for i in 0..NUM_OPERATORS do
-  operator = Operator.create(description: 'Operator' + (i + 1).to_s, subject_id: Subject.find(i % NUM_SUBJECTS + 1).id, operator: i)
+for i in 1..NUM_OPERATORS do
+  operator = Operator.create(description: 'Operator' + (i + 1).to_s, subject_id: Subject.find(i % NUM_SUBJECTS + 1).id, operator: i % 4)
 end
 
 for i in 1..NUM_VALUES do
