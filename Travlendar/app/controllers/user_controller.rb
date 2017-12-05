@@ -1,5 +1,9 @@
 class UserController < ApplicationController
+
+  skip_before_action :require_login
+
   def show
+    require_login
     @user = current_user
   end
 

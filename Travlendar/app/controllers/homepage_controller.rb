@@ -1,5 +1,8 @@
 class HomepageController < ApplicationController
   Error_message = 'Invalid email/password combination'.freeze
+
+  skip_before_action :require_login
+
   def index
     @user = User.new
   end
@@ -32,7 +35,7 @@ class HomepageController < ApplicationController
 
   def destroy
     log_out
-    redirect_to root_get_path
+    redirect_to homepage_path
   end
 
   private
