@@ -13,7 +13,9 @@ class MeetingParticipation < ApplicationRecord
 	belongs_to :arriving_travel, class_name: 'Travel', foreign_key: 'arriving_travel_id'
 	belongs_to :leaving_travel, class_name: 'Travel', foreign_key: 'leaving_travel_id'
 
-	validates :is_admin, :is_consistent, :response_status, presence: true
+	validates :response_status, presence: true
+	validates_inclusion_of :is_admin, :in => [true, false]
+	validates_inclusion_of :is_consistent, :in => [true, false]
 
 	validate :response_status_correctness
 

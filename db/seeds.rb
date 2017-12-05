@@ -99,7 +99,7 @@ for i in 1..NUM_USERS do
   for j in 1..NUM_MEETINGS do
     k = rand(1..10)
     if k > 8
-      MeetingParticipation.create(meeting_id: Meeting.find(j % NUM_MEETINGS + 1).id, user_id: User.find(i % NUM_USERS + 1).id, is_consistent: true,
+      MeetingParticipation.create(meeting_id: Meeting.find(j % NUM_MEETINGS + 1).id, user_id: User.find(i % NUM_USERS + 1).id, is_admin: false, is_consistent: true,
                                   arriving_travel_id: Travel.find(i % NUM_TRAVELS + 1).id, leaving_travel_id: Travel.find((i + 1) % NUM_TRAVELS + 1).id)
     end
   end

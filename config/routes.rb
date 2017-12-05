@@ -8,4 +8,7 @@ Rails.application.routes.draw do
   post '/' => 'homepage#post_index', as: 'root_post'
   post '/user/new', to: 'user#create'
   delete '/logout', to: 'homepage#destroy'
+
+  # Calendar Page
+  get 'calendar' => 'calendar#show'
 end
