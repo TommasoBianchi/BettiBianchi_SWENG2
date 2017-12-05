@@ -35,7 +35,7 @@ class HomepageController < ApplicationController
 
   def destroy
     log_out
-    redirect_to root_get_path
+    redirect_to homepage_path
   end
 
   private
