@@ -12,7 +12,25 @@
  *
  *= require_tree .
  *= require_self
+ *= require jquery-ui
  */
+
+/* Apply font to everything */
+* {
+    font-family: "Trebuchet MS", "Lucida Grande", "Lucida Sans Unicode", "Lucida Sans", Tahoma, sans-serif;
+}
+
+/* Handy little three-lines menu icon */
+.box-shadow-menu {
+  content: "";
+  width: 1em;
+  height: 0.15em;
+  background: black;
+  box-shadow: 
+    0 0.3em 0 0 black,
+    0 0.6em 0 0 black;
+}
+
  /* Logo placeholder*/
  #logo {
  	float: left;
