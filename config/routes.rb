@@ -2,6 +2,7 @@ Rails.application.routes.draw do
   get 'user/new'
 
   resources :user
+  resources :meeting
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
   get '/' => 'homepage#index', as: 'homepage'
   post '/' => 'homepage#post_index', as: 'root_post'
