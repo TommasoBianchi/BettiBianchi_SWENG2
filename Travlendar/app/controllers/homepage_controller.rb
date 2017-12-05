@@ -1,5 +1,8 @@
 class HomepageController < ApplicationController
   Error_message = 'Invalid email/password combination'.freeze
+
+  skip_before_action :require_login
+
   def index
     @user = User.new
   end
