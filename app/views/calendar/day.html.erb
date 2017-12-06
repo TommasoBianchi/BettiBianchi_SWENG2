@@ -1,0 +1,32 @@
+<%= render 'shared/header' %>
+<div id="content">
+  <%= render 'shared/sidebar' %>
+  <section class="mainContent">
+  	<% last_travel_id = -1 %>
+  	<% travel_left = true %>
+    <% @schedule.each do |item| %>
+		<% if item.is_a? Travel %>
+			<% if item.id == last_travel_id %>
+				<% next %>
+			<% end %>
+			<div class="travel-container">
+				<div class="travel-mean"></div>
+				<div class="travel <%= if travel_left then 'left-align' else 'right-align' end %>">
+					<div><%= item.end_time - item.start_time %></div>
+					<div><%= Travel::Travel_means.keys[item.travel_mean] %></div>
+					<div><%= item.distance %></div>
+				</div>
+			</div>
+			<% last_travel_id = item.id %>
+  			<% travel_left = !travel_left %>
+		<% else %>
+			<div class="meeting">
+				<div class="meeting-date"><%= item.start_date.strftime "%I:%M %p" %> - <%= item.end_date.strftime "%I:%M %p" %></div>
+				<div class="meeting-title"><%= item.title %></div>
+				<div class="meeting-location"><%= item.location.description %></div>
+			</div>
+		<% end %>
+	<% end %>
+  </section>
+</div>
+<%= render 'shared/footer' %>

@@ -10,9 +10,9 @@
       	<div class="colored-container light-blue-container date-time-block">
           <%= @meeting.start_date.strftime("%m/%d/%Y") %>
       	</div>
-        <ul class="colored-container light-blue-container date-time-block">
+        <div class="colored-container light-blue-container date-time-block">
           <%= @meeting.start_date.strftime("%I:%M%p") + " - " + @meeting.end_date.strftime("%I:%M%p") %>
-        </ul>
+        </div>
       </div>
 
       <div id="location" class="location-block-container" onclick="goToLocation(<%= @meeting.location.latitude %>,<%= @meeting.location.longitude %>)">
