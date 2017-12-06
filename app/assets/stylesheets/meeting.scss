@@ -5,3 +5,68 @@
 h1 {
   font-size: 33px;
 }
+
+a{
+  width: 10%;
+}
+
+.light-blue-container{
+  background-color: #9BC8DA;
+  border-radius: 10px;
+  box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  min-height: 30px;
+  text-align: center;
+}
+
+.date-time-block{
+  width: 20%;
+    list-style-type: none;
+    padding-top: 16px;
+    padding-left: 7px;
+    padding-right: 7px;
+    padding-bottom: 7px;
+    display: inline-block;
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
+.location-block{
+
+}
+
+.location-block-container{
+  margin-top: 10px;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.date-time-block-container{
+  width: 100%;
+}
+
+.location_block{
+  display: inline-block;
+}
+
+#location_icon{
+  height: 46px;
+  margin-right: 10px;
+}
+
+#location_description{
+  height: 46px;
+  width: 20%;
+  display: inline-block;
+}
+
+.location_name-block{
+  width: 20%;
+    list-style-type: none;
+    padding-top: 16px;
+    padding-left: 7px;
+    padding-right: 7px;
+    padding-bottom: 7px;
+    display: inline-block;
+    margin-left: 20px;
+    margin-right: 20px;
+}

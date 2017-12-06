@@ -5,7 +5,27 @@
     <div class='innerContent'>
     <h1> <%= @meeting.title %> </h1>
     <h3> <%= @meeting.abstract %> </h2>
-      
+
+
+      <div class="date-time-block-container">
+      	<ul class="light-blue-container date-time-block">
+          <%= @meeting.start_date.strftime("%m/%d/%Y") %>
+      	</ul>
+        <ul class="light-blue-container date-time-block">
+            <%= @meeting.start_date.strftime("%I:%M%p") + " - " + @meeting.end_date.strftime("%I:%M%p") %>
+        	</ul>
+
+      </div>
+      <div id="location" class="location-block-container" onclick="goToLocation(<%= @meeting.location.latitude %>,<%= @meeting.location.longitude %>)">
+      <%= image_tag("meeting_page/location_icon.png", id: "location_icon", class: "location-block") %>
+      <div id="location_description", class="location-block">
+        <ul class="light-blue-container location_name-block">
+              <%= @meeting.location.description %> <br/>
+        	</ul>
+
+        </div>
+      </div>
+
   </div>
   </section>
 </div>
