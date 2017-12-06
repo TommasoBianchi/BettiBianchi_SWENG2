@@ -9,6 +9,9 @@ Rails.application.routes.draw do
   post '/user/new', to: 'user#create'
   delete '/logout', to: 'homepage#destroy'
 
+  # Meeting
+  get 'participants_page' => 'meeting#participants_page'
+
   # Calendar Page
   get 'calendar' => 'calendar#show'
 end
