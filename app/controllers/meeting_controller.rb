@@ -4,4 +4,9 @@ class MeetingController < ApplicationController
     @meeting = Meeting.find(1)
     @meeting.abstract = 'prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova '
   end
+
+  def participants_page
+    @user = current_user
+    @meeting = Meeting.find(params['format'])
+  end
 end
