@@ -17,3 +17,9 @@
 //= require jquery3
 //= require jquery_ujs
 //= require jquery-ui
+
+
+function goToLocation(latitude, longitude) {
+  google_link = "https://www.google.com/maps/search/?api=1&query=" + latitude + "," + longitude
+  window.open(google_link, '_blank');
+}

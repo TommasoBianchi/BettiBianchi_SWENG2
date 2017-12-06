@@ -34,6 +34,7 @@ NUM_VALUES = 10
 NUM_CONSTRAINTS = 15
 NUM_TRAVEL_MEANS = 3
 MAX_DISTANCE = 20
+NUM_RESPONSE_STATUSES = 3
 
 for i in 1..NUM_GROUPS do
   Group.create(name: 'Group' + i.to_s)
@@ -99,8 +100,8 @@ for i in 1..NUM_USERS do
   for j in 1..NUM_MEETINGS do
     k = rand(1..10)
     if k > 8
-      MeetingParticipation.create(meeting_id: Meeting.find(j % NUM_MEETINGS + 1).id, user_id: User.find(i % NUM_USERS + 1).id, is_consistent: true,
-                                  arriving_travel_id: Travel.find(i % NUM_TRAVELS + 1).id, leaving_travel_id: Travel.find((i + 1) % NUM_TRAVELS + 1).id)
+      MeetingParticipation.create(meeting_id: Meeting.find(j % NUM_MEETINGS + 1).id, user_id: User.find(i % NUM_USERS + 1).id, is_admin: false, is_consistent: true,
+                                  arriving_travel_id: Travel.find(i % NUM_TRAVELS + 1).id, leaving_travel_id: Travel.find((i + 1) % NUM_TRAVELS + 1).id, response_status: i % NUM_RESPONSE_STATUSES)
     end
   end
 end

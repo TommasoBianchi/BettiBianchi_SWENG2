@@ -1,0 +1,59 @@
+// Place all the styles related to the Calendar controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+$blue: #9BC8DA; /* TODO: load from application.css */
+$light_grey: #B2B2B2;
+
+.meeting {
+	background-color: $blue;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    width: 60%;
+    text-align: left;
+    margin: 0 auto;
+}
+
+.meeting-title, .meeting-location {
+	padding-top: 5px;
+}
+
+.meeting-date {
+	font-weight: bold;
+}
+
+.meeting-location {
+	font-style: italic;
+}
+
+.travel-container {
+	position: relative;
+	margin: 25px 0;
+	z-index: -1;
+}
+
+.travel {
+	background-color: $light_grey;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    width: 25%;
+    text-align: center;
+}
+
+.travel.left-align {
+	margin-left: 18%;
+}
+
+.travel.right-align {
+	margin-left: 53%;
+}
+
+.travel-mean {
+	background-color: $light_grey;
+    position: absolute;
+	width: 10%;
+	height: 300px;
+	left: 44%;
+}

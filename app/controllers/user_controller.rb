@@ -1,5 +1,4 @@
 class UserController < ApplicationController
-
   skip_before_action :require_login
 
   def show
@@ -13,17 +12,16 @@ class UserController < ApplicationController
     email_hash = params.slice(:user)['user']['email']
     params[:user].delete('email')
 
-    incomplete_user = IncompleteUser.find_by(email: email_hash)
-    # render ' '
-    # return unless incomplete_user # if it is nil return
+    incomplete_user = IncompleteUser.find(session[:tmp_checked])
     incomplete_user_email = incomplete_user.email
     incomplete_user_psw = incomplete_user.password
 
     @user = User.new(user_params)
     unless email_hash == incomplete_user_email && incomplete_user.authenticate(@user.password)
       flash.now[:danger] = 'Wrong mail or password'
-      render ' '
+      @unregisterdUser = incomplete_user
       render 'new'
+      return
     end
 
     IncompleteUser.delete(incomplete_user.id)
@@ -34,6 +32,7 @@ class UserController < ApplicationController
     email.user_id = User.last.id + 1
 
     if @user.save
+      session[:tmp_checked] = nil # delate temp variable
       log_in @user
       redirect_to @user
     else
@@ -44,7 +43,6 @@ class UserController < ApplicationController
 
   def new
     @unregisterdUser = IncompleteUser.find(session[:tmp_checked])
-    session[:tmp_checked] = nil # delate temp variable
     @user = User.new
  end
 

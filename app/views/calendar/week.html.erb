@@ -1,0 +1,10 @@
+<%= render 'shared/header' %>
+<div id="content">
+  <%= render 'shared/sidebar' %>
+  <section class="mainContent">
+    <% @schedule.each do |item| %>
+	<div><%= item %></div>
+	<% end %>
+  </section>
+</div>
+<%= render 'shared/footer' %>
