@@ -90,12 +90,77 @@ body{
 	background-color: #DADADA;
 }
 
+/* pasted things about footer*/
+/* footer */
+footer {
+	clear: both;
+	height: 40px;
+	width: 100%;
+	position: fixed;
+	bottom: 0px;
+	z-index: 10000;
+	background-color: #575756;
+	padding-top: 0px;
+	text-align: center;
+	font-size: 16px;
+	font-style: normal;
+	font-weight: 400;
+}
+/*Each footer content */
+footer div {
+	width: 100%;
+	float: left;
+	/* padding-left: 4%; */
+	/* padding-right: 2%; */
+	color: rgba(255,255,255,1.00);
+	text-align: center;
+}
+/* Links in footer */
+footer div a {
 
+	color: $light_grey;
+  display: inline-block;
+  width: 25%;
+	text-decoration: none;
 
+}
 
+/* Container for links in footer */
+footer .footerlinks {
+	float: none;
+	width: 100%;
+	position: relative;
+	top: 17px;
+	clear: both;
+	text-align: center;
+	left: 0%;
+	padding-bottom: 19px;
+}
 
-
-
+/* Links in footer */
+.footerlinks p a {
+	padding-top: 0px;
+	padding-bottom: 0px;
+	display: inline;
+	padding-right: 35px;
+}
+/* Paragraphs in footer */
+footer .footerlinks p {
+	display: inline;
+}
+/* Container for links in footer */
+ footer .footerlinks {
+	padding-left: 8%;
+	text-align: center;
+}
+#footerLinks {
+	width: 100%;
+	padding-top: 10px;
+	padding-bottom: 10px;
+	background-color: #575756;
+  display: inline-table;
+	font: Trebuchet Segoe, "Segoe UI", "DejaVu Sans", "Trebuchet MS", Verdana, "sans-serif";
+}
 
 
 
@@ -283,43 +348,7 @@ header {
 	text-transform: uppercase;
 	margin-top: 8px;
 }
-/* footer */
-#mainWrapper footer {
-	font-family: 'Montserrat', sans-serif;
-	clear: both;
-	height: 40px;
-	width: 74%;
-	margin-left: 26%;
-	position: fixed;
-	bottom: 0px;
-	z-index: 10000;
-	background-color: #575756;
-	padding-top: 0px;
-	text-align: center;
-	font-size: 16px;
-	font-style: normal;
-	font-weight: 400;
-}
-/*Each footer content */
-#mainWrapper footer div {
-	width: 100%;
-	float: left;
-	/* padding-left: 4%; */
-	/* padding-right: 2%; */
-	color: rgba(255,255,255,1.00);
-	text-align: center;
-}
-/* Links in footer */
-footer div a {
 
-	color: rgba(146,146,146,1.00);
-	/* padding-top: 30px; */
-	padding-left: 8%;
-	padding-right: 8%;
-	/* display: block; */
-	text-decoration: none;
-	/* text-align: center; */
-}
 /* Product's images in catalog */
 .productInfo div img {
 	width: 100%;
@@ -445,12 +474,7 @@ footer .footerlinks {
 	left: 0%;
 	padding-bottom: 19px;
 }
-/* Container for each footer divisions */
-#mainWrapper footer div {
-	width: 44%;
-	text-align: justify;
-	font-size: 15px;
-}
+
 /* Links in footer */
 .footerlinks p a {
 	padding-top: 0px;
@@ -553,12 +577,4 @@ header #headerLinks a {
 	align-self: center;
 	width: 100%;
 	border-radius: 50%;
-}
-
-#footerLinks {
-	width: 100px;
-	padding-top: 10px;
-	padding-bottom: 10px;
-	background-color: #575756;
-	font: Trebuchet Segoe, "Segoe UI", "DejaVu Sans", "Trebuchet MS", Verdana, "sans-serif";
 }
