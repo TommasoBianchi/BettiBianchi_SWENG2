@@ -34,6 +34,9 @@ $background_image_url: image_url("homepage/sfondo25.png");
     0 0.6em 0 0 black;
 }
 
+body{
+  background-image: $background_image_url;
+}
  /* Logo placeholder*/
  #logo {
  	float: left;
@@ -203,7 +206,6 @@ header {
   height: -webkit-fill-available;
 	text-align: center;
 	padding-top: 20px;
-  background-image: $background_image_url;
 }
 
 .innerContent{
