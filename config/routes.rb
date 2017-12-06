@@ -10,5 +10,7 @@ Rails.application.routes.draw do
   delete '/logout', to: 'homepage#destroy'
 
   # Calendar Page
-  get 'calendar' => 'calendar#show'
+  get 'calendar/day/:year/:month/:day' => 'calendar#show_day', constraints: { year: /\d{4}/, month: /\d{1,2}/, day: /\d{1,2}/ }
+  get 'calendar/week/:year/:week' => 'calendar#show_week', constraints: { year: /\d{4}/, week: /\d{1,2}/ }
+  get 'calendar/month/:year/:month' => 'calendar#show_month', constraints: { year: /\d{4}/, month: /\d{1,2}/ }
 end
