@@ -23,8 +23,8 @@ NUM_EMAILS_PER_USER = 2
 # NUM_STATUSES_PER_USER = 2
 NUM_CONTACTS_PER_USER = 3
 NUM_BREAKS_PER_USER = 1
-NUM_USERS = 10
-NUM_MEETINGS_DAYS = 10
+NUM_USERS = 5
+NUM_MEETINGS_DAYS = 100
 NUM_MEETINGS_PER_DAY = 5
 NUM_MEETINGS = NUM_MEETINGS_DAYS * NUM_MEETINGS_PER_DAY
 NUM_CATEGORIES = 10
@@ -37,16 +37,18 @@ NUM_CONSTRAINTS = 15
 NUM_TRAVEL_MEANS = 3
 MAX_DISTANCE = 20
 NUM_RESPONSE_STATUSES = 3
-NUM_DEFAULT_LOCATIONS_PER_USER = 2
+NUM_DEFAULT_LOCATIONS_PER_USER = 3
 
 location = Location.create(latitude: 37.4133028, longitude: -122.1513074, description: 'Mountain View')
 
 for i in 1..NUM_GROUPS do
   Group.create(name: 'Group' + i.to_s)
+  puts "Group #{i}"
 end
 
 for i in 1..NUM_SOCIALS do
   Social.create(name: 'Social' + i.to_s, icon_path: 'app/assets/images/social_icons/linkedin_icon.png')
+  puts "Social #{i}"
 end
 
 for i in 1..NUM_USERS do
@@ -82,6 +84,8 @@ for i in 1..NUM_USERS do
   user.errors.full_messages.each do |message|
     puts(message)
   end
+
+  puts "User #{i}"
 end
 
 for i in 1..NUM_USERS do
@@ -90,6 +94,8 @@ for i in 1..NUM_USERS do
     j = rand(1..NUM_USERS)
     j = rand(1..NUM_USERS) while j == k
     user.contacts.push(User.find(j))
+
+    puts "Contact #{i} -> #{j}"
   end
 end
 
@@ -99,6 +105,8 @@ for i in -NUM_MEETINGS_DAYS/2..NUM_MEETINGS_DAYS/2 do
     start_date = DateTime.new(day.year, day.month, day.day, rand(8..20), rand(0..59), 0)
     end_date = start_date + rand(30..120).minutes
     meeting = Meeting.create(location_id: location.id, title: 'NewMeeting', start_date: start_date, end_date: end_date)
+
+    puts "Meeting #{meeting.id}"
   end
 end
 
@@ -108,15 +116,19 @@ for i in 1..NUM_TRAVELS do
   travel_mean_used = rand(0..NUM_TRAVEL_MEANS)
   distance = rand * MAX_DISTANCE
   Travel.create(start_time: starting_datetime, end_time: ending_datetime, travel_mean: travel_mean_used, distance: distance)
+
+  puts "Travel #{i}"
 end
 
 for i in 1..NUM_USERS do
   for j in 1..NUM_MEETINGS do
     k = rand(1..10)
-    next unless k > 5
+    next unless k > 7
     become_admin = true if (i + j).even?
     MeetingParticipation.create(meeting_id: Meeting.find(j % NUM_MEETINGS + 1).id, user_id: User.find(i % NUM_USERS + 1).id, is_admin: become_admin, is_consistent: true,
                                 arriving_travel_id: Travel.find(i % NUM_TRAVELS + 1).id, leaving_travel_id: Travel.find((i + 1) % NUM_TRAVELS + 1).id, response_status: i % NUM_RESPONSE_STATUSES)
+
+  puts "User #{i} - MeetingParticipation #{j}"
   end
 end
 
@@ -124,10 +136,14 @@ for i in 1..NUM_LOCATIONS do
   r1 = rand(-179..179)
   r2 = rand(-179..179)
   Location.create(latitude: r1, longitude: r2, description: 'location with coordinates ' + r1.to_s + ' ' + r2.to_s)
+
+  puts "Location #{i}"
 end
 
 for i in 1..NUM_CATEGORIES do
   cat = Category.create(name: 'category' + i.to_s, superclass_id: 1)
+
+  puts "Category #{i}"
 end
 
 for i in 1..NUM_CATEGORIES do
@@ -138,18 +154,26 @@ end
 
 for i in 1..NUM_SUBJECTS do
   subject = Subject.create(name: 'Subject' + i.to_s)
+
+  puts "Subject #{i}"
 end
 
 for i in 1..NUM_OPERATORS do
   operator = Operator.create(description: 'Operator' + (i + 1).to_s, subject_id: Subject.find(i % NUM_SUBJECTS + 1).id, operator: i % 4)
+
+  puts "Operator #{i}"
 end
 
 for i in 1..NUM_VALUES do
   value = Value.create(value: 'Value' + i.to_s, subject_id: Subject.find(i % NUM_SUBJECTS + 1).id)
+
+  puts "Value #{i}"
 end
 
 for i in 1..NUM_CONSTRAINTS do
   travel_mean_used = rand(1..NUM_TRAVEL_MEANS)
   Constraint.create(travel_mean: travel_mean_used, user_id: User.find(i % NUM_USERS + 1).id, subject_id: Subject.find(i % NUM_SUBJECTS + 1).id,
                     operator_id: Operator.find(i % NUM_OPERATORS + 1).id, value_id: Value.find(i % NUM_VALUES + 1).id)
+
+  puts "Constraint #{i}"
 end

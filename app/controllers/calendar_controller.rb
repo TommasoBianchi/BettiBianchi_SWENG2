@@ -1,10 +1,7 @@
 class CalendarController < ApplicationController
-  	
-  	skip_before_action :require_login
 
   	def show_day
-		#@user = current_user
-		@user = User.find(1)
+		  @user = current_user
   		
   		params.require([:day, :month, :year])
   		day = validate_between(params[:day], 1, 31)
@@ -33,8 +30,7 @@ class CalendarController < ApplicationController
   	end
 
   	def show_week
-		#@user = current_user
-		@user = User.find(1)
+		  @user = current_user
 
   		params.require([:week, :year])
   		week = validate_between(params[:week], 1, 53)
@@ -61,8 +57,7 @@ class CalendarController < ApplicationController
   	end
 
   	def show_month
-		#@user = current_user
-		@user = User.find(1)
+		  @user = current_user
 
   		params.require([:month, :year])
   		month = validate_between(params[:month], 1, 12)
