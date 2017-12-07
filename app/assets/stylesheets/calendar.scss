@@ -2,8 +2,7 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
-$blue: #9BC8DA; /* TODO: load from application.css */
-$light_grey: #B2B2B2;
+@import "application.css.scss";
 
 .meeting {
 	background-color: $blue;
@@ -13,24 +12,25 @@ $light_grey: #B2B2B2;
     width: 60%;
     text-align: left;
     margin: 0 auto;
+    position: relative;
+	z-index: 2;
 }
 
-.meeting-title, .meeting-location {
+.meeting-title, .meeting-location, .default-location-name {
 	padding-top: 5px;
 }
 
-.meeting-date {
+.meeting-date, .default-location-name {
 	font-weight: bold;
 }
 
-.meeting-location {
+.meeting-location, .default-location-location {
 	font-style: italic;
 }
 
 .travel-container {
 	position: relative;
 	margin: 25px 0;
-	z-index: -1;
 }
 
 .travel {
@@ -40,6 +40,7 @@ $light_grey: #B2B2B2;
     box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     width: 25%;
     text-align: center;
+    position: relative;
 }
 
 .travel.left-align {
@@ -54,6 +55,81 @@ $light_grey: #B2B2B2;
 	background-color: $light_grey;
     position: absolute;
 	width: 10%;
-	height: 300px;
+	height: 100%;
 	left: 44%;
+	z-index: 1;
+}
+
+.travel-mean-icon {
+	position: absolute;
+	left: 0;
+	right: 0;
+	top: 0;
+	bottom: 0;
+}
+
+.icon-walking, .icon-biking, .icon-public_transportation, .icon-driving {
+	background: image_url("travel_mean_icons/car.png");
+	background-size: contain;
+	background-repeat: no-repeat;
+	background-position: center;
+	margin: 20px;
+}
+
+.calendar-vertical-line {
+	z-index: -1;
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	margin: auto;
+	background-color: $light_grey;
+	width: 100%;
+	height: 200%;
+}
+
+.detail {
+	text-transform: uppercase;
+	position: absolute;
+	right: 10px;
+	top: 10px;
+	cursor: pointer;
+	color: black;
+}
+
+.travel.left-align .detail {
+	right: unset;
+	left: 10px;
+}
+
+.default-location {
+	background-color: $blue_green;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    width: 60%;
+    text-align: left;
+    margin: 0 auto;
+    position: relative;
+	z-index: 2;
+}
+
+.default-location:last-child {
+	margin-bottom: 20px;
+}
+
+.date-separator {
+	background-color: $dark_grey;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    width: 80%;
+    text-align: left;
+    position: relative;
+	z-index: 2;
+	margin: 20px auto;
+	text-align: center;
+	color: $light_grey;
+	font-weight: bold;
 }

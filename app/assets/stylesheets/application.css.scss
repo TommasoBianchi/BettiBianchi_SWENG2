@@ -25,6 +25,9 @@ $light_grey: #B2B2B2;
 
 $light_blue: #9BC8DA;
 $blue: #9BC8DA;
+
+$blue_green: #00AEA5;
+
 $background_image_url: image_url("homepage/sfondo25.png");
 /* Handy little three-lines menu icon */
 .box-shadow-menu {
@@ -192,7 +195,7 @@ header {
 	font-size: 16px;
 	font-style: normal;
 	font-weight: 400;
-	height: 22px;
+	height: unset;
 	width:100%;
 	position:fixed;
 	top:0px;
@@ -204,13 +207,12 @@ header {
 	padding-top: 10px;
 	padding-bottom: 10px;
 	width: 26%;
-	height: 100%;
 	text-align: center;
 	color: rgba(255,255,255,1.00);
 	background-color: #575756;
-	font: Rockwell;
-	font-style: bold;
+	/* font: Rockwell; */
 	font-style: italic;
+	font-size: 1.2em;
 }
 /* div for Links in header */
 #headerLinks {
@@ -246,9 +248,7 @@ header {
 }
 /* Main content of the site */
 #content {
-	clear: both;
-	overflow: auto;
-	padding-top: 30px;
+	padding-top: 42px;
 }
 /* Sidebar */
 #content .sidebar {
@@ -271,9 +271,9 @@ header {
 	float: left;
 	margin-left: 26%;
 	width: 74%;
-  height: -webkit-fill-available;
 	text-align: center;
-	padding-top: 20px;
+	overflow: auto;
+	margin-bottom: 40px;
 }
 
 .innerContent{
