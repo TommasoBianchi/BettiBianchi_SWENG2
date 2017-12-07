@@ -7,8 +7,12 @@ class Meeting < ApplicationRecord
 
   validate :date_consistency
 
-  def accepted_participants
-    meeting_participations.where(response_status: 1)
+  def get_participants(response_status_number)
+    meeting_participations.where(response_status: response_status_number)
+  end
+
+  def get_meeting_participaton(user_to_search)
+    meeting_participations.find_by(user_id: user_to_search.id)
   end
 
   private

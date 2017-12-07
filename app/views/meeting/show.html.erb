@@ -3,13 +3,17 @@
   <%= render 'shared/sidebar' %>
   <section class="mainContent">
     <div class='innerContent'>
-      <h1> <%= @meeting.title %> </h1>
-      <h3> <%= @meeting.abstract %> </h2>
+      <h1>
+        <%= @meeting.title %>
+      </h1>
+      <h3>
+        <%= @meeting.abstract %>
+      </h2>
 
       <div class="date-time-block-container">
-      	<div class="colored-container light-blue-container date-time-block">
+        <div class="colored-container light-blue-container date-time-block">
           <%= @meeting.start_date.strftime("%m/%d/%Y") %>
-      	</div>
+        </div>
         <div class="colored-container light-blue-container date-time-block">
           <%= @meeting.start_date.strftime("%I:%M%p") + " - " + @meeting.end_date.strftime("%I:%M%p") %>
         </div>
@@ -21,9 +25,9 @@
       </div>
 
       <div class="date-time-block-container">
-      	<ul class="colored-container light-grey-container date-time-block">
+        <ul class="colored-container light-grey-container date-time-block">
           <%= link_to('View Participants', participants_page_path(@meeting), id: @profile) %>
-      	</ul>
+        </ul>
         <ul class="colored-container light-grey-container date-time-block">
           <%= @meeting.start_date.strftime("%I:%M%p") + " - " + @meeting.end_date.strftime("%I:%M%p") %>
         </ul>

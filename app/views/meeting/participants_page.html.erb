@@ -1,49 +1,71 @@
 <%= render 'shared/header' %>
 <div id="content">
   <%= render 'shared/sidebar' %>
-  <section class="mainContent">
+
+  <section class="mainContent" ,="," onload="" ="isAdmin(<% @meeting.get_meeting_participaton(@user).is_admin %>)">
     <div class='innerContent'>
       <div class="title-go-back-block">
         <div class="go-back">
           <%= link_to image_tag('go_back_icon.png', id: 'go-back-image'), @meeting %>
         </div>
         <div class="title-block">
-        <h1>  Participants List </h1>
+          <h1>
+            Participants List
+          </h1>
         </div>
-        <div class="go-back">
+        <div class="go-back"></div>
+      </div>
+      <% if @meeting.get_participants(1).count > 0 %>
+        <h2>
+          ACCEPTED
+        </h2>
+        <div>
+          <% @meeting.get_participants(1).each do |meeting_participant| %>
+            <div class="colored-container light-blue-container participant-container">
+              <%= meeting_participant.get_name_surname%>
+              <div class='right-buttons colored-container light-grey-container'>
+                View Profile
+              </div>
+              <div class='right-buttons colored-container light-grey-container only-admin'>
+                Remove
+              </div>
+              <div class='right-buttons colored-container light-grey-container only-admin'>
+                Nominate
+              </div>
+            </div>
+          <% end%>
         </div>
-      </div>
-      <h2> ACCEPTED </h2>
-      <div>
-        <% @meeting.accepted_participants.each do |meeting_participation| %>
-        <%= content_tag(:div, meeting_participation.get_name_surname, class: ["colored-container", "light-blue-container", "participant-container"])%>
-        <% end%>
-
-      	<ul id="prefList_active" class="connectedSortable ui-sortable preference-list-ul">
-      		<li class="ui-state-default ui-sortable-handle preference-list-li" value=0>Walking </li>
-      		<li class="ui-state-default ui-sortable-handle preference-list-li" value=1>Driving </li>
-      		<li class="ui-state-default ui-sortable-handle preference-list-li" value=2>Public Transportation </li>
-      		<li class="ui-state-default ui-sortable-handle preference-list-li" value=3>Biking </li>
-      	</ul>
-
-      	<ul id="prefList_inactive" class="connectedSortable ui-sortable preference-list-ul">
-      	</ul>
-      </div>
-      <h2> PENDING </h2>
-      <div>
-      	<ul id="prefList_active" class="connectedSortable ui-sortable preference-list-ul">
-      		<li class="ui-state-default ui-sortable-handle preference-list-li" value=0>Walking </li>
-      		<li class="ui-state-default ui-sortable-handle preference-list-li" value=1>Driving </li>
-      		<li class="ui-state-default ui-sortable-handle preference-list-li" value=2>Public Transportation </li>
-      		<li class="ui-state-default ui-sortable-handle preference-list-li" value=3>Biking </li>
-      	</ul>
-
-      	<ul id="prefList_inactive" class="connectedSortable ui-sortable preference-list-ul">
-      	</ul>
-      </div>
-      <h2> DECLINED </h2>
-
-    </div>
-  </section>
-</div>
-<%= render 'shared/footer' %>
+      <% end %>
+      <% if @meeting.get_participants(0).count > 0 %>
+        <h2>
+          PENDING
+        </h2>
+        <div>
+          <% @meeting.get_participants(0).each do |meeting_participant| %>
+            <div class="colored-container light-blue-container participant-container">
+              <%= meeting_participant.get_name_surname%>
+              <div class='right-buttons colored-container light-grey-container'>
+                View Profile
+              </div>
+            </div>
+          <% end%>
+        </div>
+      <% end %>
+      <% if @meeting.get_participants(2).count > 0 %>
+        <h2>
+          DECLINED
+        </h2>
+        <div>
+          <% @meeting.get_participants(2).each do |meeting_participant| %>
+            <div class="colored-container light-blue-container participant-container">
+              <%= meeting_participant.get_name_surname%>
+              <div class='right-buttons colored-container light-grey-container'>
+                View Profile
+              </div>
+            </div>
+          <% end%>
+        </div>
+      <% end %>
+    </section>
+  </div>
+  <%= render 'shared/footer' %>
