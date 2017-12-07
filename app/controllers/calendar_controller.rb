@@ -38,7 +38,7 @@ class CalendarController < ApplicationController
 
   		@schedule = get_schedule(from_date, to_date, @user)
 
-  		render 'calendar/week'
+  		render 'calendar/day'
   	end
 
   	def show_month
@@ -54,16 +54,16 @@ class CalendarController < ApplicationController
 
   		@schedule = get_schedule(from_date, to_date, @user)
 
-  		render 'calendar/month'
+  		render 'calendar/day'
   	end
 
 	private 
 	def get_schedule(from_date, to_date, user)
 		schedule = []
 
-    #meeting_participations = user.meeting_participations.joins(:meeting).where(meetings:{ start_date: from_date..to_date, end_date: from_date..to_date})
+    meeting_participations = user.meeting_participations.joins(:meeting).where(meetings:{ start_date: from_date..to_date, end_date: from_date..to_date})
     # TESTING grab all meetings
-    meeting_participations = MeetingParticipation.joins(:meeting).order('meetings.start_date')
+    #meeting_participations = MeetingParticipation.joins(:meeting).order('meetings.start_date')
 
     current_day = nil
     last_travel_id = -1
@@ -97,6 +97,10 @@ class CalendarController < ApplicationController
     schedule.push user.default_locations.
       where(day_of_the_week: current_day.wday)
       .order(:starting_hour).last unless current_day == nil
+
+    if schedule.empty?
+      schedule.push from_date.midnight
+    end
 
 		return schedule
 	end
