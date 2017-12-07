@@ -20,7 +20,15 @@ class CalendarController < ApplicationController
 
   		@schedule = get_schedule(from_date, to_date, @user)
 
-  		render 'calendar/day'
+      week_number = from_date.strftime("%W").to_i
+      week_number -= 1 unless from_date.wday == 1
+      links = {
+        day: "",
+        week: Rails.application.routes.url_helpers.calendar_week_path(year, week_number),
+        month: Rails.application.routes.url_helpers.calendar_month_path(year, month)
+      }
+
+  		render 'calendar/main', locals: {links: links}
   	end
 
   	def show_week
@@ -38,7 +46,13 @@ class CalendarController < ApplicationController
 
   		@schedule = get_schedule(from_date, to_date, @user)
 
-  		render 'calendar/day'
+      links = {
+        day: Rails.application.routes.url_helpers.calendar_day_path(year, from_date.month, from_date.day),
+        week: "",
+        month: Rails.application.routes.url_helpers.calendar_month_path(year, from_date.month)
+      }
+
+  		render 'calendar/main', locals: {links: links}
   	end
 
   	def show_month
@@ -54,7 +68,15 @@ class CalendarController < ApplicationController
 
   		@schedule = get_schedule(from_date, to_date, @user)
 
-  		render 'calendar/day'
+      week_number = from_date.strftime("%W").to_i
+      week_number -= 1 unless from_date.wday == 1
+      links = {
+        day: Rails.application.routes.url_helpers.calendar_day_path(year, month, 1),
+        week: Rails.application.routes.url_helpers.calendar_week_path(year, week_number),
+        month: ""
+      }
+
+  		render 'calendar/main', locals: {links: links}
   	end
 
 	private 
