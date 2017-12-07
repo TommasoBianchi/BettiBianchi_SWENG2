@@ -7,7 +7,7 @@ require 'rails/all'
 Bundler.require(*Rails.groups)
 
 # Heroku fix
-config.assets.initialize_on_precompile = false
+#config.assets.initialize_on_precompile = false
 
 module Travlendar
   class Application < Rails::Application
