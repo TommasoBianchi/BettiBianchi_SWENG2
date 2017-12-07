@@ -115,6 +115,10 @@
 	z-index: 2;
 }
 
+.default-location:last-child {
+	margin-bottom: 20px;
+}
+
 .date-separator {
 	background-color: $dark_grey;
     padding: 20px;
