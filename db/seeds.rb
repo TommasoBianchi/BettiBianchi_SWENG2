@@ -35,6 +35,9 @@ NUM_CONSTRAINTS = 15
 NUM_TRAVEL_MEANS = 3
 MAX_DISTANCE = 20
 NUM_RESPONSE_STATUSES = 3
+NUM_DEFAULT_LOCATIONS_PER_USER = 2
+
+location = Location.create(latitude: 37.4133028, longitude: -122.1513074, description: 'Mountain View')
 
 for i in 1..NUM_GROUPS do
   Group.create(name: 'Group' + i.to_s)
@@ -63,6 +66,14 @@ for i in 1..NUM_USERS do
     b = Break.create(default_time: default_time, start_time_slot: start_time_slot, end_time_slot: end_time_slot,
                      duration: duration, name: 'Break' + j.to_s, day_of_the_week: j % 7, user_id: i)
   end
+
+  for j in 1..NUM_DEFAULT_LOCATIONS_PER_USER do 
+    starting_hour = (j * 450) % (24 * 60) # represented in minutes after midnight
+    for k in 0..6 do
+      DefaultLocation.create({starting_hour: starting_hour, day_of_the_week: k, name: "Default Location " + j.to_s, user_id: i, location_id: 1})
+    end
+  end
+
   primary_email = Email.create(email: 'Pinco' + i.to_s + '.Pallo@travlendar.com', user_id: i)
   user.primary_email_id = primary_email.id
   next if user.save
@@ -79,8 +90,6 @@ for i in 1..NUM_USERS do
     user.contacts.push(User.find(j))
   end
 end
-
-location = Location.create(latitude: 37.4133028, longitude: -122.1513074, description: 'Mountain View')
 
 for i in 1..NUM_MEETINGS do
   new_start_date = DateTime.new(2017, i % 12, i % 28, 12, 35, 0)
