@@ -7,8 +7,6 @@
 .meeting {
 	background-color: $blue;
     padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     width: 60%;
     text-align: left;
     margin: 0 auto;
@@ -36,8 +34,6 @@
 .travel {
 	background-color: $light_grey;
     padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     width: 25%;
     text-align: center;
     position: relative;
@@ -106,8 +102,6 @@
 .default-location {
 	background-color: $blue_green;
     padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     width: 60%;
     text-align: left;
     margin: 0 auto;
@@ -122,9 +116,7 @@
 .date-separator {
 	background-color: $dark_grey;
     padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-    width: 80%;
+    width: 60%;
     text-align: left;
     position: relative;
 	z-index: 2;
@@ -132,4 +124,60 @@
 	text-align: center;
 	color: $light_grey;
 	font-weight: bold;
+	cursor: pointer;
+}
+
+$transition_time: 0.5s;
+
+.date-separator::after {
+	position: absolute;
+	right: 10px;
+	top: 10px;
+	display: block;
+	text-align: center;
+	-webkit-transition: all $transition_time;
+	-o-transition: all $transition_time;
+	transition: all $transition_time;
+	color: $light_grey;
+	content: '+';
+	transform: rotate(45deg);
+	transform-origin: center;
+	font-size: 1.5em;
+	width: 1.5em;
+	height: 1.5em;
+	line-height: 1.5em;
+}
+
+.date-separator.closed::after {
+	transform: rotate(180deg);
+	transform-origin: center;
+}
+
+.date-accordion {
+	overflow: hidden;
+	-webkit-transition: max-height $transition_time;
+	-o-transition: max-height $transition_time;
+	transition: max-height $transition_time;
+}
+
+.prev, .next {
+	background-color: $dark_grey;
+	width: 10%;
+	position: absolute;
+	top: 20px;
+	padding: 20px;
+	color: $light_grey;
+	cursor: pointer;
+}
+
+.prev:hover, .next:hover {
+	color: rgba(255,255,255,1.00);
+}
+
+.prev {
+	left: 10px;
+}
+
+.next {
+	right: 10px;
 }

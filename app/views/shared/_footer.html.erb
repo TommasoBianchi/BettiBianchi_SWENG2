@@ -2,9 +2,7 @@
 	<% day_link = calendar_day_path DateTime.now.year, DateTime.now.month, DateTime.now.day %>
 <% end %>
 <% unless defined? week_link %>
-	<% week_number = DateTime.now.strftime("%W").to_i %>
-	<% week_number -= 1 unless DateTime.now.wday == 1 %>
-	<% week_link = calendar_week_path DateTime.now.year, week_number %>
+	<% week_link = calendar_week_path DateTime.now.year, DateTime.now.cweek %>
 <% end %>
 <% unless defined? month_link %>
 	<% month_link = calendar_month_path DateTime.now.year, DateTime.now.month %>

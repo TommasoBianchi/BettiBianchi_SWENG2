@@ -20,12 +20,13 @@ class CalendarController < ApplicationController
 
   		@schedule = get_schedule(from_date, to_date, @user)
 
-      week_number = from_date.strftime("%W").to_i
-      week_number -= 1 unless from_date.wday == 1
+      day_before = from_date - 1.days
       links = {
         day: "",
-        week: Rails.application.routes.url_helpers.calendar_week_path(year, week_number),
-        month: Rails.application.routes.url_helpers.calendar_month_path(year, month)
+        week: Rails.application.routes.url_helpers.calendar_week_path(year, from_date.cweek),
+        month: Rails.application.routes.url_helpers.calendar_month_path(year, month),
+        prev: Rails.application.routes.url_helpers.calendar_day_path(day_before.year, day_before.month, day_before.day),
+        next: Rails.application.routes.url_helpers.calendar_day_path(to_date.year, to_date.month, to_date.day)
       }
 
   		render 'calendar/main', locals: {links: links}
@@ -36,20 +37,24 @@ class CalendarController < ApplicationController
 		@user = User.find(1)
 
   		params.require([:week, :year])
-  		week = validate_between(params[:week], 1, 52)
+  		week = validate_between(params[:week], 1, 53)
   		year = validate_between(params[:year], 2000, 2100)
   		
-  		first_day_of_year = DateTime.new(year)
-  		first_monday_of_year = first_day_of_year + ((8 - first_day_of_year.wday) % 7).days
-  		from_date = first_monday_of_year + week.weeks
+  		from_date = DateTime.commercial(year, week)
   		to_date = from_date + 1.weeks
 
   		@schedule = get_schedule(from_date, to_date, @user)
 
+      /Week number according to the ISO-8601 standard, weeks starting on Monday. 
+      The first week of the year is the week that contains that year's first Thursday (='First 4-day week')./
+      prev_week = from_date - 4.days 
+      next_week = from_date + 10.days
       links = {
         day: Rails.application.routes.url_helpers.calendar_day_path(year, from_date.month, from_date.day),
         week: "",
-        month: Rails.application.routes.url_helpers.calendar_month_path(year, from_date.month)
+        month: Rails.application.routes.url_helpers.calendar_month_path(year, from_date.month),
+        prev: Rails.application.routes.url_helpers.calendar_week_path(prev_week.year, prev_week.cweek),
+        next: Rails.application.routes.url_helpers.calendar_week_path(next_week.year, next_week.cweek)
       }
 
   		render 'calendar/main', locals: {links: links}
@@ -68,12 +73,14 @@ class CalendarController < ApplicationController
 
   		@schedule = get_schedule(from_date, to_date, @user)
 
-      week_number = from_date.strftime("%W").to_i
-      week_number -= 1 unless from_date.wday == 1
+      next_month = from_date + 1.months
+      prev_month = from_date - 1.months
       links = {
         day: Rails.application.routes.url_helpers.calendar_day_path(year, month, 1),
-        week: Rails.application.routes.url_helpers.calendar_week_path(year, week_number),
-        month: ""
+        week: Rails.application.routes.url_helpers.calendar_week_path(year, from_date.cweek),
+        month: "",
+        prev: Rails.application.routes.url_helpers.calendar_month_path(prev_month.year, prev_month.month),
+        next: Rails.application.routes.url_helpers.calendar_month_path(next_month.year, next_month.month)
       }
 
   		render 'calendar/main', locals: {links: links}
@@ -83,9 +90,9 @@ class CalendarController < ApplicationController
 	def get_schedule(from_date, to_date, user)
 		schedule = []
 
-    meeting_participations = user.meeting_participations.joins(:meeting).where(meetings:{ start_date: from_date..to_date, end_date: from_date..to_date})
-    # TESTING grab all meetings
-    #meeting_participations = MeetingParticipation.joins(:meeting).order('meetings.start_date')
+    meeting_participations = user.meeting_participations.joins(:meeting)
+      .where(meetings:{ start_date: from_date..to_date, end_date: from_date..to_date})
+      .order('meetings.start_date')
 
     current_day = nil
     last_travel_id = -1

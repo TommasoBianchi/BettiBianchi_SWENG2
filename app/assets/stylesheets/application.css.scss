@@ -168,7 +168,10 @@ footer .footerlinks p {
 	font: Trebuchet Segoe, "Segoe UI", "DejaVu Sans", "Trebuchet MS", Verdana, "sans-serif";
 }
 
-
+.rounded-box {
+    border-radius: 10px;
+    box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
 
 
 
@@ -274,6 +277,7 @@ header {
 	text-align: center;
 	overflow: auto;
 	margin-bottom: 40px;
+	position: relative;
 }
 
 .innerContent{
