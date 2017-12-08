@@ -26,7 +26,9 @@ class CalendarController < ApplicationController
         next: Rails.application.routes.url_helpers.calendar_day_path(to_date.year, to_date.month, to_date.day)
       }
 
-  		render 'calendar/main', locals: {links: links}
+      prev_text = day_before.strftime "%d %b %Y"
+      next_text = to_date.strftime "%d %b %Y"
+  		render 'calendar/main', locals: {links: links, prev_text: prev_text, next_text: next_text, footer_link: 'day'}
   	end
 
   	def show_week
@@ -53,7 +55,9 @@ class CalendarController < ApplicationController
         next: Rails.application.routes.url_helpers.calendar_week_path(next_week.year, next_week.cweek)
       }
 
-  		render 'calendar/main', locals: {links: links}
+      prev_text = (from_date - 1.weeks).strftime "%d %b %Y"
+      next_text = (from_date + 1.weeks).strftime "%d %b %Y"
+  		render 'calendar/main', locals: {links: links, elements_to_skip: [Travel, DefaultLocation], prev_text: prev_text, next_text: next_text, footer_link: 'week'}
   	end
 
   	def show_month
@@ -78,7 +82,9 @@ class CalendarController < ApplicationController
         next: Rails.application.routes.url_helpers.calendar_month_path(next_month.year, next_month.month)
       }
 
-  		render 'calendar/main', locals: {links: links}
+      prev_text = prev_month.strftime "%b %Y"
+      next_text = next_month.strftime "%b %Y"
+  		render 'calendar/main', locals: {links: links, elements_to_skip: [Travel, DefaultLocation], prev_text: prev_text, next_text: next_text, footer_link: 'month'}
   	end
 
 	private 
@@ -86,6 +92,7 @@ class CalendarController < ApplicationController
 		schedule = []
 
     meeting_participations = user.meeting_participations.joins(:meeting)
+      .where(response_status: MeetingParticipation::Response_statuses[:accepted])
       .where(meetings:{ start_date: from_date..to_date, end_date: from_date..to_date})
       .order('meetings.start_date')
 

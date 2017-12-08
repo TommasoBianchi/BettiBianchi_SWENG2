@@ -1,7 +1,7 @@
 <%= form.label :preference_list, class: 'label' %>
-<%= form.text_field :preference_list, type: 'hidden', value: "0123", id: "pref-list-hidden" %>
+<%= form.text_field :preference_list, type: 'hidden', value: @user.preference_list, id: "pref-list-hidden" %>
 
-<div>
+<div id='preference_list'>
 	<ul id="prefList_active" class="connectedSortable ui-sortable preference-list-ul">
 		<li class="ui-state-default ui-sortable-handle preference-list-li" value=0>Walking <%= render 'shared/menu_three_lines' %></li>		
 		<li class="ui-state-default ui-sortable-handle preference-list-li" value=1>Driving <%= render 'shared/menu_three_lines' %></li>
@@ -14,26 +14,6 @@
 </div>
 
 <script type="text/javascript">
-	<% if(@preference_list == nil) 
-			@preference_list = [0, 1, 2, 3]
-		end
-	%>
-
-	preference_list = <%= @preference_list %>
-
-	if(preference_list != [0, 1, 2, 3]){
-		preference_list.forEach(function(el, index){
-			var element = $('.preference-list-li[value=' + el + ']')
-			$('#prefList_active').append(element)
-		})
-		for (var i = 0; i < 4; i++) {
-			if(preference_list.indexOf(i) < 0){
-				var element = $('.preference-list-li[value=' + i + ']')
-				$('#prefList_inactive').append(element)
-			}
-		}			
-	}
-
 	$( function() {
 		$( "#prefList_active, #prefList_inactive" ).sortable({
 			connectWith: ".connectedSortable",
@@ -42,6 +22,21 @@
 			},
 			disabled: false
 		}).disableSelection();
+
+		preference_list = <%= @user.preference_list.chars.map {|c| c.to_i} %>
+
+		if(preference_list != [0, 1, 2, 3]){
+			preference_list.forEach(function(el, index){
+				var element = $('.preference-list-li[value=' + el + ']')
+				$('#prefList_active').append(element)
+			})
+			for (var i = 0; i < 4; i++) {
+				if(preference_list.indexOf(i) < 0){
+					var element = $('.preference-list-li[value=' + i + ']')
+					$('#prefList_inactive').append(element)
+				}
+			}			
+		}
 	} );
 
 	function getPreferenceList(){
@@ -79,5 +74,9 @@
 
 	.menu-three-lines {
 		float: right;
+	}
+
+	#preference_list.error .preference-list-ul {
+		border: 1px solid red;
 	}
 </style>

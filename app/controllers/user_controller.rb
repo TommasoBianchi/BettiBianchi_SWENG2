@@ -24,19 +24,19 @@ class UserController < ApplicationController
       return
     end
 
-    IncompleteUser.delete(incomplete_user.id)
-    email = Email.create(email: email_hash)
-    @user.emails.push(email)
-    @user.primary_email_id = email.id
-    last_user = User.last
-    email.user_id = User.last.id + 1
-
-    if @user.save
-      session[:tmp_checked] = nil # delate temp variable
+    if @user.valid?
+      session[:tmp_checked] = nil # delete temp variable
+      IncompleteUser.delete(incomplete_user.id)
+      email = Email.create(email: email_hash)
+      @user.emails.push(email)
+      @user.primary_email_id = email.id
+      last_user = User.last
+      email.user_id = User.last.id + 1
+      @user.save
       log_in @user
-      redirect_to @user
+      redirect_to calendar_day_path DateTime.now.year, DateTime.now.month, DateTime.now.day
     else
-      reinsertUser(incomplete_user_email, incomplete_user_psw) # to implement but it would be useless
+      @unregisterdUser = incomplete_user
       render 'new'
     end
   end
@@ -44,6 +44,7 @@ class UserController < ApplicationController
   def new
     @unregisterdUser = IncompleteUser.find(session[:tmp_checked])
     @user = User.new
+    @user.preference_list = "0123"
  end
 
   private

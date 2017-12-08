@@ -40,6 +40,12 @@ $background_image_url: image_url("homepage/sfondo25.png");
     0 0.6em 0 0 black;
 }
 
+/* to avoid blue or underlined links */
+a/*:-webkit-any-link*/{
+  color: inherit;
+  cursor: auto;
+  text-decoration: none;
+}
 body{
   background-image: $background_image_url;
 }
@@ -80,22 +86,6 @@ body{
  	font-size: 14px;
  }
 
- .sidebar {
-	font-family: 'Montserrat', sans-serif;
-	color: rgba(146,146,146,1.00);
-	width: 20%;
-	position:fixed;
-	top: 42px;
-	bottom: 0px;
-	overflow-y: auto;
-	float: left;
-	padding-left: 3%;
-	padding-right: 3%;
-	padding-top: 30px;
-	text-align: center;
-	background-color: #DADADA;
-}
-
 /* pasted things about footer*/
 /* footer */
 footer {
@@ -123,12 +113,21 @@ footer div {
 }
 /* Links in footer */
 footer div a {
-
 	color: $light_grey;
-  display: inline-block;
-  width: 25%;
+  	display: inline-block;
+  	width: 25%;
 	text-decoration: none;
+	font-weight: bold;
+	padding: 10px 0;
+}
 
+footer div a.selected {
+	color: $dark_grey;
+	background-color: $light_grey;
+}
+
+footer div a.selected:hover {
+	color: rgba(255,255,255,1.00);
 }
 
 /* Container for links in footer */
@@ -161,11 +160,8 @@ footer .footerlinks p {
 }
 #footerLinks {
 	width: 100%;
-	padding-top: 10px;
-	padding-bottom: 10px;
 	background-color: #575756;
-  display: inline-table;
-	font: Trebuchet Segoe, "Segoe UI", "DejaVu Sans", "Trebuchet MS", Verdana, "sans-serif";
+  	display: inline-table;
 }
 
 .rounded-box {
@@ -255,20 +251,56 @@ header {
 }
 /* Sidebar */
 #content .sidebar {
-	font-family: 'Montserrat', sans-serif;
 	color: rgba(146,146,146,1.00);
 	width: 20%;
+	min-width: 300px;
 	position:fixed;
 	top: 42px;
 	bottom: 0px;
 	overflow-y: auto;
 	float: left;
-	padding-left: 3%;
-	padding-right: 3%;
-	padding-top: 30px;
+	/*padding-left: 3%;
+	padding-right: 3%;*/
+	padding-top: 20px;
+	padding-bottom: 20px;
+	margin-bottom: 40px;
 	text-align: center;
 	background-color: #DADADA;
 }
+
+/* Sidebar calendar */
+#content .sidebar .calendar-month:not(:last-child) {
+	margin-bottom: 20px;
+}
+
+#content .sidebar .calendar-month {
+	width: fit-content;
+	height: fit-content;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+#content .sidebar .calendar-month table {
+	border-collapse: separate;
+	border-spacing: 8px;
+}
+
+#content .sidebar .calendar-month .month {
+	cursor: pointer;
+}
+
+#content .sidebar .calendar-month .month:hover {
+	color: white;
+}
+
+#content .sidebar .calendar-month td {
+	cursor: pointer;
+}
+
+#content .sidebar .calendar-month td:hover {
+	color: white;
+}
+
 /* main content of the site */
 #content .mainContent {
 	float: left;
