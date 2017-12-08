@@ -3,13 +3,22 @@
   <%= render 'shared/sidebar' %>
   <section class="mainContent">
     <div class='innerContent'>
-      <h1>
-        <%= @meeting.title %>
-      </h1>
-      <h3>
-        <%= @meeting.abstract %>
-      </h2>
-
+      <div class=" title-go-back-block">
+        <div class="go-back">
+          <%= link_to image_tag('go_back_icon.png', id: 'go-back-image'), calendar_day_path(year: @meeting.start_date.year, month: @meeting.start_date.month, day: @meeting.start_date.day) %>
+        </div>
+        <div class="title-block">
+          <h1>
+            <%= @meeting.title %>
+          </h1>
+        </div>
+        <div class="go-back"></div>
+      </div>
+      <% unless @meeting.abstract.blank?%>
+        <h3>
+          <%= @meeting.abstract %>
+        </h2>
+      <% end %>
       <div class="date-time-block-container">
         <div class="colored-container light-blue-container date-time-block">
           <%= @meeting.start_date.strftime("%m/%d/%Y") %>
@@ -21,7 +30,9 @@
 
       <div id="location" class="location-block-container" onclick="goToLocation(<%= @meeting.location.latitude %>,<%= @meeting.location.longitude %>)">
         <%= image_tag("meeting_page/location_icon.png", id: "location_icon", class: "location-block") %>
-        <%= @meeting.location.description %>
+        <div class="location-description-block">
+          <%= @meeting.location.description %>
+        </div>
       </div>
 
       <div class="date-time-block-container">

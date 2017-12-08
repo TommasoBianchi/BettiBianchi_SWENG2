@@ -2,7 +2,7 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
-
+@import "application.css.scss";
 $dark_grey: #575756;
 $light_grey: #B2B2B2;
 $light_blue: #9BC8DA;
@@ -31,7 +31,7 @@ a{
 }
 
 .date-time-block{
-  width: 20%;
+  min-width: 20%;
     list-style-type: none;
     padding-top: 16px;
     padding-left: 7px;
@@ -47,14 +47,17 @@ a{
 }
 
 .location-block-container{
-  margin-top: 10px;
-  margin-bottom: 10px;
+  margin-top: 30px;
+  margin-bottom: 0px;
+  display: inline-table;
   font-size: 20px;
   cursor: pointer;
 }
 
 .date-time-block-container{
   width: 100%;
+  margin-top: 40px;
+  margin-bottom: 20px;
 }
 
 .location_block{
@@ -84,11 +87,19 @@ a{
     margin-right: 20px;
 }
 
+.location-description-block{
+  display: table-cell;
+  vertical-align: middle;
+}
+
 /* CSS ABOUT PARTICIPATION PAGE */
 
 .go-back{
   width: 25%;
   display: inline-block;
+  padding-top: 3%;
+  padding-bottom: 3%;
+
 }
 
 #go-back-image{
@@ -101,6 +112,7 @@ a{
     left: 0;
     right: 0;
     margin: auto;
+    float: left;
 }
 
 .title-block{

@@ -1,10 +1,10 @@
 <%= render 'shared/header' %>
 <div id="content">
+  <script type="text/javascript"></script>
   <%= render 'shared/sidebar' %>
-
-  <section class="mainContent" ,="," onload="" ="isAdmin(<% @meeting.get_meeting_participaton(@user).is_admin %>)">
+  <section class="mainContent">
     <div class='innerContent'>
-      <div class="title-go-back-block">
+      <div class=" title-go-back-block">
         <div class="go-back">
           <%= link_to image_tag('go_back_icon.png', id: 'go-back-image'), @meeting %>
         </div>
@@ -21,51 +21,76 @@
         </h2>
         <div>
           <% @meeting.get_participants(1).each do |meeting_participant| %>
-            <div class="colored-container light-blue-container participant-container">
-              <%= meeting_participant.get_name_surname%>
-              <div class='right-buttons colored-container light-grey-container'>
-                View Profile
-              </div>
+            <% unless meeting_participant.id == @user.id %>
+              <div class="colored-container light-blue-container participant-container">
+                <%= meeting_participant.get_name_surname%>
+                (<%= meeting_participant.user.nickname%>)
+                <%= link_to user_path(id: meeting_participant.user.id) do%>
+                <div id="onlyadmin" class='right-buttons colored-container light-grey-container'>
+                  View Profile
+                </div>
+              <% end %>
+              <%= link_to remove_from_meeting_path( meeting_id: @meeting.id, user_id: meeting_participant.user.id) do%>
               <div class='right-buttons colored-container light-grey-container only-admin'>
                 Remove
               </div>
+            <% end %>
+            <% unless meeting_participant.is_admin %>
+              <%= link_to nominate_admin_path( meeting_id: @meeting.id, user_id: meeting_participant.user.id) do%>
               <div class='right-buttons colored-container light-grey-container only-admin'>
                 Nominate
               </div>
-            </div>
-          <% end%>
+            <% end %>
+          <% end %>
+
         </div>
-      <% end %>
-      <% if @meeting.get_participants(0).count > 0 %>
-        <h2>
-          PENDING
-        </h2>
-        <div>
-          <% @meeting.get_participants(0).each do |meeting_participant| %>
-            <div class="colored-container light-blue-container participant-container">
-              <%= meeting_participant.get_name_surname%>
-              <div class='right-buttons colored-container light-grey-container'>
-                View Profile
-              </div>
-            </div>
-          <% end%>
-        </div>
-      <% end %>
-      <% if @meeting.get_participants(2).count > 0 %>
-        <h2>
-          DECLINED
-        </h2>
-        <div>
-          <% @meeting.get_participants(2).each do |meeting_participant| %>
-            <div class="colored-container light-blue-container participant-container">
-              <%= meeting_participant.get_name_surname%>
-              <div class='right-buttons colored-container light-grey-container'>
-                View Profile
-              </div>
-            </div>
-          <% end%>
-        </div>
-      <% end %>
-    </section>
+      <% end%>
+    <% end %>
   </div>
-  <%= render 'shared/footer' %>
+<% end %>
+<% if @meeting.get_participants(0).count > 0 %>
+  <h2>
+    PENDING
+  </h2>
+  <div>
+    <% @meeting.get_participants(0).each do |meeting_participant| %>
+      <div class="colored-container light-blue-container participant-container">
+        <%= meeting_participant.get_name_surname%>
+        (<%= meeting_participant.user.nickname%>)
+        <%= link_to user_path(id: meeting_participant.user.id) do%>
+        <div id="onlyadmin" class='right-buttons colored-container light-grey-container'>
+          View Profile
+        </div>
+      <% end %>
+    </div>
+  <% end%>
+</div>
+<% end %>
+<% if @meeting.get_participants(2).count > 0 %>
+<h2>
+  DECLINED
+</h2>
+<div>
+  <% @meeting.get_participants(2).each do |meeting_participant| %>
+    <div class="colored-container light-blue-container participant-container">
+      <%= meeting_participant.get_name_surname%>
+      (<%= meeting_participant.user.nickname%>)
+      <%= link_to user_path(id: meeting_participant.user.id) do%>
+      <div id="onlyadmin" class='right-buttons colored-container light-grey-container'>
+        View Profile
+      </div>
+    <% end %>
+  </div>
+<% end%>
+</div>
+<% end %>
+</section >
+</div>
+<%= render 'shared/footer' %>
+
+<script type="text/javascript">
+<% if  @meeting.get_meeting_participaton(@user).is_admin %>
+<% else %>
+$('.only-admin').hide();
+<% end %>
+</script>
