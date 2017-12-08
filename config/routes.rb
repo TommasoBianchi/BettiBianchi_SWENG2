@@ -10,7 +10,9 @@ Rails.application.routes.draw do
   delete '/logout', to: 'homepage#destroy'
 
   # Meeting
-  get 'participants_page' => 'meeting#participants_page'
+  get 'meeting/:id/participants_page' => 'meeting#participants_page', as: 'participants_page'
+  get 'meeting/remove_participant/:meeting_id/:user_id' => 'meeting#remove_from_meeting', as: 'remove_from_meeting'
+  get 'meeting/nominate_admin/:meeting_id/:user_id' => 'meeting#nominate_admin', as: 'nominate_admin'
 
   # Calendar Page
   get 'calendar/day/:year/:month/:day' => 'calendar#show_day', constraints: { year: /\d{4}/, month: /\d{1,2}/, day: /\d{1,2}/ }, as: 'calendar_day'
