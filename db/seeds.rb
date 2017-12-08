@@ -71,10 +71,10 @@ for i in 1..NUM_USERS do
                      duration: duration, name: 'Break' + j.to_s, day_of_the_week: j % 7, user_id: i)
   end
 
-  for j in 1..NUM_DEFAULT_LOCATIONS_PER_USER do 
+  for j in 1..NUM_DEFAULT_LOCATIONS_PER_USER do
     starting_hour = (j * 450) % (24 * 60) # represented in minutes after midnight
     for k in 0..6 do
-      DefaultLocation.create({starting_hour: starting_hour, day_of_the_week: k, name: "Default Location " + j.to_s, user_id: i, location_id: 1})
+      DefaultLocation.create(starting_hour: starting_hour, day_of_the_week: k, name: 'Default Location ' + j.to_s, user_id: i, location_id: 1)
     end
   end
 
@@ -99,7 +99,7 @@ for i in 1..NUM_USERS do
   end
 end
 
-for i in -NUM_MEETINGS_DAYS/2..NUM_MEETINGS_DAYS/2 do 
+for i in -NUM_MEETINGS_DAYS / 2..NUM_MEETINGS_DAYS / 2 do
   day = DateTime.now + i.days
   for k in 1..NUM_MEETINGS_PER_DAY do
     start_date = DateTime.new(day.year, day.month, day.day, rand(8..20), rand(0..59), 0)
@@ -124,11 +124,11 @@ for i in 1..NUM_USERS do
   for j in 1..NUM_MEETINGS do
     k = rand(1..10)
     next unless k > 7
-    become_admin = true if (i + j).even?
+    become_admin = [true, false].sample
     MeetingParticipation.create(meeting_id: Meeting.find(j % NUM_MEETINGS + 1).id, user_id: User.find(i % NUM_USERS + 1).id, is_admin: become_admin, is_consistent: true,
                                 arriving_travel_id: Travel.find(i % NUM_TRAVELS + 1).id, leaving_travel_id: Travel.find((i + 1) % NUM_TRAVELS + 1).id, response_status: i % NUM_RESPONSE_STATUSES)
 
-  puts "User #{i} - MeetingParticipation #{j}"
+    puts "User #{i} - MeetingParticipation #{j}"
   end
 end
 
