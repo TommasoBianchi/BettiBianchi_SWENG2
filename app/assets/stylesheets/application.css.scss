@@ -40,6 +40,12 @@ $background_image_url: image_url("homepage/sfondo25.png");
     0 0.6em 0 0 black;
 }
 
+/* to avoid blue or underlined links */
+a:-webkit-any-link{
+  color: inherit;
+  cursor: auto;
+  text-decoration: none;
+}
 body{
   background-image: $background_image_url;
 }
