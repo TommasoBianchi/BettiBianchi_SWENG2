@@ -1,3 +1,56 @@
 // Place all the styles related to the Travel controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+
+@import "calendar.scss";
+
+.mainContent-padding{
+  @extend .mainContent;
+  padding-top: 5%;
+}
+
+.calendar-vertical-line-dark{
+  @extend .calendar-vertical-line;
+  background-color: $dark-grey;
+  z-index: -1000;
+}
+
+.center-travel{
+  @extend .travel;
+  z-index: 10;
+  width: 60%;
+  margin: 0 auto;
+      display: inline-flex;
+}
+
+.table-travel-mean{
+    border-collapse: separate;
+  table-layout: fixed;
+}
+
+.one-line-table{
+  width: 32%;
+}
+
+.travel-step-icon{
+  margin-top: 4px;
+  margin-bottom: 6px;
+  height: 54px;
+}
+
+.middle-travel-mean-name{
+  line-height: 93px;
+  text-transform: uppercase;
+}
+
+#ending-location{
+  position: absolute;
+  bottom: 24px;
+  right: 30px;
+}
+
+#starting-location{
+  position: absolute;
+  top: 24px;
+  right: 30px;
+}
