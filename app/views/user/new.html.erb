@@ -14,39 +14,35 @@
       <div id="emailPasswordContainer">
 
 <%= form_with scope: :user, local: true do |form| %>
-  <% if @user %>
-    <% if @user.errors.any? %>
-        <div id="error_explanation">
-          <h2>
-            <%= pluralize(@user.errors.count, "error") %> prohibited
-            this article from being saved:
-          </h2>
-          <ul>
-            <% @user.errors.full_messages.each do |msg| %>
-              <li><%= msg %></li>
-            <% end %>
-          </ul>
-        </div>
+  
+    <script type="text/javascript">
+      <% if !@user.valid? %>
+        $(window).on('load', function(){
+        <% @user.errors.each do |error, message| %>
+          displayError("<%= error.to_s %>", "<%= message %>")
+        <% end %>    
+        })
       <% end %>
-    <% end %>
+    </script>
+
     <%= form.label :email, class: 'label' %>
-    <%= form.text_field :email, type: 'text', value: if @unregisterdUser
+    <%= form.text_field :email, id: 'email', type: 'text', value: if @unregisterdUser
         @unregisterdUser.email
       elsif @user.emails
         @user.emails.first.email
-    end%>
+    end %>
     <%= form.label :password, class: 'label' %>
-    <%= form.text_field :password, type: 'password', value: if @unregisterdUser
+    <%= form.text_field :password, id: 'password', type: 'password', value: if @unregisterdUser
         @unregisterdUser.password
       elsif @user.password
         @user.password
-    end%>
+    end %>
     <%= form.label :name, class: 'label' %>
-    <%= form.text_field :name, type: 'text'%>
+    <%= form.text_field :name, id: 'name', type: 'text' %>
     <%= form.label :surname, class: 'label' %>
-    <%= form.text_field :surname, type: 'text' %>
+    <%= form.text_field :surname, id: 'surname', type: 'text' %>
     <%= form.label :nickname, class: 'label' %>
-    <%= form.text_field :nickname, type: 'text' %>
+    <%= form.text_field :nickname, id: 'nickname', type: 'text' %>
 
     <%= render 'shared/preference_list', form: form %>
 
