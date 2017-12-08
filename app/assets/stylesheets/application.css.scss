@@ -86,22 +86,6 @@ body{
  	font-size: 14px;
  }
 
- .sidebar {
-	font-family: 'Montserrat', sans-serif;
-	color: rgba(146,146,146,1.00);
-	width: 20%;
-	position:fixed;
-	top: 42px;
-	bottom: 0px;
-	overflow-y: auto;
-	float: left;
-	padding-left: 3%;
-	padding-right: 3%;
-	padding-top: 30px;
-	text-align: center;
-	background-color: #DADADA;
-}
-
 /* pasted things about footer*/
 /* footer */
 footer {
@@ -267,20 +251,56 @@ header {
 }
 /* Sidebar */
 #content .sidebar {
-	font-family: 'Montserrat', sans-serif;
 	color: rgba(146,146,146,1.00);
 	width: 20%;
+	min-width: 300px;
 	position:fixed;
 	top: 42px;
 	bottom: 0px;
 	overflow-y: auto;
 	float: left;
-	padding-left: 3%;
-	padding-right: 3%;
-	padding-top: 30px;
+	/*padding-left: 3%;
+	padding-right: 3%;*/
+	padding-top: 20px;
+	padding-bottom: 20px;
+	margin-bottom: 40px;
 	text-align: center;
 	background-color: #DADADA;
 }
+
+/* Sidebar calendar */
+#content .sidebar .calendar-month:not(:last-child) {
+	margin-bottom: 20px;
+}
+
+#content .sidebar .calendar-month {
+	width: fit-content;
+	height: fit-content;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+#content .sidebar .calendar-month table {
+	border-collapse: separate;
+	border-spacing: 8px;
+}
+
+#content .sidebar .calendar-month .month {
+	cursor: pointer;
+}
+
+#content .sidebar .calendar-month .month:hover {
+	color: white;
+}
+
+#content .sidebar .calendar-month td {
+	cursor: pointer;
+}
+
+#content .sidebar .calendar-month td:hover {
+	color: white;
+}
+
 /* main content of the site */
 #content .mainContent {
 	float: left;

@@ -1,0 +1,5 @@
+<section class="sidebar">
+	<% for month in 1..12 %>
+		<%= render 'shared/month_calendar', year: params[:year].to_i, month: month %>
+	<% end %>
+</section>
