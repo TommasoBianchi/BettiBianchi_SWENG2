@@ -38,6 +38,7 @@ NUM_TRAVEL_MEANS = 3
 MAX_DISTANCE = 20
 NUM_RESPONSE_STATUSES = 3
 NUM_DEFAULT_LOCATIONS_PER_USER = 3
+NUM_TRAVEL_STEPS = 3
 
 location = Location.create(latitude: 37.4133028, longitude: -122.1513074, description: 'Mountain View')
 
@@ -105,7 +106,8 @@ for i in -NUM_MEETINGS_DAYS / 2..NUM_MEETINGS_DAYS / 2 do
     start_date = DateTime.new(day.year, day.month, day.day, rand(8..20), rand(0..59), 0)
     end_date = start_date + rand(30..120).minutes
     meeting = Meeting.create(location_id: location.id, title: 'NewMeeting', start_date: start_date, end_date: end_date)
-
+    meeting.title = 'NewMeeting ' + meeting.id.to_s
+    meeting.save
     puts "Meeting #{meeting.id}"
   end
 end
@@ -118,6 +120,18 @@ for i in 1..NUM_TRAVELS do
   Travel.create(start_time: starting_datetime, end_time: ending_datetime, travel_mean: travel_mean_used, distance: distance)
 
   puts "Travel #{i}"
+
+  starting_travel_mean_datetime = DateTime.new(2017, i % 12, i % 28, (10 + i) % 24, 35, 0)
+  ending_travel_mean_datetime = DateTime.new(2017, i % 12, i % 28, (11 + i) % 24, 40, 0)
+  for j in 1..NUM_TRAVEL_STEPS do
+    starting_travel_mean_datetime = ending_travel_mean_datetime
+    ending_travel_mean_datetime = starting_travel_mean_datetime + 10.minutes
+    travel_mean = [1, travel_mean_used].sample
+    distance = rand * MAX_DISTANCE / NUM_TRAVEL_STEPS
+    TravelStep.create(start_time: starting_travel_mean_datetime, end_time: ending_travel_mean_datetime, travel_mean: travel_mean, distance: distance, travel_id: i)
+
+    puts "Travel #{i} - TravelStep #{j}"
+  end
 end
 
 for i in 1..NUM_USERS do
