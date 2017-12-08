@@ -34,6 +34,28 @@ class User < ApplicationRecord
 
   has_secure_password
 
+  def get_last_default_location_after(current_day)
+    list_default_location = []
+    default_locations.each do |dl|
+      if dl.day_of_the_week < current_day.wday || (dl.day_of_the_week = current_day.wday && dl.starting_hour <= (current_day.hour * 24 + current_day.min))
+        list_default_location.push dl
+      end
+    end
+    list_default_location = list_default_location.sort_by { |dl1| [(dl1.day_of_the_week * 3600 + dl1.starting_hour)] }
+    list_default_location.last
+  end
+
+  def get_first_location_after(current_day)
+    list_default_location = []
+    default_locations.each do |dl|
+      if dl.day_of_the_week > current_day.wday || (dl.day_of_the_week = current_day.wday && dl.starting_hour >= (current_day.hour * 24 + current_day.min))
+        list_default_location.push dl
+      end
+    end
+    list_default_location = list_default_location.sort_by { |dl1| [(dl1.day_of_the_week * 3600 + dl1.starting_hour)] }
+    list_default_location.first
+  end
+
   private
 
   def primary_email_in_emails
