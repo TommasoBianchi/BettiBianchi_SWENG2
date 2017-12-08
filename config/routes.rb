@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  get 'travel/show'
+
   get 'user/new'
 
   resources :user
