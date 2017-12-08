@@ -123,12 +123,21 @@ footer div {
 }
 /* Links in footer */
 footer div a {
-
 	color: $light_grey;
-  display: inline-block;
-  width: 25%;
+  	display: inline-block;
+  	width: 25%;
 	text-decoration: none;
+	font-weight: bold;
+	padding: 10px 0;
+}
 
+footer div a.selected {
+	color: $dark_grey;
+	background-color: $light_grey;
+}
+
+footer div a.selected:hover {
+	color: rgba(255,255,255,1.00);
 }
 
 /* Container for links in footer */
@@ -161,11 +170,8 @@ footer .footerlinks p {
 }
 #footerLinks {
 	width: 100%;
-	padding-top: 10px;
-	padding-bottom: 10px;
 	background-color: #575756;
-  display: inline-table;
-	font: Trebuchet Segoe, "Segoe UI", "DejaVu Sans", "Trebuchet MS", Verdana, "sans-serif";
+  	display: inline-table;
 }
 
 .rounded-box {

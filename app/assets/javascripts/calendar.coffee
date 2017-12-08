@@ -4,10 +4,11 @@
 
 @maxHeights = {}
 @toggle = (date) ->
-	if(!@maxHeights[date])
+	item = $('#' + date + "-accordion")
+	
+	if(!@maxHeights[date] || item.css('max-height') == 'none')
 		@setMaxHeight(date)
 
-	item = $('#' + date + "-accordion")
 	if (item.css('max-height') != '0px')
 		item.css('max-height', '0px')	
 	else

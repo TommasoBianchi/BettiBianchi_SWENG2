@@ -14,6 +14,10 @@
 	z-index: 2;
 }
 
+.meeting + .meeting {
+	margin-top: 20px;
+}
+
 .meeting-title, .meeting-location, .default-location-name {
 	padding-top: 5px;
 }
@@ -94,6 +98,10 @@
 	color: black;
 }
 
+.detail:hover {
+	color: rgba(255,255,255,1.00);
+}
+
 .travel.left-align .detail {
 	right: unset;
 	left: 10px;
@@ -107,10 +115,6 @@
     margin: 0 auto;
     position: relative;
 	z-index: 2;
-}
-
-.default-location:last-child {
-	margin-bottom: 20px;
 }
 
 .date-separator {
@@ -158,6 +162,11 @@ $transition_time: 0.5s;
 	-webkit-transition: max-height $transition_time;
 	-o-transition: max-height $transition_time;
 	transition: max-height $transition_time;
+	margin-bottom: 20px;
+}
+
+.date-accordion > div:last-child {
+	margin-bottom: 20px;
 }
 
 .prev, .next {
@@ -168,6 +177,7 @@ $transition_time: 0.5s;
 	padding: 20px;
 	color: $light_grey;
 	cursor: pointer;
+	font-weight: bold;
 }
 
 .prev:hover, .next:hover {

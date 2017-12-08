@@ -2,11 +2,15 @@
 <div id="content">
   <%= render 'shared/sidebar' %>
   <section class="mainContent">
-  	<a href="<%= links[:prev] %>"><div class="rounded-box prev">Prev</div></a>
-  	<a href="<%= links[:next] %>"><div class="rounded-box next">Next</div></a>
+  	<a href="<%= links[:prev] %>"><div class="rounded-box prev"><%= prev_text %></div></a>
+  	<a href="<%= links[:next] %>"><div class="rounded-box next"><%= next_text %></div></a>
   	<% travel_left = true %>
   	<% first = true %>
+  	<% unless defined?(elements_to_skip) != nil %>
+		<% elements_to_skip = [] %>
+	<% end %>
     <% @schedule.each do |item| %>
+    	<% if elements_to_skip.include?(item.class) then next end %>
 		<% if item.is_a? Travel %>
 			<% travel_mean = Travel::Travel_means.keys[item.travel_mean] %>
 			<div class="travel-container">
@@ -52,4 +56,4 @@
 	<% end %>
   </section>
 </div>
-<%= render 'shared/footer', day_link: links[:day], week_link: links[:week], month_link: links[:month] %>
+<%= render 'shared/footer', day_link: links[:day], week_link: links[:week], month_link: links[:month], selected: footer_link %>
