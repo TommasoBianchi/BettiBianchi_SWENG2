@@ -17,11 +17,24 @@ class HomepageController < ApplicationController
       if email
         user_existing_email(user)
       else # email doesn't exist
-        signup_incomplete_user
+        if isEmail(params[:homepage][:email].downcase)
+          signup_incomplete_user
+        else # input is not an email
+          nickname_user = User.find_by(nickname: params[:homepage][:email])
+          if nickname_user # input corresponds to a valid nickname
+            user_existing_email(nickname_user)
+          else # guest tries to signup with a non-valid email
+            flash.now[:danger] = 'You must register with a valid email'
+            render 'index'
+          end # end if nickname_user
+        end # end isEmail
       end # end if email
     else # button clicked = login
+      nickname_user = User.find_by(nickname: params[:homepage][:email])
       if email && user
         user_existing_email(user)
+      elsif nickname_user
+        user_existing_email(nickname_user)
       else # user doesn't exist
         unless login_incomplete_user # neither an incomplete user exists
           flash.now[:danger] = Error_message
@@ -93,5 +106,9 @@ class HomepageController < ApplicationController
       flash.now[:danger] = Error_message
       render 'index'
     end
+  end
+
+  def isEmail(str)
+    str.match(/[a-zA-Z0-9._%]@(?:[a-zA-Z0-9]\.)[a-zA-Z]{2,4}/)
   end
 end

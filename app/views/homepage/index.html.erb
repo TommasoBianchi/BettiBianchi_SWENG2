@@ -20,7 +20,7 @@
         </div>
         <div id="emailPasswordContainer">
           <%= form_for(:homepage) do |f| %>
-          <%= f.text_field :email, placeholder: 'Nickname/Email', type: 'email', id: 'emailField'%>
+          <%= f.text_field :email, placeholder: 'Nickname/Email', type: 'text', id: 'emailField'%>
           <%= f.text_field :password, placeholder: 'Password', type: 'password' %>
           <%= f.submit 'SIGNUP', name: 'signup', class: "confirmationButton" %>
           <%= f.submit 'LOGIN', name: 'login', class: "confirmationButton" %>
