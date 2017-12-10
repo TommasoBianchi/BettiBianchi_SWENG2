@@ -16,6 +16,21 @@ ActiveRecord::Base.connection.tables.each do |table|
 end
 # DUMP EVERYTHING BEFORE RE-SEEDING
 
+def create_travel_steps(travel)
+  travel_duration = travel.get_duration_integer
+  ending_travel_mean_datetime = travel.start_time
+  for j in 1..NUM_TRAVEL_STEPS do
+    starting_travel_mean_datetime = ending_travel_mean_datetime
+    ending_travel_mean_datetime = starting_travel_mean_datetime + (travel_duration / NUM_TRAVEL_STEPS).minutes
+    travel_mean = rand(0..NUM_TRAVEL_MEANS)
+    distance = rand * MAX_DISTANCE / NUM_TRAVEL_STEPS
+    TravelStep.create(start_time: starting_travel_mean_datetime, end_time: ending_travel_mean_datetime, travel_mean: travel_mean, distance: distance, travel_id: travel.id)
+
+    i = travel.id
+    puts "Travel #{i} - TravelStep #{j}"
+  end
+end
+
 NUM_GROUPS = 3
 NUM_SOCIALS = 4
 NUM_EMAILS_PER_USER = 2
@@ -112,38 +127,49 @@ for i in -NUM_MEETINGS_DAYS / 2..NUM_MEETINGS_DAYS / 2 do
   end
 end
 
-for i in 1..NUM_TRAVELS do
-  starting_datetime = DateTime.new(2017, i % 12, i % 28, (10 + i) % 24, 35, 0)
-  ending_datetime = DateTime.new(2017, i % 12, i % 28, (11 + i) % 24, 35, 0)
-  travel_mean_used = rand(0..NUM_TRAVEL_MEANS)
-  distance = rand * MAX_DISTANCE
-  Travel.create(start_time: starting_datetime, end_time: ending_datetime, travel_mean: travel_mean_used, distance: distance)
-
-  puts "Travel #{i}"
-
-  starting_travel_mean_datetime = DateTime.new(2017, i % 12, i % 28, (10 + i) % 24, 35, 0)
-  ending_travel_mean_datetime = DateTime.new(2017, i % 12, i % 28, (11 + i) % 24, 40, 0)
-  for j in 1..NUM_TRAVEL_STEPS do
-    starting_travel_mean_datetime = ending_travel_mean_datetime
-    ending_travel_mean_datetime = starting_travel_mean_datetime + 10.minutes
-    travel_mean = [1, travel_mean_used].sample
-    distance = rand * MAX_DISTANCE / NUM_TRAVEL_STEPS
-    TravelStep.create(start_time: starting_travel_mean_datetime, end_time: ending_travel_mean_datetime, travel_mean: travel_mean, distance: distance, travel_id: i)
-
-    puts "Travel #{i} - TravelStep #{j}"
-  end
-end
-
 for i in 1..NUM_USERS do
   for j in 1..NUM_MEETINGS do
     k = rand(1..(10 + 1))
     next unless k > 7
     become_admin = [true, false].sample
-    response_status = rand(0...(NUM_RESPONSE_STATUSES + 1))
-    MeetingParticipation.create(meeting_id: Meeting.find(j % NUM_MEETINGS + 1).id, user_id: User.find(i % NUM_USERS + 1).id, is_admin: become_admin, is_consistent: true,
-                                arriving_travel_id: Travel.find(i % NUM_TRAVELS + 1).id, leaving_travel_id: Travel.find((i + 1) % NUM_TRAVELS + 1).id, response_status: response_status)
+    response_status = rand(0...(NUM_RESPONSE_STATUSES + 4))
+    response_status = 1 if response_status > 2 # to give more probabilities of a meeting to be accepted
+    user = User.find(i % NUM_USERS + 1)
+    mp = MeetingParticipation.create(meeting_id: Meeting.find(j % NUM_MEETINGS + 1).id, user_id: user.id, is_admin: become_admin, is_consistent: true,
+                                     response_status: response_status)
 
     puts "User #{i} - MeetingParticipation #{j} - ResponseStatus #{response_status}"
+
+    next unless mp.response_status == 1
+    # create arriving travel for mp
+    ending_datetime = mp.meeting.start_date
+    starting_datetime = ending_datetime - rand(10..60).minutes
+    travel_mean_used = rand(0..NUM_TRAVEL_MEANS)
+    distance = rand * MAX_DISTANCE
+    previous_default_location = user.get_last_default_location_before(starting_datetime)
+    arriving_travel = Travel.new(start_time: starting_datetime, end_time: ending_datetime, travel_mean: travel_mean_used, distance: distance)
+    arriving_travel.starting_location_dl = previous_default_location
+    arriving_travel.save
+    mp.arriving_travel_id = arriving_travel.id
+
+    puts "Travel #{arriving_travel.id}"
+    create_travel_steps(arriving_travel)
+
+    # create leaving travel for mp
+    starting_datetime = mp.meeting.end_date
+    ending_datetime = starting_datetime + rand(10..60).minutes
+    travel_mean_used = rand(0..NUM_TRAVEL_MEANS)
+    distance = rand * MAX_DISTANCE
+    following_default_location = user.get_last_default_location_before(ending_datetime)
+    leaving_travel = Travel.new(start_time: starting_datetime, end_time: ending_datetime, travel_mean: travel_mean_used, distance: distance)
+    leaving_travel.ending_location_dl = following_default_location
+    leaving_travel.save
+    mp.leaving_travel_id = leaving_travel.id
+
+    puts "Travel #{leaving_travel.id}"
+    create_travel_steps(leaving_travel)
+
+    mp.save
   end
 end
 

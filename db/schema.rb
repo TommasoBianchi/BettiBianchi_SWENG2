@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171205135706) do
+ActiveRecord::Schema.define(version: 20171210155905) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -187,6 +187,8 @@ ActiveRecord::Schema.define(version: 20171205135706) do
     t.decimal "distance", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "starting_location_dl_id"
+    t.integer "ending_location_dl_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -236,6 +238,8 @@ ActiveRecord::Schema.define(version: 20171205135706) do
   add_foreign_key "social_users", "users"
   add_foreign_key "statuses", "users"
   add_foreign_key "travel_steps", "travels"
+  add_foreign_key "travels", "default_locations", column: "ending_location_dl_id"
+  add_foreign_key "travels", "default_locations", column: "starting_location_dl_id"
   add_foreign_key "users", "emails", column: "primary_email_id"
   add_foreign_key "values", "subjects"
 end

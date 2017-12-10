@@ -34,7 +34,7 @@ class User < ApplicationRecord
 
   has_secure_password
 
-  def get_last_default_location_after(current_day)
+  def get_last_default_location_before(current_day)
     list_default_location = []
     default_locations.each do |dl|
       if dl.day_of_the_week < current_day.wday || (dl.day_of_the_week = current_day.wday && dl.starting_hour <= (current_day.hour * 24 + current_day.min))
@@ -42,10 +42,15 @@ class User < ApplicationRecord
       end
     end
     list_default_location = list_default_location.sort_by { |dl1| [(dl1.day_of_the_week * 3600 + dl1.starting_hour)] }
-    list_default_location.last
+    if list_default_location.blank?
+      return get_last_default_location_before(DateTime.parse('December 9th 2017 11:59:59 PM')) # to take the last default location of the week, infinite loop if user doesn't have any def location
+    else
+      list_default_location.last
+    end
   end
 
   def get_first_location_after(current_day)
+    # ATTENTION IT RETURNS THE FIRST DEFAULT LOCATION THAT STARTS AFTER current_day. if you want the current one use the get_last_default_location_before method
     list_default_location = []
     default_locations.each do |dl|
       if dl.day_of_the_week > current_day.wday || (dl.day_of_the_week = current_day.wday && dl.starting_hour >= (current_day.hour * 24 + current_day.min))
