@@ -22,9 +22,6 @@ class TravelController < ApplicationController
       current_day = travel.start_time
       return user.get_last_default_location_after(current_day)
     else
-      puts '****************************************'
-      puts '****************************************'
-      puts '****************************************'
       return starting_point.meeting
     end
   end
