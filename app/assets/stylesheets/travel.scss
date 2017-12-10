@@ -4,10 +4,6 @@
 
 @import "calendar.scss";
 
-.mainContent-padding{
-  @extend .mainContent;
-  padding-top: 5%;
-}
 
 .calendar-vertical-line-dark{
   @extend .calendar-vertical-line;
@@ -45,12 +41,12 @@
 
 #ending-location{
   position: absolute;
-  bottom: 24px;
-  right: 30px;
+  bottom: 16%;
+  right: 11%;
 }
 
 #starting-location{
   position: absolute;
-  top: 24px;
-  right: 30px;
+  top: 16%;
+  right: 11%;
 }
