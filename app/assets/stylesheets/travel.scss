@@ -4,7 +4,6 @@
 
 @import "calendar.scss";
 
-
 .calendar-vertical-line-dark{
   @extend .calendar-vertical-line;
   background-color: $dark-grey;
@@ -49,4 +48,8 @@
   position: absolute;
   top: 16%;
   right: 11%;
+}
+
+.mainContent > div:last-child {
+  margin-bottom: 20px;
 }
