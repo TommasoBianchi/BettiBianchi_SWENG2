@@ -15,7 +15,7 @@ Rails.application.routes.draw do
   get 'meeting/nominate_admin/:meeting_id/:user_id' => 'meeting#nominate_admin', as: 'nominate_admin'
 
   # Calendar Page
-  get 'calendar/day/:year/:month/:day' => 'calendar#show_day', constraints: { year: /\d{4}/, month: /\d{1,2}/, day: /\d{1,2}/ }, as: 'calendar_day'
+  get 'calendar/day/:year/:month/:day' => 'calendar#show_day', constraints: { year: /\d{4}/, month: /\d{1,2}/, day: /\d{1,2}/ }, as: 'calendar_day', defaults: { year: DateTime.now.year, month: DateTime.now.month, day: DateTime.now.day }
   get 'calendar/week/:year/:week' => 'calendar#show_week', constraints: { year: /\d{4}/, week: /\d{1,2}/ }, as: 'calendar_week'
   get 'calendar/month/:year/:month' => 'calendar#show_month', constraints: { year: /\d{4}/, month: /\d{1,2}/ }, as: 'calendar_month'
 
