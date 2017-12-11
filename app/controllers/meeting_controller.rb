@@ -1,4 +1,7 @@
 class MeetingController < ApplicationController
+
+  before_action :check_participation
+
   def show
     @user = current_user
     @meeting = Meeting.find(params['id'])
@@ -21,5 +24,14 @@ class MeetingController < ApplicationController
     m.is_admin = true
     m.save
     redirect_to participants_page_path(id: params[:meeting_id])
+  end
+
+  private
+  def check_participation
+    meeting_id = params['id']
+    meeting_id = params['meeting_id'] unless meeting_id
+    unless current_user.meeting_participations.where(meeting_id: meeting_id).count() > 0
+      raise ActionController::RoutingError, 'Not Found'
+    end
   end
 end

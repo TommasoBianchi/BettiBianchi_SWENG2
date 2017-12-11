@@ -1,4 +1,7 @@
 class TravelController < ApplicationController
+
+  before_action :check_my_travel
+
   def show
     @travel = Travel.find(params[:id])
     @travel_schedule = []
@@ -24,6 +27,13 @@ class TravelController < ApplicationController
 
     if travel_schedule[-1].is_a? MeetingParticipation
       travel_schedule[-1] = travel_schedule[-1].meeting
+    end
+  end
+
+  def check_my_travel
+    travel = Travel.find(params[:id])
+    unless travel.get_starting_point.user_id == current_user.id and travel.get_ending_point.user_id == current_user.id
+      raise ActionController::RoutingError, 'Not Found'
     end
   end
 end

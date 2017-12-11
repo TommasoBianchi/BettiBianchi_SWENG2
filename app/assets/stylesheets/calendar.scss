@@ -4,6 +4,18 @@
 
 @import "main.scss";
 
+.vertical-line {
+	background-color: #b2b2b2;
+    height: calc(100% - 50px);
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+    width: 10%;
+}
+
 .meeting {
 	background-color: $blue;
     padding: 20px;
@@ -56,8 +68,10 @@
     position: absolute;
 	width: 10%;
 	height: 100%;
-	left: 44%;
 	z-index: 1;
+	margin: auto;
+    left: 0;
+    right: 0;
 }
 
 .travel-mean-icon {
@@ -121,12 +135,6 @@
 	margin-top: 20px;
 }
 
-.default-location + .default-location::before{
-	background-color: $light_grey;
-	width: 100px;
-	height: 100px;
-}
-
 .date-separator {
 	background-color: $dark_grey;
     padding: 20px;
@@ -173,6 +181,7 @@ $transition_time: 0.5s;
 	-o-transition: max-height $transition_time;
 	transition: max-height $transition_time;
 	margin-bottom: 20px;
+	position: relative;
 }
 
 .date-accordion > div:last-child {
