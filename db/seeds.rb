@@ -17,13 +17,14 @@ end
 # DUMP EVERYTHING BEFORE RE-SEEDING
 
 def create_travel_steps(travel)
-  travel_duration = travel.get_duration_integer
+  travel_duration = travel.get_duration_integer_minutes
+  starting_travel_mean_datetime = travel.start_time - (travel_duration / NUM_TRAVEL_STEPS).minutes
   ending_travel_mean_datetime = travel.start_time
   for j in 1..NUM_TRAVEL_STEPS do
-    starting_travel_mean_datetime = ending_travel_mean_datetime
-    ending_travel_mean_datetime = starting_travel_mean_datetime + (travel_duration / NUM_TRAVEL_STEPS).minutes
+    starting_travel_mean_datetime += (travel_duration / NUM_TRAVEL_STEPS).minutes
+    ending_travel_mean_datetime += (travel_duration / NUM_TRAVEL_STEPS).minutes
     travel_mean = rand(0..NUM_TRAVEL_MEANS)
-    distance = rand * MAX_DISTANCE / NUM_TRAVEL_STEPS
+    distance = rand * MAX_DISTANCE
     TravelStep.create(start_time: starting_travel_mean_datetime, end_time: ending_travel_mean_datetime, travel_mean: travel_mean, distance: distance, travel_id: travel.id)
 
     i = travel.id
@@ -36,9 +37,9 @@ NUM_SOCIALS = 4
 NUM_EMAILS_PER_USER = 2
 # NUM_BREAKS_PER_USER = 2
 # NUM_STATUSES_PER_USER = 2
-NUM_CONTACTS_PER_USER = 3
+NUM_CONTACTS_PER_USER = 0
 NUM_BREAKS_PER_USER = 1
-NUM_USERS = 5
+NUM_USERS = 1
 NUM_MEETINGS_DAYS = 100
 NUM_MEETINGS_PER_DAY = 5
 NUM_MEETINGS = NUM_MEETINGS_DAYS * NUM_MEETINGS_PER_DAY
@@ -87,10 +88,12 @@ for i in 1..NUM_USERS do
                      duration: duration, name: 'Break' + j.to_s, day_of_the_week: j % 7, user_id: i)
   end
 
+  number_of_default_locations = 0
   for j in 1..NUM_DEFAULT_LOCATIONS_PER_USER do
     starting_hour = (j * 450) % (24 * 60) # represented in minutes after midnight
     for k in 0..6 do
-      DefaultLocation.create(starting_hour: starting_hour, day_of_the_week: k, name: 'Default Location ' + j.to_s, user_id: i, location_id: 1)
+      DefaultLocation.create(starting_hour: starting_hour, day_of_the_week: k, name: 'Default Location ' + number_of_default_locations.to_s, user_id: i, location_id: 1)
+      number_of_default_locations += 1
     end
   end
 
