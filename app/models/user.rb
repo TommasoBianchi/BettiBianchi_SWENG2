@@ -36,16 +36,18 @@ class User < ApplicationRecord
 
   def get_last_default_location_before(current_day)
     list_default_location = []
+    puts(current_day)
     default_locations.each do |dl|
-      if dl.day_of_the_week < current_day.wday || (dl.day_of_the_week = current_day.wday && dl.starting_hour <= (current_day.hour * 24 + current_day.min))
+      if dl.day_of_the_week < current_day.wday || ((dl.day_of_the_week == current_day.wday) && (dl.starting_hour <= (current_day.hour * 60 + current_day.min)))
         list_default_location.push dl
       end
     end
-    list_default_location = list_default_location.sort_by { |dl1| [(dl1.day_of_the_week * 3600 + dl1.starting_hour)] }
+    list_default_location = list_default_location.sort_by { |dl1| [(dl1.day_of_the_week * 60 * 24 + dl1.starting_hour)] }
+
     if list_default_location.blank?
       return get_last_default_location_before(DateTime.parse('December 9th 2017 11:59:59 PM')) # to take the last default location of the week, infinite loop if user doesn't have any def location
     else
-      list_default_location.last
+      return list_default_location.last
     end
   end
 
