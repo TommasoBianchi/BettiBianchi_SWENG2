@@ -20,6 +20,5 @@ Rails.application.routes.draw do
   get 'calendar/month/:year/:month' => 'calendar#show_month', constraints: { year: /\d{4}/, month: /\d{1,2}/ }, as: 'calendar_month'
 
   # Travel
-
   get 'travel/:id' => 'travel#show', as: 'show_travel'
 end

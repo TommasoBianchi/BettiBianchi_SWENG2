@@ -22,4 +22,8 @@ class MeetingController < ApplicationController
     m.save
     redirect_to participants_page_path(id: params[:meeting_id])
   end
+
+  def new
+    @meeting = Meeting.new
+  end
 end
