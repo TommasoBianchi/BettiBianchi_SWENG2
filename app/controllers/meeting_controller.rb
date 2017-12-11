@@ -26,4 +26,6 @@ class MeetingController < ApplicationController
   def new
     @meeting = Meeting.new
   end
+
+  def create; end
 end

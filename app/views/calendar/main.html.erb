@@ -61,7 +61,7 @@
                             <% else %>
                             </div>
                           <% end %>
-                          <div class="date-separator rounded-box" id="<%= item.strftime '%Y%m%d' %>-separator" onclick="toggle('<%= item.strftime "%Y%m%d" %>')">
+                          <div class="date-separator rounded-box" id="<%= item.strftime '%Y%m%d' %>-separator" onclick="toggle('<%= item.strftime "%Y%m%d" %>')">                            
                             <div><%= item.strftime "%a %d %b %Y" %></div>
                           </div>
                           <div id="<%= item.strftime '%Y%m%d' %>-accordion" class="date-accordion">
@@ -70,6 +70,7 @@
                                 setMaxHeight("<%= item.strftime '%Y%m%d' %>")
                               })
                             </script>
+                            <div class="vertical-line"></div>
                           <% end %>
                         <% end %>
                       </section>

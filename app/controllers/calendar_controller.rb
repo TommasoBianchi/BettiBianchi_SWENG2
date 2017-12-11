@@ -102,13 +102,6 @@ class CalendarController < ApplicationController
 
     meeting_participations.each do |mp|
       if current_day.nil? || (mp.meeting.start_date.midnight != current_day)
-        /# Push the end-day default location before changing day
-        unless current_day.nil?
-          schedule.push user.default_locations
-            .where(day_of_the_week: current_day.wday)
-                            .order(:starting_hour).last
-        end/
-
         # Change the current day
         current_day = mp.meeting.start_date.midnight
         schedule.push current_day
@@ -133,14 +126,10 @@ class CalendarController < ApplicationController
       last_travel_id = mp.leaving_travel.id
     end
 
-    /# Push the end-day default location for the last day
-    unless current_day.nil?
-      schedule.push Travel.find(last_travel_id).get_ending_point
-    end/
-
+    # If the schedule is still empty just push the from_date
     schedule.push from_date.midnight if schedule.empty?
 
-    schedule
+    return schedule
   end
 
   def validate_between(item, lower_bound, upper_bound)
