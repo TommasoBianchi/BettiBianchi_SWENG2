@@ -1,0 +1,59 @@
+<%= render 'shared/header' %>
+<div id="content">
+  <script type="text/javascript"></script>
+  <%= render 'shared/calendar_sidebar' %>
+  <section class="mainContent">
+
+    <div id="create-meeting-title">
+      <a class="title">Create Meeting</a>
+    </div>
+    <div id="emailPasswordContainer">
+
+      <%= form_with scope: :meeting, local: true do |form| %>
+      <script type="text/javascript">
+        <% if !@meeting.valid? %>
+          $(window).on('load', function(){
+          <% @meeting.errors.each do |error, message| %>
+            displayError("<%= error.to_s %>", "<%= message %>")
+          <% end %>
+          })
+        <% end %>
+      </script>
+
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-timepicker/1.8.1/jquery.timepicker.min.css"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-timepicker/1.8.1/jquery.timepicker.min.js"></script>
+
+      <script>
+        $(function () {
+          $('.time').timepicker();
+        });
+
+        $(function () {
+          $("#meeting_date").datepicker();
+        });
+      </script>
+
+      <%= form.label :title, class: 'label' %>
+      <%= form.text_field :title, id: 'title', type: 'text' %>
+      <%= form.label :abstract, class: 'label' %>
+      <%= form.text_field :abstract, id: 'abstract', type: 'text' %>
+      <%= form.label :start_time, class: 'label' %>
+      <div class='date-time-container'>
+        <input type="text" id="meeting_date"/>
+        <input type="text" class='time' id="meeting_start_time"/>
+        <input type="text" class='time' id="meeting_end_time"/>
+      </div>
+      <%= form.label :location, class: 'label' %>
+      <%= form.text_field :location, id: 'location', type: 'text' %>
+
+      <div id="buttonsContainer">
+        <%= form.submit 'Create Meeting', class: 'monoConfirmationButton'%>
+      </div>
+
+      <%= form.text_field :start_time, id: 'start_time', type: 'text' %>
+      <%= form.text_field :end_time, id: 'end_time', type: 'text' %>
+    <% end %>
+  </div>
+
+</section >
+<%= render 'shared/footer' %>
