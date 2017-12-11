@@ -36,7 +36,6 @@ class User < ApplicationRecord
 
   def get_last_default_location_before(current_day)
     list_default_location = []
-    puts(current_day)
     default_locations.each do |dl|
       if dl.day_of_the_week < current_day.wday || ((dl.day_of_the_week == current_day.wday) && (dl.starting_hour <= (current_day.hour * 60 + current_day.min)))
         list_default_location.push dl

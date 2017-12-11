@@ -14,13 +14,15 @@
       </div>
       <div class="go-back"></div>
     </div>
-    <% if @meeting.get_participants(1).count > 0 %>
+    <% write_something = false%>
+    <% if @meeting.get_participants(1).count > 1 #1 becouse I'm in the participants%>
+    <% write_something = true%>
       <h2>
         ACCEPTED
       </h2>
       <div>
         <% @meeting.get_participants(1).each do |meeting_participant| %>
-          <% unless meeting_participant.id == @user.id %>
+          <% unless meeting_participant.user.id == @user.id %>
             <div class="colored-container light-blue-container participant-container">
               <%= meeting_participant.get_name_surname%>
               (<%= meeting_participant.user.nickname%>)
@@ -48,6 +50,7 @@
 </div>
 <% end %>
 <% if @meeting.get_participants(0).count > 0 %>
+<% write_something = true%>
 <h2>
   PENDING
 </h2>
@@ -66,6 +69,7 @@
 </div>
 <% end %>
 <% if @meeting.get_participants(2).count > 0 %>
+<% write_something = true%>
 <h2>
 DECLINED
 </h2>
@@ -82,6 +86,11 @@ DECLINED
 </div>
 <% end%>
 </div>
+<% end %>
+<% if write_something == false%>
+  <h2>
+  You are the only participant; this is an instant meeting!
+  </h2>
 <% end %>
 </section >
 <%= render 'shared/footer' %>
