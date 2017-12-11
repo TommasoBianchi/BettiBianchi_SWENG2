@@ -10,9 +10,9 @@ class Travel < ApplicationRecord
   has_many :travel_steps
 
   belongs_to :starting_location_dl, class_name: 'DefaultLocation', foreign_key: 'starting_location_dl_id', required: false
-  has_one :starting_location_meeting, class_name: 'MeetingParticipation', required: false
+  has_one :starting_location_meeting, class_name: 'MeetingParticipation', foreign_key: 'leaving_travel_id', required: false
   belongs_to :ending_location_dl, class_name: 'DefaultLocation', foreign_key: 'ending_location_dl_id', required: false
-  has_one :ending_location_meeting, class_name: 'MeetingParticipation', required: false
+  has_one :ending_location_meeting, class_name: 'MeetingParticipation', foreign_key: 'arriving_travel_id', required: false
 
   before_validation do
     if starting_location_dl.blank? && starting_location_meeting.blank?
@@ -29,10 +29,10 @@ class Travel < ApplicationRecord
 
   validate :starting_point_consistency
   validate :ending_point_consistency
-  validate :same_user_starting_ending_point, if: '(starting_location_dl.present? || starting_location_meeting.present?) && (ending_location_dl.present? || ending_location_meeting.present?)'
+  validate :same_user_starting_ending_point
 
-  def get_duration_integer
-    ((end_time - start_time) * 24 * 60).to_i
+  def get_duration_integer_minutes
+    ((end_time - start_time) / 60).to_i
   end
 
   def get_user
@@ -44,6 +44,22 @@ class Travel < ApplicationRecord
       starting_location_meeting.user
     elsif ending_location_meeting.present?
       ending_location_meeting.user
+    end
+  end
+
+  def get_starting_point
+    if starting_location_meeting.blank?
+      starting_location_dl
+    else
+      starting_location_meeting
+    end
+  end
+
+  def get_ending_point
+    if ending_location_meeting.blank?
+      ending_location_dl
+    else
+      ending_location_meeting
     end
   end
 
@@ -62,16 +78,16 @@ class Travel < ApplicationRecord
   end
 
   def starting_point_consistency
-    if starting_location_dl.blank? && starting_location_meeting.blank?
-      errors.add(:starting_location_dl, ' at least one starting point must be present')
-      errors.add(:starting_location_meeting, ' at least one starting point must be present')
+    if starting_location_dl.blank? == starting_location_meeting.blank?
+      errors.add(:starting_location_dl, 'exactly one starting point must be present')
+      errors.add(:starting_location_meeting, 'exactly one starting point must be present')
     end
   end
 
   def ending_point_consistency
-    if ending_location_dl.blank? && ending_location_meeting.blank?
-      errors.add(:ending_location_dl, ' at least one ending point must be present')
-      errors.add(:ending_location_meeting, ' at least one ending point must be present')
+    if ending_location_dl.blank? == ending_location_meeting.blank?
+      errors.add(:ending_location_dl, 'exactly one ending point must be present')
+      errors.add(:ending_location_meeting, 'exactly one ending point must be present')
     end
   end
 

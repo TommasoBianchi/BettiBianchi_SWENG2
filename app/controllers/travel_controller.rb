@@ -2,37 +2,28 @@ class TravelController < ApplicationController
   def show
     @travel = Travel.find(params[:id])
     @travel_schedule = []
-    @travel_schedule.push(get_starting_point(@travel))
+    puts '****************************************'
+    @travel_schedule.push(@travel.get_starting_point)
+    puts '****************************************'
 
     @travel.travel_steps.each do |t_steps|
       @travel_schedule.push t_steps
     end
 
-    @travel_schedule.push(get_ending_point(@travel))
+    @travel_schedule.push(@travel.get_ending_point)
+    trasform_meeting_participations_in_meeting(@travel_schedule)
     @user = @travel.get_user
   end
 
   private
 
-  def get_starting_point(travel)
-    starting_point = MeetingParticipation.find_by(leaving_travel_id: travel.id)
-    if starting_point.nil?
-      user = travel.get_user
-      current_day = travel.start_time
-      return user.get_last_default_location_before(current_day)
-    else
-      return starting_point.meeting
+  def trasform_meeting_participations_in_meeting(travel_schedule)
+    if travel_schedule[0].is_a? MeetingParticipation
+      travel_schedule[0] = travel_schedule[0].meeting
     end
-  end
 
-  def get_ending_point(travel)
-    ending_point = MeetingParticipation.find_by(arriving_travel_id: travel.id)
-    if ending_point.nil?
-      user = travel.get_user
-      current_day = travel.end_time
-      return user.get_last_default_location_before(current_day)
-    else
-      return ending_point.meeting
+    if travel_schedule[-1].is_a? MeetingParticipation
+      travel_schedule[-1] = travel_schedule[-1].meeting
     end
   end
 end
