@@ -2,7 +2,7 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
-@import "application.css.scss";
+@import "main.scss";
 
 .meeting {
 	background-color: $blue;
@@ -115,6 +115,16 @@
     margin: 0 auto;
     position: relative;
 	z-index: 2;
+}
+
+.default-location + .default-location {
+	margin-top: 20px;
+}
+
+.default-location + .default-location::before{
+	background-color: $light_grey;
+	width: 100px;
+	height: 100px;
 }
 
 .date-separator {

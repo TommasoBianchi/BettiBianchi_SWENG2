@@ -3,9 +3,7 @@
 // You can use Sass (SCSS) here: http://sass-lang.com/
 @charset "utf-8";
 
-$dark_grey: #575756;
-$light_grey: #B2B2B2;
-$background_image_url: "homepage/sfondo25.png";
+@import "main.scss";
 
 body{
   margin: 0;

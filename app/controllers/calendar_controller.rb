@@ -98,15 +98,16 @@ class CalendarController < ApplicationController
 
     current_day = nil
     last_travel_id = -1
+    last_default_location_id = -1
 
     meeting_participations.each do |mp|
       if current_day.nil? || (mp.meeting.start_date.midnight != current_day)
-        # Push the end-day default location before changing day
+        /# Push the end-day default location before changing day
         unless current_day.nil?
           schedule.push user.default_locations
             .where(day_of_the_week: current_day.wday)
                             .order(:starting_hour).last
-        end
+        end/
 
         # Change the current day
         current_day = mp.meeting.start_date.midnight
@@ -115,23 +116,27 @@ class CalendarController < ApplicationController
 
       if mp.arriving_travel.id != last_travel_id
         travel_starting_time_from_midnight = (mp.arriving_travel.start_time - mp.arriving_travel.start_time.midnight) / 60
-        schedule.push user.default_locations
-          .where(day_of_the_week: current_day.wday, starting_hour: 0..travel_starting_time_from_midnight)
-                          .order(:starting_hour).last
+        if (mp.arriving_travel.get_starting_point.is_a?(DefaultLocation) and mp.arriving_travel.get_starting_point.id != last_default_location_id)
+          schedule.push mp.arriving_travel.get_starting_point
+        end
         schedule.push mp.arriving_travel
       end
+
       schedule.push mp.meeting	# maybe push also response status??
       schedule.push mp.leaving_travel
+
+      if(mp.leaving_travel.get_ending_point.is_a?(DefaultLocation))
+        schedule.push mp.leaving_travel.get_ending_point
+        last_default_location_id = mp.leaving_travel.get_ending_point.id
+      end
 
       last_travel_id = mp.leaving_travel.id
     end
 
-    # Push the end-day default location for the last day
+    /# Push the end-day default location for the last day
     unless current_day.nil?
-      schedule.push user.default_locations
-        .where(day_of_the_week: current_day.wday)
-                        .order(:starting_hour).last
-    end
+      schedule.push Travel.find(last_travel_id).get_ending_point
+    end/
 
     schedule.push from_date.midnight if schedule.empty?
 
