@@ -57,6 +57,10 @@ module TravelHelper
 		}
 	end
 
+	def self.best_travel(from_location, to_location, user)
+		return shortest_path(from_location.description, to_location.description)
+	end
+
 	private
 
 	GoogleAPIKey = 'AIzaSyDba6PxTVz-07hIVjksboJ4AEkOP2WeuAs'

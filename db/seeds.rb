@@ -56,7 +56,15 @@ NUM_RESPONSE_STATUSES = 3
 NUM_DEFAULT_LOCATIONS_PER_USER = 3
 NUM_TRAVEL_STEPS = 3
 
-location = Location.create(latitude: 37.4133028, longitude: -122.1513074, description: 'Mountain View')
+location_names = ['Via Niccolo Paganini 17 Milano', 'Via Mauro Macchi 89 Milano', 'Piazza Leonardo Milano',
+                  'Via Ponzio 24 Milano', 'Via Golgi 40 Milano']
+for i in 1..NUM_LOCATIONS do
+  r1 = rand(-179..179)
+  r2 = rand(-179..179)
+  Location.create(latitude: r1, longitude: r2, description: location_names[rand(0..location_names.length-1)])
+
+  puts "Location #{i}"
+end
 
 for i in 1..NUM_GROUPS do
   Group.create(name: 'Group' + i.to_s)
@@ -92,7 +100,8 @@ for i in 1..NUM_USERS do
   for j in 1..NUM_DEFAULT_LOCATIONS_PER_USER do
     starting_hour = (j * 450) % (24 * 60) # represented in minutes after midnight
     for k in 0..6 do
-      DefaultLocation.create(starting_hour: starting_hour, day_of_the_week: k, name: 'Default Location ' + number_of_default_locations.to_s, user_id: i, location_id: 1)
+      DefaultLocation.create(starting_hour: starting_hour, day_of_the_week: k,
+        name: 'Default Location ' + number_of_default_locations.to_s, user_id: i, location_id: rand(1..NUM_LOCATIONS))
       number_of_default_locations += 1
     end
   end
@@ -123,7 +132,7 @@ for i in -NUM_MEETINGS_DAYS / 2..NUM_MEETINGS_DAYS / 2 do
   for k in 1..NUM_MEETINGS_PER_DAY do
     start_date = DateTime.new(day.year, day.month, day.day, rand(8..20), rand(0..59), 0)
     end_date = start_date + rand(30..120).minutes
-    meeting = Meeting.create(location_id: location.id, title: 'NewMeeting', start_date: start_date, end_date: end_date)
+    meeting = Meeting.create(location_id: rand(1..NUM_LOCATIONS), title: 'NewMeeting', start_date: start_date, end_date: end_date)
     meeting.title = 'NewMeeting ' + meeting.id.to_s
     meeting.save
     puts "Meeting #{meeting.id}"
@@ -174,14 +183,6 @@ for i in 1..NUM_USERS do
 
     mp.save
   end
-end
-
-for i in 1..NUM_LOCATIONS do
-  r1 = rand(-179..179)
-  r2 = rand(-179..179)
-  Location.create(latitude: r1, longitude: r2, description: 'location with coordinates ' + r1.to_s + ' ' + r2.to_s)
-
-  puts "Location #{i}"
 end
 
 for i in 1..NUM_CATEGORIES do
