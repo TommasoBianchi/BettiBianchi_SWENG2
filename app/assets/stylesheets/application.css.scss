@@ -203,7 +203,7 @@ footer .footerlinks p {
   width: 100%;
   height: 97px;
   display: inline-flex;
-
+  margin-bottom: 2%;
 }
 
 /* end title css */
@@ -346,7 +346,7 @@ header {
 #content .mainContent {
 	float: right;
 	width: 80%;
-	max-width: calc(100% - 370px);
+	max-width: calc(100% - 300px);
 	text-align: center;
 	overflow: auto;
 	margin-bottom: 40px;
