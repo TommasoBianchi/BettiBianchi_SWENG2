@@ -10,50 +10,82 @@
     <div id="emailPasswordContainer">
 
       <%= form_with scope: :meeting, local: true do |form| %>
-      <script type="text/javascript">
-        <% if !@meeting.valid? %>
-          $(window).on('load', function(){
-          <% @meeting.errors.each do |error, message| %>
-            displayError("<%= error.to_s %>", "<%= message %>")
-          <% end %>
-          })
-        <% end %>
-      </script>
 
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-timepicker/1.8.1/jquery.timepicker.min.css"></script>
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-timepicker/1.8.1/jquery.timepicker.min.js"></script>
-
-      <script>
-        $(function () {
-          $('.time').timepicker();
-        });
-
-        $(function () {
-          $("#meeting_date").datepicker();
-        });
-      </script>
 
       <%= form.label :title, class: 'label' %>
       <%= form.text_field :title, id: 'title', type: 'text' %>
       <%= form.label :abstract, class: 'label' %>
       <%= form.text_field :abstract, id: 'abstract', type: 'text' %>
-      <%= form.label :start_time, class: 'label' %>
       <div class='date-time-container'>
-        <input type="text" id="meeting_date"/>
-        <input type="text" class='time' id="meeting_start_time"/>
-        <input type="text" class='time' id="meeting_end_time"/>
+        <div class='date-container'>
+          <%= form.label :date, class: 'label' %>
+          <%= form.text_field :date, id: 'meeting_date', type: 'text' %>
+        </div>
+        <div class='time-container' >
+          <%= form.label :start_time, class: 'label' %>
+          <%= form.text_field :start_time, class:'time', id: 'meeting_start_time', type: 'text' %>
+        </div>
+        <div class='time-container' >
+          <%= form.label :end_time, class: 'label' %>
+          <%= form.text_field :end_time, class:'time', id: 'meeting_end_time', type: 'text' %>
+        </div>
       </div>
-      <%= form.label :location, class: 'label' %>
-      <%= form.text_field :location, id: 'location', type: 'text' %>
+
+      <%= render 'shared/get_location', form: form%>
+      <%= render 'shared/get_user', form: form%>
 
       <div id="buttonsContainer">
         <%= form.submit 'Create Meeting', class: 'monoConfirmationButton'%>
       </div>
 
-      <%= form.text_field :start_time, id: 'start_time', type: 'text' %>
-      <%= form.text_field :end_time, id: 'end_time', type: 'text' %>
     <% end %>
   </div>
 
 </section >
 <%= render 'shared/footer' %>
+
+
+<script>
+
+(function() {
+   // your page initialization code here
+   // the DOM will be available here
+   var to_set = $('#meeting_start_time').width();
+   var list = document.getElementsByClassName('ui-timepicker-wrapper');
+   list[0].style.width = '500px';
+})();
+
+</script>
+
+<script type="text/javascript">
+
+  <% if !@meeting.valid? %>
+    $(window).on('load', function(){
+    <% @meeting.errors.each do |error, message| %>
+      displayError("<%= error.to_s %>", "<%= message %>")
+    <% end %>
+    })
+  <% end %>
+</script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-timepicker/1.8.1/jquery.timepicker.min.css"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-timepicker/1.8.1/jquery.timepicker.min.js"></script>
+
+<script>
+  $(function () {
+    $('.time').timepicker();
+
+    $(".ui-timepicker-wrapper").css({"backgroundColor": "black", "color": "white"});
+  });
+
+  $(function () {
+    $("#meeting_date").datepicker();
+  });
+
+  $(document).ready(function(){
+   // we define and invoke a function
+   (function(){
+       $(".ui-timepicker-wrapper").css({"backgroundColor": "black", "color": "white"});
+   })();
+});
+</script>
