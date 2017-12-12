@@ -1,0 +1,82 @@
+
+
+<%= form.label :location, class: 'label' %>
+<%= form.text_field :location, type: 'hidden', value: @location, id: "location-hidden" %>
+      <script>
+        $(function () {
+          var input = document.getElementById('location');
+          var autocomplete = new google.maps.places.Autocomplete(input);
+          var users = $('#temp_information').data('user')
+          $("#search").autocomplete({
+            source: users,
+            select: function( event , ui ) {
+              var content = $('#users-hidden').val()
+              content = content + ',' + (ui.item.value)
+              $('#users-hidden').val(content);
+
+              var $label = $("<label class='colored-container light-blue-container participants-list'>").text(ui.item.value);
+              $('#invited_user_content').append($label);
+          }});
+        });
+
+      </script>
+
+<script>
+
+// This example displays an address form, using the autocomplete feature
+// of the Google Places API to help users fill in the information.
+
+// This example requires the Places library. Include the libraries=places
+// parameter when you first load the API. For example:
+// <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places">
+
+var placeSearch, autocomplete;
+function initAutocomplete() {
+  // Create the autocomplete object, restricting the search to geographical
+  // location types.
+  autocomplete = new google.maps.places.Autocomplete(
+      /** @type {!HTMLInputElement} */(document.getElementById('autocomplete')),
+      {types: ['geocode']});
+
+  // When the user selects an address from the dropdown, populate the address
+  // fields in the form.
+  autocomplete.addListener('place_changed', fillInAddress);
+}
+
+function fillInAddress() {
+  // Get the place details from the autocomplete object.
+  var place = autocomplete.getPlace();
+
+
+  $('#location-hidden').val(place.place_id);
+
+}
+
+// Bias the autocomplete object to the user's geographical location,
+// as supplied by the browser's 'navigator.geolocation' object.
+function geolocate() {
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(function(position) {
+      var geolocation = {
+        lat: position.coords.latitude,
+        lng: position.coords.longitude
+      };
+      var circle = new google.maps.Circle({
+        center: geolocation,
+        radius: position.coords.accuracy
+      });
+      autocomplete.setBounds(circle.getBounds());
+    });
+  }
+}
+
+</script>
+
+      <div id="locationField">
+        <input id="autocomplete" placeholder="Enter your address"
+               onFocus="geolocate()" type="text"></input>
+      </div>
+
+      <!-- Replace the value of the key parameter with your own API key. -->
+      <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA3MT_tKqlAWC3GjlcVLuWqK7CDWLio7tE&libraries=places&callback=initAutocomplete"
+              async defer></script>
