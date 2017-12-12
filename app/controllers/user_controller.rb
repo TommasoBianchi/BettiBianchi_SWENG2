@@ -44,10 +44,39 @@ class UserController < ApplicationController
   def new
     @unregisterdUser = IncompleteUser.find(session[:tmp_checked])
     @user = User.new
-    @user.preference_list = "0123"
+    @user.preference_list = '0123'
  end
 
+  def index
+    respond_to do |format|
+      format.html { html_index }
+      format.json { json_index }
+    end
+  end
+
+  def search
+    @users = if params[:term]
+               User.search_by_full_name(params[:term])
+             else
+               User.all
+         end
+  end
+
   private
+
+  def html_index
+    @users = User.all
+  end
+
+  def json_index
+    query = begin
+           params.permit(:query).fetch(:query)
+         rescue
+           ''
+         end
+    users = User.where('LOWER(nickname) LIKE LOWER(:query)', query: "%#{query}%")
+    render json: users.map(&:name)
+  end
 
   def user_params
     params.require(:user).permit(:name, :surname, :password, :nickname, :preference_list)

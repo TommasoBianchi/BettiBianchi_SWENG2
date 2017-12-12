@@ -25,7 +25,14 @@ class MeetingController < ApplicationController
 
   def new
     @meeting = Meeting.new
+    @users = User.all
+    @user_selected = ''
+    @user_names = %w[a b]
   end
 
-  def create; end
+  def create
+    puts '****************************************'
+    puts(params)
+    puts '****************************************'
+  end
 end
