@@ -56,6 +56,9 @@ NUM_RESPONSE_STATUSES = 3
 NUM_DEFAULT_LOCATIONS_PER_USER = 3
 NUM_TRAVEL_STEPS = 3
 
+Location.create({latitude:45.4830988,longitude:9.2165046,description:"Via Niccolò Paganini, 17, 20131 Milano Mi, Italia"})
+Location.create({latitude:45.4891041,longitude:9.2119859,description:"Via Mauro Macchi, 89, 20127 Milano MI, Italia"})
+
 location_names = ['Via Niccolo Paganini 17 Milano', 'Via Mauro Macchi 89 Milano', 'Piazza Leonardo Milano',
                   'Via Ponzio 24 Milano', 'Via Golgi 40 Milano']
 for i in 1..NUM_LOCATIONS do
