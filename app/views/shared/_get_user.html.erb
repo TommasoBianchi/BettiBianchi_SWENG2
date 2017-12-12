@@ -1,0 +1,31 @@
+<%= form.label :participants, class: 'label' %>
+<%= form.text_field :participants, type: 'hidden', value: @user_selected, id: "users-hidden" %>
+
+<%
+user_names = []
+@users.each do |u|
+  user_names.push(u.nickname)
+end
+   %>
+<div id="invited_user_content" >
+</div>
+<%= content_tag :div, id: "temp_information", data: {user: user_names} do %>
+  <input type="text" id="search" >
+<% end %>
+
+<script>
+  $(function () {
+    var users = $('#temp_information').data('user')
+    $("#search").autocomplete({
+      source: users,
+      select: function( event , ui ) {
+        var content = $('#users-hidden').val()
+        content = content + ',' + (ui.item.value)
+        $('#users-hidden').val(content);
+
+        var $label = $("<label class='colored-container light-blue-container participants-list'>").text(ui.item.value);
+        $('#invited_user_content').append($label);
+    }});
+  });
+
+</script>
