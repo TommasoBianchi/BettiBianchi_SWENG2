@@ -15,8 +15,8 @@
 //= require_tree .
 
 //= require jquery3
-//= require jquery_ujs
 //= require jquery-ui
+//= require jquery_ujs
 
 
 function goToLocation(latitude, longitude) {

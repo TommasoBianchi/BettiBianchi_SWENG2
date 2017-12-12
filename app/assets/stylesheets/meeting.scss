@@ -3,16 +3,12 @@
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
 @import "main.scss";
-
 /* CSS ABOUT SHOW MEETING PAGE */
 
 h1 {
   font-size: 33px;
 }
 
-a{
-  width: 10%;
-}
 
 .light-blue-container{
   background-color: $light_blue;
@@ -25,7 +21,6 @@ a{
 .colored-container{
   border-radius: 10px;
   box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-  min-height: 30px;
   text-align: center;
 }
 
@@ -159,14 +154,12 @@ img.externalLoginProvider{
       font-style: bold;
 }
 
-td{background-color: lightblue;}
-thead{background-color: lightgreen;}
-
 .ui-timepicker-wrapper{
   top: 471.484px;
     left: 561.5px;
     overflow: scroll;
     max-height: 223px;
+    width: 9%;
 }
 
 .ui-timepicker-list{
@@ -176,6 +169,25 @@ thead{background-color: lightgreen;}
   margin-left: 2px;
 }
 
+.ui-timepicker-selected{
+}
+
+html {
+    overflow: scroll;
+    overflow-x: hidden;
+}
+::-webkit-scrollbar {
+    width: 0px;  /* remove scrollbar space */
+    background: transparent;  /* optional: just make scrollbar invisible */
+}
+/* optional: show position indicator in red */
+::-webkit-scrollbar-thumb {
+    background: #FF0000;
+}
+
+.ui-state-default{
+  text-align: center !important;
+}
 li{
   @extend .colored-container;
   @extend .light-blue-container;
@@ -187,21 +199,55 @@ li{
   margin-right: 3px;
   margin-left: 3px;
   list-style-type:none;
-  cursor: pointer; 
+  cursor: pointer;
+    padding-bottom: 8px;
 }
 
 #meeting_date{
-  width: 50%;
 }
 
 .time{
+}
+
+.date-container{
+  display: inline-grid;
+  width: 48%;
+}
+
+.time-container{
+  display: inline-grid;
   width: 24%;
 }
 
 .date-time-container{
   display: inline-block;
+  width: 100%;
 }
 
+.ui-state-default{
+  margin: 0;
+    @extend .colored-container;
+    @extend .light-blue-container;
+    text-align: center;
+}
+
+.ui-menu-item{
+  margin: 3px !important;
+}
 #start_time, #end_time{
   visibility: hidden;
+}
+
+.participants-list{
+  padding-top: 2%;
+padding-bottom: 2%;
+display: inherit;
+margin-right: auto;
+margin-left: auto;
+margin-top: 1%;
+width: 80%;
+}
+
+#invited_user_content{
+  
 }
