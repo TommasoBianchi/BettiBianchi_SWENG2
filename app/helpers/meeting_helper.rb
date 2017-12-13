@@ -1,5 +1,5 @@
 module MeetingHelper
-  
+	
 	# start_date and end_date must be valid DateTime objects
 	# title must be a non-empty string
 	# location must be a valid Location already saved in the db
@@ -128,33 +128,32 @@ module MeetingHelper
 		new_meeting[:leaving_travel] = leaving_travel
 		return new_meeting
 	end
-end
 
-def self.get_autocomplete_location(location)
-  url = "#{BaseURL}?input=#{location}&types=geocode&key#{GoogleAPIKey}"
+	def self.get_autocomplete_location(location)
+		url = "#{BaseURL}?input=#{location}&types=geocode&key#{GoogleAPIKey}"
 
-  response = RestClient::Request.execute(method: :get, url: url)
-  json_response = JSON.parse(response)
+		response = RestClient::Request.execute(method: :get, url: url)
+		json_response = JSON.parse(response)
 
-  if json_response['status'] != 'OK'
-    # raise error?
-    return json_response
-  end
+		if json_response['status'] != 'OK'
+			# raise error?
+			return json_response
+		end
 
-  all_predictions = json_response['predictions']
-  list_locations = []
-  all_predictions.each do |prediction|
-    location = {
-      description: prediction['description'],
-      place_id: prediction['place_id']
-    }
-    list_locations.push(location)
-  end
+		all_predictions = json_response['predictions']
+		list_locations = []
+		all_predictions.each do |prediction|
+		location = {
+			description: prediction['description'],
+			place_id: prediction['place_id']
+		}
+		list_locations.push(location)
+		end
 
-  list_locations
-end
+		list_locations
+	end
 
-GoogleAPIKey = 'AIzaSyDba6PxTVz-07hIVjksboJ4AEkOP2WeuAs'.freeze
+	GoogleAPIKey = 'AIzaSyDba6PxTVz-07hIVjksboJ4AEkOP2WeuAs'.freeze
 
-BaseURL = 'https://maps.googleapis.com/maps/api/place/autocomplete/json?'.freeze
+	BaseURL = 'https://maps.googleapis.com/maps/api/place/autocomplete/json?'.freeze
 end
