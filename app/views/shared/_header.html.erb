@@ -1,14 +1,18 @@
-<header>
-  <%= link_to calendar_day_path do %>
-  <div id="logo">
-    Travlendar+
-  </div>
+<% unless defined? selected %>
+	<% selected = nil %>
 <% end %>
 
-<div id="headerLinks">
-  <a href="#" title="Contacts">Contacts</a>
-  <button id="bottone" onclick="buttonClicked()">Calendar</button>
-  <a href="#" title="Login/Register">Settings</a>
-  <a href="#" title="Cart">Notifications</a>
-</div>
+<header>
+	<%= link_to calendar_day_path, id: "logo-a" do %>
+		<div id="logo">
+			Travlendar+
+		</div>
+	<% end %>
+
+	<div id="headerLinks">
+		<a href="#" title="Contacts" class="<%= if selected == 'contacts' then 'selected' end %>">Contacts</a>
+		<a href="#" title="Calendar" class="<%= if selected == 'calendar' then 'selected' end %>">Calendar</button>
+		<a href="#" title="Login/Register" class="<%= if selected == 'settings' then 'selected' end %>">Settings</a>
+		<a href="#" title="Cart" class="<%= if selected == 'notifications' then 'selected' end %>">Notifications</a>
+	</div>
 </header>
