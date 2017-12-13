@@ -46,9 +46,10 @@ function initAutocomplete() {
 function fillInAddress() {
   // Get the place details from the autocomplete object.
   var place = autocomplete.getPlace();
+  var lat = place.geometry.location.lat()
+  var lng = place.geometry.location.lng()
 
-
-  $('#location-hidden').val(place.place_id);
+  $('#location-hidden').val(lat + "," + lng);
 
 }
 

@@ -37,6 +37,27 @@ input[placeholder]{
     font-style: oblique;
 }
 
+/* Full-width text areas */
+textarea {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+    border-radius: 10px;
+    display: block;
+    height: 100px;
+    resize: none;
+}
+
+textarea:focus {
+    outline: none;
+    border-width: 1px;
+    border-radius: 10px;
+    border-color: $dark_grey;
+}
+
 /* Set a style for all buttons */
 .confirmationButton {
     background-color: #B2B2B2;
