@@ -27,9 +27,9 @@ class Travel < ApplicationRecord
   validate :date_consistency
   validate :travel_mean_correctness
 
-  validate :starting_point_consistency
-  validate :ending_point_consistency
-  validate :same_user_starting_ending_point
+  #validate :starting_point_consistency
+  #validate :ending_point_consistency
+  #validate :same_user_starting_ending_point
 
   def get_duration_integer_minutes
     ((end_time - start_time) / 60).to_i

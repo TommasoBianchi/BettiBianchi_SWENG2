@@ -27,8 +27,8 @@
                         <%= if (duration.min > 0) then duration.strftime "%-Hh %-Mmin" else duration.strftime "%-Hh" end%>
                         </div>
                         <div style="text-transform: capitalize;"><%= travel_mean %></div>
-                        <div><%= item.distance.round(2) %>
-                          km</div>
+                        <div><%= if item.distance > 1000 then "#{(item.distance/1000.0).round(2)} km" else "#{item.distance} m" end %>
+                        </div>
                         <a href='<%= show_travel_path(id: item.id) %>'>
                           <div class="detail">Details</div>
                         </a>

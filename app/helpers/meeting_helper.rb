@@ -1,17 +1,24 @@
 module MeetingHelper
 	
+	def self.create_meeting(start_date, end_date, title, location, user)
+		ActiveRecord::Base.transaction do
+			_create_meeting start_date, end_date, title, location, user
+		end
+	end
+
+	private
 	# start_date and end_date must be valid DateTime objects
 	# title must be a non-empty string
 	# location must be a valid Location already saved in the db
 	# user must be a valid User
-	def self.create_meeting(start_date, end_date, title, location, user)
+	def self._create_meeting(start_date, end_date, title, location, user)
 		if start_date >= end_date
 			return
 		end
 
 		meeting_data = insert_meeting({start_date: start_date, end_date: end_date, location: location}, user)
 
-		meeting = Meeting.create({start_date: start_date, end_date: end_date, title: title, location: location})
+		meeting = Meeting.new({start_date: start_date, end_date: end_date, title: title, location: location})
 		meeting_participation = MeetingParticipation.new
 		meeting_participation.meeting = meeting
 		meeting_participation.is_admin = true
@@ -29,32 +36,54 @@ module MeetingHelper
 		# From here on we are dealing with only consistent meeting participations
 
 		arriving_travel = Travel.new
+		arriving_travel.start_time = meeting_data[:arriving_travel][:start_time]
+		arriving_travel.end_time = meeting_data[:arriving_travel][:end_time]
+		arriving_travel.travel_mean = Travel::Travel_means[meeting_data[:arriving_travel][:travel_mean]]
+		arriving_travel.distance = meeting_data[:arriving_travel][:distance]
+		arriving_travel.starting_location_dl = meeting_data[:arriving_from_dl] if meeting_data[:arriving_from_dl]
 		if meeting_data[:link_before_meeting]
-			arriving_travel = meeting_data[:before_meeting].leaving_travel
-		else
-			arriving_travel.start_time = meeting_data[:arriving_travel][:start_time]
-			arriving_travel.end_time = meeting_data[:arriving_travel][:end_time]
-			arriving_travel.travel_mean = meeting_data[:arriving_travel][:travel_mean]
-			arriving_travel.distance = meeting_data[:arriving_travel][:distance]
-			arriving_travel.starting_location_dl = meeting_data[:arriving_from_dl] if meeting_data[:arriving_from_dl]
-			arriving_travel.save
+			meeting_data[:before_meeting].leaving_travel = arriving_travel
 		end
+		valid_before_meeting = (!meeting_data[:link_before_meeting] or meeting_data[:before_meeting].valid?)
+
 		leaving_travel = Travel.new
+		leaving_travel.start_time = meeting_data[:leaving_travel][:start_time]
+		leaving_travel.end_time = meeting_data[:leaving_travel][:end_time]
+		leaving_travel.travel_mean = Travel::Travel_means[meeting_data[:leaving_travel][:travel_mean]]
+		leaving_travel.distance = meeting_data[:leaving_travel][:distance]
+		leaving_travel.ending_location_dl = meeting_data[:leaving_to_dl] if meeting_data[:leaving_to_dl]
 		if meeting_data[:link_after_meeting]
-			leaving_travel = meeting_data[:after_meeting].arriving_travel
-		else
-			leaving_travel.start_time = meeting_data[:leaving_travel][:start_time]
-			leaving_travel.end_time = meeting_data[:leaving_travel][:end_time]
-			leaving_travel.travel_mean = meeting_data[:leaving_travel][:travel_mean]
-			leaving_travel.distance = meeting_data[:leaving_travel][:distance]
-			leaving_travel.ending_location_dl = meeting_data[:leaving_to_dl] if meeting_data[:leaving_to_dl]
-			leaving_travel.save
+			meeting_data[:after_meeting].arriving_travel = leaving_travel
 		end
+		valid_after_meeting = (!meeting_data[:link_after_meeting] or meeting_data[:after_meeting].valid?)
 
 		meeting_participation.arriving_travel = arriving_travel
 		meeting_participation.leaving_travel = leaving_travel
 		meeting_participation.response_status = MeetingParticipation::Response_statuses[:accepted]
-		meeting_participation.save
+
+		if [meeting.valid?, meeting_participation.valid?, arriving_travel.valid?, leaving_travel.valid?,
+			valid_before_meeting, valid_after_meeting].all?
+			meeting.save
+			meeting_participation.save
+			arriving_travel.save
+			leaving_travel.save
+			if meeting_data[:link_before_meeting]
+				meeting_data[:before_meeting].save
+			end
+			if meeting_data[:link_after_meeting]
+				meeting_data[:after_meeting].save
+			end
+		else
+			# Print errors
+			puts "------------ ERRORS ------------"
+			puts "Meeting has errors" unless meeting.valid?
+			puts "Meeting participation has errors" unless meeting_participation.valid?
+			puts "Arriving travel has errors" unless arriving_travel.valid?
+			puts "Leaving travel has errors" unless leaving_travel.valid?
+			puts "Before meeting has errors" unless valid_before_meeting
+			puts "After meeting has errors" unless valid_after_meeting
+			puts "------------ ERRORS ------------"
+		end
 	end
 
 	def self.insert_meeting(new_meeting, user)
@@ -63,7 +92,7 @@ module MeetingHelper
 		overlapping_meetings = user_meetings.where(meetings: {start_date: new_meeting[:start_date]..new_meeting[:end_date]})
 								.or(user_meetings.where(meetings: {end_date: new_meeting[:start_date]..new_meeting[:end_date]}))
 		overlapping_meetings.each do |mp|
-			mp.is_consistent = false
+			mp.update({is_consistent: false})
 			new_meeting[:conflict_set] = [] unless new_meeting[:conflict_set]
 			new_meeting[:conflict_set].push mp.meeting_id
 		end
@@ -87,31 +116,33 @@ module MeetingHelper
 		after_meeting = user_meetings.where(is_consistent: true)
 						.where('"meetings"."start_date" > ?', new_meeting[:end_date]).order('meetings.start_date').first
 
-		if arriving_travel == nil or (before_meeting != nil and arriving_travel.duration > (new_meeting[:start_date] - before_meeting.leaving_travel.end_time))
+		if arriving_travel == nil or (before_meeting != nil and arriving_travel[:duration] > (new_meeting[:start_date].to_i - before_meeting.leaving_travel.end_time.to_i))
 			new_meeting[:arriving_from_dl] = nil
 			arriving_travel = TravelHelper.best_travel(before_meeting.meeting.location, new_meeting[:location], user, nil, new_meeting[:start_date])
-			if arriving_travel == nil or (arriving_travel.duration > (new_meeting[:start_date] - before_meeting.meeting.end_date))
+			if arriving_travel == nil or (arriving_travel[:duration] > (new_meeting[:start_date].to_i - before_meeting.meeting.end_date.to_i))
 				new_meeting[:is_consistent] = false
-				before_meeting.is_consistent = false
+				before_meeting.update({is_consistent: false})
 				new_meeting[:conflict_set] = [] unless new_meeting[:conflict_set]
 				new_meeting[:conflict_set].push before_meeting.meeting_id
 				return new_meeting
 			else
-				# TODO: link this in a better way (unique travel between two meetings)
+				new_meeting[:link_before_meeting] = true
+				new_meeting[:before_meeting] = before_meeting
 			end
 		end
 
-		if leaving_travel == nil or (after_meeting != nil and leaving_travel.duration > (after_meeting.arriving_travel.start_time - new_meeting[:end_date]))
+		if leaving_travel == nil or (after_meeting != nil and leaving_travel[:duration] > (after_meeting.arriving_travel.start_time.to_i - new_meeting[:end_date].to_i))
 			new_meeting[:leaving_to_dl] = nil
 			leaving_travel = TravelHelper.best_travel(new_meeting[:location], after_meeting.meeting.location, user, new_meeting[:end_date], nil)
-			if leaving_travel == nil or (leaving_travel.duration > (after_meeting.meeting.start_date - new_meeting[:end_date]))
+			if leaving_travel == nil or (leaving_travel[:duration] > (after_meeting.meeting.start_date - new_meeting[:end_date]))
 				new_meeting[:is_consistent] = false
-				after_meeting.is_consistent = false
+				after_meeting.update({is_consistent: false})
 				new_meeting[:conflict_set] = [] unless new_meeting[:conflict_set]
 				new_meeting[:conflict_set].push after_meeting.meeting_id
 				return new_meeting
 			else
-				# TODO: link this in a better way (unique travel between two meetings)
+				new_meeting[:link_after_meeting] = true
+				new_meeting[:after_meeting] = after_meeting
 			end
 		end
 
