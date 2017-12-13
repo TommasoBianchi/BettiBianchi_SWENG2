@@ -1,6 +1,6 @@
 class MeetingController < ApplicationController
 
-  before_action :check_participation
+  before_action :check_participation, except: [:new]
 
   def show
     @user = current_user

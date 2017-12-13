@@ -164,9 +164,8 @@ img.externalLoginProvider{
 
 .ui-timepicker-list{
   @extend .colored-container;
-  padding: 0px;
-  margin-right: 2px;
-  margin-left: 2px;
+  padding: 0px 8px;
+  box-shadow: none;
 }
 
 .ui-timepicker-selected{
@@ -250,4 +249,24 @@ width: 80%;
 
 #invited_user_content{
   
+}
+
+/* Google autocomplete */
+.pac-container {
+  background-color: transparent;
+  border: 0;
+  box-shadow: none;
+  padding: 0 10px;  
+}
+
+.pac-container div {
+  font-family: unset;
+}
+
+.pac-item {
+  border-radius: 10px;
+  box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  border: 0;
+  margin: 5px 0;
+  background-color: white;
 }
