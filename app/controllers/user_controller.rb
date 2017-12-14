@@ -19,7 +19,7 @@ class UserController < ApplicationController
 		@user = User.new(user_params)
 		unless email_hash == incomplete_user_email && incomplete_user.authenticate(@user.password)
 			flash.now[:danger] = 'Wrong mail or password'
-			@unregisterdUser = incomplete_user
+			@unregistered_user = incomplete_user
 			render 'new'
 			return
 		end
@@ -36,13 +36,13 @@ class UserController < ApplicationController
 			log_in @user
 			redirect_to calendar_day_path DateTime.now.year, DateTime.now.month, DateTime.now.day
 		else
-			@unregisterdUser = incomplete_user
+			@unregistered_user = incomplete_user
 			render 'new'
 		end
 	end
 
 	def new
-		@unregisterdUser = IncompleteUser.find(session[:tmp_checked])
+		@unregistered_user = IncompleteUser.find(session[:tmp_checked])
 		@user = User.new
 		@user.preference_list = '0123'
 	end
