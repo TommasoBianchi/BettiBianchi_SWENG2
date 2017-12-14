@@ -1,37 +1,37 @@
 <%= render 'shared/header' %>
 <div id="content">
-  <%= render 'shared/sidebar' %>
-  <section class="mainContent">
-    <%= render 'shared/title_back_action', title: @meeting.title, path: calendar_day_path(year: @meeting.start_date.year, month: @meeting.start_date.month, day: @meeting.start_date.day) %>
-    <% unless @meeting.abstract.blank?%>
-      <h3>
-        <%= @meeting.abstract %>
-      </h2>
-    <% end %>
-    <div class="date-time-block-container">
-      <div class="colored-container light-blue-container date-time-block">
-        <%= @meeting.start_date.strftime("%m/%d/%Y") %>
-      </div>
-      <div class="colored-container light-blue-container date-time-block">
-        <%= @meeting.start_date.strftime("%I:%M%p") + " - " + @meeting.end_date.strftime("%I:%M%p") %>
-      </div>
-    </div>
+	<%= render 'shared/sidebar' %>
+	<section class="mainContent">
+		<%= render 'shared/title_back_action', title: @meeting.title, path: calendar_day_path(year: @meeting.start_date.year, month: @meeting.start_date.month, day: @meeting.start_date.day) %>
+		<% unless @meeting.abstract.blank? %>
+			<h3>
+				<%= @meeting.abstract %>
+			</h3>
+		<% end %>
+		<div class="date-time-block-container">
+			<div class="colored-container light-blue-container date-time-block">
+				<%= @meeting.start_date.strftime("%m/%d/%Y") %>
+			</div>
+			<div class="colored-container light-blue-container date-time-block">
+				<%= @meeting.start_date.strftime("%I:%M%p") + " - " + @meeting.end_date.strftime("%I:%M%p") %>
+			</div>
+		</div>
 
-    <div id="location" class="location-block-container" onclick="goToLocation(<%= @meeting.location.latitude %>,<%= @meeting.location.longitude %>)">
-      <%= image_tag("meeting_page/location_icon.png", id: "location_icon", class: "location-block") %>
-      <div class="location-description-block">
-        <%= @meeting.location.description %>
-      </div>
-    </div>
+		<div id="location" class="location-block-container" onclick="goToLocation(<%= @meeting.location.latitude %>,<%= @meeting.location.longitude %>)">
+			<%= image_tag("meeting_page/location_icon.png", id: "location_icon", class: "location-block") %>
+			<div class="location-description-block">
+				<%= @meeting.location.description %>
+			</div>
+		</div>
 
-    <div class="date-time-block-container">
-      <ul class="colored-container light-grey-container date-time-block">
-        <%= link_to('View Participants', participants_page_path(@meeting), id: @profile) %>
-      </ul>
-      <ul class="colored-container light-grey-container date-time-block">
-        <%= @meeting.start_date.strftime("%I:%M%p") + " - " + @meeting.end_date.strftime("%I:%M%p") %>
-      </ul>
-    </div>
-  </section>
+		<div class="date-time-block-container">
+			<ul class="colored-container light-grey-container date-time-block">
+				<%= link_to('View Participants', participants_page_path(@meeting), id: @profile) %>
+			</ul>
+			<ul class="colored-container light-grey-container date-time-block">
+				<%= @meeting.start_date.strftime("%I:%M%p") + " - " + @meeting.end_date.strftime("%I:%M%p") %>
+			</ul>
+		</div>
+	</section>
 </div>
 <%= render 'shared/footer' %>

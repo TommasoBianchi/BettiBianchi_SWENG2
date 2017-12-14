@@ -12,80 +12,97 @@
       <%= form_with scope: :meeting, local: true do |form| %>
 
 
-      <%= form.label :title, class: 'label' %>
-      <%= form.text_field :title, id: 'title', type: 'text' %>
-      <%= form.label :abstract, class: 'label' %>
-      <%= form.text_area :abstract, id: 'abstract', type: 'text' %>
-      <div class='date-time-container'>
-        <div class='date-container'>
-          <%= form.label :date, class: 'label' %>
-          <%= form.text_field :date, id: 'meeting_date', type: 'text' %>
+        <%= form.label :title, class: 'label' %>
+        <%= form.text_field :title, id: 'title', type: 'text' %>
+        <%= form.label :abstract, class: 'label' %>
+        <%= form.text_area :abstract, id: 'abstract', type: 'text' %>
+        <div class='date-time-container'>
+          <div class='date-container'>
+            <%= form.label :date, class: 'label' %>
+            <%= form.text_field :date, id: 'meeting_date', type: 'text' %>
+          </div>
+          <div class='time-container'>
+            <%= form.label :start_time, class: 'label' %>
+            <%= form.text_field :start_time, class: 'time', id: 'meeting_start_time', type: 'text' %>
+          </div>
+          <div class='time-container'>
+            <%= form.label :end_time, class: 'label' %>
+            <%= form.text_field :end_time, class: 'time', id: 'meeting_end_time', type: 'text' %>
+          </div>
         </div>
-        <div class='time-container' >
-          <%= form.label :start_time, class: 'label' %>
-          <%= form.text_field :start_time, class:'time', id: 'meeting_start_time', type: 'text' %>
+
+        <%= render 'shared/get_location', form: form %>
+        <%= render 'shared/get_user', form: form %>
+
+        <div id="buttonsContainer">
+          <%= form.submit 'Create Meeting', class: 'monoConfirmationButton' %>
         </div>
-        <div class='time-container' >
-          <%= form.label :end_time, class: 'label' %>
-          <%= form.text_field :end_time, class:'time', id: 'meeting_end_time', type: 'text' %>
-        </div>
-      </div>
 
-      <%= render 'shared/get_location', form: form%>
-      <%= render 'shared/get_user', form: form%>
+      <% end %>
+    </div>
 
-      <div id="buttonsContainer">
-        <%= form.submit 'Create Meeting', class: 'monoConfirmationButton'%>
-      </div>
-
-    <% end %>
-  </div>
-
-</section >
-<%= render 'shared/footer' %>
+  </section>
+</div>
+  <%= render 'shared/footer' %>
 
 
-<script>
+  <script>
 
-(function() {
-   // your page initialization code here
-   // the DOM will be available here
-   var to_set = $('#meeting_start_time').width();
-   var list = document.getElementsByClassName('ui-timepicker-wrapper');
-   list[0].style.width = '500px';
-})();
+      (function () {
+          // your page initialization code here
+          // the DOM will be available here
+          var to_set = $('#meeting_start_time').width();
+          var list = document.getElementsByClassName('ui-timepicker-wrapper');
+          list[0].style.width = '500px';
+      })();
 
-</script>
+  </script>
 
-<script type="text/javascript">
+  <script type="text/javascript">
 
-  <% if !@meeting.valid? %>
-    $(window).on('load', function(){
-    <% @meeting.errors.each do |error, message| %>
-      displayError("<%= error.to_s %>", "<%= message %>")
-    <% end %>
-    })
-  <% end %>
-</script>
+      <% if !@meeting.valid? %>
+      $(window).on('load', function () {
+          <% @meeting.errors.each do |error, message| %>
+          displayError("<%= error.to_s %>", "<%= message %>")
+          <% end %>
+      })
+      <% end %>
+  </script>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-timepicker/1.8.1/jquery.timepicker.min.css"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-timepicker/1.8.1/jquery.timepicker.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-timepicker/1.8.1/jquery.timepicker.min.css"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-timepicker/1.8.1/jquery.timepicker.min.js"></script>
 
-<script>
-  $(function () {
-    $('.time').timepicker();
+  <script>
+      $(function () {
+          $('#meeting_start_time').timepicker({'step': 5});
+          var start_time_value = $('#meeting_start_time').val();
 
-    $(".ui-timepicker-wrapper").css({"backgroundColor": "black", "color": "white"});
-  });
+          $('#meeting_start_time').on('changeTime', function () {
+              var start_time_value = $('#meeting_start_time').val();
+              $('#meeting_end_time').timepicker({
+                  'step': 5,
+                  'minTime': start_time_value,
+                  'showDuration': true,
+                  'timeFormat': 'h:i'
+              });
+          });
+          $('#meeting_end_time').timepicker({
+              'step': 5,
+              'minTime': start_time_value,
+              'maxTime': '11.55pm',
+              'showDuration': true,
+              'timeFormat': 'H:i'
+          });
+      });
 
-  $(function () {
-    $("#meeting_date").datepicker();
-  });
+      $(function () {
+          $("#meeting_date").datepicker();
+      });
 
-  $(document).ready(function(){
-   // we define and invoke a function
-   (function(){
-       $(".ui-timepicker-wrapper").css({"backgroundColor": "black", "color": "white"});
-   })();
-});
-</script>
+      $(document).ready(function () {
+          // we define and invoke a function
+          (function () {
+              $(".ui-timepicker-wrapper").css({"backgroundColor": "black", "color": "white"});
+          })();
+      });
+  </script>

@@ -1,66 +1,66 @@
 <%= render 'shared/header' %>
 <div id="content">
-  <%= render 'shared/calendar_sidebar' %>
-  <section class="mainContent">
-    <% if @travel_schedule[0].is_a? DefaultLocation %>
-      <%  title_first = @travel_schedule[0].name%>
-    <% else%>
-      <%  title_first = @travel_schedule[0].title%>
-    <% end %>
-    <% if @travel_schedule[-1].is_a? DefaultLocation %>
-      <%  title_last = @travel_schedule[-1].name%>
-    <% else%>
-      <%  title_last = @travel_schedule[-1].title%>
-    <% end %>
-    <%= render 'shared/title_back_action', title: title_first + " - " + title_last, path: calendar_day_path(year: @travel.start_time.year, month: @travel.start_time.month, day: @travel.start_time.day) %>
+	<%= render 'shared/calendar_sidebar' %>
+	<section class="mainContent">
+		<% if @travel_schedule[0].is_a? DefaultLocation %>
+			<% title_first = @travel_schedule[0].name %>
+		<% else %>
+			<% title_first = @travel_schedule[0].title %>
+		<% end %>
+		<% if @travel_schedule[-1].is_a? DefaultLocation %>
+			<% title_last = @travel_schedule[-1].name %>
+		<% else %>
+			<% title_last = @travel_schedule[-1].title %>
+		<% end %>
+		<%= render 'shared/title_back_action', title: title_first + " - " + title_last, path: calendar_day_path(year: @travel.start_time.year, month: @travel.start_time.month, day: @travel.start_time.day) %>
 
-    <% @travel_schedule.each do |item| %>
-      <% if item.is_a? TravelStep %>
-        <% travel_mean = TravelStep::Travel_means.keys[item.travel_mean] %>
-          <div class="travel-container">
-            <div class="travel-mean">
-              <div class="travel-mean-icon icon-<%= travel_mean %>"></div>
-              <div class="calendar-vertical-line-dark"></div>
-            </div>
-            <div class="center-travel rounded-box">
-              <div class="one-line-table" width="40%">
-                <div><%= item.start_time.strftime "%-Hh %-Mmin" %></div>
-                <div class="travel-step-icon icon-<%= travel_mean %>"></div>
-                <div><%= item.end_time.strftime "%-Hh %-Mmin" %></div>
-              </div>
-              <div class="one-line-table middle-travel-mean-name">
-                <%= travel_mean %>
-              </div>
-              <div class="one-line-table" width="40%">
-                <div id="starting-location">STARTING LOCATION</div>
-                <div id="ending-location">ENDING LOCATION</div>
+		<% @travel_schedule.each do |item| %>
+			<% if item.is_a? TravelStep %>
+				<% travel_mean = TravelStep::Travel_means.keys[item.travel_mean] %>
+				<div class="travel-container">
+					<div class="travel-mean">
+						<div class="travel-mean-icon icon-<%= travel_mean %>"></div>
+						<div class="calendar-vertical-line-dark"></div>
+					</div>
+					<div class="center-travel rounded-box">
+						<div class="one-line-table" width="40%">
+							<div><%= item.start_time.strftime "%-Hh %-Mmin" %></div>
+							<div class="travel-step-icon icon-<%= travel_mean %>"></div>
+							<div><%= item.end_time.strftime "%-Hh %-Mmin" %></div>
+						</div>
+						<div class="one-line-table middle-travel-mean-name">
+							<%= travel_mean %>
+						</div>
+						<div class="one-line-table" width="40%">
+							<div id="starting-location">STARTING LOCATION</div>
+							<div id="ending-location">ENDING LOCATION</div>
 
-              </div>
-            </div>
-          </div>
-          <% elsif item.is_a? Meeting %>
-            <div class="meeting rounded-box">
-              <div class="meeting-date"><%= item.start_date.strftime "%I:%M %p" %>
-                -
-                <%= item.end_date.strftime "%I:%M %p" %></div>
-              <div class="meeting-title"><%= item.title %></div>
-              <div class="meeting-location"><%= item.location.description %></div>
-              <a href="<%= meeting_path item.id %>">
-                <div class="detail">Details</div>
-              </a>
-            </div>
-          <% else %>
-            <!-- item is a default location -->
-            <div class="default-location rounded-box">
-              <div class="default-location-name"><%= item.name %></div>
-              <div class="default-location-location"><%= item.location.description %></div>
-              <a href="">
-                <div class="detail">Details</div>
-              </a>
-            </div>
+						</div>
+					</div>
+				</div>
+			<% elsif item.is_a? Meeting %>
+				<div class="meeting rounded-box">
+					<div class="meeting-date"><%= item.start_date.strftime "%I:%M %p" %>
+						-
+						<%= item.end_date.strftime "%I:%M %p" %></div>
+					<div class="meeting-title"><%= item.title %></div>
+					<div class="meeting-location"><%= item.location.description %></div>
+					<a href="<%= meeting_path item.id %>">
+						<div class="detail">Details</div>
+					</a>
+				</div>
+			<% else %>
+				<!-- item is a default location -->
+				<div class="default-location rounded-box">
+					<div class="default-location-name"><%= item.name %></div>
+					<div class="default-location-location"><%= item.location.description %></div>
+					<a href="">
+						<div class="detail">Details</div>
+					</a>
+				</div>
 
-          <% end %>
-        <% end %>
-      </section>
-    </div>
-    <%= render 'shared/footer' %>
+			<% end %>
+		<% end %>
+	</section>
+</div>
+<%= render 'shared/footer' %>
