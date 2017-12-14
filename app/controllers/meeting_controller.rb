@@ -1,6 +1,6 @@
 class MeetingController < ApplicationController
 
-	before_action :check_participation, except: [:new]
+	before_action :check_participation, except: [:new, :create]
 
 	def show
 		@user = current_user
@@ -46,8 +46,9 @@ class MeetingController < ApplicationController
 	end
 
 	def create
-		puts '****************************************'
+		list_of_users = params[:meeting][:participants].split(" ")
 		puts(params)
+		puts(list_of_users)
 		puts '****************************************'
 	end
 
