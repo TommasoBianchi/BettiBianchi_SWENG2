@@ -16,6 +16,10 @@ h1 {
   background-color: $light_grey;
 }
 
+.white-container{
+  background-color: white;
+}
+
 .colored-container {
   border-radius: 10px;
   box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
@@ -204,7 +208,8 @@ html {
 
 li {
   @extend .colored-container;
-  @extend .light-blue-container;
+  //@extend .light-blue-container;
+  background-color: white;
   padding-top: 8px;
   padding-left: 3px;
   padding-right: 3px;
@@ -245,9 +250,7 @@ li {
   text-align: center;
 }
 
-.ui-menu-item {
-  margin: 3px !important;
-}
+
 
 #start_time, #end_time {
   visibility: hidden;
@@ -260,12 +263,36 @@ li {
   margin-right: auto;
   margin-left: auto;
   margin-top: 1%;
-  width: 80%;
+  width: 45%;
+  font-size: 13px;
 }
 
 #invited_user_content {
 
 }
+
+/* User autocomplete */
+
+.ui-menu-item {
+
+  border-radius: 10px;
+  box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  border: 0;
+  margin: 5px 0 !important;
+  background-color: white;
+  font-size: 12px;
+  text-align: left;
+  font-weight: bold;
+}
+
+.ui-menu{
+  background-color: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  padding: 0 10px !important;
+
+}
+
 
 /* Google autocomplete */
 .pac-container {
@@ -276,7 +303,7 @@ li {
 }
 
 .pac-container div {
-  font-family: unset;
+  font-family: inherit;
 }
 
 .pac-item {

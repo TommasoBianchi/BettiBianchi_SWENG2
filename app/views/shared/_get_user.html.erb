@@ -1,16 +1,16 @@
 <%= form.label :participants, class: 'label' %>
-<%= form.text_field :participants, type: 'hidden', value: @user_selected, id: "users-hidden" %>
+<%= form.text_field :participants, type: 'hidden', value: @user_selected, id: "users-hidden"%>
 
 <%
 	user_names = []
 	@users.each do |u|
-		user_names.push(u.nickname)
+		user_names.push(u.name + " " + u.surname + " (" + u.nickname + ")")
 	end
 %>
 <div id="invited_user_content">
 </div>
 <%= content_tag :div, id: "temp_information", data: {user: user_names} do %>
-	<input type="text" id="search">
+	<input type="text" id="search", placeholder="Write user name or nickname">
 <% end %>
 
 <script>

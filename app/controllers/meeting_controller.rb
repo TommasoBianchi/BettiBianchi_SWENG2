@@ -31,6 +31,18 @@ class MeetingController < ApplicationController
 		@users = User.all
 		@user_selected = ''
 		@user_names = %w[a b]
+
+		if params[:term]
+			to_match = '%' + params[:term] + '%'
+			@users = User.where("(name ILIKE :search OR surname ILIKE :search OR nickname ILIKE :search) AND id != :current_id", search: to_match, current_id: current_user.id)
+		else
+			@users = User.all
+		end
+
+		respond_to do |format|
+			format.html # new.html.erb
+			format.json {render :json => @users.to_json}
+		end
 	end
 
 	def create

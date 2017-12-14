@@ -1,0 +1,67 @@
+<script type="text/javascript">
+	$(function () {
+
+		// Below is the name of the textfield that will be autocomplete
+		$('#select_origin').autocomplete({
+			// This shows the min length of charcters that must be typed before the autocomplete looks for a match.
+			minLength: 2,
+			// This is the source of the auocomplete suggestions. In this case a list of names from the people controller, in JSON format.
+			source: '<%= new_meeting_path(:json) %>',
+			// This updates the textfield when you move the updown the suggestions list, with your keyboard. In our case it will reflect the same value that you see in the suggestions which is the person.given_name.
+			focus: function (event, ui) {
+				$('#select_origin').val(ui.item.name + " " + ui.item.surname);
+				return false;
+			},
+			// Once a value in the drop down list is selected, do the following:
+			select: function (event, ui) {
+				// place the person.given_name value into the textfield called 'select_origin'...
+				//$('#select_origin').val(ui.item.nickname);
+				var old_choiches = $('#link_origin_id').val();
+				if (old_choiches.includes(ui.item.id)) {
+					displayError(ui.item.id, 'User already selected!');
+					return false;
+				}
+				// and place the person.id into the hidden textfield called 'link_origin_id'.
+				$('#link_origin_id').val(old_choiches + " " + ui.item.id);
+
+				var $label = $("<div class='colored-container white-container participants-list' onclick='deleteParticipant(this)' id=Participant" + ui.item.id + " data-user-id=" + ui.item.id + ">").text(ui.item.name + " " + ui.item.surname);
+				$('#invited_user_content2').append($label);
+				return false;
+			}
+		})
+		// The below code is straight from the jQuery example. It formats what data is displayed in the dropdown box, and can be customized.
+			.data("ui-autocomplete")._renderItem = function (ul, item) {
+			return $("<li></li>")
+				.data("item.autocomplete", item)
+				// For now which just want to show the person.given_name in the list.
+				.append("<a>" + item.name + " " + item.surname + "</a>")
+				.appendTo(ul);
+		};
+	});
+
+</script>
+<script>
+	function deleteParticipant(participant) {
+		var labelClicked = participant.getAttribute("data-user-id");
+		var idToHide = '#Participant' + labelClicked;
+		$(idToHide).toggle();
+		var old_choiches = $('#link_origin_id').val();
+		var toReplace = " " + labelClicked;
+		old_choiches = old_choiches.replace(toReplace, "");
+		$('#link_origin_id').val(old_choiches);
+	}
+</script>
+
+<%= form.label :participants, class: 'label' %>
+
+
+<!-- This is the textfield that will autocomplete. What is displayed here is for the user to see but the data will not go anywhere -->
+<input id="select_origin" placeholder="Search User"/>
+<!-- This is the hidden textfield that will be given the Persons ID based on who is selected. This value will be sent as a parameter -->
+
+<%= form.text_field :participants, type: 'hidden', id: "link_origin_id" %>
+
+
+<div id="invited_user_content2" style="margin-bottom: 5px;">
+</div>
+

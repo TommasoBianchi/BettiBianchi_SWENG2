@@ -32,7 +32,7 @@
         </div>
 
         <%= render 'shared/get_location', form: form %>
-        <%= render 'shared/get_user', form: form %>
+				<%= render 'shared/get_user2', form: form %>
 
         <div id="buttonsContainer">
           <%= form.submit 'Create Meeting', class: 'monoConfirmationButton' %>
@@ -99,10 +99,4 @@
           $("#meeting_date").datepicker();
       });
 
-      $(document).ready(function () {
-          // we define and invoke a function
-          (function () {
-              $(".ui-timepicker-wrapper").css({"backgroundColor": "black", "color": "white"});
-          })();
-      });
   </script>
