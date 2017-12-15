@@ -8,23 +8,6 @@ h1 {
   font-size: 33px;
 }
 
-.light-blue-container {
-  background-color: $light_blue;
-}
-
-.light-grey-container {
-  background-color: $light_grey;
-}
-
-.white-container{
-  background-color: white;
-}
-
-.colored-container {
-  border-radius: 10px;
-  box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-  text-align: center;
-}
 
 .date-time-block {
   min-width: 20%;
@@ -32,7 +15,7 @@ h1 {
   padding-top: 16px;
   padding-left: 7px;
   padding-right: 7px;
-  padding-bottom: 7px;
+  padding-bottom: 12px;
   display: inline-block;
   margin-left: 20px;
   margin-right: 20px;
@@ -88,6 +71,13 @@ h1 {
   vertical-align: middle;
 }
 
+.response-block-container{
+  @extend .date-time-block-container;
+  width: 60%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
 /* CSS ABOUT PARTICIPATION PAGE */
 
 .participant-container {
@@ -96,7 +86,7 @@ h1 {
   padding-right: 10px;
   padding-top: 1%;
   padding-bottom: 1%;
-  text-align: left;
+  text-align: left !important;
   min-height: 36px;
   line-height: 36px;
 }
@@ -129,7 +119,7 @@ h1 {
   width: 50%;
   margin-left: auto;
   margin-right: auto;
-  padding-top: 7%;
+  padding-top: 3%;
 }
 
 #buttonsContainer {

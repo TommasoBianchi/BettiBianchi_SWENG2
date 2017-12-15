@@ -7,3 +7,71 @@ $blue: #9BC8DA;
 $blue_green: #00AEA5;
 
 $background_image_url: image_url("homepage/sfondo25.png");
+
+
+.light-blue-container {
+  background-color: $light_blue;
+}
+
+.light-grey-container {
+  background-color: $light_grey;
+}
+
+.white-container{
+  background-color: white;
+}
+
+.colored-container {
+  border-radius: 10px;
+  box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  text-align: center;
+}
+
+.meeting {
+  background-color: $blue;
+  padding: 20px;
+  width: 60%;
+  text-align: left;
+  margin: 0 auto;
+  position: relative;
+  z-index: 2;
+}
+
+.meeting + .meeting {
+  margin-top: 20px;
+}
+
+.meeting-title, .meeting-location {
+  padding-top: 5px;
+}
+
+.meeting-date {
+  font-weight: bold;
+}
+
+.meeting-location {
+  font-style: italic;
+}
+
+
+.detail {
+  text-transform: uppercase;
+  position: absolute;
+  right: 20px;
+  top: 20px;
+  cursor: pointer;
+  color: black;
+}
+
+.detail:hover {
+  color: rgba(255,255,255,1.00);
+}
+
+.single-response-button{
+  width: 26%;
+  margin-left: 1%;
+  margin-right: 1%;
+  display: inline-block;
+  padding-top: 3%;
+  padding-bottom: 3%;
+}
