@@ -75,12 +75,12 @@ for i in 1..NUM_GROUPS do
 end
 
 for i in 1..NUM_SOCIALS do
-  Social.create(name: 'Social' + i.to_s, icon_path: 'app/assets/images/social_icons/linkedin_icon.png')
+  Social.create(name: 'Social' + i.to_s, icon_path: 'social_icons/linkedin_icon.png')
   puts "Social #{i}"
 end
 
 for i in 1..NUM_USERS do
-  user = User.create(name: 'Pinco' + i.to_s, surname: 'Pallo' + i.to_s, password: '0000', password_confirmation: '0000', nickname: 'PP' + i.to_s, preference_list: '1302')
+  user = User.create(name: 'Pinco' + i.to_s, surname: 'Pallo' + i.to_s, password: '0000', password_confirmation: '0000', nickname: 'PP' + i.to_s, preference_list: '1302', website: 'http://www.google.com', company: 'BettiBianchi s.r.l.')
   IncompleteUser.create(email: 'Pinco' + i.to_s + '.Pallo@travlendar.com', password: '0000', password_confirmation: '0000')
   user.groups.push(Group.find(i % NUM_GROUPS + 1))
   SocialUser.create(social_id: Social.find(i % NUM_SOCIALS + 1).id, link: 'www.linkedin.com/PincoPallo' + i.to_s, user_id: user.id)
@@ -130,7 +130,7 @@ for i in 1..NUM_USERS do
   end
 end
 
-for i in -NUM_MEETINGS_DAYS / 2..NUM_MEETINGS_DAYS / 2 do
+for i in (-NUM_MEETINGS_DAYS / 2)..(NUM_MEETINGS_DAYS / 2) do
   day = DateTime.now + i.days
   for k in 1..NUM_MEETINGS_PER_DAY do
     start_date = DateTime.new(day.year, day.month, day.day, rand(8..20), rand(0..59), 0)
