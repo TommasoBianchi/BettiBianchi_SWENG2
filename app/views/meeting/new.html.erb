@@ -75,20 +75,19 @@
   <script>
       $(function () {
           $('#meeting_start_time').timepicker({'step': 5});
-          var start_time_value = $('#meeting_start_time').val();
 
           $('#meeting_start_time').on('changeTime', function () {
               var start_time_value = $('#meeting_start_time').val();
               $('#meeting_end_time').timepicker({
                   'step': 5,
                   'minTime': start_time_value,
-                  'showDuration': true,
-                  'timeFormat': 'h:i'
+									'maxTime': '11.55pm',
+                  'showDuration': true
               });
           });
           $('#meeting_end_time').timepicker({
               'step': 5,
-              'minTime': start_time_value,
+              'minTime': '00.00am',
               'maxTime': '11.55pm',
               'showDuration': true,
               'timeFormat': 'H:i'

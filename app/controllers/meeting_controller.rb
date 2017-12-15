@@ -46,9 +46,9 @@ class MeetingController < ApplicationController
 	end
 
 	def create
-		list_of_users = params[:meeting][:participants].split(" ")
+		id_of_users = params[:meeting][:participants].split(" ")
 		puts(params)
-		puts(list_of_users)
+		puts(id_of_users)
 		puts '****************************************'
 	end
 
