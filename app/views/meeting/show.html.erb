@@ -32,6 +32,20 @@
 				<%= @meeting.start_date.strftime("%I:%M%p") + " - " + @meeting.end_date.strftime("%I:%M%p") %>
 			</ul>
 		</div>
+
+		<div class="response-block-container only-pending">
+			<%= link_to "ACCEPT", accept_meeting_path(meeting_id: @meeting.id, user_id: @user.id), class: "single-response-button light-grey-container colored-container" %>
+			<%= link_to "DECLINE", decline_meeting_path(meeting_id: @meeting.id, user_id: @user.id), class: "single-response-button light-grey-container colored-container" %>
+			<div class="single-response-button light-grey-container colored-container"> RESCHEDULE</div>
+		</div>
 	</section>
 </div>
 <%= render 'shared/footer' %>
+
+
+
+<script type="text/javascript">
+	<% unless  @meeting.get_meeting_participaton(@user).response_status == 0 %>
+	$('.only-pending').hide();
+	<% end %>
+</script>
