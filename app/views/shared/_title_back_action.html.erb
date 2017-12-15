@@ -4,10 +4,8 @@
 			<%= link_to image_tag('go_back_icon.png', id: 'go-back-image'), path %>
 		<% end %>
 	</div>
-	<div class="title-block">
-		<h1 class="title">
+	<div class="title-block title">
 			<%= title %>
-		</h1>
 	</div>
 	<div class="go-back"></div>
 </div>
@@ -17,14 +15,17 @@
 		font-size: 40px;
 		color: #575756;
 		font-style: oblique;
+		padding-top: 2.5%;
+		padding-bottom: 3%;
 	}
 
 	.go-back{
-		width: 25%;
+		width: 15%;
 		display: inline-block;
 		padding-top: 3%;
 		padding-bottom: 3%;
 		display: flex; /* add */
+		float: left;
 		justify-content: center; /* add to align horizontal */
 		align-items: center; /* add to align vertical */
 
@@ -32,13 +33,11 @@
 
 	.go-back a{
 		height: max-content;
+		text-align: center;
 	}
 
 	#go-back-image{
-		max-height: 100%;
-		max-width: 100%;
-		width: auto;
-		height: auto;
+		width: 33px;
 		top: 0;
 		bottom: 0;
 		left: 0;
@@ -48,7 +47,7 @@
 	}
 
 	.title-block{
-		width: 50%;
+		width: 70%;
 		display: inline-block;
 	}
 

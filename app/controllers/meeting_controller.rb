@@ -3,6 +3,7 @@ class MeetingController < ApplicationController
 	before_action :check_participation, except: [:new, :create]
 
 	def show
+		@back_path = request.referer
 		@user = current_user
 		@meeting = Meeting.find(params['id'])
 		@meeting.abstract = 'prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova '
@@ -71,7 +72,7 @@ class MeetingController < ApplicationController
 	def check_participation
 		meeting_id = params['id']
 		meeting_id = params['meeting_id'] unless meeting_id
-		unless current_user.meeting_participations.where(meeting_id: meeting_id, response_status: [0,1]).count() > 0
+		unless current_user.meeting_participations.where(meeting_id: meeting_id, response_status: [0, 1]).count() > 0
 			raise ActionController::RoutingError, 'Not Found'
 		end
 	end
