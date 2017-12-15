@@ -1,17 +1,16 @@
 module MeetingHelper
-	
-	def self.create_meeting(start_date, end_date, title, location, user)
-		ActiveRecord::Base.transaction do
-			_create_meeting start_date, end_date, title, location, user
-		end
-	end
 
-	private
+	# This function has to be called to create both a meeting and a meeting_participation and store them on the db.
+	# In practice, use this only for the user that creates a meeting and not for the invited users
+	#
 	# start_date and end_date must be valid DateTime objects
 	# title must be a non-empty string
 	# location must be a valid Location already saved in the db
 	# user must be a valid User
-	def self._create_meeting(start_date, end_date, title, location, user)
+	#
+	# returns a hash containing the meeting (nil in case of errors), the meeting_participation (nil in case of errors)
+	# and a status flag (encoded as a Ruby Symbol) indicating either consistency, inconsistency or errors
+	def self.create_meeting(start_date, end_date, title, location, user)
 		if start_date >= end_date
 			return
 		end
@@ -26,11 +25,15 @@ module MeetingHelper
 		meeting_participation.is_consistent = meeting_data[:is_consistent]
 
 		if meeting_data[:is_consistent] == false
-			meeting_participation.save
-			meeting_data[:conflict_set].each do |meeting_id|
-				# insert in conflict set
+			ActiveRecord::Base.transaction do
+				meeting.save
+				meeting_participation.save
+				meeting_data[:conflict_set].each do |id|
+					# insert in conflict set
+					MeetingParticipationConflict.create({meeting_participation_1_id: meeting_participation.id, meeting_participation_2_id: id})
+				end
 			end
-			return
+			return {meeting: meeting, meeting_participation: meeting_participation, status: :inconsistent}
 		end
 
 		# From here on we are dealing with only consistent meeting participations
@@ -63,16 +66,19 @@ module MeetingHelper
 
 		if [meeting.valid?, meeting_participation.valid?, arriving_travel.valid?, leaving_travel.valid?,
 			valid_before_meeting, valid_after_meeting].all?
-			meeting.save
-			meeting_participation.save
-			arriving_travel.save
-			leaving_travel.save
-			if meeting_data[:link_before_meeting]
-				meeting_data[:before_meeting].save
+			ActiveRecord::Base.transaction do
+				meeting.save
+				meeting_participation.save
+				arriving_travel.save
+				leaving_travel.save
+				if meeting_data[:link_before_meeting]
+					meeting_data[:before_meeting].save
+				end
+				if meeting_data[:link_after_meeting]
+					meeting_data[:after_meeting].save
+				end
 			end
-			if meeting_data[:link_after_meeting]
-				meeting_data[:after_meeting].save
-			end
+			return {meeting: meeting, meeting_participation: meeting_participation, status: :consistent}
 		else
 			# Print errors
 			puts "------------ ERRORS ------------"
@@ -83,9 +89,94 @@ module MeetingHelper
 			puts "Before meeting has errors" unless valid_before_meeting
 			puts "After meeting has errors" unless valid_after_meeting
 			puts "------------ ERRORS ------------"
+			return {meeting: nil, meeting_participation: nil, status: :errors}
 		end
 	end
 
+	# This function has to be called to create only a meeting_participation (for an already existing meeting) and store it on the db.
+	# In practice, use this only for the invited users and not for the user that creates a meeting
+	#
+	# meeting must be a valid Meeting already saved in the db
+	# user must be a valid User
+	#
+	# returns a hash containing the meeting_participation (nil in case of errors) and a status flag (encoded as a Ruby Symbol) 
+	# indicating either consistency, inconsistency or errors
+	def self.invite_to_meeting(meeting, user)
+		meeting_data = insert_meeting({start_date: meeting.start_date, end_date: meeting.end_date, location: meeting.location}, user)
+
+		meeting_participation = MeetingParticipation.new
+		meeting_participation.meeting = meeting
+		meeting_participation.is_admin = false
+		meeting_participation.user = user
+		meeting_participation.is_consistent = meeting_data[:is_consistent]
+
+		if meeting_data[:is_consistent] == false
+			ActiveRecord::Base.transaction do
+				meeting_participation.save
+				meeting_data[:conflict_set].each do |id|
+					# insert in conflict set
+					MeetingParticipationConflict.create({meeting_participation_1_id: meeting_participation.id, meeting_participation_2_id: id})
+				end
+			end
+			return {meeting_participation: meeting_participation, status: :inconsistent}
+		end
+
+		# From here on we are dealing with only consistent meeting participations
+
+		arriving_travel = Travel.new
+		arriving_travel.start_time = meeting_data[:arriving_travel][:start_time]
+		arriving_travel.end_time = meeting_data[:arriving_travel][:end_time]
+		arriving_travel.travel_mean = Travel::Travel_means[meeting_data[:arriving_travel][:travel_mean]]
+		arriving_travel.distance = meeting_data[:arriving_travel][:distance]
+		arriving_travel.starting_location_dl = meeting_data[:arriving_from_dl] if meeting_data[:arriving_from_dl]
+		if meeting_data[:link_before_meeting]
+			meeting_data[:before_meeting].leaving_travel = arriving_travel
+		end
+		valid_before_meeting = (!meeting_data[:link_before_meeting] or meeting_data[:before_meeting].valid?)
+
+		leaving_travel = Travel.new
+		leaving_travel.start_time = meeting_data[:leaving_travel][:start_time]
+		leaving_travel.end_time = meeting_data[:leaving_travel][:end_time]
+		leaving_travel.travel_mean = Travel::Travel_means[meeting_data[:leaving_travel][:travel_mean]]
+		leaving_travel.distance = meeting_data[:leaving_travel][:distance]
+		leaving_travel.ending_location_dl = meeting_data[:leaving_to_dl] if meeting_data[:leaving_to_dl]
+		if meeting_data[:link_after_meeting]
+			meeting_data[:after_meeting].arriving_travel = leaving_travel
+		end
+		valid_after_meeting = (!meeting_data[:link_after_meeting] or meeting_data[:after_meeting].valid?)
+
+		meeting_participation.arriving_travel = arriving_travel
+		meeting_participation.leaving_travel = leaving_travel
+		meeting_participation.response_status = MeetingParticipation::Response_statuses[:pending]
+
+		if [meeting_participation.valid?, arriving_travel.valid?, leaving_travel.valid?,
+			valid_before_meeting, valid_after_meeting].all?
+			ActiveRecord::Base.transaction do
+				meeting_participation.save
+				arriving_travel.save
+				leaving_travel.save
+				if meeting_data[:link_before_meeting]
+					meeting_data[:before_meeting].save
+				end
+				if meeting_data[:link_after_meeting]
+					meeting_data[:after_meeting].save
+				end
+			end
+			return {meeting_participation: meeting_participation, status: :consistent}
+		else
+			# Print errors
+			puts "------------ ERRORS ------------"
+			puts "Meeting participation has errors" unless meeting_participation.valid?
+			puts "Arriving travel has errors" unless arriving_travel.valid?
+			puts "Leaving travel has errors" unless leaving_travel.valid?
+			puts "Before meeting has errors" unless valid_before_meeting
+			puts "After meeting has errors" unless valid_after_meeting
+			puts "------------ ERRORS ------------"
+			return {meeting_participation: nil, status: :errors}
+		end
+	end
+
+	private
 	def self.insert_meeting(new_meeting, user)
 		user_meetings = user.meeting_participations.joins(:meeting)
 		# These are actually MeetingParticipation

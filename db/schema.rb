@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171210155905) do
+ActiveRecord::Schema.define(version: 20171215132204) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -106,6 +106,13 @@ ActiveRecord::Schema.define(version: 20171210155905) do
     t.decimal "longitude", null: false
     t.decimal "latitude", null: false
     t.string "description", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "meeting_participation_conflicts", force: :cascade do |t|
+    t.integer "meeting_participation_1_id"
+    t.integer "meeting_participation_2_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -228,6 +235,8 @@ ActiveRecord::Schema.define(version: 20171210155905) do
   add_foreign_key "emails", "users"
   add_foreign_key "group_users", "groups"
   add_foreign_key "group_users", "users"
+  add_foreign_key "meeting_participation_conflicts", "meeting_participations", column: "meeting_participation_1_id"
+  add_foreign_key "meeting_participation_conflicts", "meeting_participations", column: "meeting_participation_2_id"
   add_foreign_key "meeting_participations", "meetings"
   add_foreign_key "meeting_participations", "travels", column: "arriving_travel_id"
   add_foreign_key "meeting_participations", "travels", column: "leaving_travel_id"

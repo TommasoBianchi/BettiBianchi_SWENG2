@@ -18,6 +18,13 @@ class MeetingParticipation < ApplicationRecord
 
   validate :response_status_correctness
 
+  def conflicting_meeting_participations
+    return MeetingParticipation.where('id in 
+      ((select meeting_participation_1_id from meeting_participation_conflicts where meeting_participation_2_id = :id) 
+        union 
+      (select meeting_participation_2_id from meeting_participation_conflicts where meeting_participation_1_id = :id))', {id: self.id})
+  end
+
   def get_name_surname
     user.name + ' ' + user.surname
   end
