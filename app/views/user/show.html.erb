@@ -1,11 +1,56 @@
-<%= render 'shared/header' %>
+<%= render 'shared/header', selected: 'Profile' %>
 <div id="content">
-  <%= render 'shared/sidebar' %>
-  <section class="mainContent">
-    <h1>User#show</h1>
-    <p>Find me in app/views/user/show.html.erb</p>
-    <%= link_to "Log out", logout_path, method: :delete %>
-    <%= link_to "Profile", current_user %>
-    <%= render 'shared/footer' %>
-  </section>
+	<%= render 'shared/calendar_sidebar' %>
+	<section class="mainContent">
+		<div><%= image_tag(if Rails.application.assets.find_asset("profile_images/" + @user.nickname + ".png").nil?
+												 "defaultProfileImage.png"
+											 else
+												 "profile_images/" + @user.nickname + ".png"
+											 end, id: "roundedImages") %></div>
+		<div id="name-surname">
+			<%= @user.name + " " + @user.surname %>
+		</div>
+
+		<div id="nickname">
+			<%= @user.nickname %>
+		</div>
+		<div class="email-container light-light-grey-container colored-container">
+			<%= @user.primary_email.email %>
+		</div>
+
+		<% unless @user.phone_number.blank? %>
+			<div class="email-container light-light-grey-container colored-container">
+				<%= @user.phone_number %>
+			</div>
+		<% end %>
+		<% unless @user.website.blank? %>
+			<div class="email-container light-light-grey-container colored-container">
+				<a href="<%= @user.website %>" target="_blank">Personal Website</a>
+			</div>
+		<% end %>
+		<% unless @user.company.blank? %>
+			<div class="email-container light-light-grey-container colored-container">
+				<%= @user.company %>
+			</div>
+		<% end %>
+
+		<div class=" social-boxes light-grey-container colored-container">
+			<% @user.social_users.each do |social| %>
+				<%= link_to image_tag(Social.find(social.social_id).icon_path, alt: Social.find(social.social_id).name, class: 'social-icon'), social.link, target: "_blank" %>
+			<% end %>
+		</div>
+	</section>
 </div>
+<%= render 'shared/footer' %>
+
+
+<script type="text/javascript">
+	<% if  @user.id == current_user.id %>
+	$('.only-if-not-myself').hide();
+	<% else %>
+	$('.only-if-myself').hide();
+	<% end %>
+</script>
+
+
+<!-- <%= link_to "Log out", logout_path, method: :delete %>  -->

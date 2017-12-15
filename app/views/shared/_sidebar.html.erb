@@ -3,11 +3,7 @@
       <!-- This adds a sidebar with 1 searchbox,2 menusets, each with 4 links -->
 
 
-		<div><%= image_tag(if Rails.application.assets.find_asset("profile_images/" + @user.nickname + ".png").nil?
-		  "defaultProfileImage.png"
-		else
-		  "profile_images/" + @user.nickname + ".png"
-		end, id: "roundedImages") %></div>
+
       <p><%= @user.nickname %></p>
 		<input type="text"  id="search" value="search">
       <div id="menubar">

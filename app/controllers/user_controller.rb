@@ -3,6 +3,11 @@ class UserController < ApplicationController
 
 	def show
 		require_login
+		@user = User.find(params[:id])
+
+	end
+
+	def my_user_page
 		@user = current_user
 	end
 
