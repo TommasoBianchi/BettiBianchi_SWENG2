@@ -3,6 +3,7 @@ class MeetingController < ApplicationController
 	before_action :check_participation, except: [:new, :create]
 
 	def show
+		@back_path = request.referer
 		@user = current_user
 		@meeting = Meeting.find(params['id'])
 		@meeting.abstract = 'prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova '
@@ -52,11 +53,26 @@ class MeetingController < ApplicationController
 		puts '****************************************'
 	end
 
+	def accept
+		session[:return_to] ||= request.referer
+		mp = MeetingParticipation.find_by(meeting_id: params[:meeting_id], user_id: params[:user_id])
+		mp.response_status = 1
+		mp.save
+		redirect_to session.delete(:return_to)
+	end
+
+	def decline
+		mp = MeetingParticipation.find_by(meeting_id: params[:meeting_id], user_id: params[:user_id])
+		mp.response_status = 2
+		mp.save
+		redirect_to notification_path
+	end
+
 	private
 	def check_participation
 		meeting_id = params['id']
 		meeting_id = params['meeting_id'] unless meeting_id
-		unless current_user.meeting_participations.where(meeting_id: meeting_id).count() > 0
+		unless current_user.meeting_participations.where(meeting_id: meeting_id, response_status: [0, 1]).count() > 0
 			raise ActionController::RoutingError, 'Not Found'
 		end
 	end
