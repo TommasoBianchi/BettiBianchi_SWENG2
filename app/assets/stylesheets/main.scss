@@ -1,5 +1,6 @@
 $dark_grey: #575756;
 $light_grey: #B2B2B2;
+$light-light-grey: #DADADA;
 
 $light_blue: #9BC8DA;
 $blue: #9BC8DA;
@@ -15,6 +16,10 @@ $background_image_url: image_url("homepage/sfondo25.png");
 
 .light-grey-container {
   background-color: $light_grey;
+}
+
+.light-light-grey-container {
+  background-color: $light-light-grey;
 }
 
 .white-container{

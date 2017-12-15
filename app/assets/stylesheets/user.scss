@@ -4,6 +4,12 @@
 
 @import "main.scss";
 
+.mainContent {
+  color: $dark_grey;
+}
+
+/* CSS about new meeting page */
+
 input.error {
 	border-color: red;
 }
@@ -11,4 +17,45 @@ input.error {
 .error-description {
 	margin-bottom: 10px;
 	color: red;
+}
+
+/* CSS about show user page */
+
+#roundedImages {
+  align-self: center;
+  margin-top: 5%;
+  width: 280px;
+  border-radius: 50%;
+}
+
+#name-surname{
+  font-size: 44px;
+  margin: 18px;
+}
+
+#nickname{
+  font-size: 27px;
+  font-style: italic;
+  margin: 5px;
+}
+
+.email-container{
+  width: 40%;
+  margin-top: 10px;
+  margin-right: auto;
+  margin-left: auto;
+  padding: 5px;
+}
+
+.social-boxes{
+  padding: 9px 5px 5px;
+  width: 55px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 15px;
+  margin-bottom: 15px;
+}
+
+.social-icon{
+  width: 45px;
 }
