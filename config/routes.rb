@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  get 'notification/index'
+
   resources :user
   resources :meeting
   resources :users, only: [:index]
