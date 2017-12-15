@@ -76,7 +76,7 @@ body {
 /* Links in header */
 #headerLinks a {
   text-decoration: none;
-  width: 24%;
+  width: 24.3%;
   display: inline-block;
   height: calc(100% - 20px);
   /* text-align: justify; */
@@ -411,8 +411,12 @@ footer .footerlinks {
 	display: none;
   }
 
-  .mainContent {
+  .mainContent, #headerLinks {
 	width: 100% !important;
 	max-width: 100% !important;
+  }
+
+  #logo, #logo-a{
+	display: none !important;
   }
 }
