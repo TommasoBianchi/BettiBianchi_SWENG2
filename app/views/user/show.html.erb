@@ -1,4 +1,4 @@
-<%= render 'shared/header', selected: 'Profile' %>
+<%= render 'shared/header', selected: 'profile' %>
 <div id="content">
 	<%= render 'shared/calendar_sidebar' %>
 	<section class="mainContent">
@@ -33,10 +33,11 @@
 				<%= @user.company %>
 			</div>
 		<% end %>
-
-		<div class=" social-boxes light-grey-container colored-container">
+		<div class="social-container">
 			<% @user.social_users.each do |social| %>
-				<%= link_to image_tag(Social.find(social.social_id).icon_path, alt: Social.find(social.social_id).name, class: 'social-icon'), social.link, target: "_blank" %>
+				<div class=" social-boxes light-light-grey-container colored-container">
+					<%= link_to image_tag(Social.find(social.social_id).icon_path, alt: Social.find(social.social_id).name, class: 'social-icon'), 'http://' + social.link %>
+				</div>
 			<% end %>
 		</div>
 	</section>
