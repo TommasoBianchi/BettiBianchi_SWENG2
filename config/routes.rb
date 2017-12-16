@@ -3,6 +3,8 @@ Rails.application.routes.draw do
 	resources :user
 	resources :meeting
 	resources :notification, only: [:index]
+	resources :default_location, only: [:show]
+
 
 	# For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 	get '/' => 'homepage#index', as: 'homepage'

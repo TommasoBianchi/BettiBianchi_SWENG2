@@ -45,10 +45,10 @@
 
 		<div id="preference-list-container">
 			<% @user.default_locations.each do |dl| %>
-				<div class="default-location rounded-box">
+				<div class="default-location list-of-default-location rounded-box">
 					<div class="default-location-name"><%= dl.name %></div>
 					<div class="default-location-location"><%= dl.location.description %></div>
-					<a href='<%= %>'>
+					<a href='<%= default_location_path %>'>
 						<div class="detail">Details</div>
 					</a>
 				</div>
@@ -66,7 +66,7 @@
 
 		<div id="preference-list-container">
 			<% @user.breaks.each do |br| %>
-				<div class="break rounded-box">
+				<div class="break list-of-default-location rounded-box">
 					<div class="default-location-name"><%= br.name %></div>
 					<div class="default-location-location"><%= br.get_description %></div>
 					<%= link_to image_tag("cancel_icon.png", alt: "Delate", class: 'delete-image delete-image-in-block'), delete_break_path(user_id: @user.id, break_id: br.id) %>
