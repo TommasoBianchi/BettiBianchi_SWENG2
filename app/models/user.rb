@@ -44,9 +44,9 @@ class User < ApplicationRecord
 		list_default_location = list_default_location.sort_by {|dl1| [(dl1.day_of_the_week * 60 * 24 + dl1.starting_hour)]}
 
 		if list_default_location.blank?
-			return get_last_default_location_before(DateTime.parse('December 9th 2017 11:59:59 PM')) # to take the last default location of the week, infinite loop if user doesn't have any def location
+			get_last_default_location_before(DateTime.parse('December 9th 2017 11:59:59 PM')) # to take the last default location of the week, infinite loop if user doesn't have any def location
 		else
-			return list_default_location.last
+			list_default_location.last
 		end
 	end
 
@@ -61,15 +61,15 @@ class User < ApplicationRecord
 		list_default_location = list_default_location.sort_by {|dl1| [(dl1.day_of_the_week * 60 * 24 + dl1.starting_hour)]}
 
 		if list_default_location.blank?
-			return get_first_location_after(DateTime.parse('December 10th 2017 00:00:00 AM')) # to take the first default location of the week, infinite loop if user doesn't have any def location
+			get_first_location_after(DateTime.parse('December 10th 2017 00:00:00 AM')) # to take the first default location of the week, infinite loop if user doesn't have any def location
 		else
-			return list_default_location.first
+			list_default_location.first
 		end
 	end
 
 	private
 
 	def primary_email_in_emails
-		return if primary_email_id.blank?
+		nil if primary_email_id.blank?
 	end
 end
