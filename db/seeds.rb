@@ -35,12 +35,11 @@ end
 NUM_GROUPS = 3
 NUM_SOCIALS = 4
 NUM_EMAILS_PER_USER = 2
-# NUM_BREAKS_PER_USER = 2
 # NUM_STATUSES_PER_USER = 2
 NUM_CONTACTS_PER_USER = 3
 NUM_BREAKS_PER_USER = 1
 NUM_USERS = 5
-NUM_MEETINGS_DAYS = 2
+NUM_MEETINGS_DAYS = 4
 NUM_MEETINGS_PER_DAY = 3
 NUM_MEETINGS = NUM_MEETINGS_DAYS * NUM_MEETINGS_PER_DAY
 NUM_CATEGORIES = 10
@@ -76,7 +75,7 @@ for i in 1..NUM_SOCIALS do
 end
 
 for i in 1..NUM_USERS do
-  user = User.create(name: 'Pinco' + i.to_s, surname: 'Pallo' + i.to_s, password: '0000', password_confirmation: '0000', nickname: 'PP' + i.to_s, preference_list: '1302', website: 'http://www.google.com', company: 'BettiBianchi s.r.l.')
+  user = User.create(name: 'Pinco' + i.to_s, surname: 'Pallo' + i.to_s, password: '0000', password_confirmation: '0000', nickname: 'PP' + i.to_s, preference_list: '02', website: 'http://www.google.com', company: 'BettiBianchi s.r.l.')
   IncompleteUser.create(email: 'Pinco' + i.to_s + '.Pallo@travlendar.com', password: '0000', password_confirmation: '0000')
   user.groups.push(Group.find(i % NUM_GROUPS + 1))
 	SocialUser.create(social_id: Social.find(i % NUM_SOCIALS + 1).id, link: 'www.linkedin.com/PincoPallo' + i.to_s, user_id: user.id)
@@ -143,7 +142,7 @@ for i in (-NUM_MEETINGS_DAYS / 2)..(NUM_MEETINGS_DAYS / 2) do
     end
 
     puts "Meeting #{result[:meeting].id} - Created"
-=begin
+
     for j in 2..NUM_USERS do
       res = MeetingHelper.invite_to_meeting result[:meeting], User.find(j)
 
@@ -153,7 +152,7 @@ for i in (-NUM_MEETINGS_DAYS / 2)..(NUM_MEETINGS_DAYS / 2) do
 
       puts "Meeting #{result[:meeting].id} - Invited user #{j}" 
     end
-=end  
+
   end
 end
 

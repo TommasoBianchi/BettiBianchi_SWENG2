@@ -194,9 +194,13 @@ module MeetingHelper
 		end
 	end
 
+	def decline_invitation(meeting_participation, user)
+		conflicts = meeting_participations.conflicting_meeting_participations
+	end
+
 	private
 	def self.insert_meeting(new_meeting, user)
-		user_meetings = user.meeting_participations.joins(:meeting)
+		user_meetings = user.meeting_participations.joins(:meeting).where.not(response_status: MeetingParticipation::Response_statuses[:declined])
 		# These are actually MeetingParticipation
 		overlapping_meetings = user_meetings.where('meetings.start_date between ? and ?', new_meeting[:start_date], new_meeting[:end_date])
 								.or(user_meetings.where('meetings.end_date between ? and ?', new_meeting[:start_date], new_meeting[:end_date]))
@@ -258,12 +262,14 @@ module MeetingHelper
 		end
 
 		# TODO: manage overlapping breaks and update non-overlapping ones
-		/overlapping_breaks := all breaks of user that overlap with new_meeting and its travels
+=begin
+		overlapping_breaks := all breaks of user that overlap with new_meeting and its travels
 
 		for all break in overlapping_breaks do
 			UPDATE_BREAK(break, new_meeting ,arriving_travel, leaving_travel)
 			add (new_meeting, break) to break_overlap_set
-		end for/
+		end for
+=end
 
 		new_meeting[:is_consistent] = true
 		new_meeting[:arriving_travel] = arriving_travel
