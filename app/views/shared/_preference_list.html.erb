@@ -1,4 +1,4 @@
-<%= form.label :preference_list, class: 'label' %>
+
 <%= form.text_field :preference_list, type: 'hidden', value: @user.preference_list, id: "pref-list-hidden" %>
 
 <div id='preference_list'>
@@ -23,16 +23,16 @@
 			disabled: false
 		}).disableSelection();
 
-		preference_list = <%= @user.preference_list.chars.map {|c| c.to_i} %>;
+		var preference_list = <%= @user.preference_list.chars.map {|c| c.to_i} %>;
 
 		if (preference_list != [0, 1, 2, 3]) {
 			preference_list.forEach(function (el, index) {
-				var element = $('.preference-list-li[value=' + el + ']')
+				var element = $('.preference-list-li[value=' + el + ']');
 				$('#prefList_active').append(element)
-			})
+			});
 			for (var i = 0; i < 4; i++) {
 				if (preference_list.indexOf(i) < 0) {
-					var element = $('.preference-list-li[value=' + i + ']')
+					var element = $('.preference-list-li[value=' + i + ']');
 					$('#prefList_inactive').append(element)
 				}
 			}
@@ -40,10 +40,10 @@
 	});
 
 	function getPreferenceList() {
-		var prefList = ''
+		var prefList = '';
 		$('#prefList_active .preference-list-li').each(function (index, el) {
 			prefList += el.value
-		})
+		});
 		return prefList
 	}
 </script>
