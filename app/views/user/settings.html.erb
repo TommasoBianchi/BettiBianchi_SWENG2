@@ -1,0 +1,81 @@
+<%= render 'shared/header', selected: 'settings' %>
+<div id="content">
+	<script type="text/javascript"></script>
+	<%= render 'shared/calendar_sidebar' %>
+	<section class="mainContent" >
+		<%= render 'shared/title_back_action', title: 'Settings' %>
+
+
+		<h2 class="subtitle-contacts" style="margin-top: 5px;">
+			Preference List
+		</h2>
+		<div id="preference-list-container">
+			<%= form_for @user, url: change_preference_list_path do |form| %>
+				<%= render 'shared/preference_list', form: form %>
+				<%= form.submit "Save" %>
+			<% end %>
+		</div>
+
+		<div id="preference-list-container">
+			<div class="title-add-container ">
+				Constraints
+				<%= link_to image_tag("add_icon.png", alt: 'add_icon', class: 'add-image'), add_constraint_path %>
+			</div>
+		</div>
+
+		<div id="preference-list-container">
+			<% @user.constraints.each do |constraint| %>
+				<div class="constraint-container colored-container light-light-grey-container">
+					<%= constraint.get_description %>
+					<%= link_to image_tag("cancel_icon.png", alt: "Delate", class: 'delete-image'), delete_constraint_path(user_id: @user.id, constraint_id: constraint.id) %>
+				</div>
+			<% end %>
+		</div>
+
+		<h2 class="subtitle-contacts">
+			Status
+		</h2>
+
+		<div id="preference-list-container">
+			<div class="title-add-container ">
+				Default Locations
+				<%= link_to image_tag("add_icon.png", alt: 'add_icon', class: 'add-image'), add_default_location_path %>
+			</div>
+		</div>
+
+		<div id="preference-list-container">
+			<% @user.default_locations.each do |dl| %>
+				<div class="default-location rounded-box">
+					<div class="default-location-name"><%= dl.name %></div>
+					<div class="default-location-location"><%= dl.location.description %></div>
+					<a href='<%= %>'>
+						<div class="detail">Details</div>
+					</a>
+				</div>
+
+			<% end %>
+		</div>
+
+
+		<div id="preference-list-container">
+			<div class="title-add-container ">
+				Breaks
+				<%= link_to image_tag("add_icon.png", alt: 'add_icon', class: 'add-image'), add_break_path %>
+			</div>
+		</div>
+
+		<div id="preference-list-container">
+			<% @user.breaks.each do |br| %>
+				<div class="break rounded-box">
+					<div class="default-location-name"><%= br.name %></div>
+					<div class="default-location-location"><%= br.get_description %></div>
+					<%= link_to image_tag("cancel_icon.png", alt: "Delate", class: 'delete-image delete-image-in-block'), delete_break_path(user_id: @user.id, break_id: br.id) %>
+
+				</div>
+
+			<% end %>
+		</div>
+
+	</section>
+</div>
+<%= render 'shared/footer' %>

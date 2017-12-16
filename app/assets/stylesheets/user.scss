@@ -1,9 +1,8 @@
 // Place all the styles related to the User controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
-
 @import "main.scss";
-
+@import "calendar";
 .mainContent {
   //color: $dark_grey;
 }
@@ -11,17 +10,17 @@
 /* CSS about new meeting page */
 
 input.error {
-	border-color: red;
+  border-color: red;
 }
 
 .error-description {
-	margin-bottom: 10px;
-	color: red;
+  margin-bottom: 10px;
+  color: red;
 }
 
 /* CSS about show user page */
 
-.profile-detail{
+.profile-detail {
   padding: 10px;
 }
 
@@ -32,20 +31,20 @@ input.error {
   border-radius: 50%;
 }
 
-#name-surname{
+#name-surname {
   font-size: 44px;
   margin-right: auto;
   margin-left: auto;
   margin-top: 18px;
 }
 
-#nickname{
+#nickname {
   font-size: 22px;
   font-style: italic;
   margin: 5px 5px 25px;
 }
 
-.email-container{
+.email-container {
   width: 40%;
   margin-top: 10px;
   margin-right: auto;
@@ -53,11 +52,11 @@ input.error {
   padding: 5px;
 }
 
-.profile-page-buttons{
+.profile-page-buttons {
   margin: 20px auto 10px;
 }
 
-.social-boxes{
+.social-boxes {
   padding: 9px 5px 5px;
   width: 55px;
   margin-left: 5px;
@@ -66,21 +65,59 @@ input.error {
   margin-bottom: 15px;
 }
 
-.social-icon{
+.social-icon {
   width: 45px;
 }
 
-.social-container{
+.social-container {
   display: inline-flex;
 }
 
 /* CSS for contacts page */
 
-#select_origin{
+#select_origin {
   width: calc(80% + 30px);
 }
 
-.subtitle-contacts{
+.subtitle-contacts {
   margin-top: 40px;
   color: $dark_grey;
+}
+
+/* CSS for Settings page */
+
+#preference-list-container {
+  width: 54%;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.constraint-container {
+  padding: 8px 15px;
+  margin-top: 10px;
+  margin-bottom: 5px;
+}
+
+.title-add-container {
+
+  margin-top: 10px;
+  margin-bottom: 5px;
+  padding: 8px 13px 8px 36px;
+  font-size: 1.5em;
+  font-weight: bold;
+  color: #575756;
+}
+
+.delete-image {
+  float: right;
+  height: 19px;
+}
+
+.add-image {
+  float: right;
+  height: 23px;
+}
+
+.add-icon {
+  float: right;
 }
