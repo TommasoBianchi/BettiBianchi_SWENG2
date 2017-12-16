@@ -11,7 +11,7 @@
 
 	<div id="headerLinks">
 		<a href="<%= user_path id: current_user.id %>" title="Profile" class="<%= if selected == 'profile' then 'selected' end %>">Profile</a><!---
-		--><a href="#" title="Calendar" class="<%= if selected == 'calendar' then 'selected' end %>">Calendar</a><!---
+		--><a href="<%= calendar_day_path %>" title="Calendar" class="<%= if selected == 'calendar' then 'selected' end %>">Calendar</a><!---
 		--><a href="#" title="Login/Register" class="<%= if selected == 'settings' then 'selected' end %>">Settings</a><!---
 		--><a href="<%= notification_index_path %>" title="Cart" class="<%= if selected == 'notifications' then 'selected' end %>">Notifications</a>
 	</div>
