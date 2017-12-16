@@ -54,7 +54,7 @@ class User < ApplicationRecord
     # ATTENTION IT RETURNS THE FIRST DEFAULT LOCATION THAT STARTS AFTER current_day. if you want the current one use the get_last_default_location_before method
     list_default_location = []
     default_locations.each do |dl|
-      if dl.day_of_the_week > current_day.wday || (dl.day_of_the_week = current_day.wday && dl.starting_hour >= (current_day.hour * 24 + current_day.min))
+      if dl.day_of_the_week > current_day.wday || (dl.day_of_the_week == current_day.wday && dl.starting_hour >= (current_day.hour * 24 + current_day.min))
         list_default_location.push dl
       end
     end
