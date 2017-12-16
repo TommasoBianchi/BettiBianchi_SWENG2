@@ -80,3 +80,19 @@ $background_image_url: image_url("homepage/sfondo25.png");
   padding-top: 3%;
   padding-bottom: 3%;
 }
+
+.break{
+  background-color: darkred;
+  padding: 20px;
+  width: 60%;
+  text-align: left;
+  margin: 0 auto;
+  position: relative;
+  z-index: 2;
+}
+
+.delete-image-in-block{
+  position: absolute;
+  top: 25px;
+  right: 19px;
+}
