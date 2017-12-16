@@ -17,6 +17,13 @@ Rails.application.routes.draw do
 	get 'user/contacts/:id' => 'user#contacts', as: 'contacts_page'
 	get 'user/remove_from_contacts/:user_id/:to_delete_id' => 'user#delete_contact', as: 'delete_contact'
 	get 'user/add_to_contacts/:user_id/:to_add_id' => 'user#add_contact', as: 'add_contact'
+	get 'user/:id/settings' => 'user#settings', as: 'settings_page'
+	patch 'user/:id/settings/change_preference_list' => 'user#change_preference_list', as: 'change_preference_list'
+	get 'user/:id/add_constraint' => 'user#add_constraint', as: 'add_constraint'
+	get 'user/:id/add_default_location' => 'user#add_default_location', as: 'add_default_location'
+	get 'user/:id/add_break' => 'user#add_break', as: 'add_break'
+	get 'user/delete_constraint/:user_id/:constraint_id' => 'user#delate_constraint', as: 'delete_constraint'
+	get 'user/delete_break/:user_id/:break_id' => 'user#delate_break', as: 'delete_break'
 
 	# Meeting
 	get 'meeting/:id/participants_page' => 'meeting#participants_page', as: 'participants_page'
