@@ -12,7 +12,11 @@ Rails.application.routes.draw do
 
 	# User
 	get 'user/new'
-	get 'user/search' => 'user#search', as: 'user_search'
+	get 'user/search/:id' => 'user#search', as: 'search_user'
+	get 'user/search_contacts/:id' => 'user#search_contacts', as: 'search_user_contact'
+	get 'user/contacts/:id' => 'user#contacts', as: 'contacts_page'
+	get 'user/remove_from_contacts/:user_id/:to_delete_id' => 'user#delete_contact', as: 'delete_contact'
+	get 'user/add_to_contacts/:user_id/:to_add_id' => 'user#add_contact', as: 'add_contact'
 
 	# Meeting
 	get 'meeting/:id/participants_page' => 'meeting#participants_page', as: 'participants_page'

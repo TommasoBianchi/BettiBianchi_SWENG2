@@ -6,7 +6,7 @@
 			// This shows the min length of charcters that must be typed before the autocomplete looks for a match.
 			minLength: 2,
 			// This is the source of the auocomplete suggestions. In this case a list of names from the people controller, in JSON format.
-			source: '<%= new_meeting_path(:json) %>',
+			source: '<%= search_user_path(:json) %>',
 			// This updates the textfield when you move the updown the suggestions list, with your keyboard. In our case it will reflect the same value that you see in the suggestions which is the person.given_name.
 			focus: function (event, ui) {
 				$('#select_origin').val(ui.item.name + " " + ui.item.surname);

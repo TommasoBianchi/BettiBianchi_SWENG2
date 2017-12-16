@@ -2,18 +2,31 @@
 <div id="content">
 	<%= render 'shared/calendar_sidebar' %>
 	<section class="mainContent">
+		<!-- insierire freccia indietro se non sono me stesso alla pagina prima -->
+		<a href='#'>
+			<div class=" profile-detail detail light-light-grey-container colored-container only-if-myself">Edit Profile</div>
+		</a>
+
 		<div><%= image_tag(if Rails.application.assets.find_asset("profile_images/" + @user.nickname + ".png").nil?
 												 "defaultProfileImage.png"
 											 else
 												 "profile_images/" + @user.nickname + ".png"
 											 end, id: "roundedImages") %></div>
+
 		<div id="name-surname">
 			<%= @user.name + " " + @user.surname %>
 		</div>
 
 		<div id="nickname">
-			<%= @user.nickname %>
+			(<%= @user.nickname %>)
 		</div>
+
+		<% unless @user.brief.blank? %>
+			<div id="brief">
+				<%= @user.brief %>
+			</div>
+		<% end %>
+
 		<div class="email-container light-light-grey-container colored-container">
 			<%= @user.primary_email.email %>
 		</div>
@@ -23,16 +36,28 @@
 				<%= @user.phone_number %>
 			</div>
 		<% end %>
+
 		<% unless @user.website.blank? %>
 			<div class="email-container light-light-grey-container colored-container">
 				<a href="<%= @user.website %>" target="_blank">Personal Website</a>
 			</div>
 		<% end %>
+
 		<% unless @user.company.blank? %>
 			<div class="email-container light-light-grey-container colored-container">
 				<%= @user.company %>
 			</div>
 		<% end %>
+
+		<div class="profile-page-buttons">
+			<div class="colored-container light-grey-container date-time-block">
+				<%= link_to('Manage Contacts', contacts_page_path, id: @user.id) %>
+			</div>
+			<div class="colored-container light-grey-container date-time-block">
+				<%= link_to('Manage Contacts', contacts_page_path, id: @user.id) %>
+			</div>
+		</div>
+
 		<div class="social-container">
 			<% @user.social_users.each do |social| %>
 				<div class=" social-boxes light-light-grey-container colored-container">
@@ -40,6 +65,7 @@
 				</div>
 			<% end %>
 		</div>
+
 	</section>
 </div>
 <%= render 'shared/footer' %>

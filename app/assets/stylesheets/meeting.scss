@@ -85,7 +85,6 @@ h1 {
 /* CSS ABOUT PARTICIPATION PAGE */
 
 .participant-container {
-  margin: 4px;
   padding-left: 20px;
   padding-right: 10px;
   padding-top: 1%;
@@ -93,6 +92,8 @@ h1 {
   text-align: left !important;
   min-height: 36px;
   line-height: 36px;
+  width: 80%;
+  margin: 4px auto;
 }
 
 .right-buttons-container {

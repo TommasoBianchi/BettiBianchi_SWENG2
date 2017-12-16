@@ -1,0 +1,89 @@
+<%= render 'shared/header', selected: 'profile' %>
+<div id="content">
+	<script type="text/javascript"></script>
+	<%= render 'shared/calendar_sidebar' %>
+	<section class="mainContent">
+		<%= render 'shared/title_back_action', title: 'Contacts', path: @user %>
+
+		<div>
+			<% @contacts.each do |contact| %>
+				<div class="colored-container light-blue-container participant-container">
+					<%= contact.name + " " + contact.surname + " (" + contact.nickname + ")" %>
+					<%= link_to user_path(id: contact.id) do %>
+						<div class='right-buttons colored-container light-grey-container'>
+							View Profile
+						</div>
+					<% end %>
+					<%= link_to delete_contact_path(user_id: @user.id, to_delete_id: contact.id) do %>
+						<div class='right-buttons colored-container light-grey-container only-admin'>
+							Remove
+						</div>
+					<% end %>
+				</div>
+			<% end %>
+		</div>
+
+		<h2 class="subtitle-contacts">
+			Search Users
+		</h2>
+
+		<input id="select_origin" placeholder="Search User"/>
+
+		<div id="invited_user_content2">
+		</div>
+	</section>
+</div>
+<%= render 'shared/footer' %>
+
+<script type="text/javascript">
+	$(function () {
+		var my_id = <%= @user.id %>
+			$('#select_origin').autocomplete({
+				minLength: 2,
+				source: '<%= search_user_contact_path(:json) %>',
+				focus: function (event, ui) {
+					$('#select_origin').val(ui.item.name + " " + ui.item.surname);
+					return false;
+				},
+				// Once a value in the drop down list is selected, do the following:
+				select: function (event, ui) {
+
+					var $div_to_add = $("<div class='colored-container light-blue-container participant-container'>" +
+						ui.item.name + " " + ui.item.surname + " (" + ui.item.nickname + ")" +
+						"<a href=\'/user/" + ui.item.id + "\'>" +
+						"<div class=\'right-buttons colored-container light-grey-container\'>" +
+						"View Profile" +
+						"</div>" +
+						"</a><a href=\'/user/add_to_contacts/" + my_id + "/" + ui.item.id + "\'>" +
+						"<div class=\'right-buttons colored-container light-grey-container only-admin\'>" +
+						"Add" +
+						"</div>" +
+						"</a></div>");
+
+
+					$('#invited_user_content2').append($div_to_add);
+					return false;
+				}
+			})
+			// The below code is straight from the jQuery example. It formats what data is displayed in the dropdown box, and can be customized.
+				.data("ui-autocomplete")._renderItem = function (ul, item) {
+				return $("<li></li>")
+					.data("item.autocomplete", item)
+					// For now which just want to show the person.given_name in the list.
+					.append("<a>" + item.name + " " + item.surname + "</a>")
+					.appendTo(ul);
+			};
+	});
+
+</script>
+<script>
+	function deleteParticipant(participant) {
+		var labelClicked = participant.getAttribute("data-user-id");
+		var idToHide = '#Participant' + labelClicked;
+		$(idToHide).toggle();
+		var old_choiches = $('#link_origin_id').val();
+		var toReplace = " " + labelClicked;
+		old_choiches = old_choiches.replace(toReplace, "");
+		$('#link_origin_id').val(old_choiches);
+	}
+</script>
