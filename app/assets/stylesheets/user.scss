@@ -50,12 +50,16 @@ input.error {
 .social-boxes{
   padding: 9px 5px 5px;
   width: 55px;
-  margin-left: auto;
-  margin-right: auto;
+  margin-left: 5px;
+  margin-right: 5px;
   margin-top: 15px;
   margin-bottom: 15px;
 }
 
 .social-icon{
   width: 45px;
+}
+
+.social-container{
+  display: inline-flex;
 }
