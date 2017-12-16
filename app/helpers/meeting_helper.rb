@@ -180,8 +180,10 @@ module MeetingHelper
 	def self.insert_meeting(new_meeting, user)
 		user_meetings = user.meeting_participations.joins(:meeting)
 		# These are actually MeetingParticipation
-		overlapping_meetings = user_meetings.where(meetings: {start_date: new_meeting[:start_date]..new_meeting[:end_date]})
-								.or(user_meetings.where(meetings: {end_date: new_meeting[:start_date]..new_meeting[:end_date]}))
+		overlapping_meetings = user_meetings.where('meetings.start_date between ? and ?', new_meeting[:start_date], new_meeting[:end_date])
+								.or(user_meetings.where('meetings.end_date between ? and ?', new_meeting[:start_date], new_meeting[:end_date]))
+								.or(user_meetings.where('"meetings"."start_date" <= ?', new_meeting[:start_date])
+												 .where('"meetings"."end_date" >= ?', new_meeting[:end_date]))
 		overlapping_meetings.each do |mp|
 			mp.update({is_consistent: false})
 			new_meeting[:conflict_set] = [] unless new_meeting[:conflict_set]
