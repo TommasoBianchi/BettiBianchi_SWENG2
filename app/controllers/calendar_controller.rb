@@ -93,9 +93,9 @@ class CalendarController < ApplicationController
 
     meeting_participations = user.meeting_participations.joins(:meeting)
                                  .where(response_status: MeetingParticipation::Response_statuses[:accepted])
-                                 .where(is_consistent: true)
-                                 .where(meetings: { start_date: from_date..to_date, end_date: from_date..to_date })
+                                 .where(meetings: {start_date: from_date..to_date, end_date: from_date..to_date})
                                  .order('meetings.start_date')
+                                 #.where(is_consistent: true)
 
     current_day = nil
     last_travel_id = -1
@@ -106,6 +106,12 @@ class CalendarController < ApplicationController
         # Change the current day
         current_day = mp.meeting.start_date.midnight
         schedule.push current_day
+      end
+
+      # If a meeting participation is inconsistent, just push its meeting and forget about travels/default locations
+      if mp.is_consistent == false
+        schedule.push mp.meeting
+        next
       end
 
       if mp.arriving_travel.id != last_travel_id
