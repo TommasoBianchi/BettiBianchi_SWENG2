@@ -12,7 +12,7 @@ module MeetingHelper
 	# and a status flag (encoded as a Ruby Symbol) indicating either consistency, inconsistency or errors
 	def self.create_meeting(start_date, end_date, title, location, user)
 		if start_date >= end_date
-			return
+			return {meeting: nil, meeting_participation: nil, status: :errors}
 		end
 
 		meeting_data = insert_meeting({start_date: start_date, end_date: end_date, location: location}, user)
@@ -23,6 +23,7 @@ module MeetingHelper
 		meeting_participation.is_admin = true
 		meeting_participation.user = user
 		meeting_participation.is_consistent = meeting_data[:is_consistent]
+		meeting_participation.response_status = MeetingParticipation::Response_statuses[:accepted]
 
 		if meeting_data[:is_consistent] == false
 			ActiveRecord::Base.transaction do
@@ -62,7 +63,6 @@ module MeetingHelper
 
 		meeting_participation.arriving_travel = arriving_travel
 		meeting_participation.leaving_travel = leaving_travel
-		meeting_participation.response_status = MeetingParticipation::Response_statuses[:accepted]
 
 		if [meeting.valid?, meeting_participation.valid?, arriving_travel.valid?, leaving_travel.valid?,
 			valid_before_meeting, valid_after_meeting].all?
@@ -109,6 +109,7 @@ module MeetingHelper
 		meeting_participation.is_admin = false
 		meeting_participation.user = user
 		meeting_participation.is_consistent = meeting_data[:is_consistent]
+		meeting_participation.response_status = MeetingParticipation::Response_statuses[:pending]
 
 		if meeting_data[:is_consistent] == false
 			ActiveRecord::Base.transaction do
@@ -147,7 +148,6 @@ module MeetingHelper
 
 		meeting_participation.arriving_travel = arriving_travel
 		meeting_participation.leaving_travel = leaving_travel
-		meeting_participation.response_status = MeetingParticipation::Response_statuses[:pending]
 
 		if [meeting_participation.valid?, arriving_travel.valid?, leaving_travel.valid?,
 			valid_before_meeting, valid_after_meeting].all?

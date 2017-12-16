@@ -40,11 +40,10 @@ NUM_EMAILS_PER_USER = 2
 NUM_CONTACTS_PER_USER = 3
 NUM_BREAKS_PER_USER = 1
 NUM_USERS = 5
-NUM_MEETINGS_DAYS = 100
+NUM_MEETINGS_DAYS = 2
 NUM_MEETINGS_PER_DAY = 5
 NUM_MEETINGS = NUM_MEETINGS_DAYS * NUM_MEETINGS_PER_DAY
 NUM_CATEGORIES = 10
-NUM_LOCATIONS = 5
 NUM_TRAVELS = 5
 NUM_SUBJECTS = 5
 NUM_OPERATORS = 4
@@ -56,18 +55,15 @@ NUM_RESPONSE_STATUSES = 3
 NUM_DEFAULT_LOCATIONS_PER_USER = 3
 NUM_TRAVEL_STEPS = 3
 
-Location.create({latitude:45.4830988,longitude:9.2165046,description:"Via Niccolò Paganini, 17, 20131 Milano Mi, Italia"})
-Location.create({latitude:45.4891041,longitude:9.2119859,description:"Via Mauro Macchi, 89, 20127 Milano MI, Italia"})
-
-location_names = ['Via Niccolo Paganini 17 Milano', 'Via Mauro Macchi 89 Milano', 'Piazza Leonardo Milano',
-                  'Via Ponzio 24 Milano', 'Via Golgi 40 Milano']
-for i in 1..NUM_LOCATIONS do
-  r1 = rand(-179..179)
-  r2 = rand(-179..179)
-  Location.create(latitude: r1, longitude: r2, description: location_names[rand(0..location_names.length-1)])
-
-  puts "Location #{i}"
-end
+locations = []
+locations.push Location.create({latitude:45.4830988,longitude:9.2165046,description:"Via Niccolò Paganini, 17, 20131 Milano Mi, Italia"})
+locations.push Location.create({latitude:45.4891041,longitude:9.2119859,description:"Via Mauro Macchi, 89, 20127 Milano MI, Italia"})
+locations.push Location.create({latitude:45.478085,longitude:9.225690799999938,description:"Piazza Leonardo Milano"})
+locations.push Location.create({latitude:45.477151,longitude:9.230428699999948,description:"Via Ponzio 24 Milano"})
+locations.push Location.create({latitude:45.4775608,longitude:9.234494199999972,description:"Via Golgi 40 Milano"})
+locations.push Location.create({latitude:45.4637307,longitude:9.191084100000012,description:"Piazza Duomo Milano"})
+locations.push Location.create({latitude:45.4832711,longitude:9.190058499999964,description:"Piazza Gae Aulenti Milano"})
+NUM_LOCATIONS = locations.length
 
 for i in 1..NUM_GROUPS do
   Group.create(name: 'Group' + i.to_s)
@@ -136,13 +132,32 @@ for i in (-NUM_MEETINGS_DAYS / 2)..(NUM_MEETINGS_DAYS / 2) do
   for k in 1..NUM_MEETINGS_PER_DAY do
     start_date = DateTime.new(day.year, day.month, day.day, rand(8..20), rand(0..59), 0)
     end_date = start_date + rand(30..120).minutes
-    meeting = Meeting.create(location_id: rand(1..NUM_LOCATIONS), title: 'NewMeeting', start_date: start_date, end_date: end_date)
-    meeting.title = 'NewMeeting ' + meeting.id.to_s
-    meeting.save
-    puts "Meeting #{meeting.id}"
+    title = 'NewMeeting '# + meeting.id.to_s
+    # meeting = Meeting.create(location_id: rand(1..NUM_LOCATIONS), title: 'NewMeeting', start_date: start_date, end_date: end_date)
+    # meeting.title = title
+    # meeting.save
+    result = MeetingHelper.create_meeting start_date, end_date, title, Location.find(rand(1..NUM_LOCATIONS)), User.find(1)
+    
+    if result[:status] == :errors 
+      return
+    end
+
+    puts "Meeting #{result[:meeting].id} - Created"
+
+    for j in 2..NUM_USERS do
+      res = MeetingHelper.invite_to_meeting result[:meeting], User.find(j)
+
+      if res[:status] == :errors 
+        return
+      end
+
+      puts "Meeting #{result[:meeting].id} - Invited user #{j}" 
+    end
+    
   end
 end
 
+=begin
 for i in 1..NUM_USERS do
   for j in 1..NUM_MEETINGS do
     k = rand(1..(10 + 1))
@@ -188,6 +203,7 @@ for i in 1..NUM_USERS do
     mp.save
   end
 end
+=end
 
 for i in 1..NUM_CATEGORIES do
   cat = Category.create(name: 'category' + i.to_s, superclass_id: 1)
