@@ -64,9 +64,7 @@ class UserController < ApplicationController
 		puts ("ncjkdscnkdsjcnsdkj")
 		puts (@user.id)
 		puts(params[:id])
-		if @user.id != params[:id].to_i
-			raise ActionController::RoutingError, 'Not Found'
-		end
+		check_if_myself
 		@contacts = @user.contacts
 	end
 
@@ -112,6 +110,24 @@ class UserController < ApplicationController
 		end
 	end
 
+	def settings
+		check_if_myself
+		@user = current_user
+	end
+
+	def change_preference_list
+		check_if_myself
+		user = current_user
+		user.preference_list = params[:user][:preference_list]
+		user.save
+		redirect_to settings_page_path
+	end
+
+	def delate_constraint
+		delete_constraint_check(params[:user_id], params[:constraint_id])
+		Constraint.delete(params[:constraint_id])
+		redirect_to settings_page_path(id: params[:user_id])
+	end
 	private
 
 	def html_index
@@ -136,6 +152,12 @@ class UserController < ApplicationController
 		IncompleteUser.create(email: incomplete_user_email, password: incomplete_user_psw, password_confirmation: incomplete_user_psw)
 	end
 
+	def check_if_myself(id = params[:id].to_i)
+		unless current_user.id == id
+			raise ActionController::RoutingError, 'Not Found'
+		end
+	end
+
 	def contact_delate_check(user, action_user)
 		unless (current_user.id == user.to_i) && (current_user.contacts.where(id: action_user).count() > 0)
 			raise ActionController::RoutingError, 'Not Found'
@@ -144,6 +166,12 @@ class UserController < ApplicationController
 
 	def contact_add_check(user, action_user)
 		unless (current_user.id == user.to_i) && (current_user.contacts.where(id: action_user).count() == 0)
+			raise ActionController::RoutingError, 'Not Found'
+		end
+	end
+
+	def delete_constraint_check(user, constraint)
+		unless (current_user.id == user.to_i) && (current_user.constraints.where(id: constraint).count() > 0)
 			raise ActionController::RoutingError, 'Not Found'
 		end
 	end
