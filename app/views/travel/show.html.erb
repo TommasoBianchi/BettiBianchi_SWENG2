@@ -1,4 +1,4 @@
-<%= render 'shared/header' %>
+<%= render 'shared/header', selected: 'calendar' %>
 <div id="content">
 	<%= render 'shared/calendar_sidebar' %>
 	<section class="mainContent">
@@ -24,9 +24,9 @@
 					</div>
 					<div class="center-travel rounded-box">
 						<div class="one-line-table" width="40%">
-							<div><%= item.start_time.strftime "%-Hh %-Mmin" %></div>
+							<div><%= item.start_time.strftime "%I:%M %p" %></div>
 							<div class="travel-step-icon icon-<%= travel_mean %>"></div>
-							<div><%= item.end_time.strftime "%-Hh %-Mmin" %></div>
+							<div><%= item.end_time.strftime "%I:%M %p" %></div>
 						</div>
 						<div class="one-line-table middle-travel-mean-name">
 							<%= item.description.remove /<[^>]*>/ %><!--- <%= travel_mean %> -->
