@@ -1,8 +1,8 @@
 module TravelHelper
 
 	def self.shortest_path(start_location, end_location, travel_mean = :driving, departure_time = nil, arrival_time = nil)
-		url = "#{BaseURL}?origin=#{start_location.latitude},#{start_location.longitude}
-					&destination=#{end_location.latitude},#{end_location.longitude}&key#{GoogleAPIKey}"
+		url = "#{BaseURL}?origin=#{start_location.latitude},#{start_location.longitude}"
+		url += "&destination=#{end_location.latitude},#{end_location.longitude}&key#{GoogleAPIKey}"
 		url += "&mode=#{TravelMeansToTravelModes[travel_mean]}"
 		url += "&region=it"
 		url += "&departure_time=#{departure_time.to_i}" if departure_time
@@ -105,7 +105,6 @@ module TravelHelper
 
 		weighted_list = weighted_list.sort_by {|el| el[:weighted_duration]}
 
-		#weighted_list.first[:steps] = nil # TESTING useful not to fill the console
 		return weighted_list.first
 	end
 

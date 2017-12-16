@@ -93,6 +93,7 @@ class CalendarController < ApplicationController
 
     meeting_participations = user.meeting_participations.joins(:meeting)
                                  .where(response_status: MeetingParticipation::Response_statuses[:accepted])
+                                 .where(is_consistent: true)
                                  .where(meetings: { start_date: from_date..to_date, end_date: from_date..to_date })
                                  .order('meetings.start_date')
 
