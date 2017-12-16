@@ -4,7 +4,7 @@ module TravelHelper
 		url = "#{BaseURL}?origin=#{start_location.latitude},#{start_location.longitude}"
 		url += "&destination=#{end_location.latitude},#{end_location.longitude}&key#{GoogleAPIKey}"
 		url += "&mode=#{TravelMeansToTravelModes[travel_mean]}"
-		url += "&region=it"
+		url += "&region=it&language=it"
 		url += "&departure_time=#{departure_time.to_i}" if departure_time
 		url += "&arrival_time=#{arrival_time.to_i}" if arrival_time
 
@@ -79,22 +79,24 @@ module TravelHelper
 
 			# probably not needed because this info is already in the steps
 			# TODO: remove if really not needed
-			/if travel_mean == :public_transportation
+=begin
+			if travel_mean == :public_transportation
 				path[:start_time] = path[:steps].first[:departure_time]
 				path[:end_time] = path[:steps].last[:arrival_time]
-			end/
-
+			end
+=end
 			# TODO: constraint satisfaction
-			/
+=begin
 			for all constraint in user.constraints do
 				if path is not compatible with constraint then
 					path := NULL
 					break
 				end if
 			end for
-			/
+=end
+			
 
-			path[:weighted_duration] = path[:duration] # + weighted_list.length * 30
+			path[:weighted_duration] = path[:duration] + weighted_list.length * (60 * 15)	# 15 minutes disadvantage per preference list position
 			puts "Travel_mean = #{path[:travel_mean]}, Duration = #{path[:duration]}, Weighted_duration = #{path[:weighted_duration]}"
 			weighted_list.push path
 		end

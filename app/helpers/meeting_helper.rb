@@ -17,6 +17,7 @@ module MeetingHelper
 
 		meeting_data = insert_meeting({start_date: start_date, end_date: end_date, location: location}, user)
 
+		####### Store the meeting and the meeting participation
 		meeting = Meeting.new({start_date: start_date, end_date: end_date, title: title, location: location})
 		meeting_participation = MeetingParticipation.new
 		meeting_participation.meeting = meeting
@@ -25,6 +26,7 @@ module MeetingHelper
 		meeting_participation.is_consistent = meeting_data[:is_consistent]
 		meeting_participation.response_status = MeetingParticipation::Response_statuses[:accepted]
 
+		####### If meeting participation is not consistent break out of this function
 		if meeting_data[:is_consistent] == false
 			ActiveRecord::Base.transaction do
 				meeting.save
@@ -37,25 +39,29 @@ module MeetingHelper
 			return {meeting: meeting, meeting_participation: meeting_participation, status: :inconsistent}
 		end
 
+		#######################
 		# From here on we are dealing with only consistent meeting participations
+		#######################
 
-		arriving_travel = Travel.new
-		arriving_travel.start_time = meeting_data[:arriving_travel][:start_time]
-		arriving_travel.end_time = meeting_data[:arriving_travel][:end_time]
-		arriving_travel.travel_mean = Travel::Travel_means[meeting_data[:arriving_travel][:travel_mean]]
-		arriving_travel.distance = meeting_data[:arriving_travel][:distance]
+		####### Store the arriving travel
+		arriving_travel, arriving_travel_steps = store_travel meeting_data[:arriving_travel]
+
+		# Link the starting default location if needed
 		arriving_travel.starting_location_dl = meeting_data[:arriving_from_dl] if meeting_data[:arriving_from_dl]
+
+		# Update the leaving travel of the last meeting before the new one if needed
 		if meeting_data[:link_before_meeting]
 			meeting_data[:before_meeting].leaving_travel = arriving_travel
 		end
 		valid_before_meeting = (!meeting_data[:link_before_meeting] or meeting_data[:before_meeting].valid?)
 
-		leaving_travel = Travel.new
-		leaving_travel.start_time = meeting_data[:leaving_travel][:start_time]
-		leaving_travel.end_time = meeting_data[:leaving_travel][:end_time]
-		leaving_travel.travel_mean = Travel::Travel_means[meeting_data[:leaving_travel][:travel_mean]]
-		leaving_travel.distance = meeting_data[:leaving_travel][:distance]
+		####### Store the leaving travel
+		leaving_travel, leaving_travel_steps = store_travel meeting_data[:leaving_travel]
+
+		# Link the ending default location if needed
 		leaving_travel.ending_location_dl = meeting_data[:leaving_to_dl] if meeting_data[:leaving_to_dl]
+
+		# Update the arriving travel of the first meeting after the new one if needed
 		if meeting_data[:link_after_meeting]
 			meeting_data[:after_meeting].arriving_travel = leaving_travel
 		end
@@ -64,13 +70,16 @@ module MeetingHelper
 		meeting_participation.arriving_travel = arriving_travel
 		meeting_participation.leaving_travel = leaving_travel
 
+		####### If everything can be successfully validated, persist it on the db
 		if [meeting.valid?, meeting_participation.valid?, arriving_travel.valid?, leaving_travel.valid?,
 			valid_before_meeting, valid_after_meeting].all?
 			ActiveRecord::Base.transaction do
 				meeting.save
 				meeting_participation.save
 				arriving_travel.save
+				arriving_travel_steps.each do |step| step.save end
 				leaving_travel.save
+				leaving_travel_steps.each do |step| step.save end
 				if meeting_data[:link_before_meeting]
 					meeting_data[:before_meeting].save
 				end
@@ -104,6 +113,7 @@ module MeetingHelper
 	def self.invite_to_meeting(meeting, user)
 		meeting_data = insert_meeting({start_date: meeting.start_date, end_date: meeting.end_date, location: meeting.location}, user)
 
+		####### Store the meeting participation
 		meeting_participation = MeetingParticipation.new
 		meeting_participation.meeting = meeting
 		meeting_participation.is_admin = false
@@ -111,6 +121,7 @@ module MeetingHelper
 		meeting_participation.is_consistent = meeting_data[:is_consistent]
 		meeting_participation.response_status = MeetingParticipation::Response_statuses[:pending]
 
+		####### If meeting participation is not consistent break out of this function
 		if meeting_data[:is_consistent] == false
 			ActiveRecord::Base.transaction do
 				meeting_participation.save
@@ -122,25 +133,29 @@ module MeetingHelper
 			return {meeting_participation: meeting_participation, status: :inconsistent}
 		end
 
+		#######################
 		# From here on we are dealing with only consistent meeting participations
+		#######################
 
-		arriving_travel = Travel.new
-		arriving_travel.start_time = meeting_data[:arriving_travel][:start_time]
-		arriving_travel.end_time = meeting_data[:arriving_travel][:end_time]
-		arriving_travel.travel_mean = Travel::Travel_means[meeting_data[:arriving_travel][:travel_mean]]
-		arriving_travel.distance = meeting_data[:arriving_travel][:distance]
+		####### Store the arriving travel
+		arriving_travel, arriving_travel_steps = store_travel meeting_data[:arriving_travel]
+
+		# Link the starting default location if needed
 		arriving_travel.starting_location_dl = meeting_data[:arriving_from_dl] if meeting_data[:arriving_from_dl]
+
+		# Update the leaving travel of the last meeting before the new one if needed
 		if meeting_data[:link_before_meeting]
 			meeting_data[:before_meeting].leaving_travel = arriving_travel
 		end
 		valid_before_meeting = (!meeting_data[:link_before_meeting] or meeting_data[:before_meeting].valid?)
 
-		leaving_travel = Travel.new
-		leaving_travel.start_time = meeting_data[:leaving_travel][:start_time]
-		leaving_travel.end_time = meeting_data[:leaving_travel][:end_time]
-		leaving_travel.travel_mean = Travel::Travel_means[meeting_data[:leaving_travel][:travel_mean]]
-		leaving_travel.distance = meeting_data[:leaving_travel][:distance]
+		####### Store the leaving travel
+		leaving_travel, leaving_travel_steps = store_travel meeting_data[:leaving_travel]
+
+		# Link the ending default location if needed
 		leaving_travel.ending_location_dl = meeting_data[:leaving_to_dl] if meeting_data[:leaving_to_dl]
+
+		# Update the arriving travel of the first meeting after the new one if needed
 		if meeting_data[:link_after_meeting]
 			meeting_data[:after_meeting].arriving_travel = leaving_travel
 		end
@@ -149,12 +164,15 @@ module MeetingHelper
 		meeting_participation.arriving_travel = arriving_travel
 		meeting_participation.leaving_travel = leaving_travel
 
+		####### If everything can be successfully validated, persist it on the db
 		if [meeting_participation.valid?, arriving_travel.valid?, leaving_travel.valid?,
 			valid_before_meeting, valid_after_meeting].all?
 			ActiveRecord::Base.transaction do
 				meeting_participation.save
 				arriving_travel.save
+				arriving_travel_steps.each do |step| step.save end
 				leaving_travel.save
+				leaving_travel_steps.each do |step| step.save end
 				if meeting_data[:link_before_meeting]
 					meeting_data[:before_meeting].save
 				end
@@ -196,7 +214,7 @@ module MeetingHelper
 		end
 
 		defloc_before = user.get_last_default_location_before new_meeting[:start_date]
-		defloc_after = user.get_first_location_after new_meeting[:end_date]
+		defloc_after = user.get_last_default_location_before new_meeting[:end_date]
 
 		arriving_travel = TravelHelper.best_travel(defloc_before.location, new_meeting[:location], user, nil, new_meeting[:start_date])
 		new_meeting[:arriving_from_dl] = defloc_before
@@ -275,6 +293,37 @@ module MeetingHelper
 		end
 
 		list_locations
+	end
+
+	def self.store_travel(data)
+		# Store the travel
+		travel = Travel.new
+		travel.start_time = data[:start_time]
+		travel.end_time = data[:end_time]
+		travel.travel_mean = Travel::Travel_means[data[:travel_mean]]
+		travel.distance = data[:distance]
+		
+		# Store the travel steps
+		travel_steps = []
+		previous_step_start_time = travel.start_time
+		data[:steps].each do |step|
+			travel_step = TravelStep.new()
+			travel_step.travel_mean = Travel::Travel_means[step[:travel_mean]]
+			travel_step.distance = step[:distance]
+			travel_step.travel = travel
+
+			travel_step.description = step[:details]
+			travel_step.from = step[:departure_stop] if step[:departure_stop]
+			travel_step.to = step[:arrival_stop] if step[:arrival_stop]
+
+			travel_step.start_time = if step[:departure_time] then step[:departure_time] else previous_step_start_time end
+			travel_step.end_time = if step[:arrival_time] then step[:arrival_time] else previous_step_start_time + step[:duration].seconds end
+			previous_step_start_time = travel_step.end_time
+
+			travel_steps.push travel_step
+		end
+
+		return [travel, travel_steps]
 	end
 
 	GoogleAPIKey = 'AIzaSyDba6PxTVz-07hIVjksboJ4AEkOP2WeuAs'.freeze

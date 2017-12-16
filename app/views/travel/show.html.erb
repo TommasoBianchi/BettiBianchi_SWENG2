@@ -29,11 +29,11 @@
 							<div><%= item.end_time.strftime "%-Hh %-Mmin" %></div>
 						</div>
 						<div class="one-line-table middle-travel-mean-name">
-							<%= travel_mean %>
+							<%= item.description.remove /<[^>]*>/ %><!--- <%= travel_mean %> -->
 						</div>
 						<div class="one-line-table" width="40%">
-							<div id="starting-location">STARTING LOCATION</div>
-							<div id="ending-location">ENDING LOCATION</div>
+							<div id="starting-location"><%= item.from %></div>
+							<div id="ending-location"><%= item.to %></div>
 
 						</div>
 					</div>
