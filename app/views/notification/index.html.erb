@@ -7,8 +7,28 @@
 		<%= render 'shared/title_back_action', title: 'Notifications Page' %>
 
 		<h2>
-			WARNING
+			WARNINGS
 		</h2>
+			<% @warning_meeting.each do |warning_mp| %>
+				<% meeting = warning_mp.meeting %>
+				<div class="meeting-invitation">
+					<div class="meeting rounded-box">
+						<div class="meeting-date"><%= meeting.start_date.strftime "%I:%M %p" %>
+							-
+							<%= meeting.end_date.strftime "%I:%M %p" %></div>
+						<div class="meeting-title"><%= meeting.title %></div>
+						<div class="meeting-location"><%= meeting.location.description %></div>
+						<a href="<%= meeting_path meeting.id %>">
+							<div class="detail">Details</div>
+						</a>
+					</div>
+					<div class="response-button">
+						<%= link_to "ACCEPT", accept_meeting_path(meeting_id: meeting.id, user_id: @user.id), class: "single-response-button light-grey-container colored-container" %>
+						<%= link_to "DECLINE", decline_meeting_path(meeting_id: meeting.id, user_id: @user.id), class: "single-response-button light-grey-container colored-container" %>
+						<div class="single-response-button light-grey-container colored-container"> RESCHEDULE</div>
+					</div>
+				</div>
+			<% end %>
 		<div>
 
 		</div>

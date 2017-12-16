@@ -41,7 +41,7 @@ NUM_CONTACTS_PER_USER = 3
 NUM_BREAKS_PER_USER = 1
 NUM_USERS = 5
 NUM_MEETINGS_DAYS = 2
-NUM_MEETINGS_PER_DAY = 5
+NUM_MEETINGS_PER_DAY = 3
 NUM_MEETINGS = NUM_MEETINGS_DAYS * NUM_MEETINGS_PER_DAY
 NUM_CATEGORIES = 10
 NUM_TRAVELS = 5
@@ -143,7 +143,7 @@ for i in (-NUM_MEETINGS_DAYS / 2)..(NUM_MEETINGS_DAYS / 2) do
     end
 
     puts "Meeting #{result[:meeting].id} - Created"
-
+=begin
     for j in 2..NUM_USERS do
       res = MeetingHelper.invite_to_meeting result[:meeting], User.find(j)
 
@@ -153,7 +153,7 @@ for i in (-NUM_MEETINGS_DAYS / 2)..(NUM_MEETINGS_DAYS / 2) do
 
       puts "Meeting #{result[:meeting].id} - Invited user #{j}" 
     end
-    
+=end  
   end
 end
 

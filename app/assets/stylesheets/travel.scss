@@ -24,7 +24,7 @@
 }
 
 .one-line-table{
-  width: 37%;
+  width: 20%;
 }
 
 .travel-step-icon{
@@ -34,20 +34,22 @@
 }
 
 .middle-travel-mean-name{
-  line-height: 93px;
-  text-transform: uppercase;
+  width: 65%;
+  margin: auto;
 }
 
 #ending-location{
   position: absolute;
   bottom: 16%;
-  right: 11%;
+  right: 5%;
+  text-transform: uppercase;
 }
 
 #starting-location{
   position: absolute;
   top: 16%;
-  right: 11%;
+  right: 5%;
+  text-transform: uppercase;
 }
 
 .mainContent > div:last-child {
