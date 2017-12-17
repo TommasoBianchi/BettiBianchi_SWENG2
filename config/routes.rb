@@ -42,4 +42,7 @@ Rails.application.routes.draw do
 
 	# Travel
 	get 'travel/:id' => 'travel#show', as: 'show_travel'
+
+	# Notification
+	get 'notification/resolve_warning/:meeting_participation_id' => 'notification#resolve_warning', as: 'resolve_warning'
 end
