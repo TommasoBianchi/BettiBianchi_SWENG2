@@ -10,7 +10,7 @@ class NotificationController < ApplicationController
 	def resolve_warning
 		check_if_mine(params[:meeting_participation_id])
 		mp = MeetingParticipation.find(params[:meeting_participation_id])
-		single_group = []
+		single_group = [mp]
 		single_group = fill_inconsistency(mp, single_group)
 		@meeting_participations = single_group
 		@user = current_user
