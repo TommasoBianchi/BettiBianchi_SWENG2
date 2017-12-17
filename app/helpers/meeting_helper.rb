@@ -194,8 +194,34 @@ module MeetingHelper
 		end
 	end
 
-	def decline_invitation(meeting_participation, user)
-		conflicts = meeting_participations.conflicting_meeting_participations
+	def self.decline_invitation(meeting_participation, user)
+		conflicts = meeting_participation.conflicting_meeting_participations
+
+		conflicts.each do |mp|
+			MeetingParticipationConflict.where(meeting_participation_1_id: mp.id)
+					.or(MeetingParticipationConflict.where(meeting_participation_2_id: mp.id)).delete_all
+			arriving_travel = mp.arriving_travel
+			leaving_travel = mp.leaving_travel
+			meeting = mp.meeting
+			response_status = mp.response_status
+			mp.delete
+			if arriving_travel
+				arriving_travel.travel_steps.each do |step|
+					step.delete
+				end
+				arriving_travel.delete
+			end
+			if leaving_travel
+				leaving_travel.travel_steps.each do |step|
+					step.delete
+				end
+				leaving_travel.delete
+			end
+			result = invite_to_meeting meeting, user
+			unless result[:status] == :errors
+				result[:meeting_participation].update({response_status: response_status})
+			end
+		end
 	end
 
 	private
@@ -209,7 +235,7 @@ module MeetingHelper
 		overlapping_meetings.each do |mp|
 			mp.update({is_consistent: false})
 			new_meeting[:conflict_set] = [] unless new_meeting[:conflict_set]
-			new_meeting[:conflict_set].push mp.meeting_id
+			new_meeting[:conflict_set].push mp.id
 		end
 
 		unless overlapping_meetings.empty?
@@ -238,7 +264,7 @@ module MeetingHelper
 				new_meeting[:is_consistent] = false
 				before_meeting.update({is_consistent: false})
 				new_meeting[:conflict_set] = [] unless new_meeting[:conflict_set]
-				new_meeting[:conflict_set].push before_meeting.meeting_id
+				new_meeting[:conflict_set].push before_meeting.id
 				return new_meeting
 			else
 				new_meeting[:link_before_meeting] = true
@@ -253,7 +279,7 @@ module MeetingHelper
 				new_meeting[:is_consistent] = false
 				after_meeting.update({is_consistent: false})
 				new_meeting[:conflict_set] = [] unless new_meeting[:conflict_set]
-				new_meeting[:conflict_set].push after_meeting.meeting_id
+				new_meeting[:conflict_set].push after_meeting.id
 				return new_meeting
 			else
 				new_meeting[:link_after_meeting] = true

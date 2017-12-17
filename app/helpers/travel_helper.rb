@@ -1,12 +1,18 @@
 module TravelHelper
 
 	def self.shortest_path(start_location, end_location, travel_mean = :driving, departure_time = nil, arrival_time = nil)
+		# If the application needs to scale to more countries in different timezones these values needs to be stored
+		# somehow on the db (maybe alongside the user's data) and NOT be constant values here
+		region = 'it'
+		language = 'it'
+		time_zone_offset = 60 * 60
+
 		url = "#{BaseURL}?origin=#{start_location.latitude},#{start_location.longitude}"
 		url += "&destination=#{end_location.latitude},#{end_location.longitude}&key#{GoogleAPIKey}"
 		url += "&mode=#{TravelMeansToTravelModes[travel_mean]}"
-		url += "&region=it&language=it"
-		url += "&departure_time=#{departure_time.to_i}" if departure_time
-		url += "&arrival_time=#{arrival_time.to_i}" if arrival_time
+		url += "&region=#{region}&language=#{language}"
+		url += "&departure_time=#{departure_time.to_i - time_zone_offset}" if departure_time
+		url += "&arrival_time=#{arrival_time.to_i - time_zone_offset}" if arrival_time
 
 		puts url
 		

@@ -53,6 +53,9 @@ class MeetingController < ApplicationController
 		mp = MeetingParticipation.find_by(meeting_id: params[:meeting_id], user_id: params[:user_id])
 		mp.response_status = 2
 		mp.save
+
+		MeetingHelper.decline_invitation mp, mp.user
+
 		redirect_to notification_index_path
 	end
 
