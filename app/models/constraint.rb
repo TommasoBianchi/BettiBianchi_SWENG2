@@ -1,11 +1,11 @@
 class Constraint < ApplicationRecord
 
 	# This should be a constant
-	Travel_means = {
-			walking: 0,
-			driving: 1,
-			public_transportation: 2,
-			biking: 3
+	Travel_mean_names = {
+			walking: 'Walking',
+			driving: 'Driving',
+			public_transportation: 'Public Transportation',
+			biking: 'Biking'
 	}.freeze
 
 	belongs_to :user
@@ -16,6 +16,17 @@ class Constraint < ApplicationRecord
 	validates :travel_mean, presence: true
 
 	def get_description
-		travel_mean.to_s + " if " + subject.name + " " + operator.description + " " + value.value
+		Travel_mean_names[Travel::Travel_means.keys[travel_mean]] + " if " + subject.name + " " + operator.description + " " + value.value
+	end
+
+	def check_path(path)
+		lv = subject.get_path_value(path)
+		rv = value.value
+		if lv.is_a? Integer
+			rv = rv.to_i
+		elsif lv.is_a? DateTime
+			rv = rv.to_datetime
+		end
+		return operator.invoke lv, rv
 	end
 end

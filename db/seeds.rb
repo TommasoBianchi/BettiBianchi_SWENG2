@@ -44,8 +44,6 @@ NUM_MEETINGS_PER_DAY = 3
 NUM_MEETINGS = NUM_MEETINGS_DAYS * NUM_MEETINGS_PER_DAY
 NUM_CATEGORIES = 10
 NUM_TRAVELS = 5
-NUM_SUBJECTS = 5
-NUM_OPERATORS = 4
 NUM_VALUES = 10
 NUM_CONSTRAINTS = 15
 NUM_TRAVEL_MEANS = 3
@@ -62,6 +60,9 @@ locations.push Location.create({latitude:45.477151,longitude:9.230428699999948,d
 locations.push Location.create({latitude:45.4775608,longitude:9.234494199999972,description:"Via Golgi 40 Milano"})
 locations.push Location.create({latitude:45.4637307,longitude:9.191084100000012,description:"Piazza Duomo Milano"})
 locations.push Location.create({latitude:45.4832711,longitude:9.190058499999964,description:"Piazza Gae Aulenti Milano"})
+locations.push Location.create({latitude:45.4531899,longitude:9.1699315,description:"Porta Genova Milano"})
+locations.push Location.create({latitude:45.4781236,longitude:9.123962,description:"Piazzale Angelo Moratti, 20151 Milano MI, Italia"})
+locations.push Location.create({latitude:45.476008,longitude:9.1683606,description:"Via Antonio Canova, 20145 Milano MI, Italia"})
 NUM_LOCATIONS = locations.length
 
 for i in 1..NUM_GROUPS do
@@ -74,8 +75,38 @@ for i in 1..NUM_SOCIALS do
   puts "Social #{i}"
 end
 
+NUM_OPERATORS = Operator::Operators.length
+Subject::Subjects.keys.each do |name|
+  subject = Subject.create(name: name)
+
+  puts "Subject: #{name}"
+
+  for i in 0..NUM_OPERATORS-1 do
+    operator = Operator.create(description: Operator::Operators[i].name.to_s, subject_id: subject.id, operator: i)
+
+    puts "Operator #{i}"
+  end
+end
+NUM_SUBJECTS = Subject::Subjects.keys.length
+
+=begin
+for i in 1..NUM_VALUES do
+  value = Value.create(value: 'Value' + i.to_s, subject_id: Subject.find(i % NUM_SUBJECTS + 1).id)
+
+  puts "Value #{i}"
+end
+
+for i in 1..NUM_CONSTRAINTS do
+  travel_mean_used = rand(1..NUM_TRAVEL_MEANS)
+  Constraint.create(travel_mean: travel_mean_used, user_id: User.find(i % NUM_USERS + 1).id, subject_id: Subject.find(i % NUM_SUBJECTS + 1).id,
+                    operator_id: Operator.find(i % NUM_OPERATORS + 1).id, value_id: Value.find(i % NUM_VALUES + 1).id)
+
+  puts "Constraint #{i}"
+end
+=end
+
 for i in 1..NUM_USERS do
-  user = User.create(name: 'Pinco' + i.to_s, surname: 'Pallo' + i.to_s, password: '0000', password_confirmation: '0000', nickname: 'PP' + i.to_s, preference_list: '02', website: 'http://www.google.com', company: 'BettiBianchi s.r.l.')
+  user = User.create(name: 'Pinco' + i.to_s, surname: 'Pallo' + i.to_s, password: '0000', password_confirmation: '0000', nickname: 'PP' + i.to_s, preference_list: '021', website: 'http://www.google.com', company: 'BettiBianchi s.r.l.')
   IncompleteUser.create(email: 'Pinco' + i.to_s + '.Pallo@travlendar.com', password: '0000', password_confirmation: '0000')
   user.groups.push(Group.find(i % NUM_GROUPS + 1))
 	SocialUser.create(social_id: Social.find(i % NUM_SOCIALS + 1).id, link: 'www.linkedin.com/PincoPallo' + i.to_s, user_id: user.id)
@@ -107,10 +138,32 @@ for i in 1..NUM_USERS do
 
   primary_email = Email.create(email: 'Pinco' + i.to_s + '.Pallo@travlendar.com', user_id: i)
   user.primary_email_id = primary_email.id
-  next if user.save
-  user.errors.full_messages.each do |message|
-    puts(message)
+
+  unless user.save
+    user.errors.full_messages.each do |message|
+      puts(message)
+    end
   end
+
+  #######
+  distance_subject = Subject.find_by(name: "Distance")
+  distance_greater_op = Operator.where(subject: distance_subject, operator: 3).first
+  distance_lesser_op = Operator.where(subject: distance_subject, operator: 2).first
+  duration_subject = Subject.find_by(name: "Duration")
+  duration_greater_op = Operator.where(subject: duration_subject, operator: 3).first
+  # Do not walk if distance is greater than 5 km
+  Constraint.create({travel_mean: 0, subject: distance_subject, operator: distance_greater_op,
+    value: Value.create({value: "5000", subject: distance_subject}), user: user})
+  # Do not walk if duration is greater than 30 min
+  Constraint.create({travel_mean: 0, subject: duration_subject, operator: duration_greater_op,
+    value: Value.create({value: "1800", subject: duration_subject}), user: user})
+  # Do not use public transportation if duration is greater than 2 h
+  Constraint.create({travel_mean: 2, subject: duration_subject, operator: duration_greater_op,
+    value: Value.create({value: "7200", subject: duration_subject}), user: user})
+  # Do not use driving if distance is lesser than 2 km
+  Constraint.create({travel_mean: 1, subject: distance_subject, operator: distance_lesser_op,
+    value: Value.create({value: "2000", subject: distance_subject}), user: user})
+  #######
 
   puts "User #{i}"
 end
@@ -214,30 +267,4 @@ for i in 1..NUM_CATEGORIES do
   j = rand(1..NUM_CATEGORIES)
   j = rand(1..NUM_CATEGORIES) while j == i
   Category.find(i).superclass_id = Category.find(j).id
-end
-
-for i in 1..NUM_SUBJECTS do
-  subject = Subject.create(name: 'Subject' + i.to_s)
-
-  puts "Subject #{i}"
-end
-
-for i in 1..NUM_OPERATORS do
-  operator = Operator.create(description: 'Operator' + (i + 1).to_s, subject_id: Subject.find(i % NUM_SUBJECTS + 1).id, operator: i % 4)
-
-  puts "Operator #{i}"
-end
-
-for i in 1..NUM_VALUES do
-  value = Value.create(value: 'Value' + i.to_s, subject_id: Subject.find(i % NUM_SUBJECTS + 1).id)
-
-  puts "Value #{i}"
-end
-
-for i in 1..NUM_CONSTRAINTS do
-  travel_mean_used = rand(1..NUM_TRAVEL_MEANS)
-  Constraint.create(travel_mean: travel_mean_used, user_id: User.find(i % NUM_USERS + 1).id, subject_id: Subject.find(i % NUM_SUBJECTS + 1).id,
-                    operator_id: Operator.find(i % NUM_OPERATORS + 1).id, value_id: Value.find(i % NUM_VALUES + 1).id)
-
-  puts "Constraint #{i}"
 end

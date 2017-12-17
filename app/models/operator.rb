@@ -7,6 +7,10 @@ class Operator < ApplicationRecord
 
   validate :operator_correctness
 
+  def invoke(lval, rval)
+    return Operators[operator].call lval, rval
+  end
+
   private
   def operator_correctness
   	if operator.blank?
