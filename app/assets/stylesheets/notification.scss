@@ -11,3 +11,17 @@
   display: inline-block;
 }
 
+.warning-container{
+  margin-right: auto;
+  margin-left: auto;
+  width: 60%;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  cursor: pointer;
+}
+
+.single-warning{
+  margin-top: 5px !important;
+  margin-bottom: 5px !important;
+  min-width: 75%;
+}

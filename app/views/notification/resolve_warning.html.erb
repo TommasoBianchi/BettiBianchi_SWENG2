@@ -1,0 +1,35 @@
+<%= render 'shared/header', selected: 'notifications' %>
+<div id="content">
+	<script type="text/javascript"></script>
+	<%= render 'shared/calendar_sidebar' %>
+	<section class="mainContent">
+
+		<%= render 'shared/title_back_action', title: 'Resolve Warning', path: notification_index_path %>
+
+		<div>
+			<% @meeting_participations.each do |item| %>
+					<% meeting = item.meeting %>
+					<div class="meeting-invitation">
+						<div class="meeting rounded-box">
+							<div class="meeting-date">
+								<%= meeting.start_date %>:
+								<%= meeting.start_date.strftime "%I:%M %p" %>
+								-
+								<%= meeting.end_date.strftime "%I:%M %p" %></div>
+							<div class="meeting-title"><%= meeting.title %></div>
+							<div class="meeting-location"><%= meeting.location.description %></div>
+							<a href="<%= meeting_path meeting.id %>">
+								<div class="detail">Details</div>
+							</a>
+						</div>
+						<div class="response-button">
+							<%= link_to "ACCEPT", accept_meeting_path(meeting_id: meeting.id, user_id: @user.id), class: "single-response-button light-grey-container colored-container" %>
+							<%= link_to "DECLINE", decline_meeting_path(meeting_id: meeting.id, user_id: @user.id), class: "single-response-button light-grey-container colored-container" %>
+							<div class="single-response-button light-grey-container colored-container"> RESCHEDULE</div>
+						</div>
+					</div>
+			<% end %>
+			</div>
+			</section>
+			</div>
+			<%= render 'shared/footer' %>
