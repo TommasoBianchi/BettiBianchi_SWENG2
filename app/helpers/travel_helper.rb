@@ -31,6 +31,8 @@ module TravelHelper
 		legs = json_response['routes'][0]['legs'][0]
 		duration = legs['duration']['value']	# in seconds
 		distance = legs['distance']['value']	# in meters
+		start_time = legs['departure_time']['value'] if legs['departure_time']	# this is not always present
+		end_time = legs['arrival_time']['value'] if legs['arrival_time']	# this is not always present
 		steps = legs['steps']
 
 		formatted_steps = []
@@ -63,14 +65,19 @@ module TravelHelper
 			formatted_steps.push(formatted_step)
 		end
 
-		return {
+		result = {
 			duration: duration,
 			distance: distance,
 			steps: formatted_steps
 		}
+
+		result[:start_time] = Time.at(start_time + time_zone_offset) if start_time
+		result[:end_time] = Time.at(end_time + time_zone_offset) if end_time
+
+		return result
 	end
 
-	def self.best_travel(from_location, to_location, user, departure_time = nil, arrival_time = nil)
+	def self.best_travel(from_location, to_location, user, departure_time = DateTime.now, arrival_time = nil)
 		weighted_list = []		
 		preference_list = user.preference_list.chars.map {|c| Travel::Travel_means.keys[c.to_i]}
 
@@ -80,8 +87,12 @@ module TravelHelper
 			next unless path
 
 			path[:travel_mean] = travel_mean
-			path[:start_time] = if departure_time then departure_time else (arrival_time - path[:duration].seconds) end
-			path[:end_time] = if arrival_time then arrival_time else (departure_time + path[:duration].seconds) end
+			unless path[:start_time]
+				path[:start_time] = if departure_time then departure_time else (arrival_time - path[:duration].seconds) end
+			end
+			unless path[:end_time]
+				path[:end_time] = if arrival_time then arrival_time else (departure_time + path[:duration].seconds) end
+			end
 
 			# probably not needed because this info is already in the steps
 			# TODO: remove if really not needed
@@ -91,16 +102,17 @@ module TravelHelper
 				path[:end_time] = path[:steps].last[:arrival_time]
 			end
 =end
-			# TODO: constraint satisfaction
-=begin
-			for all constraint in user.constraints do
-				if path is not compatible with constraint then
-					path := NULL
+
+			# Constraint satisfaction
+			constraint_violated = false
+			user.constraints.where(travel_mean: Travel::Travel_means[travel_mean]).each do |constraint|
+				if constraint.check_path(path)
+					constraint_violated = true
 					break
-				end if
-			end for
-=end
+				end
+			end
 			
+			next if constraint_violated
 
 			path[:weighted_duration] = path[:duration] + weighted_list.length * (60 * 15)	# 15 minutes disadvantage per preference list position
 			puts "Travel_mean = #{path[:travel_mean]}, Duration = #{path[:duration]}, Weighted_duration = #{path[:weighted_duration]}"
