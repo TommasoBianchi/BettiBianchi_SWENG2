@@ -48,7 +48,7 @@
 				<div class="default-location list-of-default-location rounded-box">
 					<div class="default-location-name"><%= dl.name %></div>
 					<div class="default-location-location"><%= dl.location.description %></div>
-					<a href='<%= default_location_path %>'>
+					<a href='<%= default_location_path(id: dl.id) %>'>
 						<div class="detail">Details</div>
 					</a>
 				</div>
