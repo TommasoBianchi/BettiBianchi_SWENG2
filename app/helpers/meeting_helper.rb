@@ -364,12 +364,16 @@ module MeetingHelper
 				arriving_travel.travel_steps.each do |step|
 					step.delete
 				end
+				# If another meeting participation is linked to this travel, drop the link
+				MeetingParticipation.where(arriving_travel: arriving_travel).update(arriving_travel: nil)
 				arriving_travel.delete
 			end
 			if leaving_travel
 				leaving_travel.travel_steps.each do |step|
 					step.delete
 				end
+				# If another meeting participation is linked to this travel, drop the link
+				MeetingParticipation.where(leaving_travel: leaving_travel).update(leaving_travel: nil)
 				leaving_travel.delete
 			end
 			result = invite_to_meeting meeting, mp.user
