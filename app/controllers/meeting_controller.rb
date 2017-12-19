@@ -38,7 +38,22 @@ class MeetingController < ApplicationController
 
 	def create
 		@meeting = Meeting.new
-		unless check_params_validity(params[:meeting], @meeting)
+		unless check_params_validity(params[:meeting])
+			render 'new'
+			return
+		end
+
+		date = params[:meeting][:date].split('/').map {|s| s.to_i}
+
+		start_time = params[:meeting][:start_time].to_datetime
+		end_time = params[:meeting][:end_time].to_datetime
+
+		start_date = DateTime.new(date[2], date[0], date[1], start_time.hour, start_time.minute, 0)
+		end_date = DateTime.new(date[2], date[0], date[1], end_time.hour, end_time.minute, 0)
+
+		unless start_date < end_date
+			@meeting.errors.add(:start_time, "Not valid")
+			@meeting.errors.add(:end_time, "Not valid")
 			render 'new'
 			return
 		end
@@ -54,14 +69,6 @@ class MeetingController < ApplicationController
 		unless location
 			location = Location.create(latitude: latitude, longitude: longitude, description: location_name)
 		end
-
-		date = params[:meeting][:date].split('/').map {|s| s.to_i}
-
-		start_time = params[:meeting][:start_time].to_datetime
-		end_time = params[:meeting][:end_time].to_datetime
-
-		start_date = DateTime.new(date[2], date[0], date[1], start_time.hour, start_time.minute, 0)
-		end_date = DateTime.new(date[2], date[0], date[1], end_time.hour, end_time.minute, 0)
 
 		user = current_user
 		invited_users = params[:meeting][:participants].split(" ").map {|s| User.find(s.to_i)}
@@ -98,7 +105,7 @@ class MeetingController < ApplicationController
 		end
 	end
 
-	def check_params_validity(meeting_params, meeting)
+	def check_params_validity(meeting_params)
 		params_ok = true
 		if meeting_params[:title] == ""
 			@meeting.errors.add(:title, "Not valid")
@@ -107,14 +114,47 @@ class MeetingController < ApplicationController
 
 		if meeting_params[:location] == ""
 			@meeting.errors.add(:location, "Not valid")
-			params_ok =  false
+			params_ok = false
+		end
+
+		begin
+			meeting_params[:start_time].to_datetime
+		rescue ArgumentError
+			@meeting.errors.add(:start_time, "Not valid")
+			params_ok = false
 		end
 
 		if meeting_params[:start_time] == ""
-			@meeting.errors.add(:location, "Not valid")
-			params_ok =  false
+			@meeting.errors.add(:start_time, "Not valid")
+			params_ok = false
 		end
 
-		return params_ok
+		begin
+			meeting_params[:end_time].to_datetime
+		rescue ArgumentError
+			@meeting.errors.add(:end_time, "Not valid")
+			params_ok = false
+		end
+
+		if meeting_params[:end_time] == ""
+			@meeting.errors.add(:end_time, "Not valid")
+			params_ok = false
+		end
+
+		begin
+			meeting_params[:date].to_datetime
+		rescue ArgumentError
+			@meeting.errors.add(:date, "Not valid")
+			params_ok = false
+		end
+
+		if meeting_params[:date] == ""
+			@meeting.errors.add(:date, "Not valid")
+			params_ok = false
+		end
+
+		params_ok
 	end
+
+
 end

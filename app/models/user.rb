@@ -27,12 +27,14 @@ class User < ApplicationRecord
 		BCrypt::Password.create(string, cost: cost)
 	end
 
-	validates :name, :surname, :nickname, :password, :preference_list, presence: true
+	has_secure_password :validations => false
+	validates :password, presence: true, :on => :create
+	validates :password_confirmation, presence: true, :on => :create
+	validates :name, :surname, :nickname, :preference_list, presence: true
 	validates :nickname, :primary_email_id, uniqueness: true
 
 	validate :primary_email_in_emails
 
-	has_secure_password
 
 	def get_last_default_location_before(current_day)
 		list_default_location = []

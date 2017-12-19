@@ -1,5 +1,6 @@
 class UserController < ApplicationController
 	skip_before_action :require_login
+	wrap_parameters :user, include: [:nickname, :password, :password_confirmation]
 
 	def show
 		require_login
@@ -118,9 +119,13 @@ class UserController < ApplicationController
 	def change_preference_list
 		check_if_myself
 		user = current_user
-		user.preference_list = params[:user][:preference_list]
+		user.update_attributes(user_pref_list_params)
 		user.save
 		redirect_to settings_page_path
+	end
+
+	def user_pref_list_params
+		params.require(:user).permit(:preference_list)
 	end
 
 	def delate_constraint
