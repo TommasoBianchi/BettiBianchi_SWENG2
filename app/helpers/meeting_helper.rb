@@ -259,7 +259,7 @@ module MeetingHelper
 
 		if arriving_travel == nil or (before_meeting != nil and arriving_travel[:duration] > (new_meeting[:start_date].to_i - before_meeting.leaving_travel.end_time.to_i))
 			new_meeting[:arriving_from_dl] = nil
-			arriving_travel = TravelHelper.best_travel(before_meeting.meeting.location, new_meeting[:location], user, nil, new_meeting[:start_date])
+			arriving_travel = TravelHelper.best_travel(before_meeting.meeting.location, new_meeting[:location], user, before_meeting.meeting.end_date, nil)
 			if arriving_travel == nil or (arriving_travel[:duration] > (new_meeting[:start_date].to_i - before_meeting.meeting.end_date.to_i))
 				new_meeting[:is_consistent] = false
 				before_meeting.update({is_consistent: false})

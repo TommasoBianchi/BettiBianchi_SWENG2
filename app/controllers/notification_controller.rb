@@ -41,6 +41,7 @@ class NotificationController < ApplicationController
 
 		inconsistent_mp = user.meeting_participations.joins(:meeting)
 													.where(is_consistent: false)
+													.where.not(response_status: MeetingParticipation::Response_statuses[:declined])
 													.order('meetings.start_date')
 
 		current_day = nil
