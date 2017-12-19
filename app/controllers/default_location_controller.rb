@@ -73,12 +73,14 @@ class DefaultLocationController < ApplicationController
 			mp = MeetingParticipation.find_by(arriving_travel_id: travel.id)
 			if mp
 				mp.arriving_travel_id = nil
+				mp.is_consistent = false
 				mp.save
 			end
 
 			mp = MeetingParticipation.find_by(leaving_travel_id: travel.id)
 			if mp
 				mp.leaving_travel_id = nil
+				mp.is_consistent = false
 				mp.save
 			end
 
@@ -86,7 +88,7 @@ class DefaultLocationController < ApplicationController
 		end
 		day_of_the_week = [DefaultLocation.find(params[:default_location_id]).day_of_the_week]
 		DefaultLocation.delete(params[:default_location_id])
-		RecomputeMeetingParticipationsJob.perform_later day_of_the_week
+		RecomputeMeetingParticipationsJob.perform_later day_of_the_week, current_user
 		redirect_to settings_page_path(id: params[:user_id])
 	end
 
