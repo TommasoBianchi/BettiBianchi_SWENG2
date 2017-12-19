@@ -29,8 +29,9 @@
 		var place = autocomplete.getPlace();
 		var lat = place.geometry.location.lat();
 		var lng = place.geometry.location.lng();
+		var name = place.name;
 
-		$('#location-hidden').val(lat + "," + lng);
+		$('#location-hidden').val(lat + "," + lng + "," + name);
 
 	}
 

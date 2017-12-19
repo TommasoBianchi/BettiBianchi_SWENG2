@@ -9,7 +9,6 @@ class DefaultLocationController < ApplicationController
 	end
 
 	def create
-
 		user = current_user
 		name = params[:default_location][:name]
 
@@ -17,12 +16,14 @@ class DefaultLocationController < ApplicationController
 			render 'new'
 			return
 		else
-			latitude = params[:default_location][:location][0]
-			longitude = params[:default_location][:location][1]
+			location_input = params[:meeting][:location].split(',')
+			latitude = location_input[0].to_i
+			longitude = location_input[1].to_i
+			location_name = location_input[2]
 			location = Location.find_by(latitude: latitude, longitude: longitude)
 
 			unless location
-				location = Location.create(latitude: latitude, longitude: longitude, description: name + ' of ' + user.name + ' ' + user.surname)
+				location = Location.create(latitude: latitude, longitude: longitude, description: location_name)
 			end
 
 		end
