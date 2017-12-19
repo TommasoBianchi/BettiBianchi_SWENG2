@@ -22,7 +22,6 @@
 				<%= link_to image_tag("add_icon.png", alt: 'add_icon', class: 'add-image'), add_constraint_path %>
 			</div>
 		</div>
-
 		<div id="preference-list-container">
 			<% @user.constraints.each do |constraint| %>
 				<div class="constraint-container colored-container light-light-grey-container">
@@ -32,7 +31,7 @@
 			<% end %>
 		</div>
 
-		<h2 class="subtitle-contacts">
+		<h2 class="subtitle-contacts" >
 			Status
 		</h2>
 
@@ -79,3 +78,9 @@
 	</section>
 </div>
 <%= render 'shared/footer' %>
+
+<script>
+	function openConstraintCreate() {
+			$('#create-constraint').toggle();
+  }
+</script>

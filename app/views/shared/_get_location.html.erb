@@ -16,7 +16,7 @@
 		// Create the autocomplete object, restricting the search to geographical
 		// location types.
 		autocomplete = new google.maps.places.Autocomplete(
-			/** @type {!HTMLInputElement} */(document.getElementById('autocomplete')),
+			/** @type {!HTMLInputElement} */(document.getElementById('location')),
 			{types: ['geocode']});
 
 		// When the user selects an address from the dropdown, populate the address
@@ -29,8 +29,9 @@
 		var place = autocomplete.getPlace();
 		var lat = place.geometry.location.lat();
 		var lng = place.geometry.location.lng();
+		var name = place.name;
 
-		$('#location-hidden').val(lat + "," + lng);
+		$('#location-hidden').val(lat + "," + lng + "," + name);
 
 	}
 
@@ -55,7 +56,7 @@
 </script>
 
 <div id="locationField">
-	<input id="autocomplete" placeholder="Enter your address"
+	<input id="location" placeholder="Enter your address"
 				 onFocus="geolocate()" type="text">
 </div>
 

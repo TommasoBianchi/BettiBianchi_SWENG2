@@ -126,3 +126,11 @@ input.error {
 .add-icon {
   float: right;
 }
+
+/* CSS for create constraint page */
+select, option{
+  @extend .colored-container;
+  @extend .white-container;
+  padding: 3px;
+}
+

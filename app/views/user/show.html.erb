@@ -66,6 +66,11 @@
 			<% end %>
 		</div>
 
+		<div class="profile-page-buttons only-if-myself">
+			<div class="colored-container light-grey-container date-time-block">
+				<%= link_to "Log out", logout_path, method: :delete %>
+			</div>
+		</div>
 	</section>
 </div>
 <%= render 'shared/footer' %>
@@ -78,6 +83,3 @@
 	$('.only-if-myself').hide();
 	<% end %>
 </script>
-
-
-<!-- <%= link_to "Log out", logout_path, method: :delete %>  -->

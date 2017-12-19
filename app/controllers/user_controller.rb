@@ -128,6 +128,28 @@ class UserController < ApplicationController
 		Constraint.delete(params[:constraint_id])
 		redirect_to settings_page_path(id: params[:user_id])
 	end
+
+	def add_constraint
+		@constraint = Constraint.new
+		@operators = Operator.all
+		@values = Value.all
+	end
+
+	def create_constraint
+		travel_mean = params[:constraint][:travel_mean]
+		subject = Subject.find(params[:constraint][:subject].to_i)
+		operator = Operator.find_by(description: params[:constraint][:operator])
+		value = Value.find_by(value: params[:constraint][:value])
+		c = Constraint.new({travel_mean: travel_mean, subject: subject, operator: operator, value: value, user: current_user})
+		if c.valid?
+			c.save
+			redirect_to settings_page_path
+		else
+			render 'add_constraint'
+		end
+	end
+
+
 	private
 
 	def html_index
@@ -174,5 +196,9 @@ class UserController < ApplicationController
 		unless (current_user.id == user.to_i) && (current_user.constraints.where(id: constraint).count() > 0)
 			raise ActionController::RoutingError, 'Not Found'
 		end
+	end
+
+	def check_constraint_params
+		params.require(:constraint).permit(:travel_mean, :subject, :operator, :value)
 	end
 end

@@ -22,6 +22,7 @@ Rails.application.routes.draw do
 	get 'user/:id/settings' => 'user#settings', as: 'settings_page'
 	patch 'user/:id/settings/change_preference_list' => 'user#change_preference_list', as: 'change_preference_list'
 	get 'user/:id/add_constraint' => 'user#add_constraint', as: 'add_constraint'
+	post 'user/:id/add_constraint', to: 'user#create_constraint'
 	get 'user/:id/add_break' => 'user#add_break', as: 'add_break'
 	get 'user/delete_constraint/:user_id/:constraint_id' => 'user#delate_constraint', as: 'delete_constraint'
 	get 'user/delete_break/:user_id/:break_id' => 'user#delate_break', as: 'delete_break'
@@ -47,4 +48,6 @@ Rails.application.routes.draw do
 
 	# Default Location
 	post 'default_location/new', to: 'default_location#create'
+	get 'default_location/delete_dl/:default_location_id/:user_id' => 'default_location#delete', as: 'delete_default_location'
+
 end

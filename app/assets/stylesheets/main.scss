@@ -32,6 +32,10 @@ $background_image_url: image_url("homepage/sfondo25.png");
   text-align: center;
 }
 
+.error{
+  border-color: red;
+}
+
 .meeting {
   background-color: $blue;
   padding: 20px;

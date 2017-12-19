@@ -22,11 +22,11 @@
 					</div>
 					<div class='time-container'>
 						<%= form.label :start_time, class: 'label' %>
-						<%= form.text_field :start_time, class: 'time', id: 'meeting_start_time', type: 'text' %>
+						<%= form.text_field :start_time, class: 'time', id: 'start_time', type: 'text' %>
 					</div>
 					<div class='time-container'>
 						<%= form.label :end_time, class: 'label' %>
-						<%= form.text_field :end_time, class: 'time', id: 'meeting_end_time', type: 'text' %>
+						<%= form.text_field :end_time, class: 'time', id: 'end_time', type: 'text' %>
 					</div>
 				</div>
 
@@ -60,18 +60,18 @@
 
 <script>
 	$(function () {
-		$('#meeting_start_time').timepicker({'step': 5});
+		$('#start_time').timepicker({'step': 5});
 
-		$('#meeting_start_time').on('changeTime', function () {
-			var start_time_value = $('#meeting_start_time').val();
-			$('#meeting_end_time').timepicker({
+		$('#start_time').on('changeTime', function () {
+			var start_time_value = $('#start_time').val();
+			$('#end_time').timepicker({
 				'step': 5,
 				'minTime': start_time_value,
 				'maxTime': '11.55pm',
 				'showDuration': true
 			});
 		});
-		$('#meeting_end_time').timepicker({
+		$('#end_time').timepicker({
 			'step': 5,
 			'minTime': '00.00am',
 			'maxTime': '11.55pm',
