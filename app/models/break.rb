@@ -1,6 +1,8 @@
 class Break < ApplicationRecord
 	belongs_to :user
 
+	has_many :computed_breaks
+
 	validates :default_time, :start_time_slot, :end_time_slot, :day_of_the_week, :name, :duration, presence: true
 
 	validate :date_consistency

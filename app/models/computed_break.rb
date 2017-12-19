@@ -1,7 +1,9 @@
 class ComputedBreak < ApplicationRecord
 	belongs_to :user	
+	belongs_to :break
 
-	validates :computed_time, :start_time_slot, :end_time_slot, :name, :duration, :is_doable, presence: true
+	validates :computed_time, :start_time_slot, :end_time_slot, :name, :duration, presence: true
+	validates_inclusion_of :is_doable, in: [true, false]
 
 	validate :date_consistency
 
