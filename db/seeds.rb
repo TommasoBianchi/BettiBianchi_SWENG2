@@ -37,7 +37,7 @@ NUM_SOCIALS = 4
 NUM_EMAILS_PER_USER = 2
 # NUM_STATUSES_PER_USER = 2
 NUM_CONTACTS_PER_USER = 3
-NUM_BREAKS_PER_USER = 1
+NUM_BREAKS_PER_USER = 2
 NUM_USERS = 5
 NUM_MEETINGS_DAYS = 4
 NUM_MEETINGS_PER_DAY = 3
@@ -186,10 +186,11 @@ for i in (-NUM_MEETINGS_DAYS / 2)..(NUM_MEETINGS_DAYS / 2) do
 		start_date = DateTime.new(day.year, day.month, day.day, rand(8..20), rand(0..59), 0)
 		end_date = start_date + rand(30..120).minutes
 		title = 'NewMeeting ' + meeting_number.to_s # + meeting.id.to_s
+		abstract = "meeting from a seed"
 		# meeting = Meeting.create(location_id: rand(1..NUM_LOCATIONS), title: 'NewMeeting', start_date: start_date, end_date: end_date)
 		# meeting.title = title
 		# meeting.save
-		result = MeetingHelper.create_meeting start_date, end_date, title, Location.find(rand(1..NUM_LOCATIONS)), User.find(1)
+		result = MeetingHelper.create_meeting start_date, end_date, title, abstract, Location.find(rand(1..NUM_LOCATIONS)), User.find(1)
 		meeting_number += 1
 
 		if result[:status] == :errors

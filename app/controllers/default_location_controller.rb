@@ -63,7 +63,9 @@ class DefaultLocationController < ApplicationController
 	end
 
 	def delete
-		#mettere i controlli su utente
+		check_if_mine(params[:default_location_id])
+		check_if_me(params[:user_id])
+
 		travel_to_drop = Travel.where("starting_location_dl_id = :dl_id OR ending_location_dl_id = :dl_id", dl_id: params[:default_location_id])
 		travel_step_to_drop = TravelStep.where(travel_id: travel_to_drop.ids)
 		TravelStep.delete(travel_step_to_drop.ids)
@@ -80,7 +82,7 @@ class DefaultLocationController < ApplicationController
 				mp.save
 			end
 
-			Travel.delete(travel.id)
+			travel.delete
 		end
 		day_of_the_week = [DefaultLocation.find(params[:default_location_id]).day_of_the_week]
 		DefaultLocation.delete(params[:default_location_id])
@@ -88,38 +90,45 @@ class DefaultLocationController < ApplicationController
 		redirect_to settings_page_path(id: params[:user_id])
 	end
 
-end
-private
 
-def check_if_mine(id = params[:id])
-	unless current_user.default_locations.where(id: id).count() > 0
-		raise ActionController::RoutingError, 'Not Found'
+	private
+
+	def check_if_mine(id = params[:id])
+		unless current_user.default_locations.where(id: id).count() > 0
+			raise ActionController::RoutingError, 'Not Found'
+		end
 	end
-end
 
-def check_params_validity
-	params.require(:default_location).permit(:name, :day_of_the_week, :starting_hour)
+	def check_if_me(id)
+		unless current_user.id == id
+			raise ActionController::RoutingError, 'Not Found'
+		end
+	end
 
-end
+	def check_params_validity
+		params.require(:default_location).permit(:name, :day_of_the_week, :starting_hour)
 
-def get_day_name(day_of_the_week)
-	case day_of_the_week
-		when "Sunday"
-			0
-		when "Monday"
-			1
-		when "Tuesday"
-			2
-		when "Wednesday"
-			3
-		when "Thursday"
-			4
-		when "Friday"
-			5
-		when "Saturday"
-			6
-		else
-			'no day'
+	end
+
+	def get_day_name(day_of_the_week)
+		case day_of_the_week
+			when "Sunday"
+				0
+			when "Monday"
+				1
+			when "Tuesday"
+				2
+			when "Wednesday"
+				3
+			when "Thursday"
+				4
+			when "Friday"
+				5
+			when "Saturday"
+				6
+			else
+				'no day'
+		end
 	end
 end
 
