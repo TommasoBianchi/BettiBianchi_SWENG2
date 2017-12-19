@@ -190,7 +190,8 @@ for i in (-NUM_MEETINGS_DAYS / 2)..(NUM_MEETINGS_DAYS / 2) do
 		# meeting.title = title
 		# meeting.save
 		result = MeetingHelper.create_meeting start_date, end_date, title, Location.find(rand(1..NUM_LOCATIONS)), User.find(1)
-		meeting_number++
+		meeting_number += 1
+
 		if result[:status] == :errors
 			return
 		end
