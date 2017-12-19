@@ -373,7 +373,7 @@ module MeetingHelper
 				end
 				leaving_travel.delete
 			end
-			result = invite_to_meeting meeting, user
+			result = invite_to_meeting meeting, mp.user
 			unless result[:status] == :errors
 				result[:meeting_participation].update({response_status: response_status})
 			end

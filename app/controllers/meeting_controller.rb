@@ -28,19 +28,23 @@ class MeetingController < ApplicationController
 	end
 
 	def new
-		@meeting = Meeting.new
+		unless @meeting
+			@meeting = Meeting.new
+		end
 		@users = User.all
 		@user_selected = ''
 		@user_names = %w[a b]
 	end
 
 	def create
-		unless check_params_validity(params)
+		@meeting = Meeting.new
+		unless check_params_validity(params[:meeting], @meeting)
 			render 'new'
 			return
 		end
 
 		title = params[:meeting][:title]
+		abstract = params[:meeting][:abstract]
 		location_input = params[:meeting][:location].split(',')
 		latitude = location_input[0].to_i
 		longitude = location_input[1].to_i
@@ -60,20 +64,11 @@ class MeetingController < ApplicationController
 		end_date = DateTime.new(date[2], date[0], date[1], end_time.hour, end_time.minute, 0)
 
 		user = current_user
+		invited_users = params[:meeting][:participants].split(" ").map {|s| User.find(s.to_i)}
+		CreateMeetingJob.perform_later start_date.to_i, end_date.to_i, title, abstract, location, user, invited_users
 
-		result = CreateMeetingJob.perform_later start_date.to_i, end_date.to_i, title, location, user
+		redirect_to calendar_day_path(year: date[2], month: date[0], day: date[1])
 
-		if result[:status] == :errors
-			render 'cc'
-		else
-			redirect_to meeting_path(id: result[:meeting].id)
-			return
-		end
-		render 'cc'
-		id_of_users = params[:meeting][:participants].split(" ")
-		puts(params)
-		puts(id_of_users)
-		puts '****************************************'
 	end
 
 	def accept
@@ -103,7 +98,23 @@ class MeetingController < ApplicationController
 		end
 	end
 
-	def check_params_validity(params)
-		return true
+	def check_params_validity(meeting_params, meeting)
+		params_ok = true
+		if meeting_params[:title] == ""
+			@meeting.errors.add(:title, "Not valid")
+			params_ok = false
+		end
+
+		if meeting_params[:location] == ""
+			@meeting.errors.add(:location, "Not valid")
+			params_ok =  false
+		end
+
+		if meeting_params[:start_time] == ""
+			@meeting.errors.add(:location, "Not valid")
+			params_ok =  false
+		end
+
+		return params_ok
 	end
 end
