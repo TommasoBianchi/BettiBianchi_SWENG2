@@ -213,9 +213,11 @@ module MeetingHelper
 		update_schedule(conflicts)
 	end
 
-	def self.recompute_meeting_participations(days_of_the_week)
+	def self.recompute_meeting_participations(days_of_the_week, user)
 		# Grab all the meeting participations to recompute
-		meeting_participations = MeetingParticipation.all.select {|mp| days_of_the_week.include? mp.meeting.start_date.wday}
+		meeting_participations = user.meeting_participations
+									.where.not(response_status: MeetingParticipation::Response_statuses[:declined])
+									.select {|mp| days_of_the_week.include? mp.meeting.start_date.wday}
 
 		# Update the schedule
 		update_schedule(meeting_participations)
@@ -361,12 +363,12 @@ module MeetingHelper
 	end
 
 	def self.update_schedule(meeting_participations_to_recompute)
+		# TODO: manage meeting participation conflicts
 		meeting_participations_to_recompute.each do |mp|
 			arriving_travel = mp.arriving_travel
 			leaving_travel = mp.leaving_travel
 			meeting = mp.meeting
 			response_status = mp.response_status
-			mp.delete
 			if arriving_travel
 				arriving_travel.travel_steps.each do |step|
 					step.delete
@@ -383,14 +385,16 @@ module MeetingHelper
 				MeetingParticipation.where(leaving_travel: leaving_travel).update(leaving_travel: nil)
 				leaving_travel.delete
 			end
+			mp.delete
+
 			result = invite_to_meeting meeting, mp.user
 			unless result[:status] == :errors
 				result[:meeting_participation].update({response_status: response_status})
 			end
 
 			from_date = if mp.arriving_travel then mp.arriving_travel.start_time else mp.meeting.start_date end
-			to_date = if mp.leaving_travel then mp.leaving_travel.end_time else mp.meeting.end_time end
-			BreakHelper.update_all_breaks(from_date, end_date, mp.user)
+			to_date = if mp.leaving_travel then mp.leaving_travel.end_time else mp.meeting.end_date end
+			#BreakHelper.update_all_breaks(from_date, end_date, mp.user)
 		end		
 	end
 
