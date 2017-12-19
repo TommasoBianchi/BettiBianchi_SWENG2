@@ -10,7 +10,7 @@ module MeetingHelper
 	#
 	# returns a hash containing the meeting (nil in case of errors), the meeting_participation (nil in case of errors)
 	# and a status flag (encoded as a Ruby Symbol) indicating either consistency, inconsistency or errors
-	def self.create_meeting(start_date, end_date, title, location, user)
+	def self.create_meeting(start_date, end_date, title, abstract, location, user)
 		if start_date >= end_date
 			return {meeting: nil, meeting_participation: nil, status: :errors}
 		end
@@ -18,7 +18,7 @@ module MeetingHelper
 		meeting_data = insert_meeting({start_date: start_date, end_date: end_date, location: location}, user)
 
 		####### Store the meeting and the meeting participation
-		meeting = Meeting.new({start_date: start_date, end_date: end_date, title: title, location: location})
+		meeting = Meeting.new({start_date: start_date, end_date: end_date, title: title, location: location, abstract: abstract})
 		meeting_participation = MeetingParticipation.new
 		meeting_participation.meeting = meeting
 		meeting_participation.is_admin = true
@@ -195,33 +195,23 @@ module MeetingHelper
 	end
 
 	def self.decline_invitation(meeting_participation, user)
+		# Grab all conflicting meeting participations from the db
 		conflicts = meeting_participation.conflicting_meeting_participations
 
-		conflicts.each do |mp|
-			MeetingParticipationConflict.where(meeting_participation_1_id: mp.id)
-					.or(MeetingParticipationConflict.where(meeting_participation_2_id: mp.id)).delete_all
-			arriving_travel = mp.arriving_travel
-			leaving_travel = mp.leaving_travel
-			meeting = mp.meeting
-			response_status = mp.response_status
-			mp.delete
-			if arriving_travel
-				arriving_travel.travel_steps.each do |step|
-					step.delete
-				end
-				arriving_travel.delete
-			end
-			if leaving_travel
-				leaving_travel.travel_steps.each do |step|
-					step.delete
-				end
-				leaving_travel.delete
-			end
-			result = invite_to_meeting meeting, user
-			unless result[:status] == :errors
-				result[:meeting_participation].update({response_status: response_status})
-			end
-		end
+		# Drop all the conflicts
+		MeetingParticipationConflict.where(meeting_participation_1_id: conflicts.ids)
+				.or(MeetingParticipationConflict.where(meeting_participation_2_id: conflicts.ids)).delete_all
+
+		# Update the schedule
+		update_schedule(conflicts)
+	end
+
+	def self.recompute_meeting_participations(days_of_the_week)
+		# Grab all the meeting participations to recompute
+		meeting_participations = MeetingParticipation.all.select {|mp| days_of_the_week.include? mp.meeting.start_date.wday}
+
+		# Update the schedule
+		update_schedule(meeting_participations)
 	end
 
 	private
@@ -287,15 +277,20 @@ module MeetingHelper
 			end
 		end
 
-		# TODO: manage overlapping breaks and update non-overlapping ones
-=begin
-		overlapping_breaks := all breaks of user that overlap with new_meeting and its travels
+		# Manage overlapping breaks and update non-overlapping ones
+		day_of_the_week = start_date.wday
+		travel_begin = (arriving_travel.start_time - arriving_travel.start_time.midnight) / 60	# in minutes since midnight
+		travel_end = (leaving_travel.end_time - leaving_travel.end_time.midnight) / 60 # in minutes since midnight
+		user_breaks = user.breaks.where(day_of_the_week: day_of_the_week)
+		overlapping_breaks = user_breaks.where(start_time_slot: travel_begin..travel_end)
+								.or(user_breaks.where(end_time_slot: travel_begin..travel_end))
+								.or(user_breaks.where(start_time_slot: 0..travel_begin).where(end_time_slot: travel_end..24*60))
 
-		for all break in overlapping_breaks do
-			UPDATE_BREAK(break, new_meeting ,arriving_travel, leaving_travel)
-			add (new_meeting, break) to break_overlap_set
-		end for
-=end
+		overlapping_breaks.each do |b|
+			update_break(b, new_meeting[:start_date], [{from: arriving_travel.start_time, to: arriving_travel.end_time},
+							 {from: new_meeting[:start_date], to: new_meeting[:end_date]},
+							 {from: leaving_travel.start_time, to: leaving_travel.end_time}])
+		end
 
 		new_meeting[:is_consistent] = true
 		new_meeting[:arriving_travel] = arriving_travel
@@ -356,6 +351,65 @@ module MeetingHelper
 		end
 
 		return [travel, travel_steps]
+	end
+
+	def self.update_schedule(meeting_participations_to_recompute)
+		meeting_participations_to_recompute.each do |mp|
+			arriving_travel = mp.arriving_travel
+			leaving_travel = mp.leaving_travel
+			meeting = mp.meeting
+			response_status = mp.response_status
+			mp.delete
+			if arriving_travel
+				arriving_travel.travel_steps.each do |step|
+					step.delete
+				end
+				arriving_travel.delete
+			end
+			if leaving_travel
+				leaving_travel.travel_steps.each do |step|
+					step.delete
+				end
+				leaving_travel.delete
+			end
+			result = invite_to_meeting meeting, user
+			unless result[:status] == :errors
+				result[:meeting_participation].update({response_status: response_status})
+			end
+		end		
+	end
+
+	def self.update_break(b, day, time_intervals)
+		# Fetch the computed break or create one if not present
+		cb = ComputedBreak.where(computed_time: day.midnight..(day.midnight + 1.days), break: b).first
+		if cb == nil 
+			cb = ComputedBreak.create({computed_time: day.midnight + b.default_time.minutes,
+									   start_time_slot: day.midnight + b.start_time_slot.minutes,
+									   end_time_slot: day.midnight + b.end_time_slot.minutes,
+									   user: b.user, break: b, duration: b.duration, name: b.name,
+									   is_doable: true, doability_bitmask: "1" * (b.end_time_slot - b.start_time_slot)
+									   })
+		end
+
+		# Update the doability bitmask
+		doability_bitmask = cb.doability_bitmask
+
+		time_intervals.each do |interval|	# time is counted in steps of minutes
+			from = ((interval[:from].utc - interval[:from].utc.midnight) / 60).to_i - b.start_time_slot
+			from = 0 if from < 0
+			to = ((interval[:to].utc - interval[:to].utc.midnight) / 60).to_i - b.start_time_slot
+			to = doability_bitmask.length - 1 if to >= doability_bitmask.length
+			for i in from..to  do
+				doability_bitmask[i] = "0"
+			end
+		end
+
+		cb.update({doability_bitmask: doability_bitmask})
+
+		########## WORK IN PROGRESS #########
+
+		# Place the computed break in the first available free slot
+		#for i in 0..doability_bitmask.length - 1
 	end
 
 	GoogleAPIKey = 'AIzaSyDba6PxTVz-07hIVjksboJ4AEkOP2WeuAs'.freeze
