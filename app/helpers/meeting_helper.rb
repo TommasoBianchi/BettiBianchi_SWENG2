@@ -277,8 +277,9 @@ module MeetingHelper
 			end
 		end
 
+=begin
 		# Manage overlapping breaks and update non-overlapping ones
-		day_of_the_week = start_date.wday
+		day_of_the_week = new_meeting[:start_date].wday
 		travel_begin = (arriving_travel.start_time - arriving_travel.start_time.midnight) / 60	# in minutes since midnight
 		travel_end = (leaving_travel.end_time - leaving_travel.end_time.midnight) / 60 # in minutes since midnight
 		user_breaks = user.breaks.where(day_of_the_week: day_of_the_week)
@@ -287,11 +288,9 @@ module MeetingHelper
 								.or(user_breaks.where(start_time_slot: 0..travel_begin).where(end_time_slot: travel_end..24*60))
 
 		overlapping_breaks.each do |b|
-			update_break(b, new_meeting[:start_date], 
-							[{from: arriving_travel.start_time, to: arriving_travel.end_time},
-							 {from: new_meeting[:start_date], to: new_meeting[:end_date]},
-							 {from: leaving_travel.start_time, to: leaving_travel.end_time}])
+			BreakHelper.update_break(b, new_meeting[:start_date])
 		end
+=end
 
 		new_meeting[:is_consistent] = true
 		new_meeting[:arriving_travel] = arriving_travel
@@ -378,61 +377,6 @@ module MeetingHelper
 				result[:meeting_participation].update({response_status: response_status})
 			end
 		end		
-	end
-
-	def self.update_break(b, day, time_intervals)
-		# Fetch the computed break or create one if not present
-		cb = ComputedBreak.where(computed_time: day.midnight..(day.midnight + 1.days), break: b).first
-		if cb == nil 
-			cb = ComputedBreak.create({computed_time: day.midnight + b.default_time.minutes,
-									   start_time_slot: day.midnight + b.start_time_slot.minutes,
-									   end_time_slot: day.midnight + b.end_time_slot.minutes,
-									   user: b.user, break: b, duration: b.duration, name: b.name,
-									   is_doable: true, doability_bitmask: "1" * (b.end_time_slot - b.start_time_slot)
-									   })
-		end
-
-		# Update the doability bitmask
-		doability_bitmask = cb.doability_bitmask.chars
-
-		time_intervals.each do |interval|	# time is counted in steps of minutes
-			from = ((interval[:from].utc - day.utc.midnight) / 60).to_i - b.start_time_slot
-			from = 0 if from < 0
-			to = ((interval[:to].utc - day.utc.midnight) / 60).to_i - b.start_time_slot
-			puts to
-			to = doability_bitmask.length - 1 if to >= doability_bitmask.length
-			for i in from..to  do
-				doability_bitmask[i] = "0"
-			end
-		end
-
-		# Place the computed break in the first available free slot
-		i = 0
-		while i < doability_bitmask.length do
-			if doability_bitmask[i] == "0"
-				i += 1
-				next
-			end
-
-			slot_count = 0
-			for j in i..doability_bitmask.length - 1
-				if doability_bitmask[j] == "0"
-					break
-				else
-					slot_count += 1
-				end
-			end
-
-			if slot_count >= cb.duration
-				cb.update(computed_time: cb.start_time_slot + i.minutes, is_doable: true, doability_bitmask: doability_bitmask.join)
-				return true
-			else
-				i = j + 1
-			end
-		end
-	
-		cb.update(is_doable: false, doability_bitmask: doability_bitmask.join)
-		return false
 	end
 
 	GoogleAPIKey = 'AIzaSyDba6PxTVz-07hIVjksboJ4AEkOP2WeuAs'.freeze
