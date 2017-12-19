@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171216141753) do
+ActiveRecord::Schema.define(version: 20171219150900) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -44,6 +44,8 @@ ActiveRecord::Schema.define(version: 20171216141753) do
     t.integer "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bit_varying "doability_bitmask", limit: 1440
+    t.integer "break_id"
   end
 
   create_table "constraints", force: :cascade do |t|
@@ -226,6 +228,7 @@ ActiveRecord::Schema.define(version: 20171216141753) do
   end
 
   add_foreign_key "breaks", "users"
+  add_foreign_key "computed_breaks", "breaks"
   add_foreign_key "computed_breaks", "users"
   add_foreign_key "constraints", "\"values\"", column: "value_id"
   add_foreign_key "constraints", "operators"

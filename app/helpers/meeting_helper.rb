@@ -287,7 +287,8 @@ module MeetingHelper
 								.or(user_breaks.where(start_time_slot: 0..travel_begin).where(end_time_slot: travel_end..24*60))
 
 		overlapping_breaks.each do |b|
-			update_break(b, new_meeting[:start_date], [{from: arriving_travel.start_time, to: arriving_travel.end_time},
+			update_break(b, new_meeting[:start_date], 
+							[{from: arriving_travel.start_time, to: arriving_travel.end_time},
 							 {from: new_meeting[:start_date], to: new_meeting[:end_date]},
 							 {from: leaving_travel.start_time, to: leaving_travel.end_time}])
 		end
@@ -392,24 +393,46 @@ module MeetingHelper
 		end
 
 		# Update the doability bitmask
-		doability_bitmask = cb.doability_bitmask
+		doability_bitmask = cb.doability_bitmask.chars
 
 		time_intervals.each do |interval|	# time is counted in steps of minutes
-			from = ((interval[:from].utc - interval[:from].utc.midnight) / 60).to_i - b.start_time_slot
+			from = ((interval[:from].utc - day.utc.midnight) / 60).to_i - b.start_time_slot
 			from = 0 if from < 0
-			to = ((interval[:to].utc - interval[:to].utc.midnight) / 60).to_i - b.start_time_slot
+			to = ((interval[:to].utc - day.utc.midnight) / 60).to_i - b.start_time_slot
+			puts to
 			to = doability_bitmask.length - 1 if to >= doability_bitmask.length
 			for i in from..to  do
 				doability_bitmask[i] = "0"
 			end
 		end
 
-		cb.update({doability_bitmask: doability_bitmask})
-
-		########## WORK IN PROGRESS #########
-
 		# Place the computed break in the first available free slot
-		#for i in 0..doability_bitmask.length - 1
+		i = 0
+		while i < doability_bitmask.length do
+			if doability_bitmask[i] == "0"
+				i += 1
+				next
+			end
+
+			slot_count = 0
+			for j in i..doability_bitmask.length - 1
+				if doability_bitmask[j] == "0"
+					break
+				else
+					slot_count += 1
+				end
+			end
+
+			if slot_count >= cb.duration
+				cb.update(computed_time: cb.start_time_slot + i.minutes, is_doable: true, doability_bitmask: doability_bitmask.join)
+				return true
+			else
+				i = j + 1
+			end
+		end
+	
+		cb.update(is_doable: false, doability_bitmask: doability_bitmask.join)
+		return false
 	end
 
 	GoogleAPIKey = 'AIzaSyDba6PxTVz-07hIVjksboJ4AEkOP2WeuAs'.freeze
