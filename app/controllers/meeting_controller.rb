@@ -54,7 +54,7 @@ class MeetingController < ApplicationController
 		mp.response_status = 2
 		mp.save
 
-		MeetingHelper.decline_invitation mp, mp.user
+		DeclineInvitationJob.perform_later mp, mp.user
 
 		redirect_to notification_index_path
 	end
