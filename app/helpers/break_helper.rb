@@ -4,23 +4,35 @@ module BreakHelper
 		from = day + b.start_time_slot.minutes
 		to = day + b.end_time_slot.minutes
 		user_meeting_participations = b.user.meeting_participations.where(is_consistent: true)
-										.where.not(response_status: MeetingParticipation::Response_statuses[:declined])
+										.where(response_status: MeetingParticipation::Response_statuses[:accepted])
+		# TODO: joins also with travel to get overlapping mps also wrt them
 		overlapping_meeting_participations = user_meeting_participations.joins(:meeting).where('meetings.start_date between :start and :end
 												or meetings.end_date between :start and :end
 												or (meetings.start_date <= :start and meetings.end_date >= :end)', start: from, end: to)
 
 		time_intervals = []
 		overlapping_meeting_participations.each do |mp|
-			time_intervals.push {from: mp.arriving_travel.start_time, to: mp.arriving_travel.end_time}
-			time_intervals.push {from: mp.meeting.start_date, to: mp.meeting.end_date}
-			time_intervals.push {from: mp.leaving_travel.start_time, to: mp.leaving_travel.end_time}
+			time_intervals.push({from: mp.arriving_travel.start_time, to: mp.arriving_travel.end_time})
+			time_intervals.push({from: mp.meeting.start_date, to: mp.meeting.end_date})
+			time_intervals.push({from: mp.leaving_travel.start_time, to: mp.leaving_travel.end_time})
 		end
 
 		_update_break b, day, time_intervals
 	end
 
-	def self.update_all_breaks(day)
+	def self.update_all_breaks(from_date, to_date, user)
+		# TODO: maybe from_date and to_date are in different wdays. Deal with it
 
+		from = (from_date.utc - from_date.utc.midnight) / 60	# in minutes since midnight
+		to = (to_date - to_date.utc.midnight) / 60 # in minutes since midnight
+		user_breaks = user.breaks.where(day_of_the_week: from_date.wday)
+		overlapping_breaks = user_breaks.where(start_time_slot: from..to)
+								.or(user_breaks.where(end_time_slot: from..to))
+								.or(user_breaks.where(start_time_slot: 0..from).where(end_time_slot: to..24*60))
+
+		overlapping_breaks.each do |b|
+			update_break b, from_date
+		end
 	end
 
 	def self.full_update_break(b)

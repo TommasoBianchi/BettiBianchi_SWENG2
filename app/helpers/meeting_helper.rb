@@ -87,6 +87,9 @@ module MeetingHelper
 					meeting_data[:after_meeting].save
 				end
 			end
+
+			BreakHelper.update_all_breaks(arriving_travel.start_time, leaving_travel.end_time, user)
+
 			return {meeting: meeting, meeting_participation: meeting_participation, status: :consistent}
 		else
 			# Print errors
@@ -192,6 +195,10 @@ module MeetingHelper
 			puts "------------ ERRORS ------------"
 			return {meeting_participation: nil, status: :errors}
 		end
+	end
+
+	def accept_invitation(meeting_participation, user)
+		update_schedule([meeting_participation])
 	end
 
 	def self.decline_invitation(meeting_participation, user)
@@ -380,6 +387,10 @@ module MeetingHelper
 			unless result[:status] == :errors
 				result[:meeting_participation].update({response_status: response_status})
 			end
+
+			from_date = if mp.arriving_travel then mp.arriving_travel.start_time else mp.meeting.start_date end
+			to_date = if mp.leaving_travel then mp.leaving_travel.end_time else mp.meeting.end_time end
+			BreakHelper.update_all_breaks(from_date, end_date, mp.user)
 		end		
 	end
 

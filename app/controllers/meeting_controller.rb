@@ -46,6 +46,7 @@ class MeetingController < ApplicationController
 		mp = MeetingParticipation.find_by(meeting_id: params[:meeting_id], user_id: params[:user_id])
 		mp.response_status = 1
 		mp.save
+		AcceptInvitationJob.perform_later mp, mp.user
 		redirect_to session.delete(:return_to)
 	end
 
