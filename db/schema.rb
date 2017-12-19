@@ -44,7 +44,6 @@ ActiveRecord::Schema.define(version: 20171219150900) do
     t.integer "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.bit_varying "doability_bitmask", limit: 1440
     t.integer "break_id"
   end
 
