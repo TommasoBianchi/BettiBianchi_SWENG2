@@ -6,6 +6,9 @@
 		<%= render 'shared/title_back_action', title: @default_location.name %>
 
 
+		<div class="response-block-container only-pending">
+			<%= link_to "DECLINE", delete_default_location_path(default_location_id: @default_location.id, user_id: @user.id), class: "single-response-button light-grey-container colored-container" %>
+			</div>
 	</section>
 </div>
 <%= render 'shared/footer' %>

@@ -2,6 +2,7 @@ class DefaultLocationController < ApplicationController
 	def show
 		check_if_mine
 		@default_location = DefaultLocation.find(params[:id])
+		@user = current_user
 	end
 
 	def new
@@ -49,6 +50,10 @@ class DefaultLocationController < ApplicationController
 				for i in 1..6
 					DefaultLocation.create(starting_hour: starting_hour, day_of_the_week: (day_of_the_week + i) % 7, name: name, user_id: user.id, location_id: location.id)
 				end
+				days = [0, 1, 2, 3, 4, 5, 6]
+				RecomputeMeetingParticipationsJob.perform_later days
+			else
+				RecomputeMeetingParticipationsJob.perform_later day_of_the_week
 			end
 			redirect_to @default_location
 		else
@@ -57,37 +62,64 @@ class DefaultLocationController < ApplicationController
 		end
 	end
 
-	private
+	def delete
+		#mettere i controlli su utente
+		travel_to_drop = Travel.where("starting_location_dl_id = :dl_id OR ending_location_dl_id = :dl_id", dl_id: params[:default_location_id])
+		travel_step_to_drop = TravelStep.where(travel_id: travel_to_drop.ids)
+		TravelStep.delete(travel_step_to_drop.ids)
+		travel_to_drop.each do |travel|
+			mp = MeetingParticipation.find_by(arriving_travel_id: travel.id)
+			if mp
+				mp.arriving_travel_id = nil
+				mp.save
+			end
 
-	def check_if_mine(id = params[:id])
-		unless current_user.default_locations.where(id: id).count() > 0
-			raise ActionController::RoutingError, 'Not Found'
+			mp = MeetingParticipation.find_by(leaving_travel_id: travel.id)
+			if mp
+				mp.leaving_travel_id = nil
+				mp.save
+			end
+
+			Travel.delete(travel.id)
 		end
+		day_of_the_week = [DefaultLocation.find(params[:default_location_id]).day_of_the_week]
+		DefaultLocation.delete(params[:default_location_id])
+		RecomputeMeetingParticipationsJob.perform_later day_of_the_week
+		redirect_to settings_page_path(id: params[:user_id])
 	end
 
-	def check_params_validity
-		params.require(:default_location).permit(:name, :day_of_the_week, :starting_hour)
+end
+private
 
-	end
-
-	def get_day_name(day_of_the_week)
-		case day_of_the_week
-			when "Sunday"
-				0
-			when "Monday"
-				1
-			when "Tuesday"
-				2
-			when "Wednesday"
-				3
-			when "Thursday"
-				4
-			when "Friday"
-				5
-			when "Saturday"
-				6
-			else
-				'no day'
-		end
+def check_if_mine(id = params[:id])
+	unless current_user.default_locations.where(id: id).count() > 0
+		raise ActionController::RoutingError, 'Not Found'
 	end
 end
+
+def check_params_validity
+	params.require(:default_location).permit(:name, :day_of_the_week, :starting_hour)
+
+end
+
+def get_day_name(day_of_the_week)
+	case day_of_the_week
+		when "Sunday"
+			0
+		when "Monday"
+			1
+		when "Tuesday"
+			2
+		when "Wednesday"
+			3
+		when "Thursday"
+			4
+		when "Friday"
+			5
+		when "Saturday"
+			6
+		else
+			'no day'
+	end
+end
+
