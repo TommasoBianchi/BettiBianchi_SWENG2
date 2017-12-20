@@ -61,8 +61,8 @@ class MeetingController < ApplicationController
 		title = params[:meeting][:title]
 		abstract = params[:meeting][:abstract]
 		location_input = params[:meeting][:location].split(',')
-		latitude = location_input[0].to_i
-		longitude = location_input[1].to_i
+		latitude = location_input[0].to_f
+		longitude = location_input[1].to_f
 		location_name = location_input[2]
 		location = Location.find_by(latitude: latitude, longitude: longitude)
 
