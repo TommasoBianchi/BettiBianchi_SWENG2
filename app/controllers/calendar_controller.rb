@@ -106,10 +106,20 @@ class CalendarController < ApplicationController
         # Change the current day
         current_day = mp.meeting.start_date.midnight
         schedule.push current_day
+        breaks = user.breaks.where(day_of_the_week: current_day.wday).map do |b|
+          computed_break = b.computed_breaks.where(computed_time: current_day..(current_day + 1.days))
+          if computed_break.length > 0
+            computed_break.computed_time
+          else
+            current_day + b.default_time.minutes
+          end
+        end
+        breaks = breaks.sort
       end
 
       # If a meeting participation is inconsistent, just push its meeting and forget about travels/default locations
       if mp.is_consistent == false
+        schedule.push breaks.pop if breaks[0] and mp.meeting.start_date > breaks[0]
         schedule.push mp.meeting
         next
       end
