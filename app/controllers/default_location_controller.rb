@@ -64,7 +64,7 @@ class DefaultLocationController < ApplicationController
 
 	def delete
 		check_if_mine(params[:default_location_id])
-		check_if_me(params[:user_id])
+		check_if_me(params[:user_id].to_i)
 
 		travel_to_drop = Travel.where("starting_location_dl_id = :dl_id OR ending_location_dl_id = :dl_id", dl_id: params[:default_location_id])
 		travel_step_to_drop = TravelStep.where(travel_id: travel_to_drop.ids)

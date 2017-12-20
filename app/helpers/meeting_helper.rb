@@ -205,6 +205,7 @@ module MeetingHelper
 		# Grab all conflicting meeting participations from the db
 		conflicts = meeting_participation.conflicting_meeting_participations
 
+		Rails.logger.debug "decline_invitation -- about to recompute #{conflicts.length} meeting participations"
 		# Drop all the conflicts
 		MeetingParticipationConflict.where(meeting_participation_1_id: conflicts.ids)
 				.or(MeetingParticipationConflict.where(meeting_participation_2_id: conflicts.ids)).delete_all
@@ -363,12 +364,19 @@ module MeetingHelper
 	end
 
 	def self.update_schedule(meeting_participations_to_recompute)
-		# TODO: manage meeting participation conflicts
 		meeting_participations_to_recompute.each do |mp|
+			Rails.logger.debug "Meeting participation #{mp.id} is being recomputed"
+
 			arriving_travel = mp.arriving_travel
 			leaving_travel = mp.leaving_travel
 			meeting = mp.meeting
 			response_status = mp.response_status
+
+			# Drop all the conflicts
+			conflicts = mp.conflicting_meeting_participations
+			MeetingParticipationConflict.where(meeting_participation_1_id: conflicts.ids)
+				.or(MeetingParticipationConflict.where(meeting_participation_2_id: conflicts.ids)).delete_all
+
 			if arriving_travel
 				arriving_travel.travel_steps.each do |step|
 					step.delete
@@ -392,9 +400,14 @@ module MeetingHelper
 				result[:meeting_participation].update({response_status: response_status})
 			end
 
-			from_date = if mp.arriving_travel then mp.arriving_travel.start_time else mp.meeting.start_date end
-			to_date = if mp.leaving_travel then mp.leaving_travel.end_time else mp.meeting.end_date end
-			#BreakHelper.update_all_breaks(from_date, end_date, mp.user)
+			Rails.logger.debug "Meeting participation for meeting #{meeting.id} and for user #{mp.user.id}" + 
+								" successfully recomputed (mp id: #{result[:meeting_participation].id})"
+
+			from_date = if result[:meeting_participation].arriving_travel 
+				then result[:meeting_participation].arriving_travel.start_time else meeting.start_date end
+			to_date = if result[:meeting_participation].leaving_travel 
+				then result[:meeting_participation].leaving_travel.end_time else meeting.end_date end
+			BreakHelper.update_all_breaks(from_date, to_date, mp.user)
 		end		
 	end
 
