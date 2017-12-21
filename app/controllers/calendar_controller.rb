@@ -100,6 +100,7 @@ class CalendarController < ApplicationController
     current_day = nil
     last_travel_id = -1
     last_default_location_id = -1
+    breaks = []
 
     meeting_participations.each do |mp|
       if current_day.nil? || (mp.meeting.start_date.midnight != current_day)
