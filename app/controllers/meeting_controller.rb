@@ -48,8 +48,8 @@ class MeetingController < ApplicationController
 		start_time = params[:meeting][:start_time].to_datetime
 		end_time = params[:meeting][:end_time].to_datetime
 
-		start_date = DateTime.new(date[2], date[0], date[1], start_time.hour, start_time.minute, 0)
-		end_date = DateTime.new(date[2], date[0], date[1], end_time.hour, end_time.minute, 0)
+		start_date = DateTime.new(date[0], date[1], date[2], start_time.hour, start_time.minute, 0)
+		end_date = DateTime.new(date[0], date[1], date[2], end_time.hour, end_time.minute, 0)
 
 		unless start_date < end_date
 			@meeting.errors.add(:start_time, "Not valid")
@@ -74,7 +74,7 @@ class MeetingController < ApplicationController
 		invited_users = params[:meeting][:participants].split(" ").map {|s| User.find(s.to_i)}
 		CreateMeetingJob.perform_later start_date.to_i, end_date.to_i, title, abstract, location, user, invited_users
 
-		redirect_to calendar_day_path(year: date[2], month: date[0], day: date[1])
+		redirect_to calendar_day_path(year: date[0], month: date[1], day: date[2])
 
 	end
 

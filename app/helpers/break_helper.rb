@@ -1,8 +1,8 @@
 module BreakHelper
 
 	def self.update_break(b, day)
-		from = day + b.start_time_slot.minutes
-		to = day + b.end_time_slot.minutes
+		from = day.midnight + b.start_time_slot.minutes
+		to = day.midnight + b.end_time_slot.minutes
 		user_meeting_participations = b.user.meeting_participations.where(is_consistent: true)
 										.where(response_status: MeetingParticipation::Response_statuses[:accepted])
 		# TODO: joins also with travel to get overlapping mps also wrt them
@@ -24,12 +24,12 @@ module BreakHelper
 		# TODO: maybe from_date and to_date are in different wdays. Deal with it
 
 		from = (from_date.utc - from_date.utc.midnight) / 60	# in minutes since midnight
-		to = (to_date - to_date.utc.midnight) / 60 # in minutes since midnight
+		to = (to_date.utc - to_date.utc.midnight) / 60 # in minutes since midnight
 		user_breaks = user.breaks.where(day_of_the_week: from_date.wday)
 		overlapping_breaks = user_breaks.where(start_time_slot: from..to)
 								.or(user_breaks.where(end_time_slot: from..to))
 								.or(user_breaks.where(start_time_slot: 0..from).where(end_time_slot: to..24*60))
-
+		
 		overlapping_breaks.each do |b|
 			update_break b, from_date
 		end
