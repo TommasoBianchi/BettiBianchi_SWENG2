@@ -42,8 +42,8 @@ class CalendarController < ApplicationController
 
     @schedule = get_schedule(from_date, to_date, @user)
 
-    /Week number according to the ISO-8601 standard, weeks starting on Monday.
-    The first week of the year is the week that contains that year's first Thursday (='First 4-day week')./
+    # Week number according to the ISO-8601 standard, weeks starting on Monday.
+    # The first week of the year is the week that contains that year's first Thursday (='First 4-day week').
     prev_week = from_date - 4.days
     next_week = from_date + 10.days
     links = {
@@ -56,7 +56,7 @@ class CalendarController < ApplicationController
 
     prev_text = (from_date - 1.weeks).strftime '%d %b %Y'
     next_text = (from_date + 1.weeks).strftime '%d %b %Y'
-    render 'calendar/main', locals: { links: links, elements_to_skip: [Travel, DefaultLocation], prev_text: prev_text, next_text: next_text, footer_link: 'week' }
+    render 'calendar/main', locals: { links: links, elements_to_skip: [Travel, DefaultLocation, Hash], prev_text: prev_text, next_text: next_text, footer_link: 'week' }
   end
 
   def show_month
@@ -83,7 +83,7 @@ class CalendarController < ApplicationController
 
     prev_text = prev_month.strftime '%b %Y'
     next_text = next_month.strftime '%b %Y'
-    render 'calendar/main', locals: { links: links, elements_to_skip: [Travel, DefaultLocation], prev_text: prev_text, next_text: next_text, footer_link: 'month' }
+    render 'calendar/main', locals: { links: links, elements_to_skip: [Travel, DefaultLocation, Hash], prev_text: prev_text, next_text: next_text, footer_link: 'month' }
   end
 
   private
@@ -100,6 +100,7 @@ class CalendarController < ApplicationController
     current_day = nil
     last_travel_id = -1
     last_default_location_id = -1
+    breaks = []
 
     meeting_participations.each do |mp|
       if current_day.nil? || (mp.meeting.start_date.midnight != current_day)
@@ -107,32 +108,34 @@ class CalendarController < ApplicationController
         current_day = mp.meeting.start_date.midnight
         schedule.push current_day
         breaks = user.breaks.where(day_of_the_week: current_day.wday).map do |b|
-          computed_break = b.computed_breaks.where(computed_time: current_day..(current_day + 1.days))
-          if computed_break.length > 0
-            computed_break.computed_time
+          computed_break = b.computed_breaks.where(computed_time: current_day..(current_day + 1.days)).first
+          if computed_break
+            {time: computed_break.computed_time, break: computed_break}
           else
-            current_day + b.default_time.minutes
+            {time: current_day + b.default_time.minutes, break: b}
           end
         end
-        breaks = breaks.sort
+        breaks = breaks.sort_by {|b| b[:time]}
       end
 
       # If a meeting participation is inconsistent, just push its meeting and forget about travels/default locations
       if mp.is_consistent == false
-        schedule.push breaks.pop if breaks[0] and mp.meeting.start_date > breaks[0]
+        push_break_in_schedule schedule, breaks, mp.meeting.start_date
         schedule.push mp.meeting
         next
       end
 
       if mp.arriving_travel.id != last_travel_id
-        travel_starting_time_from_midnight = (mp.arriving_travel.start_time - mp.arriving_travel.start_time.midnight) / 60
+        push_break_in_schedule schedule, breaks, mp.arriving_travel.start_time
         if (mp.arriving_travel.get_starting_point.is_a?(DefaultLocation) and mp.arriving_travel.get_starting_point.id != last_default_location_id)
           schedule.push mp.arriving_travel.get_starting_point
         end
         schedule.push mp.arriving_travel
       end
 
+      push_break_in_schedule schedule, breaks, mp.meeting.start_date
       schedule.push mp.meeting	# maybe push also response status??
+      push_break_in_schedule schedule, breaks, mp.leaving_travel.start_time
       schedule.push mp.leaving_travel
 
       if(mp.leaving_travel.get_ending_point.is_a?(DefaultLocation))
@@ -143,10 +146,16 @@ class CalendarController < ApplicationController
       last_travel_id = mp.leaving_travel.id
     end
 
-    # If the schedule is still empty just push the from_date
+    # If the schedule is still empty just push the from_date and the breaks
     schedule.push from_date.midnight if schedule.empty?
 
     return schedule
+  end
+
+  def push_break_in_schedule(schedule, breaks, time)
+    while breaks and breaks.length > 0 and breaks[0][:time] < time do
+      schedule.push breaks.pop
+    end
   end
 
   def validate_between(item, lower_bound, upper_bound)

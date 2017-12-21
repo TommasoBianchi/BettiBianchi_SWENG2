@@ -69,6 +69,14 @@
 						<div class="detail">Details</div>
 					</a>
 				</div>
+			<% elsif(item[:break] rescue nil) %>
+				<div class="break rounded-box">
+					<div class="break-name"><%= item[:break].name %></div>
+					<div class="break-time"><%= item[:time].strftime "%I:%M %p" %> - <%= (item[:time] + item[:break].duration.minutes).strftime "%I:%M %p" %></div>
+					<a href='<%=  %>'>
+						<div class="detail">Details</div>
+					</a>
+				</div>
 			<% else %>
 				<!--- This is a date separator -->
 				<% if first %>
