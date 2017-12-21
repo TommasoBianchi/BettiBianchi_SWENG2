@@ -24,8 +24,10 @@ Rails.application.routes.draw do
 	get 'user/:id/add_constraint' => 'user#add_constraint', as: 'add_constraint'
 	post 'user/:id/add_constraint', to: 'user#create_constraint'
 	get 'user/:id/add_break' => 'user#add_break', as: 'add_break'
+	post 'user/:id/add_break', to: 'user#create_break'
 	get 'user/delete_constraint/:user_id/:constraint_id' => 'user#delate_constraint', as: 'delete_constraint'
-	get 'user/delete_break/:user_id/:break_id' => 'user#delate_break', as: 'delete_break'
+	get 'user/delete_break/:user_id/:break_id' => 'user#delete_break', as: 'delete_break'
+	get 'user/delete_email/:user_id/:email_id' => 'user#delete_email', as: 'delete_email'
 
 	# Meeting
 	get 'meeting/:id/participants_page' => 'meeting#participants_page', as: 'participants_page'
