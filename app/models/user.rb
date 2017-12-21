@@ -27,7 +27,7 @@ class User < ApplicationRecord
 		BCrypt::Password.create(string, cost: cost)
 	end
 
-	has_secure_password :validations => false
+	has_secure_password :validations => {:on => :create}
 	validates :password, presence: true, :on => :create
 	validates :password_confirmation, presence: true, :on => :create
 	validates :name, :surname, :nickname, :preference_list, presence: true
