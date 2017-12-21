@@ -19,7 +19,7 @@ ActiveRecord::Schema.define(version: 20171219150900) do
     t.integer "duration", null: false
     t.string "name", null: false
     t.integer "day_of_the_week"
-    t.datetime "created_at", null: false
+		t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "user_id"
     t.integer "default_time", null: false

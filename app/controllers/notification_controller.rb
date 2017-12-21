@@ -5,7 +5,9 @@ class NotificationController < ApplicationController
 		#response_status: MeetingParticipation::Response_statuses[:pending], user: @user.id)
 		@pending_meetings = get_invitation(@user)
 		@warning_meeting = get_inconsistent_meetings(@user)
+		@undoable_breaks = get_undoable_breaks(@user)
 	end
+
 
 	def resolve_warning
 		check_if_mine(params[:meeting_participation_id])
@@ -15,7 +17,27 @@ class NotificationController < ApplicationController
 		@meeting_participations = single_group
 		@user = current_user
 	end
+
 	private
+
+	def get_undoable_breaks(user)
+		breaks = user.breaks
+		undobale = ComputedBreak.where(break_id: breaks.ids, is_doable: false)
+
+		breaks_day = []
+		current_day = nil
+		if undobale.count() > 0
+			undobale.each do |ub|
+				if current_day.nil? || (ub.start_time_slot.midnight != current_day)
+					# Change the current day
+					current_day = ub.start_time_slot.midnight
+					breaks_day.push current_day
+				end
+			end
+		end
+
+		return breaks_day
+	end
 
 	def get_invitation(user)
 		schedule = []

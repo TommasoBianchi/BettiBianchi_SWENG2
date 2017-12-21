@@ -37,7 +37,7 @@ class DefaultLocationController < ApplicationController
 			return
 		end
 
-		day_of_the_week = get_day_name(params[:default_location][:day_of_the_week])
+		day_of_the_week = get_day_by_name(params[:default_location][:day_of_the_week])
 		if day_of_the_week == 'no day'
 			render 'new'
 			return
@@ -112,25 +112,6 @@ class DefaultLocationController < ApplicationController
 
 	end
 
-	def get_day_name(day_of_the_week)
-		case day_of_the_week
-			when "Sunday"
-				0
-			when "Monday"
-				1
-			when "Tuesday"
-				2
-			when "Wednesday"
-				3
-			when "Thursday"
-				4
-			when "Friday"
-				5
-			when "Saturday"
-				6
-			else
-				'no day'
-		end
-	end
+
 end
 
