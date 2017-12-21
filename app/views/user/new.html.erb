@@ -43,6 +43,8 @@
 				<%= form.text_field :surname, id: 'surname', type: 'text' %>
 				<%= form.label :nickname, class: 'label' %>
 				<%= form.text_field :nickname, id: 'nickname', type: 'text' %>
+				<%= form.label :brief, class: 'label' %>
+				<%= form.text_area :brief, id: 'brief', type: 'text' %>
 
 				<%= form.label :preference_list, class: 'label' %>
 				<%= render 'shared/preference_list', form: form %>

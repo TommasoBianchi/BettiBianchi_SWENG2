@@ -121,6 +121,7 @@ input.error {
 .add-image {
   float: right;
   height: 23px;
+  cursor: pointer;
 }
 
 .add-icon {
@@ -134,3 +135,7 @@ select, option{
   padding: 3px;
 }
 
+/* CSS for edit profile page only */
+.add-email-div{
+  display: none;
+}

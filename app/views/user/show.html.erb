@@ -3,9 +3,7 @@
 	<%= render 'shared/calendar_sidebar' %>
 	<section class="mainContent">
 		<!-- insierire freccia indietro se non sono me stesso alla pagina prima -->
-		<a href='#'>
-			<div class=" profile-detail detail light-light-grey-container colored-container only-if-myself">Edit Profile</div>
-		</a>
+		<%= link_to "Edit Profile", edit_user_path, class: "profile-detail detail light-light-grey-container colored-container only-if-myself" %>
 
 		<div><%= image_tag(if Rails.application.assets.find_asset("profile_images/" + @user.nickname + ".png").nil?
 												 "defaultProfileImage.png"

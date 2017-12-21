@@ -85,8 +85,9 @@ $background_image_url: image_url("homepage/sfondo25.png");
   background-color: rgba(170, 50, 80, 1);
   padding: 20px;
   width: 60%;
+  margin-right: auto;
+  margin-left: auto;
   text-align: left;
-  margin: 0 auto;
   position: relative;
   z-index: 2;
 }
