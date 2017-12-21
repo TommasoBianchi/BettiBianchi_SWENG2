@@ -18,15 +18,15 @@
 				<div class='date-time-container'>
 					<div class='date-container'>
 						<%= form.label :date, class: 'label' %>
-						<%= form.text_field :date, id: 'meeting_date', type: 'text' %>
+						<%= form.text_field :date, id: 'date', type: 'text' %>
 					</div>
 					<div class='time-container'>
 						<%= form.label :start_time, class: 'label' %>
-						<%= form.text_field :start_time, class: 'time', id: 'start_time', type: 'text' %>
+						<%= form.text_field :start_time, class: 'time', id: 'start_date', type: 'text' %>
 					</div>
 					<div class='time-container'>
 						<%= form.label :end_time, class: 'label' %>
-						<%= form.text_field :end_time, class: 'time', id: 'end_time', type: 'text' %>
+						<%= form.text_field :end_time, class: 'time', id: 'end_date', type: 'text' %>
 					</div>
 				</div>
 
@@ -49,7 +49,8 @@
 	<% if !@meeting.valid? %>
 	$(window).on('load', function () {
 		<% @meeting.errors.each do |error, message| %>
-		displayError("<%= error.to_s %>", "<%= message %>")
+			console.log("<%= error.to_s %>" + "   " + "<%= message %>");
+		displayError("<%= error.to_s %>", "<%= message %>");
 		<% end %>
 	})
 	<% end %>
@@ -60,18 +61,18 @@
 
 <script>
 	$(function () {
-		$('#start_time').timepicker({'step': 5});
+		$('#start_date').timepicker({'step': 5});
 
-		$('#start_time').on('changeTime', function () {
+		$('#start_date').on('changeTime', function () {
 			var start_time_value = $('#start_time').val();
-			$('#end_time').timepicker({
+			$('#end_date').timepicker({
 				'step': 5,
 				'minTime': start_time_value,
 				'maxTime': '11.55pm',
 				'showDuration': true
 			});
 		});
-		$('#end_time').timepicker({
+		$('#end_date').timepicker({
 			'step': 5,
 			'minTime': '00.00am',
 			'maxTime': '11.55pm',
@@ -81,7 +82,7 @@
 	});
 
 	$(function () {
-		$("#meeting_date").datepicker({
+		$("#date").datepicker({
 			dateFormat: "yy/mm/dd"
 		});
 	});
