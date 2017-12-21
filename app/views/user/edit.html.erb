@@ -1,0 +1,81 @@
+
+<%= render 'shared/header', selected: 'Profile' %>
+<div id="content">
+	<script type="text/javascript"></script>
+	<%= render 'shared/calendar_sidebar' %>
+	<section class="mainContent">
+
+		<%= render 'shared/title_back_action', title: 'Edit User', path: @user %>
+
+		<div id="emailPasswordContainer">
+
+			<%= form_with scope: :user, local: true do |form| %>
+
+
+				<%= form.label :name, class: 'label' %>
+				<%= form.text_field :name, id: 'name', type: 'text', value: @user.name %>
+				<%= form.label :surname, class: 'label' %>
+				<%= form.text_field :surname, id: 'name', type: 'text', value: @user.surname %>
+				<%= form.label :website, class: 'label' %>
+				<%= form.text_field :website, id: 'name', type: 'text', value: @user.website %>
+
+				<div id="preference-list-container">
+					<div class="title-add-container ">
+						Emails
+						<%= image_tag("add_icon.png", alt: 'add_icon', class: 'add-image', id: 'add_email_button') %>
+					</div>
+				</div>
+
+				<div class="add-email-div">
+					<%= form_with scope: :email, local: true do |form| %>
+
+						<!-- sono arrivato qui devo aggiungere il metodo che mi controlla che post ho fatto etc.. -->
+						<%= form.label :email, class: 'label' %>
+						<%= form.text_field :email, id: 'name', type: 'text' %>
+
+						<div id="buttonsContainer">
+							<%= form.submit 'Create Email', class: 'monoConfirmationButton' %>
+						</div>
+
+					<% end %>
+				</div>
+				<div id="preference-list-container">
+					<% @emails.each do |email| %>
+						<div class="constraint-container colored-container light-light-grey-container">
+							<%= email.email %>
+							<%= link_to image_tag("cancel_icon.png", alt: "Delate", class: 'delete-image'), delete_email_path(user_id: @user.id, email_id: email.id) %>
+						</div>
+
+
+					<% end %>
+				</div>
+
+				<div id="buttonsContainer">
+					<%= form.submit 'Edit User', class: 'monoConfirmationButton' %>
+				</div>
+
+			<% end %>
+		</div>
+
+	</section>
+</div>
+<%= render 'shared/footer' %>
+
+<script type="text/javascript">
+
+	<% if !@user.valid? %>
+	$(window).on('load', function () {
+		<% @user.errors.each do |error, message| %>
+		displayError("<%= error.to_s %>", "<%= message %>");
+		<% end %>
+	})
+	<% end %>
+</script>
+
+<script>
+	$(function () {
+		$('#add_email_button').click(function () {
+			$('.add-email-div').toggle();
+		});
+	});
+</script>
