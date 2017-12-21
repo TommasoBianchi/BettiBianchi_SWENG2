@@ -3,6 +3,9 @@
 
 ######################################################################################################
 
+# Profile the seeder
+_seed_start_time_ = DateTime.now
+
 # DUMP EVERYTHING BEFORE RE-SEEDING
 ActiveRecord::Base.establish_connection
 ActiveRecord::Base.connection.tables.each do |table|
@@ -37,7 +40,7 @@ NUM_SOCIALS = 4
 NUM_EMAILS_PER_USER = 2
 # NUM_STATUSES_PER_USER = 2
 NUM_CONTACTS_PER_USER = 3
-NUM_BREAKS_PER_USER = 2
+NUM_BREAKS_PER_USER = 4
 NUM_USERS = 5
 NUM_MEETINGS_DAYS = 4
 NUM_MEETINGS_PER_DAY = 3
@@ -89,22 +92,6 @@ Subject::Subjects.keys.each do |name|
 end
 NUM_SUBJECTS = Subject::Subjects.keys.length
 
-=begin
-for i in 1..NUM_VALUES do
-  value = Value.create(value: 'Value' + i.to_s, subject_id: Subject.find(i % NUM_SUBJECTS + 1).id)
-
-  puts "Value #{i}"
-end
-
-for i in 1..NUM_CONSTRAINTS do
-  travel_mean_used = rand(1..NUM_TRAVEL_MEANS)
-  Constraint.create(travel_mean: travel_mean_used, user_id: User.find(i % NUM_USERS + 1).id, subject_id: Subject.find(i % NUM_SUBJECTS + 1).id,
-                    operator_id: Operator.find(i % NUM_OPERATORS + 1).id, value_id: Value.find(i % NUM_VALUES + 1).id)
-
-  puts "Constraint #{i}"
-end
-=end
-
 for i in 1..NUM_USERS do
 	user = User.create(name: 'Pinco' + i.to_s, surname: 'Pallo' + i.to_s, password: '0000', password_confirmation: '0000', nickname: 'PP' + i.to_s, preference_list: '021', website: 'http://www.google.com', company: 'BettiBianchi s.r.l.')
 	IncompleteUser.create(email: 'Pinco' + i.to_s + '.Pallo@travlendar.com', password: '0000', password_confirmation: '0000')
@@ -118,8 +105,8 @@ for i in 1..NUM_USERS do
 	end
 
 	for j in 1..NUM_BREAKS_PER_USER do
-		start_time_slot = (j * 100) % (24 * 60) # represented in minutes after midnight
-		end_time_slot = (j * 200) % (24 * 60) # represented in minutes after midnight
+		start_time_slot = rand(400..1000) # represented in minutes after midnight
+		end_time_slot = start_time_slot + rand(60..180)
 		default_time = (start_time_slot + end_time_slot) / 2
 		duration = (end_time_slot - start_time_slot) / 10
 		b = Break.create(default_time: default_time, start_time_slot: start_time_slot, end_time_slot: end_time_slot,
@@ -185,11 +172,8 @@ for i in (-NUM_MEETINGS_DAYS / 2)..(NUM_MEETINGS_DAYS / 2) do
 	for k in 1..NUM_MEETINGS_PER_DAY do
 		start_date = DateTime.new(day.year, day.month, day.day, rand(8..20), rand(0..59), 0)
 		end_date = start_date + rand(30..120).minutes
-		title = 'NewMeeting ' + meeting_number.to_s # + meeting.id.to_s
+		title = 'NewMeeting ' + meeting_number.to_s
 		abstract = "meeting from a seed"
-		# meeting = Meeting.create(location_id: rand(1..NUM_LOCATIONS), title: 'NewMeeting', start_date: start_date, end_date: end_date)
-		# meeting.title = title
-		# meeting.save
 		result = MeetingHelper.create_meeting start_date, end_date, title, abstract, Location.find(rand(1..NUM_LOCATIONS)), User.find(1)
 		meeting_number += 1
 
@@ -212,54 +196,6 @@ for i in (-NUM_MEETINGS_DAYS / 2)..(NUM_MEETINGS_DAYS / 2) do
 	end
 end
 
-=begin
-for i in 1..NUM_USERS do
-  for j in 1..NUM_MEETINGS do
-    k = rand(1..(10 + 1))
-    next unless k > 7
-    become_admin = [true, false].sample
-    response_status = rand(0...(NUM_RESPONSE_STATUSES + 4))
-    response_status = 1 if response_status > 2 # to give more probabilities of a meeting to be accepted
-    user = User.find(i % NUM_USERS + 1)
-    mp = MeetingParticipation.create(meeting_id: Meeting.find(j % NUM_MEETINGS + 1).id, user_id: user.id, is_admin: become_admin, is_consistent: true,
-                                     response_status: response_status)
-
-    puts "User #{i} - MeetingParticipation #{j} - ResponseStatus #{response_status}"
-
-    next unless mp.response_status == 1
-    # create arriving travel for mp
-    ending_datetime = mp.meeting.start_date
-    starting_datetime = ending_datetime - rand(10..60).minutes
-    travel_mean_used = rand(0..NUM_TRAVEL_MEANS)
-    distance = rand * MAX_DISTANCE
-    previous_default_location = user.get_last_default_location_before(starting_datetime)
-    arriving_travel = Travel.new(start_time: starting_datetime, end_time: ending_datetime, travel_mean: travel_mean_used, distance: distance)
-    arriving_travel.starting_location_dl = previous_default_location
-    arriving_travel.save
-    mp.arriving_travel_id = arriving_travel.id
-
-    puts "Travel #{arriving_travel.id}"
-    create_travel_steps(arriving_travel)
-
-    # create leaving travel for mp
-    starting_datetime = mp.meeting.end_date
-    ending_datetime = starting_datetime + rand(10..60).minutes
-    travel_mean_used = rand(0..NUM_TRAVEL_MEANS)
-    distance = rand * MAX_DISTANCE
-    following_default_location = user.get_last_default_location_before(ending_datetime)
-    leaving_travel = Travel.new(start_time: starting_datetime, end_time: ending_datetime, travel_mean: travel_mean_used, distance: distance)
-    leaving_travel.ending_location_dl = following_default_location
-    leaving_travel.save
-    mp.leaving_travel_id = leaving_travel.id
-
-    puts "Travel #{leaving_travel.id}"
-    create_travel_steps(leaving_travel)
-
-    mp.save
-  end
-end
-=end
-
 for i in 1..NUM_CATEGORIES do
 	cat = Category.create(name: 'category' + i.to_s, superclass_id: 1)
 
@@ -271,3 +207,8 @@ for i in 1..NUM_CATEGORIES do
 	j = rand(1..NUM_CATEGORIES) while j == i
 	Category.find(i).superclass_id = Category.find(j).id
 end
+
+# Profile the seeder
+_seed_end_time_ = DateTime.now
+
+puts "\nSeeder run in #{_seed_end_time_.to_i - _seed_start_time_.to_i} seconds\n"
