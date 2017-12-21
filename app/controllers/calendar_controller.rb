@@ -108,7 +108,7 @@ class CalendarController < ApplicationController
         current_day = mp.meeting.start_date.midnight
         schedule.push current_day
         breaks = user.breaks.where(day_of_the_week: current_day.wday).map do |b|
-          computed_break = b.computed_breaks.where(computed_time: current_day..(current_day + 1.days)).first
+          computed_break = b.computed_breaks.where(computed_time: current_day..(current_day + 1.days), is_doable: true).first
           if computed_break
             {time: computed_break.computed_time, break: computed_break}
           else

@@ -21,6 +21,9 @@ module TravelHelper
 
 		if json_response['status'] != 'OK'
 			if json_response['status'] == 'OVER_QUERY_LIMIT'
+				# Wait a couple of seconds before retry to avoid upsetting google
+				sleep 2
+				
 				return shortest_path(start_location, end_location, travel_mean, departure_time, arrival_time)
 			end
 			# raise error?
