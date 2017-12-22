@@ -254,7 +254,7 @@ class UserController < ApplicationController
 			fill_time_errors
 		end
 
-		duration = params[:break][:duration]
+		duration = params[:break][:duration].to_i
 		if duration < 1
 			@break.errors.add(:duration, 'Negative duration is not valid')
 		end
