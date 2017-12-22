@@ -7,7 +7,7 @@
   //color: $dark_grey;
 }
 
-/* CSS about new meeting page */
+/* CSS about show user */
 
 input.error {
   border-color: red;
@@ -38,7 +38,7 @@ input.error {
   margin-top: 18px;
 }
 
-#nickname {
+.nickname-container{
   font-size: 22px;
   font-style: italic;
   margin: 5px 5px 25px;
@@ -71,6 +71,16 @@ input.error {
 
 .social-container {
   display: inline-flex;
+}
+
+.logout{
+  text-transform: uppercase;
+  position: absolute;
+  right: 20px;
+  bottom: 20px;
+  cursor: pointer;
+  color: black;
+
 }
 
 /* CSS for contacts page */
