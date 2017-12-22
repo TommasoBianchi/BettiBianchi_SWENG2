@@ -25,6 +25,12 @@ class ApplicationController < ActionController::Base
 		end
 	end
 
+
+	def isEmail(str)
+		reg_ex_pattern = /\A([\w+\-].?)+@[a-z\d\-]+(\.[a-z]+)*\.[a-z]+\z/i
+		reg_ex_pattern.match?(str)
+	end
+
 	private
 	def require_login
 		unless current_user

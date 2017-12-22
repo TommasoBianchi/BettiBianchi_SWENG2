@@ -64,7 +64,44 @@ class UserController < ApplicationController
 		@user = current_user
 		primary_mail_id = @user.primary_email_id
 		@emails = @user.emails.where.not(id: primary_mail_id)
+		@email = Email.new
+		@datafile = Email.new
 	end
+
+	def post_edit
+		@user = current_user
+		@emails = @user.emails.where.not(id: @user.primary_email_id)
+		@email = Email.new
+		case params[:commit]
+			when "Create Email" #button clicked = Create Email
+				email = params[:email][:email]
+				if isEmail(email)
+					Email.create(email: email, user_id: @user.id)
+					redirect_to edit_user_path(id: @user.id)
+					return
+				else
+					@email.errors.add(:email, 'email not valid')
+					render 'edit'
+					return
+				end
+			when "Edit User" #button clicked = Edit User
+				if @user.update_attributes(user_edit_params)
+					redirect_to @user
+				else
+					render 'edit'
+				end
+			when "Upload Image"
+				uploaded_io = params[:file]
+				File.open(Rails.root.join('public', 'profile_images', @user.primary_email.email + ".png"), 'wb') do |file|
+					file.write(uploaded_io.read)
+				end
+				redirect_to @user
+				return
+			else
+				redirect_to edit_user_path(id: current_user.id)
+		end
+	end
+
 
 	def delete_email
 		check_delete_email_params
@@ -222,7 +259,7 @@ class UserController < ApplicationController
 		duration = ending_hour - starting_hour
 		user = current_user
 		b = Break.create(default_time: default_time_hour, start_time_slot: starting_hour, end_time_slot: ending_hour,
-													duration: duration, name: name, day_of_the_week: day_of_the_week, user_id: user.id)
+										 duration: duration, name: name, day_of_the_week: day_of_the_week, user_id: user.id)
 		#BreakHelper.update_break(b, day?) do i have to pass all mondays(ex) from now to the eternity?
 		redirect_to settings_page_path
 	end
@@ -246,6 +283,10 @@ class UserController < ApplicationController
 
 	def user_params
 		params.require(:user).permit(:name, :surname, :password, :nickname, :preference_list)
+	end
+
+	def user_edit_params
+		params.require(:user).permit(:name, :surname, :nickname, :phone_number, :website, :company, :brief)
 	end
 
 	def reinsertUser(incomplete_user_email, incomplete_user_psw)
