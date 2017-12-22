@@ -14,6 +14,7 @@ Rails.application.routes.draw do
 
 	# User
 	get 'user/new'
+	post 'user/:id/edit', to: 'user#post_edit'
 	get 'user/search/:id' => 'user#search', as: 'search_user'
 	get 'user/search_contacts/:id' => 'user#search_contacts', as: 'search_user_contact'
 	get 'user/contacts/:id' => 'user#contacts', as: 'contacts_page'
