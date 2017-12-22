@@ -254,13 +254,17 @@ class UserController < ApplicationController
 			fill_time_errors
 		end
 
+		duration = params[:break][:duration]
+		if duration < 1
+			@break.errors.add(:duration, 'Negative duration is not valid')
+		end
+		
 		day_of_the_week = get_day_by_name(params[:break][:day_of_the_week])
 		name = params[:break][:name]
-		duration = ending_hour - starting_hour
 		user = current_user
 		b = Break.create(default_time: default_time_hour, start_time_slot: starting_hour, end_time_slot: ending_hour,
 										 duration: duration, name: name, day_of_the_week: day_of_the_week, user_id: user.id)
-		#BreakHelper.update_break(b, day?) do i have to pass all mondays(ex) from now to the eternity?
+		BreakHelper.full_update_break(b)
 		redirect_to settings_page_path
 	end
 

@@ -37,6 +37,12 @@
 
 				</div>
 
+				<div class='date-time-container'>
+					<div class='time-container'>
+						<%= form.label :duration, class: 'label' %>
+						<%= form.text_field :duration, id: 'duration', type: 'number', min: '1' %>
+					</div>
+				</div>
 				<div id="buttonsContainer">
 					<%= form.submit 'Create Break', class: 'monoConfirmationButton' %>
 				</div>
