@@ -4,8 +4,9 @@
 	<section class="mainContent">
 		<!-- insierire freccia indietro se non sono me stesso alla pagina prima -->
 		<%= link_to "Edit Profile", edit_user_path, class: "profile-detail detail light-light-grey-container colored-container only-if-myself" %>
+		<%= link_to "Log out", logout_path, method: :delete, class: 'profile-detail light-grey-container colored-container only-if-myself logout' %>
 
-		<div><%= image_tag(if Rails.application.assets.find_asset("profile_images/" + @user.nickname + ".png").nil?
+		<div><%= image_tag(if ("/public/profile_images/" + @user.primary_email.email + ".png").nil?
 												 "defaultProfileImage.png"
 											 else
 												 "profile_images/" + @user.nickname + ".png"
@@ -15,7 +16,7 @@
 			<%= @user.name + " " + @user.surname %>
 		</div>
 
-		<div id="nickname">
+		<div class="nickname-container">
 			(<%= @user.nickname %>)
 		</div>
 
@@ -64,11 +65,7 @@
 			<% end %>
 		</div>
 
-		<div class="profile-page-buttons only-if-myself">
-			<div class="colored-container light-grey-container date-time-block">
-				<%= link_to "Log out", logout_path, method: :delete %>
-			</div>
-		</div>
+
 	</section>
 </div>
 <%= render 'shared/footer' %>

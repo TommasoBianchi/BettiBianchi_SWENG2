@@ -1,4 +1,3 @@
-
 <%= render 'shared/header', selected: 'Profile' %>
 <div id="content">
 	<script type="text/javascript"></script>
@@ -15,10 +14,34 @@
 				<%= form.label :name, class: 'label' %>
 				<%= form.text_field :name, id: 'name', type: 'text', value: @user.name %>
 				<%= form.label :surname, class: 'label' %>
-				<%= form.text_field :surname, id: 'name', type: 'text', value: @user.surname %>
+				<%= form.text_field :surname, id: 'surname', type: 'text', value: @user.surname %>
+				<%= form.label :nickname, class: 'label' %>
+				<%= form.text_field :nickname, id: 'nickname', type: 'text', value: @user.nickname %>
+				<%= form.label :phone_number, class: 'label' %>
+				<%= form.text_field :phone_number, id: 'phone_number', type: 'text', value: @user.phone_number %>
 				<%= form.label :website, class: 'label' %>
-				<%= form.text_field :website, id: 'name', type: 'text', value: @user.website %>
+				<%= form.text_field :website, id: 'website', type: 'text', value: @user.website %>
+				<%= form.label :company, class: 'label' %>
+				<%= form.text_field :company, id: 'company', type: 'text', value: @user.company %>
+				<%= form.label :brief, class: 'label' %>
+				<%= form.text_area :brief, id: 'brief', type: 'text', value: @user.brief %>
 
+				<div id="buttonsContainer">
+					<%= form.submit 'Edit User', class: 'monoConfirmationButton' %>
+				</div>
+
+				<!-- used to upload file, it doesn't work
+
+				<%= form_tag({action: :post_edit}, multipart: true) do %>
+					<%= label :profile_image, 'Profile Image (png only)' %>
+					<%= file_field_tag 'profile_image', class: 'white-container' %>
+					<div id="buttonsContainer">
+						<%= submit_tag 'Upload Image', class: 'monoConfirmationButton' %>
+					</div>
+				<% end %>
+
+					-->
+				
 				<div id="preference-list-container">
 					<div class="title-add-container ">
 						Emails
@@ -50,10 +73,6 @@
 					<% end %>
 				</div>
 
-				<div id="buttonsContainer">
-					<%= form.submit 'Edit User', class: 'monoConfirmationButton' %>
-				</div>
-
 			<% end %>
 		</div>
 
@@ -66,6 +85,14 @@
 	<% if !@user.valid? %>
 	$(window).on('load', function () {
 		<% @user.errors.each do |error, message| %>
+		displayError("<%= error.to_s %>", "<%= message %>");
+		<% end %>
+	})
+	<% end %>
+
+	<% if !@email.valid? %>
+	$(window).on('load', function () {
+		<% @email.errors.each do |error, message| %>
 		displayError("<%= error.to_s %>", "<%= message %>");
 		<% end %>
 	})
