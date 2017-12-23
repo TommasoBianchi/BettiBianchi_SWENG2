@@ -169,8 +169,12 @@ class UserController < ApplicationController
 	def change_preference_list
 		check_if_myself
 		user = current_user
-		user.update_attributes(user_pref_list_params)
-		user.save
+		new_preference_list = user_pref_list_params[:preference_list]
+		if new_preference_list != user.preference_list
+			user.update_attributes(user_pref_list_params)
+			user.save
+			RecomputeMeetingParticipationsJob.perform_later (0..6).to_a, user
+		end
 		redirect_to settings_page_path
 	end
 

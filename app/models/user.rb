@@ -5,6 +5,7 @@ class User < ApplicationRecord
 	has_many :socials, through: :social_users
 	has_many :emails
 	has_many :breaks
+	has_many :computed_breaks
 	has_many :statuses
 
 	has_and_belongs_to_many :contacts, class_name: 'User',

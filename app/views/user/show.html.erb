@@ -3,10 +3,10 @@
 	<%= render 'shared/calendar_sidebar' %>
 	<section class="mainContent">
 		<!-- insierire freccia indietro se non sono me stesso alla pagina prima -->
-		<%= link_to "Edit Profile", edit_user_path, class: "profile-detail detail light-light-grey-container colored-container only-if-myself" %>
-		<%= link_to "Log out", logout_path, method: :delete, class: 'profile-detail light-grey-container colored-container only-if-myself logout' %>
+		<%= link_to "Edit Profile", edit_user_path, class: "profile-detail detail light-light-grey-container colored-container" if @user.id == current_user.id %>
+		<%= link_to "Log out", logout_path, method: :delete, class: 'profile-detail light-grey-container colored-container logout' if @user.id == current_user.id %>
 
-		<div><%= image_tag(if ("/public/profile_images/" + @user.primary_email.email + ".png").nil?
+		<div><%= image_tag(unless File.file? ("/public/profile_images/" + @user.primary_email.email + ".png")
 												 "defaultProfileImage.png"
 											 else
 												 "profile_images/" + @user.nickname + ".png"
@@ -48,13 +48,16 @@
 			</div>
 		<% end %>
 
-		<div class="profile-page-buttons only-if-myself">
-			<div class="colored-container light-grey-container date-time-block">
-				<%= link_to('Manage Contacts', contacts_page_path, id: @user.id) %>
-			</div>
-			<div class="colored-container light-grey-container date-time-block">
-				<%= link_to('Manage Contacts', contacts_page_path, id: @user.id) %>
-			</div>
+		<div class="profile-page-buttons">
+			<% if @user.id == current_user.id %>
+				<div class="colored-container light-grey-container date-time-block">
+					<%= link_to('Manage Contacts', contacts_page_path, id: @user.id) %>
+				</div>
+			<% else %>
+				<div class="colored-container light-grey-container date-time-block">
+					<%= link_to('Add to Contacts', add_contact_path(current_user.id, @user.id)) %>
+				</div>
+			<% end %>
 		</div>
 
 		<div class="social-container">
@@ -69,12 +72,3 @@
 	</section>
 </div>
 <%= render 'shared/footer' %>
-
-
-<script type="text/javascript">
-	<% if  @user.id == current_user.id %>
-	$('.only-if-not-myself').hide();
-	<% else %>
-	$('.only-if-myself').hide();
-	<% end %>
-</script>

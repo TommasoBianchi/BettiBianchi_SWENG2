@@ -104,6 +104,11 @@ class CalendarController < ApplicationController
 
     meeting_participations.each do |mp|
       if current_day.nil? || (mp.meeting.start_date.midnight != current_day)
+        # Push all the remaining breaks before changing day
+        breaks.each do |b|
+          schedule.push b          
+        end
+
         # Change the current day
         current_day = mp.meeting.start_date.midnight
         schedule.push current_day
@@ -148,6 +153,11 @@ class CalendarController < ApplicationController
 
     # If the schedule is still empty just push the from_date and the breaks
     schedule.push from_date.midnight if schedule.empty?
+
+    # Push all the remaining breaks before ending
+    breaks.each do |b|
+      schedule.push b          
+    end
 
     return schedule
   end

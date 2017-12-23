@@ -84,6 +84,27 @@ body {
   /* padding-right: 10%; */
 }
 
+#headerLinks a div {
+  display: inline-block;
+}
+
+#notifications-amount {
+  right: 20%;
+  transform: translate(0px, -5px);
+  font-size: 10px;
+  width: 15px;
+  height: 16px;
+  line-height: 15px;
+  border-radius: 100%;
+  background-color: $light_grey;
+  color: $dark_grey;
+}
+
+#headerLinks a.selected #notifications-amount {
+  background-color: $dark_grey;
+  color: $light_grey;
+}
+
 /* pasted things about footer*/
 /* footer */
 footer {

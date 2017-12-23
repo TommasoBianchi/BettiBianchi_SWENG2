@@ -377,12 +377,14 @@ module MeetingHelper
 			MeetingParticipationConflict.where(meeting_participation_1_id: conflicts.ids)
 				.or(MeetingParticipationConflict.where(meeting_participation_2_id: conflicts.ids)).delete_all
 
+			mp.delete
+
 			if arriving_travel
 				arriving_travel.travel_steps.each do |step|
 					step.delete
 				end
 				# If another meeting participation is linked to this travel, drop the link
-				MeetingParticipation.where(arriving_travel: arriving_travel).update(arriving_travel: nil)
+				MeetingParticipation.where(leaving_travel: arriving_travel).update(leaving_travel: nil, is_consistent: false)
 				arriving_travel.delete
 			end
 			if leaving_travel
@@ -390,10 +392,9 @@ module MeetingHelper
 					step.delete
 				end
 				# If another meeting participation is linked to this travel, drop the link
-				MeetingParticipation.where(leaving_travel: leaving_travel).update(leaving_travel: nil)
+				MeetingParticipation.where(arriving_travel: leaving_travel).update(arriving_travel: nil, is_consistent: false)
 				leaving_travel.delete
 			end
-			mp.delete
 
 			result = invite_to_meeting meeting, mp.user
 			unless result[:status] == :errors
