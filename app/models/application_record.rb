@@ -25,9 +25,13 @@ class ApplicationRecord < ActiveRecord::Base
 	def get_time(integer_time_slot)
 		if integer_time_slot > 60 * 12
 			integer_time_slot = integer_time_slot - 60 * 12
-			(integer_time_slot / 60).to_s + ":" + (integer_time_slot % 60).to_s + " PM"
+			minutes = integer_time_slot % 60
+			minutes = if minutes < 10 then "0#{minutes}" else "#{minutes}" end
+			(integer_time_slot / 60).to_s + ":" + minutes + " PM"
 		else
-			(integer_time_slot / 60).to_s + ":" + (integer_time_slot % 60).to_s + " AM"
+			minutes = integer_time_slot % 60
+			minutes = if minutes < 10 then "0#{minutes}" else "#{minutes}" end
+			(integer_time_slot / 60).to_s + ":" + minutes + " AM"
 		end
 	end
 end
