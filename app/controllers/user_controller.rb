@@ -258,7 +258,7 @@ class UserController < ApplicationController
 		if duration < 1
 			@break.errors.add(:duration, 'Negative duration is not valid')
 		end
-		
+
 		day_of_the_week = get_day_by_name(params[:break][:day_of_the_week])
 		name = params[:break][:name]
 		user = current_user

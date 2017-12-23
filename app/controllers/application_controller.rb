@@ -25,6 +25,31 @@ class ApplicationController < ActionController::Base
 		end
 	end
 
+	def get_name_of_wday(day_of_the_week)
+		case day_of_the_week
+			when 0
+				"Sunday"
+			when 1
+				"Monday"
+			when 2
+				"Tuesday"
+			when 3
+				"Wednesday"
+			when 4
+				"Thursday"
+			when 5
+				"Friday"
+			when 6
+				"Saturday"
+			else
+				'no day'
+		end
+	end
+
+	def get_time_from_integer(integer)
+		dt = DateTime.new(2017,1,1,0,0,0) + integer.minutes
+		return dt.strftime('%H:%M')
+	end
 
 	def isEmail(str)
 		reg_ex_pattern = /\A([\w+\-].?)+@[a-z\d\-]+(\.[a-z]+)*\.[a-z]+\z/i
