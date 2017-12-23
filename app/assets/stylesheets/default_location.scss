@@ -2,6 +2,12 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
-/* new default location */
-.radio-button-container{
+/* show default location */
+
+#map-container{
+  width: 400px !important;
+  height: 400px !important;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 50px !important;
 }

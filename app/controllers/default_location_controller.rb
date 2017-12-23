@@ -1,8 +1,14 @@
 class DefaultLocationController < ApplicationController
 	def show
 		check_if_mine
-		@default_location = DefaultLocation.find(params[:id])
 		@user = current_user
+		@default_location = DefaultLocation.find(params[:id])
+		@start_weekday = get_name_of_wday(@default_location.day_of_the_week)
+		@start_time = get_time_from_integer(@default_location.starting_hour)
+		dt = DateTime.new(2017,12,10,0,0,0) + (@default_location.day_of_the_week).days + (@default_location.starting_hour).minutes + 1.minutes
+		following_dl = @user.get_first_location_after(dt)
+		@end_weekday = get_name_of_wday(following_dl.day_of_the_week)
+		@end_time = get_time_from_integer(following_dl.starting_hour)
 	end
 
 	def new
