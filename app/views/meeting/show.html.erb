@@ -19,11 +19,17 @@
 			</div>
 		</div>
 
+		<!--
 		<div id="location" class="location-block-container" onclick="goToLocation(<%= @meeting.location.latitude %>,<%= @meeting.location.longitude %>)">
 			<%= image_tag("meeting_page/location_icon.png", id: "location_icon", class: "location-block") %>
 			<div class="location-description-block">
 				<%= @meeting.location.description %>
 			</div>
+		</div>
+		-->
+
+		<div id="map-container">
+			<%= render 'shared/google_map', latitude: @meeting.location.latitude, longitude: @meeting.location.longitude, name: @meeting.title %>
 		</div>
 
 		<div class="date-time-block-container">
