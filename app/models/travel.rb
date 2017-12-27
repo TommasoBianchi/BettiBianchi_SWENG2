@@ -14,14 +14,6 @@ class Travel < ApplicationRecord
   belongs_to :ending_location_dl, class_name: 'DefaultLocation', foreign_key: 'ending_location_dl_id', required: false
   has_one :ending_location_meeting, class_name: 'MeetingParticipation', foreign_key: 'arriving_travel_id', required: false
 
-  before_validation do
-    if starting_location_dl.blank? && starting_location_meeting.blank?
-      self.starting_location_dl_id = ending_location_dl_id
-    end
-
-    self.ending_location_dl_id = starting_location_dl_id if ending_location_dl.blank? && ending_location_meeting.blank?
-  end
-
   validates :start_time, :end_time, :distance, :travel_mean, presence: true
 
   validate :date_consistency
