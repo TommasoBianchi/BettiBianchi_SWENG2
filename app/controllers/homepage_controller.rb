@@ -101,8 +101,12 @@ class HomepageController < ApplicationController
 
 	def user_existing_email(user)
 		if user && user.authenticate(params[:homepage][:password]) # normal registered user
-			log_in user
-			redirect_to calendar_day_path DateTime.now.year, DateTime.now.month, DateTime.now.day
+			if user.default_locations.count() == 0
+				redirect_to create_first_def_location_path(user_id: user.id)
+			else
+				log_in user
+				redirect_to calendar_day_path
+			end
 		else # registered user that provides a wrong password
 			flash.now[:danger] = Error_message
 			render 'index'

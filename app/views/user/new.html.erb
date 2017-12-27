@@ -37,6 +37,12 @@
 																																								elsif @user.password
 																																									@user.password
 																																								end %>
+				<%= form.label :password_confirmation, class: 'label' %>
+				<%= form.text_field :password_confirmation, id: 'password_confirmation', type: 'password', value: if @unregistered_user
+																																																						@unregistered_user.password
+																																																					elsif @user.password
+																																																						@user.password
+																																																					end %>
 				<%= form.label :name, class: 'label' %>
 				<%= form.text_field :name, id: 'name', type: 'text' %>
 				<%= form.label :surname, class: 'label' %>
@@ -48,6 +54,7 @@
 
 				<%= form.label :preference_list, class: 'label' %>
 				<%= render 'shared/preference_list', form: form %>
+
 
 				<div id="buttonsContainer">
 					<%= form.submit 'Save User', class: 'monoConfirmationButton' %>
