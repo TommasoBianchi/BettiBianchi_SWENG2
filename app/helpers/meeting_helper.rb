@@ -197,7 +197,7 @@ module MeetingHelper
 		end
 	end
 
-	def accept_invitation(meeting_participation, user)
+	def self.accept_invitation(meeting_participation, user)
 		update_schedule([meeting_participation])
 	end
 
