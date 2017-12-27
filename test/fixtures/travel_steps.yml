@@ -4,10 +4,12 @@ one:
   travel_mean: 1
   start_time: 2017-11-28 15:55:04
   end_time: 2017-11-28 15:55:04
-  distance: 
+  distance: 5
+  description: MyString
 
 two:
   travel_mean: 1
   start_time: 2017-11-28 15:55:04
   end_time: 2017-11-28 15:55:04
-  distance: 
+  distance: 5
+  description: MyString
