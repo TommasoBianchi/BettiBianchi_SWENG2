@@ -103,7 +103,7 @@ class DefaultLocationController < ApplicationController
 	end
 
 	def first_creation
-		user = current_user
+		user = User.find(params[:user_id])
 		name = params[:default_location][:name]
 
 		if params[:default_location][:location] == ''
@@ -148,6 +148,7 @@ class DefaultLocationController < ApplicationController
 			else
 				RecomputeMeetingParticipationsJob.perform_later day_of_the_week
 			end
+			log_in(user)
 			redirect_to calendar_day_path
 		else
 			render 'first_def_location'

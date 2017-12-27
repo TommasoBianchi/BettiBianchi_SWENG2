@@ -1,3 +1,4 @@
+
 class UserController < ApplicationController
 	skip_before_action :require_login
 	wrap_parameters :user, include: [:nickname, :password, :password_confirmation]
@@ -29,18 +30,15 @@ class UserController < ApplicationController
 			render 'new'
 			return
 		end
-
 		if @user.valid?
 			session[:tmp_checked] = nil # delete temp variable
 			IncompleteUser.delete(incomplete_user.id)
 			email = Email.create(email: email_hash)
 			@user.emails.push(email)
 			@user.primary_email_id = email.id
-			last_user = User.last
 			email.user_id = User.last.id + 1
 			@user.save
-			log_in @user
-			redirect_to calendar_day_path DateTime.now.year, DateTime.now.month, DateTime.now.day
+			redirect_to create_first_def_location_path(user_id: @user.id)
 		else
 			@unregistered_user = incomplete_user
 			render 'new'
@@ -290,7 +288,7 @@ class UserController < ApplicationController
 	end
 
 	def user_params
-		params.require(:user).permit(:name, :surname, :password, :nickname, :preference_list)
+		params.require(:user).permit(:name, :surname, :password, :nickname, :preference_list, :brief)
 	end
 
 	def user_edit_params

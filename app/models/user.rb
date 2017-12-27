@@ -30,7 +30,7 @@ class User < ApplicationRecord
 
 	has_secure_password :validations => {:on => :create}
 	validates :password, presence: true, :on => :create
-	validates :password_confirmation, presence: true, :on => :create
+	#validates :password_confirmation, presence: true, :on => :create
 	validates :name, :surname, :nickname, :preference_list, presence: true
 	validates :nickname, :primary_email_id, uniqueness: true
 
