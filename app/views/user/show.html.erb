@@ -53,6 +53,10 @@
 				<div class="colored-container light-grey-container date-time-block">
 					<%= link_to('Manage Contacts', contacts_page_path, id: @user.id) %>
 				</div>
+			<% elsif current_user.contacts.ids.include? @user.id %>
+				<div class="colored-container light-grey-container date-time-block">
+					<%= link_to('Remove from Contacts', delete_contact_path(current_user.id, @user.id)) %>
+				</div>
 			<% else %>
 				<div class="colored-container light-grey-container date-time-block">
 					<%= link_to('Add to Contacts', add_contact_path(current_user.id, @user.id)) %>
