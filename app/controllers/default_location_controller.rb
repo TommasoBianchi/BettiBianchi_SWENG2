@@ -5,7 +5,7 @@ class DefaultLocationController < ApplicationController
 		@default_location = DefaultLocation.find(params[:id])
 		@start_weekday = get_name_of_wday(@default_location.day_of_the_week)
 		@start_time = get_time_from_integer(@default_location.starting_hour)
-		dt = DateTime.new(2017,12,10,0,0,0) + (@default_location.day_of_the_week).days + (@default_location.starting_hour).minutes + 1.minutes
+		dt = DateTime.new(2017, 12, 10, 0, 0, 0) + (@default_location.day_of_the_week).days + (@default_location.starting_hour).minutes + 1.minutes
 		following_dl = @user.get_first_location_after(dt)
 		@end_weekday = get_name_of_wday(following_dl.day_of_the_week)
 		@end_time = get_time_from_integer(following_dl.starting_hour)
@@ -23,7 +23,7 @@ class DefaultLocationController < ApplicationController
 			render 'new'
 			return
 		else
-			location_input = params[:meeting][:location].split(',')
+			location_input = params[:default_location][:location].split(',')
 			latitude = location_input[0].to_i
 			longitude = location_input[1].to_i
 			location_name = location_input[2]
@@ -98,6 +98,62 @@ class DefaultLocationController < ApplicationController
 		redirect_to settings_page_path(id: params[:user_id])
 	end
 
+	def first_def_location
+		@default_location = DefaultLocation.new
+	end
+
+	def first_creation
+		user = current_user
+		name = params[:default_location][:name]
+
+		if params[:default_location][:location] == ''
+			render 'first_def_location'
+			return
+		else
+			location_input = params[:default_location][:location].split(',')
+			latitude = location_input[0].to_i
+			longitude = location_input[1].to_i
+			location_name = location_input[2]
+			location = Location.find_by(latitude: latitude, longitude: longitude)
+
+			unless location
+				location = Location.create(latitude: latitude, longitude: longitude, description: location_name)
+			end
+
+		end
+
+
+		begin
+			starting_hour = params[:default_location][:starting_hour].to_datetime.hour * 60 + params[:default_location][:starting_hour].to_datetime.min
+		rescue NoMethodError
+			render 'first_def_location'
+			return
+		end
+
+		day_of_the_week = get_day_by_name(params[:default_location][:day_of_the_week])
+		if day_of_the_week == 'no day'
+			render 'first_def_location'
+			return
+		end
+
+		@default_location = DefaultLocation.new(starting_hour: starting_hour, day_of_the_week: day_of_the_week, name: name, user_id: user.id, location_id: location.id)
+		if @default_location.valid?
+			@default_location.save
+			if params[:repetition][:day_of_the_week] == 'daily'
+				for i in 1..6
+					DefaultLocation.create(starting_hour: starting_hour, day_of_the_week: (day_of_the_week + i) % 7, name: name, user_id: user.id, location_id: location.id)
+				end
+				days = [0, 1, 2, 3, 4, 5, 6]
+				RecomputeMeetingParticipationsJob.perform_later days
+			else
+				RecomputeMeetingParticipationsJob.perform_later day_of_the_week
+			end
+			redirect_to calendar_day_path
+		else
+			render 'first_def_location'
+			return
+		end
+	end
 
 	private
 

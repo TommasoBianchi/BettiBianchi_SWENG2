@@ -4,12 +4,14 @@
 	<%= render 'shared/calendar_sidebar' %>
 	<section class="mainContent">
 		<%= render 'shared/title_back_action', title: @default_location.name %>
-		<p>
-			from: <%= @start_weekday %> <%= @start_time %>
-		</p>
-		<p>
-			to: <%= @end_weekday %> <%= @end_time %>
-		</p>
+		<b>
+			<p>
+				from: <%= @start_weekday %> <%= @start_time %>
+			</p>
+			<p>
+				to: <%= @end_weekday %> <%= @end_time %>
+			</p>
+		</b>
 		<div id="map-container">
 			<%= render 'shared/google_map', latitude: @default_location.location.latitude, longitude: @default_location.location.longitude, name: @default_location.name %>
 		</div>

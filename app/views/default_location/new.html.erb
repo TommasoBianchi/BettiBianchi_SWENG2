@@ -4,60 +4,12 @@
 	<%= render 'shared/calendar_sidebar' %>
 	<section class="mainContent">
 
+
 		<%= render 'shared/title_back_action', title: 'Create Default Location' %>
-
-		<div id="emailPasswordContainer">
-
-			<%= form_with scope: :default_location, local: true do |form| %>
-
-
-				<%= form.label :name, class: 'label' %>
-				<%= form.text_field :name, id: 'name', type: 'text' %>
-				<div class='date-time-container'>
-					<div class='date-container'>
-						<%= form.label :day_of_the_week, class: 'label', value: 'Day Of The Week' %>
-						<%= form.text_field :day_of_the_week, id: 'dl_date', type: 'text' %>
-					</div>
-					<div class='time-container'>
-						<%= form.label :starting_hour, class: 'label' %>
-						<%= form.text_field :starting_hour, class: 'time', id: 'meeting_start_time', type: 'text' %>
-					</div>
-
-				</div>
-
-				<%= render 'shared/get_location', form: form %>
-				<div class="radio-button-container">
-					<label for="daily">Daily</label>
-					<%= radio_button("repetition", "day_of_the_week", "daily", options = {id: 'daily'}) %>
-					<label for="weekly">Weekly</label>
-					<%= radio_button("repetition", "day_of_the_week", "weekly", options = {checked: true, id: 'weekly'}) %>
-				</div>
-				<div id="buttonsContainer">
-					<%= form.submit 'Create Defautl Location', class: 'monoConfirmationButton' %>
-				</div>
-
-			<% end %>
-		</div>
+		<%= render 'shared/new_default_location' %>
 
 	</section>
 </div>
 <%= render 'shared/footer' %>
 
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-timepicker/1.8.1/jquery.timepicker.min.css"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-timepicker/1.8.1/jquery.timepicker.min.js"></script>
-
-<script>
-	$(function () {
-		$('#meeting_start_time').timepicker({'step': 5});
-	});
-
-
-	$(function () {
-		var users = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-		$("#dl_date").autocomplete({
-			source: users
-		});
-	});
-
-</script>
