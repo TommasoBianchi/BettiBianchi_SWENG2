@@ -26,6 +26,7 @@
 
 				var $label = $("<div class='colored-container white-container participants-list' onclick='deleteParticipant(this)' id=Participant" + ui.item.id + " data-user-id=" + ui.item.id + ">").text(ui.item.name + " " + ui.item.surname);
 				$('#invited_user_content2').append($label);
+				$('#select_origin').val("");
 				return false;
 			}
 		})
@@ -67,7 +68,7 @@
 
 
 <style>
-	.participants-list{
+	.participants-list {
 		padding-top: 2%;
 		padding-bottom: 2%;
 		padding-right: 4%;
