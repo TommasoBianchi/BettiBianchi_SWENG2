@@ -1,10 +1,6 @@
 require 'test_helper'
 
 class UsersLoginTest < ActionDispatch::IntegrationTest
-	test "db dump" do
-		puts User.all.count
-		assert true
-	end
   # test 'login with invalid information' do
   #  get root_get
   #  assert_template 'index'
