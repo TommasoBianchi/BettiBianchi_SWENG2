@@ -1,0 +1,75 @@
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<title>Travlendar+: Complete Registration</title>
+</head>
+
+<body>
+<div class="outer">
+	<div id="mainWrapper">
+		<div class="logoContainer">
+			<a class="title">Complete your Registration!</a>
+		</div>
+		<%= render 'shared/title_back_action', title: 'Create your First Default Location!' %>
+
+		<div id="emailPasswordContainer">
+
+			<%= form_with scope: :default_location, local: true do |form| %>
+
+
+				<%= form.label :name, class: 'label' %>
+				<%= form.text_field :name, id: 'name', type: 'text' %>
+				<div class='date-time-container'>
+					<div class='date-container'>
+						<%= form.label :day_of_the_week, class: 'label', value: 'Day Of The Week' %>
+						<%= form.text_field :day_of_the_week, id: 'dl_date', type: 'text' %>
+					</div>
+					<div class='time-container'>
+						<%= form.label :starting_hour, class: 'label' %>
+						<%= form.text_field :starting_hour, class: 'time', id: 'meeting_start_time', type: 'text' %>
+					</div>
+
+				</div>
+
+				<%= render 'shared/get_location', form: form %>
+
+
+				<div id="map-container">
+					<%= render 'shared/google_map', latitude: @default_location.location.latitude, longitude: @default_location.location.longitude, name: @default_location.name %>
+				</div>
+
+				<div class="radio-button-container">
+					<label for="daily">Daily</label>
+					<%= radio_button("repetition", "day_of_the_week", "daily", options = {id: 'daily'}) %>
+					<label for="weekly">Weekly</label>
+					<%= radio_button("repetition", "day_of_the_week", "weekly", options = {checked: true, id: 'weekly'}) %>
+				</div>
+				<div id="buttonsContainer">
+					<%= form.submit 'Create Default Location', class: 'monoConfirmationButton' %>
+				</div>
+
+			<% end %>
+		</div>
+	</div>
+</div>
+
+
+</body>
+
+</html>
+
+<script>
+	$(function () {
+		$('#location-hidden').change(function () {
+			var value = $('#location-hidden').val();
+			values = [];
+			values = value.split(',');
+			var latitude = values[0];
+			var longitude = values[1];
+		<% @default_location.location.latitude = latitude %>
+		<% @default_location.location.longitude = longitude %>
+			google.maps.event.trigger(map, 'resize');
+		});
+	});
+</script>

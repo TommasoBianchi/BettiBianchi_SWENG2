@@ -52,5 +52,7 @@ Rails.application.routes.draw do
 	# Default Location
 	post 'default_location/new', to: 'default_location#create'
 	get 'default_location/delete_dl/:default_location_id/:user_id' => 'default_location#delete', as: 'delete_default_location'
+	get 'default_location/first_def_location/:user_id' => 'default_location#first_def_location', as: 'create_first_def_location'
+	post 'default_location/first_def_location/:user_id', to: 'default_location#first_creation'
 
 end
