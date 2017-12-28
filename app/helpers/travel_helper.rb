@@ -21,8 +21,8 @@ module TravelHelper
 
 		if json_response['status'] != 'OK'
 			if json_response['status'] == 'OVER_QUERY_LIMIT'
-				# Wait a couple of seconds before retry to avoid upsetting google
-				sleep 2
+				# Wait a second before retry to avoid upsetting google
+				sleep 1
 				
 				return shortest_path(start_location, end_location, travel_mean, departure_time, arrival_time)
 			end
@@ -96,15 +96,6 @@ module TravelHelper
 			unless path[:end_time]
 				path[:end_time] = if arrival_time then arrival_time else (departure_time + path[:duration].seconds) end
 			end
-
-			# probably not needed because this info is already in the steps
-			# TODO: remove if really not needed
-=begin
-			if travel_mean == :public_transportation
-				path[:start_time] = path[:steps].first[:departure_time]
-				path[:end_time] = path[:steps].last[:arrival_time]
-			end
-=end
 
 			# Constraint satisfaction
 			constraint_violated = false

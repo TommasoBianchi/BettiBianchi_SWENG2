@@ -10,6 +10,8 @@ class TravelTest < ActiveSupport::TestCase
 
 	test "same user start and end" do
 		Travel.all.each do |travel|
+			next unless (travel.get_starting_point and travel.get_ending_point)
+
 			starting_user = if travel.starting_location_dl.blank? then travel.starting_location_meeting.user else travel.starting_location_dl.user end
 			ending_user = if travel.ending_location_dl.blank? then travel.ending_location_meeting.user else travel.ending_location_dl.user end
 
@@ -19,7 +21,9 @@ class TravelTest < ActiveSupport::TestCase
 
 	test "starting point consistency" do
 			Travel.all.each do |travel|
-				assert (true or travel.starting_location_dl.blank? != travel.starting_location_meeting.blank? or 
+				next unless travel.get_starting_point
+
+				assert (travel.starting_location_dl.blank? != travel.starting_location_meeting.blank? or 
 						!travel.starting_location_meeting.is_consistent or
 						travel.starting_location_meeting.response_status == 2), "Failed travel #{travel.id}"
 			end
@@ -27,13 +31,12 @@ class TravelTest < ActiveSupport::TestCase
 
 	test "ending point consistency" do
 			Travel.all.each do |travel|
+				next unless travel.get_ending_point
+				
 				assert (travel.ending_location_dl.blank? != travel.ending_location_meeting.blank? or 
 						!travel.ending_location_meeting.is_consistent or
 						travel.ending_location_meeting.response_status == 2), "Failed travel #{travel.id}"
 			end
 	end
 
-	# test "the truth" do
-	#   assert true
-	# end
 end

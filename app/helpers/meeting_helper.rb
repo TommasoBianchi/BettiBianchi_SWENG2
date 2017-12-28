@@ -93,14 +93,14 @@ module MeetingHelper
 			return {meeting: meeting, meeting_participation: meeting_participation, status: :consistent}
 		else
 			# Print errors
-			puts "------------ ERRORS ------------"
-			puts "Meeting has errors" unless meeting.valid?
-			puts "Meeting participation has errors" unless meeting_participation.valid?
-			puts "Arriving travel has errors" unless arriving_travel.valid?
-			puts "Leaving travel has errors" unless leaving_travel.valid?
-			puts "Before meeting has errors" unless valid_before_meeting
-			puts "After meeting has errors" unless valid_after_meeting
-			puts "------------ ERRORS ------------"
+			Rails.logger.debug "------------ ERRORS (MeetingHelper.create_meeting) ------------"
+			Rails.logger.debug "Meeting has errors" unless meeting.valid?
+			Rails.logger.debug "Meeting participation has errors" unless meeting_participation.valid?
+			Rails.logger.debug "Arriving travel has errors" unless arriving_travel.valid?
+			Rails.logger.debug "Leaving travel has errors" unless leaving_travel.valid?
+			Rails.logger.debug "Before meeting has errors" unless valid_before_meeting
+			Rails.logger.debug "After meeting has errors" unless valid_after_meeting
+			Rails.logger.debug "------------ ERRORS (MeetingHelper.create_meeting) ------------"
 			return {meeting: nil, meeting_participation: nil, status: :errors}
 		end
 	end
@@ -186,13 +186,13 @@ module MeetingHelper
 			return {meeting_participation: meeting_participation, status: :consistent}
 		else
 			# Print errors
-			puts "------------ ERRORS ------------"
-			puts "Meeting participation has errors" unless meeting_participation.valid?
-			puts "Arriving travel has errors" unless arriving_travel.valid?
-			puts "Leaving travel has errors" unless leaving_travel.valid?
-			puts "Before meeting has errors" unless valid_before_meeting
-			puts "After meeting has errors" unless valid_after_meeting
-			puts "------------ ERRORS ------------"
+			Rails.logger.debug "------------ ERRORS (MeetingHelper.invite_to_meeting) ------------"
+			Rails.logger.debug "Meeting participation has errors" unless meeting_participation.valid?
+			Rails.logger.debug "Arriving travel has errors" unless arriving_travel.valid?
+			Rails.logger.debug "Leaving travel has errors" unless leaving_travel.valid?
+			Rails.logger.debug "Before meeting has errors" unless valid_before_meeting
+			Rails.logger.debug "After meeting has errors" unless valid_after_meeting
+			Rails.logger.debug "------------ ERRORS (MeetingHelper.invite_to_meeting) ------------"
 			return {meeting_participation: nil, status: :errors}
 		end
 	end
@@ -286,21 +286,6 @@ module MeetingHelper
 				new_meeting[:after_meeting] = after_meeting
 			end
 		end
-
-=begin
-		# Manage overlapping breaks and update non-overlapping ones
-		day_of_the_week = new_meeting[:start_date].wday
-		travel_begin = (arriving_travel.start_time - arriving_travel.start_time.midnight) / 60	# in minutes since midnight
-		travel_end = (leaving_travel.end_time - leaving_travel.end_time.midnight) / 60 # in minutes since midnight
-		user_breaks = user.breaks.where(day_of_the_week: day_of_the_week)
-		overlapping_breaks = user_breaks.where(start_time_slot: travel_begin..travel_end)
-								.or(user_breaks.where(end_time_slot: travel_begin..travel_end))
-								.or(user_breaks.where(start_time_slot: 0..travel_begin).where(end_time_slot: travel_end..24*60))
-
-		overlapping_breaks.each do |b|
-			BreakHelper.update_break(b, new_meeting[:start_date])
-		end
-=end
 
 		new_meeting[:is_consistent] = true
 		new_meeting[:arriving_travel] = arriving_travel
