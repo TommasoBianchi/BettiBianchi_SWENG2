@@ -205,3 +205,27 @@ $transition_time: 0.5s;
 .next {
 	right: 10px;
 }
+
+/* IF SCREEN IS SMALL (less than 900px) ... */
+@media (max-width: $mobile_max_width) {
+	.meeting, .default-location, .break, .date-separator {
+		width: 75% !important;
+	}
+
+	.travel {
+		width: 31% !important;
+	}
+
+	.travel.left-align {
+		margin-left: 11% !important;
+	}
+
+	.prev, .next {
+		width: 15% !important;
+		padding: 20px 10px !important;
+	}
+
+	.date-separator:first-of-type {
+		width: 50% !important;
+	}
+}

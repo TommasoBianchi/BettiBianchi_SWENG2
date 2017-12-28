@@ -337,86 +337,6 @@ header {
   padding-top: 12px;
 }
 
-/* Product rows for catalog */
-#content .mainContent .productRow {
-  overflow: auto;
-  color: rgba(146, 146, 146, 1.00);
-}
-
-/* Each product Information in the catalog */
-.mainContent .productRow .productInfo {
-  float: left;
-  padding-left: 5%;
-  padding-right: 5%;
-  width: 22%;
-}
-
-/* Prices of a products in catalog */
-.productRow .productInfo .price {
-
-  color: rgba(146, 146, 146, 1.00);
-  font-size: 22px;
-  position: relative;
-  top: -20px;
-}
-
-/* Content holder for products in catalog*/
-.productRow .productInfo .productContent {
-  position: relative;
-  top: -37px;
-  font-size: 14px;
-
-  font-style: normal;
-  font-weight: 200;
-  color: rgba(146, 146, 146, 1.00);
-  white-space: pre-wrap;
-}
-
-/* Buy button for products in catalog */
-.productRow .productInfo .buyButton {
-  position: relative;
-  top: -48px;
-  width: 84%;
-  background-color: rgba(208, 207, 207, 1.00);
-  height: 35px;
-  color: rgba(255, 255, 255, 1.00);
-  border-style: none;
-  font-size: 14px;
-  text-transform: uppercase;
-  margin-top: 8px;
-}
-
-/* Product's images in catalog */
-.productInfo div img {
-  width: 100%;
-}
-
-/*Links in sidebar */
-.sidebar #menubar .menu ul li a {
-  color: rgba(146, 146, 146, 1.00);
-  text-decoration: none;
-}
-
-.sidebar #menubar .menu ul li a:hover {
-  color: rgba(107, 97, 97, 1.00);
-  text-decoration: none;
-}
-
-/* Menu headings in sidebar */
-#menubar .menu h2 {
-  font-size: 14px;
-}
-
-/*Links under menus in sidebar */
-#menubar .menu ul li a {
-  font-size: 14px;
-}
-
-/* Menus in sidebar */
-.sidebar #menubar .menu {
-  margin-bottom: 29px;
-}
-
 /* Container for links in footer */
 footer .footerlinks {
   margin-top: -15px;
@@ -426,7 +346,7 @@ footer .footerlinks {
 
 
 /* IF SCREEN IS SMALL (less than 900px) ... */
-@media (max-width: 900px) {
+@media (max-width: $mobile_max_width) {
   .sidebar {
 	display: none;
   }
@@ -438,5 +358,15 @@ footer .footerlinks {
 
   #logo, #logo-a{
 	display: none !important;
+  }
+
+  footer .under-sidebar {
+    width: 25%;
+    min-width: 0;
+  }
+
+  footer .under-content {
+    width: 75%;
+    max-width: none;
   }
 }
