@@ -1,5 +1,4 @@
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-timepicker/1.8.1/jquery.timepicker.min.css"></script>
+<!---<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-timepicker/1.8.1/jquery.timepicker.min.css"></link>-->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-timepicker/1.8.1/jquery.timepicker.min.js"></script>
 <%= render 'shared/header', selected: 'settings' %>
 <div id="content">
@@ -67,35 +66,33 @@
 
 <script>
 	$(function () {
-	  $('#start_time_slot').timepicker({'step': 5});
-	  $('#default_time').timepicker({'step': 5});
-	  $('#end_time_slot').timepicker({'step': 5});
-	});
+		$('#start_time_slot').timepicker({'step': 5});
+		$('#default_time').timepicker({'step': 5});
+		$('#end_time_slot').timepicker({'step': 5});
 
-  $('#start_time_slot').on('changeTime', function () {
-	  var start_time_value = $('#start_time_slot').val();
-	  $('#end_time_slot').timepicker({
-		  'step': 5,
-		  'minTime': start_time_value,
-		  'maxTime': '11.55pm'
-	  });
-	  $('#default_time').timepicker({
-		  'step': 5,
-		  'minTime': start_time_value,
-		  'maxTime': '11.55pm'
-	  });
-  });
+		$('#start_time_slot').on('changeTime', function () {
+			var start_time_value = $('#start_time_slot').val();
+			$('#end_time_slot').timepicker({
+				'step': 5,
+				'minTime': start_time_value,
+				'maxTime': '11.55pm'
+			});
+			$('#default_time').timepicker({
+				'step': 5,
+				'minTime': start_time_value,
+				'maxTime': '11.55pm'
+			});
+		});
 
-  $('#default_time').on('changeTime', function () {
-	  var start_time_value = $('#default_time').val();
-	  $('#end_time_slot').timepicker({
-		  'step': 5,
-		  'minTime': start_time_value,
-		  'maxTime': '11.55pm'
-	  });
-  });
-
-	$(function () {
+		$('#default_time').on('changeTime', function () {
+			var start_time_value = $('#default_time').val();
+			$('#end_time_slot').timepicker({
+				'step': 5,
+				'minTime': start_time_value,
+				'maxTime': '11.55pm'
+			});
+		});
+		
 		var days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 		$("#day_of_the_week").autocomplete({
 			source: days,
