@@ -1,5 +1,5 @@
 class DefaultLocationController < ApplicationController
-	skip_before_action :require_one_default_location, :only => [:first_def_location]
+	skip_before_action :require_one_default_location, :only => [:first_def_location, :first_creation]
 
 	def show
 		check_if_mine
