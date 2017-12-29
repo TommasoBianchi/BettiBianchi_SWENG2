@@ -1,4 +1,6 @@
 class DefaultLocationController < ApplicationController
+	skip_before_action :require_one_default_location, :only => [:first_def_location]
+
 	def show
 		check_if_mine
 		@user = current_user

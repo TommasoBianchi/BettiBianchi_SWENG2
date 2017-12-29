@@ -38,6 +38,7 @@ class UserController < ApplicationController
 			@user.primary_email_id = email.id
 			email.user_id = User.last.id + 1
 			@user.save
+			log_in @user
 			redirect_to create_first_def_location_path(user_id: @user.id)
 		else
 			@unregistered_user = incomplete_user
