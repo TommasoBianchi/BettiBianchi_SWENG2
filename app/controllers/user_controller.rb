@@ -36,7 +36,7 @@ class UserController < ApplicationController
 			email = Email.create(email: email_hash)
 			@user.emails.push(email)
 			@user.primary_email_id = email.id
-			email.user_id = if User.last then User.last.id + 1 else 1
+			email.user_id = if User.last then User.last.id + 1 else 1 end
 			@user.save
 			log_in @user
 			redirect_to create_first_def_location_path(user_id: @user.id)
