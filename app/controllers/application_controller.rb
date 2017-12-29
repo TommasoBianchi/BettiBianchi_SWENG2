@@ -2,7 +2,7 @@ class ApplicationController < ActionController::Base
 	protect_from_forgery with: :exception
 	include HomepageHelper
 
-	before_action :require_login
+	before_action :require_login, :require_one_default_location
 
 	def get_day_by_name(day_of_the_week)
 		case day_of_the_week
@@ -60,6 +60,14 @@ class ApplicationController < ActionController::Base
 	def require_login
 		unless current_user
 			redirect_to homepage_path
+		end
+	end
+
+	def require_one_default_location
+		return unless current_user
+
+		if current_user.default_locations.count == 0
+			redirect_to create_first_def_location_path current_user.id
 		end
 	end
 end
