@@ -1,0 +1,27 @@
+// Place all the styles related to the Notification controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+@import "main.scss";
+
+
+.response-button{
+  width: 62%;
+  margin: 2% auto 4%;
+  display: inline-block;
+}
+
+.warning-container{
+  margin-right: auto;
+  margin-left: auto;
+  width: 60%;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  cursor: pointer;
+}
+
+.single-warning{
+  margin-top: 5px !important;
+  margin-bottom: 5px !important;
+  min-width: 75%;
+}

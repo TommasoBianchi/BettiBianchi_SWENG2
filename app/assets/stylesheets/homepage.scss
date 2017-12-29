@@ -3,103 +3,136 @@
 // You can use Sass (SCSS) here: http://sass-lang.com/
 @charset "utf-8";
 
-$dark_grey: #575756;
-$light_grey: #B2B2B2;
-$background_image_url: "homepage/sfondo25.png";
+@import "main.scss";
 
-body{
+body {
   margin: 0;
   height: 100vh;
 }
 
-.outer{
-    width: 100%;
-    height: 100%;
+.outer {
+  width: 100%;
+  height: 100%;
 }
 
 /* Full-width input fields */
 input {
-    width: 100%;
-    padding: 12px 20px;
-    margin: 8px 0;
-    display: inline-block;
-    border: 1px solid #ccc;
-    box-sizing: border-box;
-    border-radius: 10px;
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+  border-radius: 10px;
 }
 
 input:focus {
-    outline: none;
-    border-width: 1px;
-    border-radius: 10px;
-    border-color: $dark_grey;
+  outline: none;
+  border-width: 1px;
+  border-radius: 10px;
+  border-color: $dark_grey;
 }
 
-input[placeholder]{
-    font-style: oblique;
+input[placeholder] {
+  font-style: oblique;
+}
+
+/* Full-width text areas */
+textarea {
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+  border-radius: 10px;
+  display: block;
+  height: 100px;
+  resize: none;
+}
+
+textarea:focus {
+  outline: none;
+  border-width: 1px;
+  border-radius: 10px;
+  border-color: $dark_grey;
 }
 
 /* Set a style for all buttons */
 .confirmationButton {
-    background-color: #B2B2B2;
-    color: white;
-    padding: 14px 20px;
-    margin: 8px 0;
-    border: none;
-    cursor: pointer;
-    width: 40%;
-    border-radius: 10px;
-    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
-    &:hover {
-        opacity: 0.8;
-    }
+  background-color: #B2B2B2;
+  color: white;
+  padding: 14px 20px;
+  margin: 8px 0;
+  border: none;
+  cursor: pointer;
+  width: 40%;
+  border-radius: 10px;
+  box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  &:hover {
+	opacity: 0.8;
+  }
 }
 
-.monoConfirmationButton{
+.monoConfirmationButton {
   width: 70%;
+  cursor: pointer;
 }
 
-
-
-#mainWrapper{
-    width: 40%;
-    height: fit-content;
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    margin: auto;
-    text-align: center;
+#mainWrapper {
+  width: 40%;
+  height: fit-content;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
+  text-align: center;
 }
 
-#emailPasswordContainer{width: 50%;margin-left: auto;margin-right: auto;padding-top: 7%;}
-
-#buttonsContainer{width: 100%;margin-left: auto;margin-right: auto;}
-
-#loginProvidersContainer{width: 60%;margin-left: auto;margin-right: auto;padding-top: 8%;}
-
-img.externalLoginProvider{
-    width: 70%;
-    padding: 1%;
+#emailPasswordContainer {
+  width: 50%;
+  margin-left: auto;
+  margin-right: auto;
+  padding-top: 7%;
 }
 
-.mainTitle{
-    font-size: 80px;
-    color: $dark_grey;
-    font-style: oblique;
-    font-style: bold;
-    text-shadow: 2px 2px $dark_grey;
+#buttonsContainer {
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  cursor: pointer;
 }
 
-.subtitle{
-    font-size: 25px;
-    color: $light_grey;
+#loginProvidersContainer {
+  width: 60%;
+  margin-left: auto;
+  margin-right: auto;
+  padding-top: 8%;
 }
 
-.title{
-      font-size: 40px;
-      color: $dark_grey;
-      font-style: oblique;
-      font-style: bold;
+img.externalLoginProvider {
+  width: 70%;
+  padding: 1%;
+}
+
+.mainTitle {
+  font-size: 80px;
+  color: $dark_grey;
+  font-style: oblique;
+  font-style: bold;
+  text-shadow: 2px 2px $dark_grey;
+}
+
+.subtitle {
+  font-size: 25px;
+  color: $light_grey;
+}
+
+.title {
+  font-size: 40px;
+  color: $dark_grey;
+  font-style: oblique;
+  font-style: bold;
 }

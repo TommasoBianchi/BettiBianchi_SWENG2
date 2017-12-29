@@ -6,7 +6,6 @@ one:
   start_time_slot: 2017-11-28 15:35:13
   end_time_slot: 2017-11-28 15:35:13
   name: MyString
-  computed_time: 2017-11-28 15:35:13
   day_of_the_week: 1
 
 two:
@@ -15,5 +14,4 @@ two:
   start_time_slot: 2017-11-28 15:35:13
   end_time_slot: 2017-11-28 15:35:13
   name: MyString
-  computed_time: 2017-11-28 15:35:13
   day_of_the_week: 1

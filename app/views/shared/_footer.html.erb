@@ -13,9 +13,13 @@
 
 <footer>
 	<div id="footerLinks">
-		<a href="#" title="create-meeting">Create Meeting</a>
-		<a href="<%= day_link %>" title="calendar-day" class="<%= if selected == 'day' then 'selected' end %>">Day</a>
-		<a href="<%= week_link %>" title="calendar-week" class="<%= if selected == 'week' then 'selected' end %>">Week</a>
-		<a href="<%= month_link %>" title="calendar-month" class="<%= if selected == 'month' then 'selected' end %>">Month</a>
-  	</div>
+		<div class="under-sidebar">
+			<a href="<%= new_meeting_path %>" title="create-meeting" class="<%= if selected == 'create-meeting' then 'selected' end %>">Create Meeting</a>
+		</div>
+		<div class="under-content">
+			<a href="<%= day_link %>" title="calendar-day" class="<%= if selected == 'day' then 'selected' end %>">Day</a><!---
+			--><a href="<%= week_link %>" title="calendar-week" class="<%= if selected == 'week' then 'selected' end %>">Week</a><!---
+			--><a href="<%= month_link %>" title="calendar-month" class="<%= if selected == 'month' then 'selected' end %>">Month</a>
+		</div>
+	</div>
 </footer>

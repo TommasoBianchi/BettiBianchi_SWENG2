@@ -1,0 +1,108 @@
+<%= render 'shared/header', selected: 'Profile' %>
+<div id="content">
+	<script type="text/javascript"></script>
+	<%= render 'shared/calendar_sidebar' %>
+	<section class="mainContent">
+
+		<%= render 'shared/title_back_action', title: 'Edit User', path: @user %>
+
+		<div id="emailPasswordContainer">
+
+			<%= form_with scope: :user, local: true do |form| %>
+
+
+				<%= form.label :name, class: 'label' %>
+				<%= form.text_field :name, id: 'name', type: 'text', value: @user.name %>
+				<%= form.label :surname, class: 'label' %>
+				<%= form.text_field :surname, id: 'surname', type: 'text', value: @user.surname %>
+				<%= form.label :nickname, class: 'label' %>
+				<%= form.text_field :nickname, id: 'nickname', type: 'text', value: @user.nickname %>
+				<%= form.label :phone_number, class: 'label' %>
+				<%= form.text_field :phone_number, id: 'phone_number', type: 'text', value: @user.phone_number %>
+				<%= form.label :website, class: 'label' %>
+				<%= form.text_field :website, id: 'website', type: 'text', value: @user.website %>
+				<%= form.label :company, class: 'label' %>
+				<%= form.text_field :company, id: 'company', type: 'text', value: @user.company %>
+				<%= form.label :brief, class: 'label' %>
+				<%= form.text_area :brief, id: 'brief', type: 'text', value: @user.brief %>
+
+				<div id="buttonsContainer">
+					<%= form.submit 'Edit User', class: 'monoConfirmationButton' %>
+				</div>
+
+				<!-- used to upload file, it doesn't work
+
+				<%= form_tag({action: :post_edit}, multipart: true) do %>
+					<%= label :profile_image, 'Profile Image (png only)' %>
+					<%= file_field_tag 'profile_image', class: 'white-container' %>
+					<div id="buttonsContainer">
+						<%= submit_tag 'Upload Image', class: 'monoConfirmationButton' %>
+					</div>
+				<% end %>
+
+					-->
+				
+				<div id="preference-list-container">
+					<div class="title-add-container ">
+						Emails
+						<%= image_tag("add_icon.png", alt: 'add_icon', class: 'add-image', id: 'add_email_button') %>
+					</div>
+				</div>
+
+				<div class="add-email-div">
+					<%= form_with scope: :email, local: true do |form| %>
+
+						<!-- sono arrivato qui devo aggiungere il metodo che mi controlla che post ho fatto etc.. -->
+						<%= form.label :email, class: 'label' %>
+						<%= form.text_field :email, id: 'name', type: 'text' %>
+
+						<div id="buttonsContainer">
+							<%= form.submit 'Create Email', class: 'monoConfirmationButton' %>
+						</div>
+
+					<% end %>
+				</div>
+				<div id="preference-list-container">
+					<% @emails.each do |email| %>
+						<div class="constraint-container colored-container light-light-grey-container">
+							<%= email.email %>
+							<%= link_to image_tag("cancel_icon.png", alt: "Delate", class: 'delete-image'), delete_email_path(user_id: @user.id, email_id: email.id) %>
+						</div>
+
+
+					<% end %>
+				</div>
+
+			<% end %>
+		</div>
+
+	</section>
+</div>
+<%= render 'shared/footer' %>
+
+<script type="text/javascript">
+
+	<% if !@user.valid? %>
+	$(window).on('load', function () {
+		<% @user.errors.each do |error, message| %>
+		displayError("<%= error.to_s %>", "<%= message %>");
+		<% end %>
+	})
+	<% end %>
+
+	<% if !@email.valid? %>
+	$(window).on('load', function () {
+		<% @email.errors.each do |error, message| %>
+		displayError("<%= error.to_s %>", "<%= message %>");
+		<% end %>
+	})
+	<% end %>
+</script>
+
+<script>
+	$(function () {
+		$('#add_email_button').click(function () {
+			$('.add-email-div').toggle();
+		});
+	});
+</script>

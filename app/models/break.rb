@@ -1,11 +1,17 @@
 class Break < ApplicationRecord
 	belongs_to :user
 
+	has_many :computed_breaks
+
 	validates :default_time, :start_time_slot, :end_time_slot, :day_of_the_week, :name, :duration, presence: true
 
 	validate :date_consistency
 	validate :day_of_the_week_correctness
 
+	def get_description
+		name_of_the_day = get_day_name(day_of_the_week)
+		name_of_the_day + ": from " + get_time(start_time_slot) + " to: " + get_time(end_time_slot)
+	end
 	private
 	def date_consistency
 		if [default_time.blank?, start_time_slot.blank?, end_time_slot.blank?].any?

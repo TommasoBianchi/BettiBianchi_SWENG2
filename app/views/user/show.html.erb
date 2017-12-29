@@ -1,11 +1,78 @@
-<%= render 'shared/header' %>
+<%= render 'shared/header', selected: 'profile' %>
 <div id="content">
-  <%= render 'shared/sidebar' %>
-  <section class="mainContent">
-    <h1>User#show</h1>
-    <p>Find me in app/views/user/show.html.erb</p>
-    <%= link_to "Log out", logout_path, method: :delete %>
-    <%= link_to "Profile", current_user %>
-    <%= render 'shared/footer' %>
-  </section>
+	<%= render 'shared/calendar_sidebar' %>
+	<section class="mainContent">
+		<!-- insierire freccia indietro se non sono me stesso alla pagina prima -->
+		<%= link_to "Edit Profile", edit_user_path, class: "profile-detail detail light-light-grey-container colored-container" if @user.id == current_user.id %>
+		<%= link_to "Log out", logout_path, method: :delete, class: 'profile-detail light-grey-container colored-container logout' if @user.id == current_user.id %>
+
+		<div><%= image_tag(unless File.file? ("/public/profile_images/" + @user.primary_email.email + ".png")
+												 "defaultProfileImage.png"
+											 else
+												 "profile_images/" + @user.nickname + ".png"
+											 end, id: "roundedImages") %></div>
+
+		<div id="name-surname">
+			<%= @user.name + " " + @user.surname %>
+		</div>
+
+		<div class="nickname-container">
+			(<%= @user.nickname %>)
+		</div>
+
+		<% unless @user.brief.blank? %>
+			<div id="brief">
+				<%= @user.brief %>
+			</div>
+		<% end %>
+
+		<div class="email-container light-light-grey-container colored-container">
+			<%= @user.primary_email.email %>
+		</div>
+
+		<% unless @user.phone_number.blank? %>
+			<div class="email-container light-light-grey-container colored-container">
+				<%= @user.phone_number %>
+			</div>
+		<% end %>
+
+		<% unless @user.website.blank? %>
+			<div class="email-container light-light-grey-container colored-container">
+				<a href="<%= @user.website %>" target="_blank">Personal Website</a>
+			</div>
+		<% end %>
+
+		<% unless @user.company.blank? %>
+			<div class="email-container light-light-grey-container colored-container">
+				<%= @user.company %>
+			</div>
+		<% end %>
+
+		<div class="profile-page-buttons">
+			<% if @user.id == current_user.id %>
+				<div class="colored-container light-grey-container date-time-block">
+					<%= link_to('Manage Contacts', contacts_page_path, id: @user.id) %>
+				</div>
+			<% elsif current_user.contacts.ids.include? @user.id %>
+				<div class="colored-container light-grey-container date-time-block">
+					<%= link_to('Remove from Contacts', delete_contact_path(current_user.id, @user.id)) %>
+				</div>
+			<% else %>
+				<div class="colored-container light-grey-container date-time-block">
+					<%= link_to('Add to Contacts', add_contact_path(current_user.id, @user.id)) %>
+				</div>
+			<% end %>
+		</div>
+
+		<div class="social-container">
+			<% @user.social_users.each do |social| %>
+				<div class=" social-boxes light-light-grey-container colored-container">
+					<%= link_to image_tag(Social.find(social.social_id).icon_path, alt: Social.find(social.social_id).name, class: 'social-icon'), 'http://' + social.link %>
+				</div>
+			<% end %>
+		</div>
+
+
+	</section>
 </div>
+<%= render 'shared/footer' %>

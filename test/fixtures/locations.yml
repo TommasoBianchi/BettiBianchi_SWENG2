@@ -1,11 +1,11 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  longitude: 
-  latitude: 
+  longitude: 45
+  latitude: 10
   description: MyString
 
 two:
-  longitude: 
-  latitude: 
+  longitude: 46
+  latitude: 11
   description: MyString

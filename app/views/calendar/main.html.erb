@@ -1,59 +1,98 @@
-<%= render 'shared/header' %>
+<%= render 'shared/header', selected: 'calendar' %>
 <div id="content">
-  <%= render 'shared/calendar_sidebar' %>
-  <section class="mainContent">
-  	<a href="<%= links[:prev] %>"><div class="rounded-box prev"><%= prev_text %></div></a>
-  	<a href="<%= links[:next] %>"><div class="rounded-box next"><%= next_text %></div></a>
-  	<% travel_left = true %>
-  	<% first = true %>
-  	<% unless defined?(elements_to_skip) != nil %>
-		<% elements_to_skip = [] %>
-	<% end %>
-    <% @schedule.each do |item| %>
-    	<% if elements_to_skip.include?(item.class) then next end %>
-		<% if item.is_a? Travel %>
-			<% travel_mean = Travel::Travel_means.keys[item.travel_mean] %>
-			<div class="travel-container">
-				<div class="travel-mean">
-					<div class="travel-mean-icon icon-<%= travel_mean %>"></div>
-  					<div class="calendar-vertical-line"></div>
-				</div>
-				<div class="travel <%= if travel_left then 'left-align' else 'right-align' end %> rounded-box">
-					<% duration = Time.at(item.end_time - item.start_time).utc %>
-					<div><%= if (duration.min > 0) then duration.strftime "%-Hh %-Mmin" else duration.strftime "%-Hh" end%></div>
-					<div style="text-transform: capitalize;"><%= travel_mean %></div>
-					<div><%= item.distance.round(2) %> km</div>
-					<a href=""><div class="detail">Details</div></a>
-				</div>
-			</div>
-  			<% travel_left = !travel_left %>
-		<% elsif item.is_a? Meeting %>
-			<div class="meeting rounded-box">
-				<div class="meeting-date"><%= item.start_date.strftime "%I:%M %p" %> - <%= item.end_date.strftime "%I:%M %p" %></div>
-				<div class="meeting-title"><%= item.title %></div>
-				<div class="meeting-location"><%= item.location.description %></div>
-				<a href="<%= meeting_path item.id %>"><div class="detail">Details</div></a>
-			</div>
-		<% elsif item.is_a? DefaultLocation %>
-			<div class="default-location rounded-box">
-				<div class="default-location-name"><%= item.name %></div>
-				<div class="default-location-location"><%= item.location.description %></div>
-				<a href=""><div class="detail">Details</div></a>
-			</div>
-		<% else %>
-			<!--- This is a date separator -->
-			<% if first %>
-				<% first = false %>
-			<% else %>
-				</div>
-			<% end %>
-			<div class="date-separator rounded-box" id="<%= item.strftime '%Y%m%d' %>-separator" onclick="toggle('<%= item.strftime "%Y%m%d" %>')">
-				<div><%= item.strftime "%a %d %b %Y" %></div>
-			</div>
-			<div id="<%= item.strftime '%Y%m%d' %>-accordion" class="date-accordion">
-				<script type="text/javascript"> $(window).on('load', function(){setMaxHeight("<%= item.strftime '%Y%m%d' %>")})</script>
+	<%= render 'shared/calendar_sidebar' %>
+	<section class="mainContent">
+		<a href="<%= links[:prev] %>">
+			<div class="rounded-box prev"><%= prev_text %></div>
+		</a>
+		<a href="<%= links[:next] %>">
+			<div class="rounded-box next"><%= next_text %></div>
+		</a>
+		<% travel_left = true %>
+		<% first = true %>
+		<% unless defined?(elements_to_skip) != nil %>
+			<% elements_to_skip = [] %>
 		<% end %>
-	<% end %>
-  </section>
-</div>
-<%= render 'shared/footer', day_link: links[:day], week_link: links[:week], month_link: links[:month], selected: footer_link %>
+		<% @schedule.each do |item| %>
+			<% if elements_to_skip.include?(item.class) then
+					 next
+				 end %>
+			<% if item.is_a? Travel %>
+				<% travel_mean = Travel::Travel_means.keys[item.travel_mean] %>
+				<div class="travel-container">
+					<div class="travel-mean">
+						<div class="travel-mean-icon icon-<%= travel_mean %>"></div>
+						<div class="calendar-vertical-line"></div>
+					</div>
+					<div class="travel <%= if travel_left then
+																	 'left-align'
+																 else
+																	 'right-align'
+																 end %> rounded-box">
+						<% duration = Time.at(item.end_time - item.start_time).utc %>
+						<div>
+							<%= if (duration.min > 0) then
+										duration.strftime "%-Hh %-Mmin"
+									else
+										duration.strftime "%-Hh"
+									end %>
+						</div>
+						<div style="text-transform: capitalize;"><%= travel_mean %></div>
+						<div><%= if item.distance > 1000 then
+											 "#{(item.distance / 1000.0).round(2)} km"
+										 else
+											 "#{item.distance.round(2)} m"
+										 end %>
+						</div>
+						<a href='<%= show_travel_path(id: item.id) %>'>
+							<div class="detail">Details</div>
+						</a>
+					</div>
+				</div>
+				<% travel_left = !travel_left %>
+			<% elsif item.is_a? Meeting %>
+				<div class="meeting rounded-box">
+					<div class="meeting-date"><%= item.start_date.strftime "%I:%M %p" %>
+						-
+						<%= item.end_date.strftime "%I:%M %p" %></div>
+					<div class="meeting-title"><%= item.title %></div>
+					<div class="meeting-location"><%= item.location.description %></div>
+					<a href="<%= meeting_path item.id %>">
+						<div class="detail">Details</div>
+					</a>
+				</div>
+			<% elsif item.is_a? DefaultLocation %>
+				<div class="default-location rounded-box">
+					<div class="default-location-name"><%= item.name %></div>
+					<div class="default-location-location"><%= item.location.description %></div>
+					<a href='<%= default_location_path(id: item.id) %>'>
+						<div class="detail">Details</div>
+					</a>
+				</div>
+			<% elsif(item[:break] rescue nil) %>
+				<div class="break rounded-box">
+					<div class="break-name"><%= item[:break].name %></div>
+					<div class="break-time"><%= item[:time].strftime "%I:%M %p" %> - <%= (item[:time] + item[:break].duration.minutes).strftime "%I:%M %p" %></div>
+				</div>
+			<% else %>
+				<!--- This is a date separator -->
+				<% if first %>
+					<% first = false %>
+				<% else %>
+					</div>
+				<% end %>
+				<div class="date-separator rounded-box" id="<%= item.strftime '%Y%m%d' %>-separator" onclick="toggle('<%= item.strftime "%Y%m%d" %>')">
+					<div><%= item.strftime "%a %d %b %Y" %></div>
+				</div>
+				<div id="<%= item.strftime '%Y%m%d' %>-accordion" class="date-accordion">
+					<script type="text/javascript">
+			  $(window).on('load', function () {
+				  setMaxHeight("<%= item.strftime '%Y%m%d' %>")
+			  })
+					</script>
+					<div class="vertical-line"></div>
+			<% end %>
+		<% end %>
+		</section>
+		</div>
+		<%= render 'shared/footer', day_link: links[:day], week_link: links[:week], month_link: links[:month], selected: footer_link %>

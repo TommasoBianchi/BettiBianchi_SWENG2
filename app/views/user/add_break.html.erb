@@ -1,0 +1,103 @@
+<!---<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-timepicker/1.8.1/jquery.timepicker.min.css"></link>-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-timepicker/1.8.1/jquery.timepicker.min.js"></script>
+<%= render 'shared/header', selected: 'settings' %>
+<div id="content">
+	<script type="text/javascript"></script>
+	<%= render 'shared/calendar_sidebar' %>
+	<section class="mainContent">
+
+		<%= render 'shared/title_back_action', title: 'Create Break' %>
+
+		<div id="emailPasswordContainer">
+
+			<%= form_with scope: :break, local: true do |form| %>
+
+
+				<%= form.label :name, class: 'label' %>
+				<%= form.text_field :name, id: 'name', type: 'text' %>
+					<div class='date-container'>
+						<%= form.label :day_of_the_week, class: 'label', value: 'Day Of The Week' %>
+						<%= form.text_field :day_of_the_week, id: 'day_of_the_week', type: 'text' %>
+					</div>
+
+				<div class='date-time-container'>
+					<div class='time-container'>
+						<%= form.label :start_time_slot, class: 'label' %>
+						<%= form.text_field :start_time_slot, class: 'time', id: 'start_time_slot', type: 'text' %>
+					</div>
+					<div class='time-container'>
+						<%= form.label :default_time, class: 'label' %>
+						<%= form.text_field :default_time, class: 'time', id: 'default_time', type: 'text' %>
+					</div>
+					<div class='time-container'>
+						<%= form.label :end_time_slot, class: 'label' %>
+						<%= form.text_field :end_time_slot, class: 'time', id: 'end_time_slot', type: 'text' %>
+					</div>
+
+				</div>
+
+				<div class='date-time-container'>
+					<div class='time-container'>
+						<%= form.label :duration, class: 'label' %>
+						<%= form.text_field :duration, id: 'duration', type: 'number', min: '1' %>
+					</div>
+				</div>
+				<div id="buttonsContainer">
+					<%= form.submit 'Create Break', class: 'monoConfirmationButton' %>
+				</div>
+
+			<% end %>
+		</div>
+
+	</section>
+</div>
+<%= render 'shared/footer' %>
+
+<script type="text/javascript">
+
+	<% if !@break.valid? %>
+	$(window).on('load', function () {
+		<% @break.errors.each do |error, message| %>
+		displayError("<%= error.to_s %>", "<%= message %>");
+		<% end %>
+	})
+	<% end %>
+</script>
+
+<script>
+	$(function () {
+		$('#start_time_slot').timepicker({'step': 5});
+		$('#default_time').timepicker({'step': 5});
+		$('#end_time_slot').timepicker({'step': 5});
+
+		$('#start_time_slot').on('changeTime', function () {
+			var start_time_value = $('#start_time_slot').val();
+			$('#end_time_slot').timepicker({
+				'step': 5,
+				'minTime': start_time_value,
+				'maxTime': '11.55pm'
+			});
+			$('#default_time').timepicker({
+				'step': 5,
+				'minTime': start_time_value,
+				'maxTime': '11.55pm'
+			});
+		});
+
+		$('#default_time').on('changeTime', function () {
+			var start_time_value = $('#default_time').val();
+			$('#end_time_slot').timepicker({
+				'step': 5,
+				'minTime': start_time_value,
+				'maxTime': '11.55pm'
+			});
+		});
+		
+		var days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+		$("#day_of_the_week").autocomplete({
+			source: days,
+			minLength: 0
+		});
+	});
+
+</script>

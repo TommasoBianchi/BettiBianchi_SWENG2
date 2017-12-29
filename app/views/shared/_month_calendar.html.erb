@@ -1,14 +1,16 @@
-<% 
-first_of_month = DateTime.new(year, month)
-last_of_month = first_of_month + 1.months - 1.days
-from_date = first_of_month - (first_of_month.wday - 1).days
-end_date = last_of_month + ((7 - last_of_month.wday) % 7).days
+<%
+	first_of_month = DateTime.new(year, month)
+	last_of_month = first_of_month + 1.months - 1.days
+	from_date = first_of_month - (first_of_month.wday - 1).days
+	end_date = last_of_month + ((7 - last_of_month.wday) % 7).days
 %>
 
 <div class="calendar-month">
 	<table>
 		<tr class="month">
-			<th colspan="7"><a href="<%= calendar_month_path year, month %>"><%= first_of_month.strftime "%B %Y" %></a></th>
+			<th colspan="7">
+				<a href="<%= calendar_month_path year, month %>"><%= first_of_month.strftime "%B %Y" %></a>
+			</th>
 		</tr>
 		<tr>
 			<th>Mon</th>
@@ -20,21 +22,31 @@ end_date = last_of_month + ((7 - last_of_month.wday) % 7).days
 			<th>Sun</th>
 		</tr>
 		<tr>
-		<% first = true %>
-		<% for date in from_date..end_date %>
-			<% if date.wday == 1 and !first %>
-				<td><a href="<%= calendar_week_path date.year, (date - 4.days).cweek %>">+</a></td>
-				</tr>
-				<tr>
+			<% first = true %>
+			<% for date in from_date..end_date %>
+				<% if date.wday == 1 and !first %>
+					<td>
+						<a href="<%= calendar_week_path date.year, (date - 4.days).cweek %>">
+							<%= image_tag "week_icon.svg", class: 'week-icon' %>
+						</a>
+					</td>
+					</tr>
+					<tr>
+				<% end %>
+				<% first = false %>
+				<% if date.month == month %>
+					<td>
+						<a href="<%= calendar_day_path date.year, date.month, date.day %>"><%= date.strftime "%d" %></a>
+					</td>
+				<% else %>
+					<td></td>
+				<% end %>
 			<% end %>
-			<% first = false %>
-			<% if date.month == month %>
-				<td><a href="<%= calendar_day_path date.year, date.month, date.day %>"><%= date.strftime "%d" %></a></td>
-			<% else %>
-				<td></td>
-			<% end %>
-		<% end %>
-		<td><a href="<%= calendar_week_path year, last_of_month.cweek %>">+</a></td>
-		</tr>
-	</table>
+			<td>
+				<a href="<%= calendar_week_path year, last_of_month.cweek %>">
+					<%= image_tag "week_icon.svg", class: 'week-icon' %>
+				</a>
+			</td>
+			</tr>
+			</table>
 </div>

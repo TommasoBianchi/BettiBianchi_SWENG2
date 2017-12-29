@@ -1,0 +1,150 @@
+<%= render 'shared/header', selected: 'notifications' %>
+<div id="content">
+	<script type="text/javascript"></script>
+	<%= render 'shared/calendar_sidebar' %>
+	<section class="mainContent">
+
+		<%= render 'shared/title_back_action', title: 'Notifications Page' %>
+
+		<% first = true %>
+		<h2>
+			WARNINGS
+		</h2>
+		<% @warning_meeting.each do |warning_mps| %>
+			<% if warning_mps.is_a? Array %>
+
+				<div class="warning-container colored-container light-grey-container" id=<%= warning_mps[0].id %>>
+					<% warning_mps.each do |single_warning_mp| %>
+						<% meeting = single_warning_mp.meeting %>
+						<div class="single-warning meeting rounded-box">
+							<div class="meeting-date">
+								<%= single_warning_mp.id %>:
+								<%= meeting.start_date %>:
+								<%= meeting.start_date.strftime "%I:%M %p" %>
+								-
+								<%= meeting.end_date.strftime "%I:%M %p" %></div>
+							<div class="meeting-title"><%= meeting.title %></div>
+							<div class="meeting-location"><%= meeting.location.description %></div>
+							<a href="<%= meeting_path meeting.id %>">
+								<div class="detail">Details</div>
+							</a>
+						</div>
+					<% end %>
+				</div>
+
+			<% else %>
+				<% if first %>
+					<% first = false %>
+				<% else %>
+					</div>
+				<% end %>
+				<% item = warning_mps %>
+				<div class="date-separator rounded-box" id="<%= item.strftime '%Y%m%d' %>-separator" onclick="toggle('<%= item.strftime "%Y%m%d" %>2')">
+					<div><%= item.strftime "%a %d %b %Y" %></div>
+				</div>
+				<div id="<%= item.strftime '%Y%m%d' %>2-accordion" class="date-accordion">
+					<script type="text/javascript">
+			  $(window).on('load', function () {
+				  setMaxHeight("<%= item.strftime '%Y%m%d' %>")
+			  })
+					</script>
+			<% end %>
+		<% end %>
+		</div>
+
+		<% if @pending_meetings.count() > 0 %>
+
+			<% first = true %>
+
+			<h2>
+				INVITATIONS PENDING
+			</h2>
+			<div>
+				<% @pending_meetings.each do |item| %>
+					<% if item.is_a? Meeting %>
+						<% meeting = item %>
+						<div class="meeting-invitation">
+							<div class="meeting rounded-box">
+								<div class="meeting-date"><%= meeting.start_date.strftime "%I:%M %p" %>
+									-
+									<%= meeting.end_date.strftime "%I:%M %p" %></div>
+								<div class="meeting-title"><%= meeting.title %></div>
+								<div class="meeting-location"><%= meeting.location.description %></div>
+								<a href="<%= meeting_path meeting.id %>">
+									<div class="detail">Details</div>
+								</a>
+							</div>
+							<div class="response-button">
+								<%= link_to "ACCEPT", accept_meeting_path(meeting_id: meeting.id, user_id: @user.id), class: "single-response-button light-grey-container colored-container" %>
+								<%= link_to "DECLINE", decline_meeting_path(meeting_id: meeting.id, user_id: @user.id), class: "single-response-button light-grey-container colored-container" %>
+								<div class="single-response-button light-grey-container colored-container"> RESCHEDULE</div>
+							</div>
+						</div>
+					<% else %>
+						<% if first %>
+							<% first = false %>
+						<% else %>
+							</div>
+						<% end %>
+						<div class="date-separator rounded-box" id="<%= item.strftime '%Y%m%d' %>-separator" onclick="toggle('<%= item.strftime "%Y%m%d" %>')">
+							<div><%= item.strftime "%a %d %b %Y" %></div>
+						</div>
+						<div id="<%= item.strftime '%Y%m%d' %>-accordion" class="date-accordion">
+							<script type="text/javascript">
+				  $(window).on('load', function () {
+					  setMaxHeight("<%= item.strftime '%Y%m%d' %>")
+				  })
+							</script>
+					<% end %>
+				<% end %>
+				</div>
+
+		<% end %>
+		<% if @undoable_breaks.count() > 0 %>
+			<% first = true %>
+
+			<h2>
+				UNDOABLE BREAKS
+			</h2>
+			<div>
+				<% @undoable_breaks.each do |item| %>
+					<% if item.is_a? ComputedBreak %>
+						<% br = item %>
+						<div class="break list-of-default-location rounded-box">
+							<div class="default-location-name"><%= br.name %></div>
+							<div class="default-location-location"><%= br.get_description %></div>
+							<%= link_to image_tag("cancel_icon.png", alt: "Delate", class: 'delete-image delete-image-in-block'), delete_break_path(user_id: @user.id, break_id: br.id) %>
+
+						</div>
+					<% else %>
+						<% if first %>
+							<% first = false %>
+						<% else %>
+							</div>
+						<% end %>
+						<div class="date-separator rounded-box" id="<%= item.strftime '%Y%m%d' %>-separator" onclick="toggle('<%= item.strftime "%Y%m%d" %>')">
+							<div><%= item.strftime "%a %d %b %Y" %></div>
+						</div>
+						<div id="<%= item.strftime '%Y%m%d' %>-accordion" class="date-accordion">
+							<script type="text/javascript">
+				  $(window).on('load', function () {
+					  setMaxHeight("<%= item.strftime '%Y%m%d' %>")
+				  })
+							</script>
+					<% end %>
+				<% end %>
+				</div>
+
+		<% end %>
+		</section>
+		</div>
+		<%= render 'shared/footer' %>
+
+		<script>
+		$('.warning-container').click(function (event) {
+			var clicked_div = $(this);
+			var new_path = "/notification/resolve_warning/" + clicked_div.attr('id');
+			document.location.href = new_path;
+		});
+
+		</script>

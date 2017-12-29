@@ -2,37 +2,46 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
-@import "application.css.scss";
+@import "main.scss";
 
-.meeting {
-	background-color: $blue;
-    padding: 20px;
-    width: 60%;
-    text-align: left;
-    margin: 0 auto;
-    position: relative;
-	z-index: 2;
+.vertical-line {
+	background-color: #b2b2b2;
+    height: calc(100% - 50px);
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+    width: 10%;
 }
 
-.meeting + .meeting {
-	margin-top: 20px;
+.date-accordion > div {
+    margin-bottom: 20px;
 }
 
-.meeting-title, .meeting-location, .default-location-name {
+ .default-location-name {
 	padding-top: 5px;
 }
 
-.meeting-date, .default-location-name {
+.default-location-name {
 	font-weight: bold;
 }
 
-.meeting-location, .default-location-location {
+.default-location-location {
+	font-style: italic;
+}
+
+.break-name {
+	font-weight: bold;
+}
+
+.break-time {
 	font-style: italic;
 }
 
 .travel-container {
 	position: relative;
-	margin: 25px 0;
 }
 
 .travel {
@@ -44,11 +53,11 @@
 }
 
 .travel.left-align {
-	margin-left: 18%;
+	margin-left: 18.5%;
 }
 
 .travel.right-align {
-	margin-left: 53%;
+	margin-left: 53.5%;
 }
 
 .travel-mean {
@@ -56,8 +65,10 @@
     position: absolute;
 	width: 10%;
 	height: 100%;
-	left: 44%;
 	z-index: 1;
+	margin: auto;
+    left: 0;
+    right: 0;
 }
 
 .travel-mean-icon {
@@ -69,11 +80,26 @@
 }
 
 .icon-walking, .icon-biking, .icon-public_transportation, .icon-driving {
-	background: image_url("travel_mean_icons/car.png");
 	background-size: contain;
 	background-repeat: no-repeat;
 	background-position: center;
 	margin: 20px;
+}
+
+.icon-walking {
+	background-image: image_url("travel_mean_icons/Walking.png");
+} 
+
+.icon-biking {
+	background-image: image_url("travel_mean_icons/Biking.png");
+} 
+
+.icon-public_transportation {
+	background-image: image_url("travel_mean_icons/Public_Transportation.png");
+}
+
+.icon-driving {
+	background-image: image_url("travel_mean_icons/car.png");
 }
 
 .calendar-vertical-line {
@@ -89,22 +115,9 @@
 	height: 200%;
 }
 
-.detail {
-	text-transform: uppercase;
-	position: absolute;
-	right: 10px;
-	top: 10px;
-	cursor: pointer;
-	color: black;
-}
-
-.detail:hover {
-	color: rgba(255,255,255,1.00);
-}
-
 .travel.left-align .detail {
 	right: unset;
-	left: 10px;
+	left: 20px;
 }
 
 .default-location {
@@ -163,6 +176,7 @@ $transition_time: 0.5s;
 	-o-transition: max-height $transition_time;
 	transition: max-height $transition_time;
 	margin-bottom: 20px;
+	position: relative;
 }
 
 .date-accordion > div:last-child {
@@ -190,4 +204,28 @@ $transition_time: 0.5s;
 
 .next {
 	right: 10px;
+}
+
+/* IF SCREEN IS SMALL (less than 900px) ... */
+@media (max-width: $mobile_max_width) {
+	.meeting, .default-location, .break, .date-separator {
+		width: 75% !important;
+	}
+
+	.travel {
+		width: 31% !important;
+	}
+
+	.travel.left-align {
+		margin-left: 11% !important;
+	}
+
+	.prev, .next {
+		width: 15% !important;
+		padding: 20px 10px !important;
+	}
+
+	.date-separator:first-of-type {
+		width: 50% !important;
+	}
 }

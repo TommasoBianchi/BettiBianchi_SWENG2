@@ -35,6 +35,9 @@ gem 'jquery-rails'
 # jQuery UI
 gem 'jquery-ui-rails'
 
+# RestClient
+gem 'rest-client'
+
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 
