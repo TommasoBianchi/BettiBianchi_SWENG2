@@ -1,25 +1,40 @@
 module BreakHelper
 
+	# Update a single break in a given day
 	def self.update_break(b, day)
+		return unless b.day_of_the_week == day.wday
+
 		from = day.midnight + b.start_time_slot.minutes
 		to = day.midnight + b.end_time_slot.minutes
+
+		# Grab all the meetings potentially overlapping with the break b
 		user_meeting_participations = b.user.meeting_participations.where(is_consistent: true)
-										.where(response_status: MeetingParticipation::Response_statuses[:accepted])
-		# TODO: joins also with travel to get overlapping mps also wrt them
+										.where(response_status: MeetingParticipation::Response_statuses[:accepted])		
 		overlapping_meeting_participations = user_meeting_participations.joins(:meeting).where('meetings.start_date between :start and :end
 												or meetings.end_date between :start and :end
 												or (meetings.start_date <= :start and meetings.end_date >= :end)', start: from, end: to)
 
+		# Grab all the travels potentially overlapping with the break b
+		overlapping_travels = Travel.where('start_time between :start and :end
+											or end_time between :start and :end
+											or (start_time <= :start and end_time >= :end)', start: from, end: to)
+									.select {|travel| travel.get_user == b.user} 
+
+		# Uniform meetings and travels in the form of time intervals
 		time_intervals = []
 		overlapping_meeting_participations.each do |mp|
-			time_intervals.push({from: mp.arriving_travel.start_time, to: mp.arriving_travel.end_time})
 			time_intervals.push({from: mp.meeting.start_date, to: mp.meeting.end_date})
-			time_intervals.push({from: mp.leaving_travel.start_time, to: mp.leaving_travel.end_time})
+		end
+		overlapping_travels.each do |t|
+			next unless (t.get_starting_point and t.get_ending_point)	# Avoid "zombie" travels
+			time_intervals.push({from: t.start_time, to: t.end_time})
 		end
 
+		# Call the lower level break update
 		_update_break b, day, time_intervals
 	end
 
+	# Update all the breaks of a given user between from_date and to_date
 	def self.update_all_breaks(from_date, to_date, user)
 		# TODO: maybe from_date and to_date are in different wdays. Deal with it
 
@@ -35,6 +50,7 @@ module BreakHelper
 		end
 	end
 
+	# Update every occurrence of a given break
 	def self.full_update_break(b)
 		# Drop all already computed breaks
 		ComputedBreak.where(break: b).delete_all
@@ -43,7 +59,7 @@ module BreakHelper
 		last_day = b.user.meeting_participations.joins(:meeting).order('meetings.start_date').last.meeting.start_date.midnight
 
 		# For each day in the user's schedule from now on recompute the break b
-		current_day = DateTime.now.midnight
+		current_day = DateTime.now.utc.midnight
 		while current_day <= last_day do 
 			update_break b, current_day
 
@@ -76,33 +92,6 @@ module BreakHelper
 				doability_bitmask[i] = 0
 			end
 		end
-
-=begin
-		# Place the computed break in the first available free slot
-		i = 0
-		while i < doability_bitmask.length do
-			if doability_bitmask[i] == 0
-				i += 1
-				next
-			end
-
-			slot_count = 0
-			for j in i..doability_bitmask.length - 1
-				if doability_bitmask[j] == 1
-					break
-				else
-					slot_count += 1
-				end
-			end
-
-			if slot_count >= cb.duration
-				cb.update(computed_time: cb.start_time_slot + i.minutes, is_doable: true)
-				return true
-			else
-				i = j + 1
-			end
-		end
-=end
 
 		# Place the computed break in the available free slot closer to the default time
 		default_index = b.default_time - b.start_time_slot
@@ -137,7 +126,7 @@ module BreakHelper
 				end
 
 				if slot_count >= cb.duration
-					cb.update(computed_time: cb.start_time_slot + backward_index.minutes, is_doable: true)
+					cb.update(computed_time: cb.start_time_slot + (backward_index - cb.duration).minutes, is_doable: true)
 					return true
 				else
 					backward_index = i - 1
