@@ -65,30 +65,30 @@ module BreakHelper
 		end
 
 		# Update the doability bitmask
-		doability_bitmask = "1" * (b.end_time_slot - b.start_time_slot)
+		doability_bitmask = [1] * (b.end_time_slot - b.start_time_slot)
 
 		time_intervals.each do |interval|	# time is counted in steps of minutes
 			from = ((interval[:from].utc - day.utc.midnight) / 60).to_i - b.start_time_slot
 			from = 0 if from < 0
 			to = ((interval[:to].utc - day.utc.midnight) / 60).to_i - b.start_time_slot
-			puts to
 			to = doability_bitmask.length - 1 if to >= doability_bitmask.length
 			for i in from..to  do
-				doability_bitmask[i] = "0"
+				doability_bitmask[i] = 0
 			end
 		end
 
+=begin
 		# Place the computed break in the first available free slot
 		i = 0
 		while i < doability_bitmask.length do
-			if doability_bitmask[i] == "0"
+			if doability_bitmask[i] == 0
 				i += 1
 				next
 			end
 
 			slot_count = 0
 			for j in i..doability_bitmask.length - 1
-				if doability_bitmask[j] == "0"
+				if doability_bitmask[j] == 1
 					break
 				else
 					slot_count += 1
@@ -100,6 +100,48 @@ module BreakHelper
 				return true
 			else
 				i = j + 1
+			end
+		end
+=end
+
+		# Place the computed break in the available free slot closer to the default time
+		default_index = b.default_time - b.start_time_slot
+		forward_index = default_index
+		backward_index = forward_index - 1
+		while (forward_index < doability_bitmask.length or backward_index > 0) do 
+			# At each step proceed from the index closest to the default one
+			if forward_index - default_index < default_index - backward_index
+				slot_count = 0
+				for i in forward_index..doability_bitmask.length - 1
+					if doability_bitmask[i] == 0 or slot_count >= cb.duration
+						break
+					else
+						slot_count += 1
+					end
+				end
+
+				if slot_count >= cb.duration
+					cb.update(computed_time: cb.start_time_slot + forward_index.minutes, is_doable: true)
+					return true
+				else
+					forward_index = i + 1
+				end
+			else
+				slot_count = 0
+				for i in backward_index.downto(0)
+					if doability_bitmask[i] == 0 or slot_count >= cb.duration
+						break
+					else
+						slot_count += 1
+					end
+				end
+
+				if slot_count >= cb.duration
+					cb.update(computed_time: cb.start_time_slot + backward_index.minutes, is_doable: true)
+					return true
+				else
+					backward_index = i - 1
+				end
 			end
 		end
 	
