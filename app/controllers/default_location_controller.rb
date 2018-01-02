@@ -146,9 +146,9 @@ class DefaultLocationController < ApplicationController
 					DefaultLocation.create(starting_hour: starting_hour, day_of_the_week: (day_of_the_week + i) % 7, name: name, user_id: user.id, location_id: location.id)
 				end
 				days = [0, 1, 2, 3, 4, 5, 6]
-				RecomputeMeetingParticipationsJob.perform_later days
+				RecomputeMeetingParticipationsJob.perform_later days, user
 			else
-				RecomputeMeetingParticipationsJob.perform_later day_of_the_week
+				RecomputeMeetingParticipationsJob.perform_later day_of_the_week, user
 			end
 			log_in(user)
 			redirect_to calendar_day_path
