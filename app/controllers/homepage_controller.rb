@@ -55,7 +55,6 @@ class HomepageController < ApplicationController
 	private
 
 	def go_to_complete_regitration(incomplete_user)
-		puts(incomplete_user)
 		session[:tmp_checked] = incomplete_user.id
 		redirect_to '/user/new'
 	end
@@ -93,10 +92,6 @@ class HomepageController < ApplicationController
 			incomplete_user = IncompleteUser.create(email: params[:homepage][:email].downcase, password: params[:homepage][:password], password_confirmation: params[:homepage][:password])
 			go_to_complete_regitration(incomplete_user)
 		end
-	end
-
-	def create_incomplete_user
-		incomplete_user = IncompleteUser.create(email: params[:homepage][:email].downcase, password: params[:homepage][:password], password_confirmation: params[:homepage][:password])
 	end
 
 	def user_existing_email(user)

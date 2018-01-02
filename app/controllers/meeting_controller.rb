@@ -6,8 +6,7 @@ class MeetingController < ApplicationController
 		@back_path = request.referer
 		@user = current_user
 		@meeting = Meeting.find(params['id'])
-		@meeting.abstract = 'prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova prova '
-	end
+		end
 
 	def participants_page
 		@user = current_user
