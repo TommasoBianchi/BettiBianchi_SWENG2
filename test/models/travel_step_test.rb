@@ -1,7 +1,5 @@
 require 'test_helper'
 
 class TravelStepTest < ActiveSupport::TestCase
-  # test "the truth" do
-  #   assert true
-  # end
+  # test the consistency of start time and end time
 end

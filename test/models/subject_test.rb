@@ -1,7 +1,5 @@
 require 'test_helper'
 
 class SubjectTest < ActiveSupport::TestCase
-  # test "the truth" do
-  #   assert true
-  # end
+  # test that each subject has at least one operator and value
 end

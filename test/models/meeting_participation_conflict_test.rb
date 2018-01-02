@@ -1,7 +1,5 @@
 require 'test_helper'
 
 class MeetingParticipationConflictTest < ActiveSupport::TestCase
-  # test "the truth" do
-  #   assert true
-  # end
+  # test that you can not be in coflict with your self and that two confilcits mps belong to the same user
 end

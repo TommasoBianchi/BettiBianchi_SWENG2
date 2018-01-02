@@ -2,6 +2,7 @@ require 'test_helper'
 
 class UserTest < ActiveSupport::TestCase
 
+	# test that each user can only have as much social user as the number of social
 	test "primary email in emails" do
 		User.all.each do |user|
 			assert user.emails.where(id: user.primary_email.id).count == 1
