@@ -1,5 +1,9 @@
-Runtime Speed and Performance
+\begin{itemize}
+\item~\textbf{Runtime Speed and Performance}: Rails has a fairly ‘slow’ runtime speed compared to other frameworks, which makes it harder to scale RoR applications. This is due to the fact that Ruby is an interpreted language, and thus slower by itself compared to compiled ones such as Java, and to the high number of modules running one inside another in a typical RoR application.
 
-RoR is an opinionated framework with a lot of hard dependencies and modules included out of the box
+\item~\textbf{A lot of hard dependencies and modules included out of the box}: while this is also somewhat an advantage because it gives you access right away to a lot of useful library code, it also means that if you do not want to keep the default settings for all of them you need to change a lot of configuration code. This also means that debugging is often harder, as you have to track down where the error came from through a lot of different active modules.
 
-High cost of wrong decisions in development
+\item~\textbf{High cost of wrong decisions in development}: wrong architecture decisions during the initial stages of your project might cost you more in Rails than in any other framework. Since prototyping with Rails is incredibly fast, an engineering team inexperienced in Rails might make unobvious mistakes that will erode your application’s performance in the future. These structural deficiencies will be hard to fix because Rails is an open framework, where all components are tightly coupled and depend on each other.
+
+\item~\textbf{Lacks tools for very large projects}: as it has been developed with ease of use and fast development in mind, Rails is not very well suited for building very large and complex application.
+\end{itemize}
