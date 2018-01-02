@@ -11,6 +11,8 @@ class Email < ApplicationRecord
 	private
 	def is_email
 		reg_ex_pattern = /\A([\w+\-].?)+@[a-z\d\-]+(\.[a-z]+)*\.[a-z]+\z/i
-		reg_ex_pattern.match?(email)
+		unless reg_ex_pattern.match?(email)
+			errors.add(:email, "must be a valid email")
+		end
 	end
 end

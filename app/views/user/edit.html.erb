@@ -38,16 +38,21 @@
 					<div id="buttonsContainer">
 						<%= submit_tag 'Upload Image', class: 'monoConfirmationButton' %>
 					</div>
+
 				<% end %>
 
 					-->
-				
+
 				<div id="preference-list-container">
 					<div class="title-add-container ">
 						Emails
 						<%= image_tag("add_icon.png", alt: 'add_icon', class: 'add-image', id: 'add_email_button') %>
 					</div>
 				</div>
+
+				<% flash.each do |message_type, message| %>
+					<div class="alert alert-<%= message_type %>"><%= message %></div>
+				<% end %>
 
 				<div class="add-email-div">
 					<%= form_with scope: :email, local: true do |form| %>

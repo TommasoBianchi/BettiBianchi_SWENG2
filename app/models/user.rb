@@ -35,6 +35,8 @@ class User < ApplicationRecord
 	validates :nickname, :primary_email_id, uniqueness: true
 
 	validate :primary_email_in_emails
+	validate :phone_number_consistency
+	validate :at_least_one_travel_mean
 
 
 	def get_last_default_location_before(current_day)
@@ -67,6 +69,21 @@ class User < ApplicationRecord
 			get_first_location_after(DateTime.parse('December 10th 2017 00:00:00 AM')) # to take the first default location of the week, infinite loop if user doesn't have any def location
 		else
 			list_default_location.first
+		end
+	end
+
+	private
+	def at_least_one_travel_mean
+		unless preference_list.length > 0
+			errors.add(:preference_list, 'can not be empty')
+		end
+	end
+
+	private
+	def phone_number_consistency
+		is_number = /^[0-9]+$/
+		unless is_number.match?(phone_number)
+			errors.add(:phone_number, 'is not valid!')
 		end
 	end
 

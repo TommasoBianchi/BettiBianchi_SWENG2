@@ -100,7 +100,7 @@ class MeetingController < ApplicationController
 	def check_participation
 		meeting_id = params['id']
 		meeting_id = params['meeting_id'] unless meeting_id
-		unless current_user.meeting_participations.where(meeting_id: meeting_id, response_status: [0, 1]).count() > 0
+		unless current_user.meeting_participations.where(meeting_id: meeting_id, response_status: [0, 1]).count > 0
 			raise ActionController::RoutingError, 'Not Found'
 		end
 	end
