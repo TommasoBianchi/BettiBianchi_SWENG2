@@ -14,6 +14,7 @@ class Constraint < ApplicationRecord
 	belongs_to :value
 
 	validates :travel_mean, presence: true
+	validate :operator_value_consistency
 
 	def get_description
 		Travel_mean_names[Travel::Travel_means.keys[travel_mean]] + " if " + subject.name + " " + operator.description + " " + value.value
@@ -28,5 +29,16 @@ class Constraint < ApplicationRecord
 			rv = rv.to_datetime
 		end
 		return operator.invoke lv, rv
+	end
+
+	private
+	def operator_value_consistency
+		unless operator.subject_id == subject.id
+			errors.add(:operator, 'does not belong to a valid operator')
+		end
+
+		unless value.subject_id == subject.id
+			errors.add(:value, 'does not belong to a valid value')
+		end
 	end
 end
