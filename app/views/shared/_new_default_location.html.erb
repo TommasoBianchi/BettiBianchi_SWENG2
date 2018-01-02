@@ -8,7 +8,7 @@
 		<div class='date-time-container'>
 			<div class='date-container'>
 				<%= form.label :day_of_the_week, class: 'label', value: 'Day Of The Week' %>
-				<%= form.text_field :day_of_the_week, id: 'dl_date', type: 'text' %>
+				<%= form.text_field :day_of_the_week, id: 'dl_date', type: 'text', onfocus: "javascript:$(this).autocomplete('search','');" %>
 			</div>
 			<div class='time-container'>
 				<%= form.label :starting_hour, class: 'label' %>
@@ -51,4 +51,4 @@
 	</script>
 
 
-	<%= render 'shared/timepicker'  %>
+	<%= render 'shared/timepicker' %>

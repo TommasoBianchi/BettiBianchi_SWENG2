@@ -24,10 +24,7 @@ Rails.application.routes.draw do
 	patch 'user/:id/settings/change_preference_list' => 'user#change_preference_list', as: 'change_preference_list'
 	get 'user/:id/add_constraint' => 'user#add_constraint', as: 'add_constraint'
 	post 'user/:id/add_constraint', to: 'user#create_constraint'
-	get 'user/:id/add_break' => 'user#add_break', as: 'add_break'
-	post 'user/:id/add_break', to: 'user#create_break'
 	get 'user/delete_constraint/:user_id/:constraint_id' => 'user#delate_constraint', as: 'delete_constraint'
-	get 'user/delete_break/:user_id/:break_id' => 'user#delete_break', as: 'delete_break'
 	get 'user/delete_email/:user_id/:email_id' => 'user#delete_email', as: 'delete_email'
 
 	# Meeting
@@ -55,4 +52,8 @@ Rails.application.routes.draw do
 	get 'default_location/first_def_location/:user_id' => 'default_location#first_def_location', as: 'create_first_def_location'
 	post 'default_location/first_def_location/:user_id', to: 'default_location#first_creation'
 
+	# Break
+	get 'break/:id/add_break' => 'break#add_break', as: 'add_break'
+	post 'break/:id/add_break', to: 'break#create_break'
+	get 'user/delete_break/:user_id/:break_id' => 'break#delete_break', as: 'delete_break'
 end
