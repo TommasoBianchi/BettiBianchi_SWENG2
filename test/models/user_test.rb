@@ -14,13 +14,13 @@ class UserTest < ActiveSupport::TestCase
 		end
 	end
 
-  test "unique_nickname" do
+  test "unique nickname" do
 		User.all.each do |user|
 			assert User.where(nickname: user.nickname).count == 1
 		end
 	end
 
-	test "correct_phone_number_and_pref_list" do
+	test "correct phone number and pref list" do
 		is_number = /^[0-9]+$/
 		User.all.each do |user|
 			assert is_number.match?(user.phone_number) || user.phone_number == nil
@@ -28,4 +28,11 @@ class UserTest < ActiveSupport::TestCase
 		end
 	end
 
+	test "nobody can be contact of himself or have twice the same contact" do
+		User.all.each do |user|
+			contacts = user.contacts
+			assert_not contacts.include?(user)
+			assert contacts.length == contacts.uniq.length
+		end
+	end
 end

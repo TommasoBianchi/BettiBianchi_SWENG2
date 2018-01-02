@@ -129,9 +129,16 @@ class UserController < ApplicationController
 	end
 
 	def add_contact
-		contact_add_check(params[:user_id], params[:to_add_id])
-		current_user.contacts.push(User.find(params[:to_add_id]))
-		redirect_to contacts_page_path(id: params[:user_id])
+		check_if_myself(params[:user_id])
+		user = User.find(params[:user_id])
+		to_add = User.find(params[:to_add_id])
+		if to_add && user != to_add && !Contact.where(from_user: user.id).ids.include?(to_add.id)
+			user.contacts.push(to_add)
+			user.save
+			redirect_to contacts_page_path(id: params[:user_id])
+		else
+			raise ActionController::RoutingError, 'Not Found'
+		end
 	end
 
 	def search
@@ -200,11 +207,10 @@ class UserController < ApplicationController
 	def create_constraint
 		travel_mean = params[:constraint][:travel_mean]
 		subject = Subject.find(params[:constraint][:subject].to_i)
-		operator = Operator.find_by(description: params[:constraint][:operator])
-		value = Value.find_by(value: params[:constraint][:value])
+		operator = Operator.find_by(description: params[:constraint][:operator], subject_id: subject.id)
+		value = Value.find_by(value: params[:constraint][:value], subject_id: subject.id)
 		c = Constraint.new({travel_mean: travel_mean, subject: subject, operator: operator, value: value, user: current_user})
-		if c.valid?
-			c.save
+		if c.save
 			redirect_to settings_page_path
 		else
 			render 'add_constraint'
@@ -241,7 +247,7 @@ class UserController < ApplicationController
 	end
 
 	def check_if_myself(id = params[:id].to_i)
-		unless current_user.id == id
+		unless current_user.id == id.to_i
 			raise ActionController::RoutingError, 'Not Found'
 		end
 	end
