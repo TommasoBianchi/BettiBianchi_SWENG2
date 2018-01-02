@@ -1,0 +1,28 @@
+\newcounter{countReq}
+\newcommand{\reqNum}{\stepcounter{countReq}\thecountReq}
+
+\def\arraystretch{1.5}
+\begin{longtable}{|m{7cm}|m{7cm}|}
+	\hline
+	\textbf{Requirements}            & 		\textbf{Components}		    \\ \hline
+	\textbf{R\reqNum}~Each user must provide an email that is not already present in the system & Implemented	\\ \hline
+	\textbf{R\reqNum}~Each user must provide a nickname that is not already present in the system & Implemented	\\ \hline
+	\textbf{R\reqNum}~Users have to be registered into the system before logging in & Implemented	\\ \hline
+	\textbf{R\reqNum}~Users have to provide an existing email or nickname and the associated password in order to log in; in alternative they can use a supported external login system & Partially Implemented	\\ \hline
+	\textbf{R\reqNum}~A user must be logged into the system to perform any action except registering and logging in & Implemented	\\ \hline
+	\textbf{R\reqNum}~Users cannot have meetings while their status is set to auto-decline & Not Implemented	\\ \hline
+	\textbf{R\reqNum}~A user cannot have different default locations sharing the start time & ? (Probably not)	\\ \hline
+	\textbf{R\reqNum}~Time travel between subsequent default locations should be less than the difference between their start time & Not Implemented	\\ \hline
+	\textbf{R\reqNum}~Each meeting that is not an Instant Meeting has at least two participants & ? (Probably not)	\\ \hline
+	\textbf{R\reqNum}~Each meeting has at least one administrator & ? (Probably yes)	\\ \hline
+	\textbf{R\reqNum}~Each meeting has a title, a date and a location & Implemented	\\ \hline
+	\textbf{R\reqNum}~Each participant in a meeting can access shared files and the chat & Not Implemented \\ \hline
+	\textbf{R\reqNum}~Users participate in a meeting if and only if they accept the invitation & Implemented	\\ \hline
+	\textbf{R\reqNum}~Users do not participate in a meeting if they decline the invitation & Implemented	\\ \hline
+	\textbf{R\reqNum}~Users can write in the chat of a meeting if and only if they have received and accepted an invitation to it & Not Implemented	\\ \hline
+	\textbf{R\reqNum}~For each meeting there is a warning iff the meeting is inconsistent & Implemented \\ \hline
+	\textbf{R\reqNum}~The system suggests you a time, according to your settings, to have a break such that no meeting overlaps with it; if no time slot is valid, a warning is generated & Implemented \\ \hline
+	\textbf{R\reqNum}~At least one travel mean is available in the preference list & ? (Probably yes) \\ \hline
+	\textbf{R\reqNum}~The travel mean suggested by the system is always the first in the weighted preference list that satisfied all the constraints; if no travel mean satisfied all the constraints than the system suggests the fastest one & Implemented \\ \hline
+	\caption{Requirements}
+\end{longtable}
