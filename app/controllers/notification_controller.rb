@@ -26,7 +26,7 @@ class NotificationController < ApplicationController
 
 		breaks_day = []
 		current_day = nil
-		if undobale.count() > 0
+		if undobale.count > 0
 			undobale.each do |ub|
 				if current_day.nil? || (ub.start_time_slot.midnight != current_day)
 					# Change the current day
@@ -110,7 +110,7 @@ class NotificationController < ApplicationController
 	end
 
 	def check_if_mine(meeting_participation_id)
-		unless current_user.meeting_participations.where(id: meeting_participation_id).count() > 0
+		unless current_user.meeting_participations.where(id: meeting_participation_id).count > 0
 			raise ActionController::RoutingError, 'Not Found'
 		end
 	end

@@ -74,12 +74,15 @@ class UserController < ApplicationController
 		@email = Email.new
 		case params[:commit]
 			when "Create Email" #button clicked = Create Email
-				email = params[:email][:email]
-				if isEmail(email)
-					Email.create(email: email, user_id: @user.id)
+				email_params = {}
+				email_params[:email] = params[:email][:email]
+				email_params[:user_id] = @user.id
+				e = Email.new(email_params)
+				if e.save
 					redirect_to edit_user_path(id: @user.id)
 					return
 				else
+					flash.now[:error] = 'Email not valid!'
 					@email.errors.add(:email, 'email not valid')
 					render 'edit'
 					return
@@ -244,20 +247,20 @@ class UserController < ApplicationController
 	end
 
 	def contact_delate_check(user, action_user)
-		unless (current_user.id == user.to_i) && (current_user.contacts.where(id: action_user).count() > 0)
+		unless (current_user.id == user.to_i) && (current_user.contacts.where(id: action_user).count > 0)
 			raise ActionController::RoutingError, 'Not Found'
 		end
 	end
 
 	def contact_add_check(user, action_user)
-		unless (current_user.id == user.to_i) && (current_user.contacts.where(id: action_user).count() == 0)
+		unless (current_user.id == user.to_i) && (current_user.contacts.where(id: action_user).count == 0)
 			raise ActionController::RoutingError, 'Not Found'
 		end
 	end
 
 	# method used to check the consistency of params used in constraint add/delate options
 	def delete_constraint_check(user, constraint)
-		unless (current_user.id == user.to_i) && (current_user.constraints.where(id: constraint).count() > 0)
+		unless (current_user.id == user.to_i) && (current_user.constraints.where(id: constraint).count > 0)
 			raise ActionController::RoutingError, 'Not Found'
 		end
 	end
@@ -270,7 +273,7 @@ class UserController < ApplicationController
 	# method used to check the consistency of params used in delete email
 	def check_delete_email_params
 		params.permit(:user_id, :email_id)
-		unless (current_user.id == params[:user_id].to_i) && (current_user.emails.where(id: params[:email_id]).count() > 0)
+		unless (current_user.id == params[:user_id].to_i) && (current_user.emails.where(id: params[:email_id]).count > 0)
 			raise ActionController::RoutingError, 'Not Found'
 		end
 	end

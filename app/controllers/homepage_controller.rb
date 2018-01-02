@@ -37,7 +37,7 @@ class HomepageController < ApplicationController
 				user_existing_email(nickname_user)
 			else # user doesn't exist
 				unless login_incomplete_user # neither an incomplete user exists
-					flash.now[:danger] = Error_message
+					flash.now[:error] = Error_message
 					render 'index'
 				end
 			end
@@ -96,7 +96,7 @@ class HomepageController < ApplicationController
 
 	def user_existing_email(user)
 		if user && user.authenticate(params[:homepage][:password]) # normal registered user
-			if user.default_locations.count() == 0
+			if user.default_locations.count == 0
 				redirect_to create_first_def_location_path(user_id: user.id)
 			else
 				log_in user

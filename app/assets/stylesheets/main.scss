@@ -11,7 +11,6 @@ $background_image_url: image_url("homepage/sfondo25.png");
 
 $mobile_max_width: 1100px;
 
-
 .light-blue-container {
   background-color: $light_blue;
 }
@@ -24,7 +23,7 @@ $mobile_max_width: 1100px;
   background-color: $light-light-grey;
 }
 
-.white-container{
+.white-container {
   background-color: white;
 }
 
@@ -34,8 +33,12 @@ $mobile_max_width: 1100px;
   text-align: center;
 }
 
-.error{
+.error {
   border-color: red;
+}
+
+.alert-error{
+  color: red;
 }
 
 .meeting {
@@ -60,7 +63,6 @@ $mobile_max_width: 1100px;
   font-style: italic;
 }
 
-
 .detail {
   text-transform: uppercase;
   position: absolute;
@@ -71,10 +73,10 @@ $mobile_max_width: 1100px;
 }
 
 .detail:hover {
-  color: rgba(255,255,255,1.00);
+  color: rgba(255, 255, 255, 1.00);
 }
 
-.single-response-button{
+.single-response-button {
   width: 26%;
   margin-left: 1%;
   margin-right: 1%;
@@ -83,7 +85,7 @@ $mobile_max_width: 1100px;
   padding-bottom: 3%;
 }
 
-.break{
+.break {
   background-color: rgba(170, 50, 80, 1);
   padding: 20px;
   width: 60%;
@@ -94,7 +96,7 @@ $mobile_max_width: 1100px;
   z-index: 2;
 }
 
-.delete-image-in-block{
+.delete-image-in-block {
   position: absolute;
   top: 25px;
   right: 19px;

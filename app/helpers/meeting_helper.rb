@@ -329,7 +329,7 @@ module MeetingHelper
 		travel_steps = []
 		previous_step_start_time = travel.start_time
 		data[:steps].each do |step|
-			travel_step = TravelStep.new()
+			travel_step = TravelStep.new
 			travel_step.travel_mean = Travel::Travel_means[step[:travel_mean]]
 			travel_step.distance = step[:distance]
 			travel_step.travel = travel
