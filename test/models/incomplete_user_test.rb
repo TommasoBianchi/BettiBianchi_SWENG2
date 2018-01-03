@@ -1,6 +1,16 @@
 require 'test_helper'
 
 class IncompleteUserTest < ActiveSupport::TestCase
-  # test that only users that doesn't have completed the registraton yet are the onyl unregisterd user
-	# test that the email of each unregistered user'e email is not in the Email table
+
+	test "not incomplete user with an existing email" do
+		IncompleteUser.all.each do |incomplete_user|
+			assert Email.where(email: incomplete_user.email).count == 0
+		end
+	end
+
+	test "do not exist two incomplete user with the same email" do
+		IncompleteUser.all.each do |incomplete_user|
+			assert IncompleteUser.where(email: incomplete_user.email).count == 1
+		end
+	end
 end

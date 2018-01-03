@@ -81,9 +81,11 @@ class User < ApplicationRecord
 
 	private
 	def phone_number_consistency
-		is_number = /^[0-9]+$/
-		unless is_number.match?(phone_number)
-			errors.add(:phone_number, 'is not valid!')
+		if phone_number
+			is_number = /^[0-9]+$/
+			unless is_number.match?(phone_number)
+				errors.add(:phone_number, 'is not valid!')
+			end
 		end
 	end
 

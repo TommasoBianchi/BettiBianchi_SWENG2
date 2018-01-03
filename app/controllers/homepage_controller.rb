@@ -1,5 +1,5 @@
 class HomepageController < ApplicationController
-	Error_message = 'Invalid email/password combination'.freeze
+	ERROR_MESSAGE = 'Invalid email/password combination'.freeze
 
 	skip_before_action :require_login
 
@@ -37,7 +37,7 @@ class HomepageController < ApplicationController
 				user_existing_email(nickname_user)
 			else # user doesn't exist
 				unless login_incomplete_user # neither an incomplete user exists
-					flash.now[:error] = Error_message
+					flash.now[:error] = ERROR_MESSAGE
 					render 'index'
 				end
 			end
@@ -54,7 +54,7 @@ class HomepageController < ApplicationController
 
 	private
 
-	def go_to_complete_regitration(incomplete_user)
+	def go_to_complete_registration(incomplete_user)
 		session[:tmp_checked] = incomplete_user.id
 		redirect_to '/user/new'
 	end
@@ -72,10 +72,10 @@ class HomepageController < ApplicationController
 	def login_incomplete_user
 		incomplete_user = IncompleteUser.find_by(email: params[:homepage][:email].downcase)
 		if incomplete_user && incomplete_user.authenticate(params[:homepage][:password])
-			go_to_complete_regitration(incomplete_user)
+			go_to_complete_registration(incomplete_user)
 			true
 		elsif incomplete_user # incorrect password
-			flash.now[:danger] = Error_message
+			flash.now[:danger] = ERROR_MESSAGE
 			render 'index'
 			true
 		end
@@ -84,13 +84,13 @@ class HomepageController < ApplicationController
 	def signup_incomplete_user
 		incomplete_user = IncompleteUser.find_by(email: params[:homepage][:email].downcase)
 		if incomplete_user && incomplete_user.authenticate(params[:homepage][:password])
-			go_to_complete_regitration(incomplete_user)
+			go_to_complete_registration(incomplete_user)
 		elsif incomplete_user # incorrect password
-			flash.now[:danger] = Error_message
+			flash.now[:danger] = ERROR_MESSAGE
 			render 'index'
 		else
 			incomplete_user = IncompleteUser.create(email: params[:homepage][:email].downcase, password: params[:homepage][:password], password_confirmation: params[:homepage][:password])
-			go_to_complete_regitration(incomplete_user)
+			go_to_complete_registration(incomplete_user)
 		end
 	end
 
@@ -103,7 +103,7 @@ class HomepageController < ApplicationController
 				redirect_to calendar_day_path
 			end
 		else # registered user that provides a wrong password
-			flash.now[:danger] = Error_message
+			flash.now[:danger] = ERROR_MESSAGE
 			render 'index'
 		end
 	end
