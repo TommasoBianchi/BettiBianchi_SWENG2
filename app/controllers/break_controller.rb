@@ -24,7 +24,6 @@ class BreakController < ApplicationController
 			render 'add_break'
 			return
 		end
-		break_params[]
 		begin
 			starting_hour = params[:break][:start_time_slot].to_datetime.hour * 60 + params[:break][:start_time_slot].to_datetime.min
 		rescue NoMethodError
@@ -65,6 +64,12 @@ class BreakController < ApplicationController
 	end
 
 	private
+
+	def check_if_myself(id = params[:id].to_i)
+		unless current_user.id == id.to_i
+			raise ActionController::RoutingError, 'Not Found'
+		end
+	end
 
 	def check_delete_break_params
 		params.permit(:break_id, :user_id)

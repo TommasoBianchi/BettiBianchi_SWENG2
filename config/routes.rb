@@ -26,6 +26,7 @@ Rails.application.routes.draw do
 	post 'user/:id/add_constraint', to: 'user#create_constraint'
 	get 'user/delete_constraint/:user_id/:constraint_id' => 'user#delate_constraint', as: 'delete_constraint'
 	get 'user/delete_email/:user_id/:email_id' => 'user#delete_email', as: 'delete_email'
+	get 'user/delete_social/:user_id/:social_user_id' => 'user#delete_social', as: 'delete_social'
 
 	# Meeting
 	get 'meeting/:id/participants_page' => 'meeting#participants_page', as: 'participants_page'

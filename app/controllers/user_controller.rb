@@ -5,7 +5,7 @@ class UserController < ApplicationController
 	def show
 		require_login
 		@user = User.find(params[:id])
-
+		@socials = Social::Social_type
 	end
 
 	def my_user_page
@@ -66,6 +66,7 @@ class UserController < ApplicationController
 		@emails = @user.emails.where.not(id: primary_mail_id)
 		@email = Email.new
 		@datafile = Email.new
+		@socials = Social::Social_type
 	end
 
 	def post_edit
@@ -87,6 +88,10 @@ class UserController < ApplicationController
 					render 'edit'
 					return
 				end
+			when "Create Social" #button clicked = Create Social
+				user = current_user
+				SocialUser.create(social_id: params[:social_user][:social], user_id: params[:id], link: params[:social_user][:link])
+				redirect_to user
 			when "Edit User" #button clicked = Edit User
 				if @user.update_attributes(user_edit_params)
 					redirect_to @user
@@ -217,6 +222,11 @@ class UserController < ApplicationController
 		end
 	end
 
+	def delete_social
+		check_if_myself(params[:user_id])
+		SocialUser.find(params[:social_user_id]).delete
+		redirect_to current_user
+	end
 
 	private
 
