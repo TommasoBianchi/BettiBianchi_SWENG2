@@ -113,8 +113,6 @@
 						<div class="break list-of-default-location rounded-box">
 							<div class="default-location-name"><%= br.name %></div>
 							<div class="default-location-location"><%= br.get_description %></div>
-							<%= link_to image_tag("cancel_icon.png", alt: "Delate", class: 'delete-image delete-image-in-block'), delete_break_path(user_id: @user.id, break_id: br.id) %>
-
 						</div>
 					<% else %>
 						<% if first %>
