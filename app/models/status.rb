@@ -10,7 +10,9 @@ class Status < ApplicationRecord
 
 	validate :type_correctness
 
-	private 
+	private
+
+	# This method checks the validity of a status
 	def response_status_correctness
 		if type.blank?
 			return

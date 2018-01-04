@@ -5,6 +5,7 @@ class Subject < ApplicationRecord
 	validates :name, presence: true
 	validate :name_correctness
 
+	# This method returns the path value of a subject
 	def get_path_value(path)
 		return path[Subjects[name]]
 	end
@@ -17,6 +18,7 @@ class Subject < ApplicationRecord
 		"End time" => :end_time
 	}
 
+	# This method checks if the name of a subject is correct (between the ones in Subjects)
 	def name_correctness
 	  	if name.blank?
 	  		return

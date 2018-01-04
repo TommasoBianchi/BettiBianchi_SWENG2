@@ -17,6 +17,7 @@ class User < ApplicationRecord
 	has_many :meeting_participations
 	has_many :constraints
 
+	# This method returns the primary email of the user
 	def primary_email
 		Email.find(primary_email_id)
 	end
@@ -38,7 +39,7 @@ class User < ApplicationRecord
 	validate :phone_number_consistency
 	validate :at_least_one_travel_mean
 
-
+	# This method returns the last default location before a given date
 	def get_last_default_location_before(current_day)
 		list_default_location = []
 		default_locations.each do |dl|
@@ -55,8 +56,8 @@ class User < ApplicationRecord
 		end
 	end
 
+	# This method returns the first default location after a given date
 	def get_first_location_after(current_day)
-		# ATTENTION IT RETURNS THE FIRST DEFAULT LOCATION THAT STARTS AFTER current_day. if you want the current one use the get_last_default_location_before method
 		list_default_location = []
 		default_locations.each do |dl|
 			if dl.day_of_the_week > current_day.wday || (dl.day_of_the_week == current_day.wday && dl.starting_hour >= (current_day.hour * 60 + current_day.min))
@@ -73,13 +74,15 @@ class User < ApplicationRecord
 	end
 
 	private
+
+	# This method checks if the user always has at least one travel mean available
 	def at_least_one_travel_mean
 		unless preference_list.length > 0
 			errors.add(:preference_list, 'can not be empty')
 		end
 	end
 
-	private
+	# This method checks if the phone number inserted is valid
 	def phone_number_consistency
 		if phone_number
 			is_number = /^[0-9]+$/
@@ -89,8 +92,7 @@ class User < ApplicationRecord
 		end
 	end
 
-	private
-
+	# This method checks if the primary email is present
 	def primary_email_in_emails
 		nil if primary_email_id.blank?
 	end

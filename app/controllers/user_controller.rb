@@ -2,16 +2,14 @@ class UserController < ApplicationController
 	skip_before_action :require_login
 	wrap_parameters :user, include: [:nickname, :password, :password_confirmation]
 
+	# This method supports the show user page
 	def show
 		require_login
 		@user = User.find(params[:id])
 		@socials = Social::Social_type
 	end
 
-	def my_user_page
-		@user = current_user
-	end
-
+	# This method is used to create a new user when it performs the login
 	def create
 		email_hash = params.slice(:user)['user']['email']
 		params[:user].delete('email')
@@ -47,12 +45,14 @@ class UserController < ApplicationController
 		end
 	end
 
+	# This method supports the new user page
 	def new
 		@unregistered_user = IncompleteUser.find(session[:tmp_checked])
 		@user = User.new
 		@user.preference_list = '0123'
 	end
 
+	# This method is used for the autocomplete of user search input field
 	def index
 		respond_to do |format|
 			format.html {html_index}
@@ -60,6 +60,7 @@ class UserController < ApplicationController
 		end
 	end
 
+	# This method supports the edit user page
 	def edit
 		@user = current_user
 		primary_mail_id = @user.primary_email_id
@@ -69,6 +70,7 @@ class UserController < ApplicationController
 		@socials = Social::Social_type
 	end
 
+	# This method manages the actions performed by an user in the edit page
 	def post_edit
 		@user = current_user
 		@emails = @user.emails.where.not(id: @user.primary_email_id)
@@ -97,7 +99,7 @@ class UserController < ApplicationController
 				else
 					render 'edit'
 				end
-			when "Upload Image"
+			when "Upload Image" #button clicked = Upload Image. To be implemented
 				uploaded_io = params[:file]
 				File.open(Rails.root.join('public', 'profile_images', @user.primary_email.email + ".png"), 'wb') do |file|
 					file.write(uploaded_io.read)
@@ -109,29 +111,28 @@ class UserController < ApplicationController
 		end
 	end
 
-
+	# This method is used to delete an email from the edit page
 	def delete_email
 		check_delete_email_params
 		Email.delete(params[:email_id])
 		redirect_to user_path(id: params[:user_id])
 	end
 
-
+	# This method supports the show contacts page
 	def contacts
 		@user = current_user
-		puts ("ncjkdscnkdsjcnsdkj")
-		puts (@user.id)
-		puts(params[:id])
 		check_if_myself
 		@contacts = @user.contacts
 	end
 
+	# This method is used to delete a contact from user's contacts
 	def delete_contact
 		contact_delate_check(params[:user_id], params[:to_delete_id])
 		Contact.delete(Contact.where(from_user: params[:user_id], to_user: params[:to_delete_id]))
 		redirect_to contacts_page_path(id: params[:user_id])
 	end
 
+	# This method adds a user as contact
 	def add_contact
 		check_if_myself(params[:user_id])
 		user = User.find(params[:user_id])
@@ -145,6 +146,7 @@ class UserController < ApplicationController
 		end
 	end
 
+	# This method is used from the autocomplete to retrieve users depending on the params passed by the current user (to add new users to contacts)
 	def search
 		if params[:term]
 			to_match = '%' + params[:term] + '%'
@@ -159,6 +161,7 @@ class UserController < ApplicationController
 		end
 	end
 
+	# This method is used by the autocomplete process made only between user contacts (to invite them in a meeting)
 	def search_contacts
 		if params[:term]
 			to_match = '%' + params[:term] + '%'
@@ -175,11 +178,13 @@ class UserController < ApplicationController
 		end
 	end
 
+	# This method supports the settings page
 	def settings
 		check_if_myself
 		@user = current_user
 	end
 
+	# This method is used to change the preference list of a user
 	def change_preference_list
 		check_if_myself
 		user = current_user
@@ -192,16 +197,14 @@ class UserController < ApplicationController
 		redirect_to settings_page_path
 	end
 
-	def user_pref_list_params
-		params.require(:user).permit(:preference_list)
-	end
-
+	# This method is used to delete a constraint
 	def delate_constraint
 		delete_constraint_check(params[:user_id], params[:constraint_id])
 		Constraint.delete(params[:constraint_id])
 		redirect_to settings_page_path(id: params[:user_id])
 	end
 
+	# This method supports the create constraint page
 	def add_constraint
 		@back_path = request.referer
 		@constraint = Constraint.new
@@ -209,6 +212,7 @@ class UserController < ApplicationController
 		@values = Value.all
 	end
 
+	# This method is used to create a new constraint and add it to the user's ones
 	def create_constraint
 		travel_mean = params[:constraint][:travel_mean]
 		subject = Subject.find(params[:constraint][:subject].to_i)
@@ -222,6 +226,7 @@ class UserController < ApplicationController
 		end
 	end
 
+	# This method is used to delete a social form the user page
 	def delete_social
 		check_if_myself(params[:user_id])
 		SocialUser.find(params[:social_user_id]).delete
@@ -230,10 +235,12 @@ class UserController < ApplicationController
 
 	private
 
+	# This method returns all the user to be managed by an html format page
 	def html_index
 		@users = User.all
 	end
 
+	# This method returns all the user retrieved by a query to be managed by a json format page
 	def json_index
 		query = begin
 			params.permit(:query).fetch(:query)
@@ -244,54 +251,61 @@ class UserController < ApplicationController
 		render json: users.map(&:name)
 	end
 
+	# This method checks if all the params used to create a new user are present
 	def user_params
 		params.require(:user).permit(:name, :surname, :password, :nickname, :preference_list, :brief)
 	end
 
+	# This method checks if all the params used to edit a user are present
 	def user_edit_params
 		params.require(:user).permit(:name, :surname, :nickname, :phone_number, :website, :company, :brief)
 	end
 
-	def reinsertUser(incomplete_user_email, incomplete_user_psw)
-		IncompleteUser.create(email: incomplete_user_email, password: incomplete_user_psw, password_confirmation: incomplete_user_psw)
-	end
-
+	# This method checks if the user that perform the action is really myself
 	def check_if_myself(id = params[:id].to_i)
 		unless current_user.id == id.to_i
 			raise ActionController::RoutingError, 'Not Found'
 		end
 	end
 
+	# This method checks if the contact that the user want to delete is available in the user's contacts
 	def contact_delate_check(user, action_user)
 		unless (current_user.id == user.to_i) && (current_user.contacts.where(id: action_user).count > 0)
 			raise ActionController::RoutingError, 'Not Found'
 		end
 	end
 
+	# This method checks if the contact that the user want to add is not yet present in the user's contacts
 	def contact_add_check(user, action_user)
 		unless (current_user.id == user.to_i) && (current_user.contacts.where(id: action_user).count == 0)
 			raise ActionController::RoutingError, 'Not Found'
 		end
 	end
 
-	# method used to check the consistency of params used in constraint add/delate options
+	# This method is used to check the consistency of params used in constraint delate options
 	def delete_constraint_check(user, constraint)
 		unless (current_user.id == user.to_i) && (current_user.constraints.where(id: constraint).count > 0)
 			raise ActionController::RoutingError, 'Not Found'
 		end
 	end
 
+	# This method is used to check the consistency of params used in constraint add options
 	def check_constraint_params
 		params.require(:constraint).permit(:travel_mean, :subject, :operator, :value)
 	end
 
 
-	# method used to check the consistency of params used in delete email
+	# This method is used to check the consistency of params used in deleting an email
 	def check_delete_email_params
 		params.permit(:user_id, :email_id)
 		unless (current_user.id == params[:user_id].to_i) && (current_user.emails.where(id: params[:email_id]).count > 0)
 			raise ActionController::RoutingError, 'Not Found'
 		end
+	end
+
+	# This method is used to check if the params are right in order to edit the preference list
+	def user_pref_list_params
+		params.require(:user).permit(:preference_list)
 	end
 
 end

@@ -8,20 +8,20 @@
 		<div class='date-time-container'>
 			<div class='date-container'>
 				<%= form.label :day_of_the_week, class: 'label', value: 'Day Of The Week' %>
-				<%= form.text_field :day_of_the_week, id: 'dl_date', type: 'text', onfocus: "javascript:$(this).autocomplete('search','');" %>
+				<%= form.text_field :day_of_the_week, id: 'day_of_the_week', type: 'text', onfocus: "javascript:$(this).autocomplete('search','');" %>
 			</div>
 			<div class='time-container'>
 				<%= form.label :starting_hour, class: 'label' %>
-				<%= form.text_field :starting_hour, class: 'time', id: 'meeting_start_time', type: 'text' %>
+				<%= form.text_field :starting_hour, class: 'time', id: 'starting_hour', type: 'text' %>
 			</div>
 
 		</div>
-		
+
 		<div id="full-map-container">
 			<%= render 'shared/location_with_map', form: form %>
 		</div>
 
-		<div id="emailPasswordContainer">
+		<div id="emailPasswordContainer" style="margin-top: 33px;">
 			<div class="radio-button-container">
 				<label for="daily">Daily</label>
 				<%= radio_button("repetition", "day_of_the_week", "daily", options = {id: 'daily'}) %>
@@ -37,18 +37,30 @@
 
 	<script>
 	  $(function () {
-		  $('#meeting_start_time').timepicker({'step': 5});
+		  $('#starting_hour').timepicker({'step': 5});
 	  });
 
 
 	  $(function () {
 		  var users = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-		  $("#dl_date").autocomplete({
-			  source: users
+		  $("#day_of_the_week").autocomplete({
+			  source: users,
+			  minLength: 0
 		  });
 	  });
 
 	</script>
 
 
-	<%= render 'shared/timepicker' %>
+	<script type="text/javascript">
+
+	  <% if !@default_location.valid? %>
+	  $(window).on('load', function () {
+		  <% @default_location.errors.each do |error, message| %>
+		  displayError("<%= error.to_s %>", "<%= message %>");
+		  <% end %>
+	  })
+	  <% end %>
+	</script>
+
+<%= render 'shared/timepicker' %>

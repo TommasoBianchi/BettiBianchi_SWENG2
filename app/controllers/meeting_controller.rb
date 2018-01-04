@@ -2,23 +2,27 @@ class MeetingController < ApplicationController
 
 	before_action :check_participation, except: [:new, :create]
 
+	# This method supports the show meeting page
 	def show
 		@back_path = request.referer
 		@user = current_user
 		@meeting = Meeting.find(params['id'])
-		end
+	end
 
+	# This method supports the participants page
 	def participants_page
 		@user = current_user
 		@meeting = Meeting.find(params['id'])
 	end
 
+	# This method delete a participant from a meeting
 	def remove_from_meeting
 		m = MeetingParticipation.find_by(meeting_id: params[:meeting_id], user_id: params[:user_id])
 		m.delete
 		redirect_to participants_page_path(id: params[:meeting_id])
 	end
 
+	# This method nominate admin a participant of the meeting
 	def nominate_admin
 		m = MeetingParticipation.find_by(meeting_id: params[:meeting_id], user_id: params[:user_id])
 		m.is_admin = true
@@ -26,6 +30,7 @@ class MeetingController < ApplicationController
 		redirect_to participants_page_path(id: params[:meeting_id])
 	end
 
+	# This method supports the new meeting page
 	def new
 		unless @meeting
 			@meeting = Meeting.new
@@ -35,6 +40,7 @@ class MeetingController < ApplicationController
 		@user_names = %w[a b]
 	end
 
+	# This meeting creates the new meeting. It checks if the parameters passed by the user are correct and in the right format
 	def create
 		@meeting = Meeting.new
 		unless check_params_validity(params[:meeting])
@@ -59,14 +65,12 @@ class MeetingController < ApplicationController
 
 		title = params[:meeting][:title]
 		abstract = params[:meeting][:abstract]
-		location_input = params[:meeting][:location].split(',')
-		latitude = location_input[0].to_f
-		longitude = location_input[1].to_f
-		location_name = location_input[2]
-		location = Location.find_by(latitude: latitude, longitude: longitude)
 
-		unless location
-			location = Location.create(latitude: latitude, longitude: longitude, description: location_name)
+		if params[:meeting][:location] == ''
+			render 'new'
+			return
+		else
+			location = get_location(params[:meeting][:location])
 		end
 
 		user = current_user
@@ -77,6 +81,7 @@ class MeetingController < ApplicationController
 
 	end
 
+	# This method is used to accept an invitation to a meeting
 	def accept
 		session[:return_to] ||= request.referer
 		mp = MeetingParticipation.find_by(meeting_id: params[:meeting_id], user_id: params[:user_id])
@@ -86,6 +91,7 @@ class MeetingController < ApplicationController
 		redirect_to session.delete(:return_to)
 	end
 
+	# This method is used to decline an invitation to a meeting
 	def decline
 		mp = MeetingParticipation.find_by(meeting_id: params[:meeting_id], user_id: params[:user_id])
 		mp.response_status = 2
@@ -97,6 +103,8 @@ class MeetingController < ApplicationController
 	end
 
 	private
+
+	# This method checks if the user really participates to that meeting
 	def check_participation
 		meeting_id = params['id']
 		meeting_id = params['meeting_id'] unless meeting_id
@@ -105,6 +113,7 @@ class MeetingController < ApplicationController
 		end
 	end
 
+	# This method check the validity of the params to create a meeting. It returns params_ok = true iif all the params are correct and in the right format
 	def check_params_validity(meeting_params)
 		params_ok = true
 		if meeting_params[:title] == ""

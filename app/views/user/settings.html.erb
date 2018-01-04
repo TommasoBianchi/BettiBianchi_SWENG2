@@ -31,10 +31,6 @@
 			<% end %>
 		</div>
 
-		<h2 class="subtitle-contacts" >
-			Status
-		</h2>
-
 		<div id="preference-list-container">
 			<div class="title-add-container ">
 				Default Locations
@@ -43,7 +39,7 @@
 		</div>
 
 		<div id="preference-list-container">
-			<% @user.default_locations.each do |dl| %>
+			<% @user.default_locations.order('day_of_the_week * 60 * 24 + starting_hour').each do |dl| %>
 				<div class="default-location list-of-default-location rounded-box">
 					<div class="default-location-name"><%= dl.name %></div>
 					<div class="default-location-location"><%= dl.location.description %></div>

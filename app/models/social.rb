@@ -13,6 +13,8 @@ class Social < ApplicationRecord
 	#validate :icon_existence
 
 	private
+
+	# This method checks if the icon path exists for a social
 	def icon_existence
 		if icon_path.blank?
 			return
