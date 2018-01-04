@@ -109,7 +109,7 @@
 			<div>
 				<% @undoable_breaks.each do |item| %>
 					<% if item.is_a? ComputedBreak %>
-						<% br = item %>
+						<% br = item.break %>
 						<div class="break list-of-default-location rounded-box">
 							<div class="default-location-name"><%= br.name %></div>
 							<div class="default-location-location"><%= br.get_description %></div>

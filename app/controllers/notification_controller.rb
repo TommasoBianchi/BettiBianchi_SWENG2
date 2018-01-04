@@ -22,17 +22,18 @@ class NotificationController < ApplicationController
 
 	def get_undoable_breaks(user)
 		breaks = user.breaks
-		undobale = ComputedBreak.where(break_id: breaks.ids, is_doable: false)
+		undoables = ComputedBreak.where(break_id: breaks.ids, is_doable: false)
 
 		breaks_day = []
 		current_day = nil
-		if undobale.count > 0
-			undobale.each do |ub|
+		if undoables.count > 0
+			undoables.each do |ub|
 				if current_day.nil? || (ub.start_time_slot.midnight != current_day)
 					# Change the current day
 					current_day = ub.start_time_slot.midnight
 					breaks_day.push current_day
 				end
+				breaks_day.push ub
 			end
 		end
 
