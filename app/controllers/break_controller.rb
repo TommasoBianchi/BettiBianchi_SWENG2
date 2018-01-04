@@ -20,13 +20,13 @@ class BreakController < ApplicationController
 	def create_break
 		check_if_myself
 		@break = Break.new
-		#break_params = {}
+		
 		unless check_date_consistency(params[:break][:start_time_slot]) && check_date_consistency(params[:break][:end_time_slot]) && check_date_consistency(params[:break][:default_time])
 			fill_time_errors
 			render 'add_break'
 			return
 		end
-		#break_params[]
+
 		begin
 			starting_hour = params[:break][:start_time_slot].to_datetime.hour * 60 + params[:break][:start_time_slot].to_datetime.min
 		rescue NoMethodError
@@ -67,6 +67,12 @@ class BreakController < ApplicationController
 	end
 
 	private
+
+	def check_if_myself(id = params[:id].to_i)
+		unless current_user.id == id.to_i
+			raise ActionController::RoutingError, 'Not Found'
+		end
+	end
 
 	def check_delete_break_params
 		params.permit(:break_id, :user_id)

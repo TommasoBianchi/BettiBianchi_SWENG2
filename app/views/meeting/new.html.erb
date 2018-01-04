@@ -61,7 +61,7 @@
 		$('#start_date').timepicker({'step': 5});
 
 		$('#start_date').on('changeTime', function () {
-			var start_time_value = $('#start_time').val();
+			var start_time_value = $('#start_date').val();
 			$('#end_date').timepicker({
 				'step': 5,
 				'minTime': start_time_value,

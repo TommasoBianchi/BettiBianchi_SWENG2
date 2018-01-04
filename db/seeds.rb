@@ -36,7 +36,7 @@ def create_travel_steps(travel)
 end
 
 NUM_GROUPS = 3
-NUM_SOCIALS = 4
+NUM_SOCIALS = Social::Social_type.count
 NUM_EMAILS_PER_USER = 2
 # NUM_STATUSES_PER_USER = 2
 NUM_CONTACTS_PER_USER = 3
@@ -74,10 +74,11 @@ for i in 1..NUM_GROUPS do
 	puts "Group #{i}"
 end
 
-for i in 1..NUM_SOCIALS do
-	Social.create(name: 'Social' + i.to_s, icon_path: 'social_icons/linkedin_icon.png')
+Social::Social_type.each do |social|
+	Social.create(name: social[1][:name], icon_path: social[1][:icon_path])
 	puts "Social #{i}"
 end
+
 
 NUM_OPERATORS = Operator::Operators.length
 Subject::Subjects.keys.each do |name|
@@ -92,7 +93,7 @@ Subject::Subjects.keys.each do |name|
 	end
 
 	for j in 1..NUM_VALUES_PER_SUBJECT do
-		Value.create(value: (1500*j).to_s, subject_id: subject.id)
+		Value.create(value: (1500 * j).to_s, subject_id: subject.id)
 	end
 end
 NUM_SUBJECTS = Subject::Subjects.keys.length
@@ -101,8 +102,8 @@ for i in 1..NUM_USERS do
 	user = User.create(name: 'User' + i.to_s, surname: 'Surname' + i.to_s, password: '0000', password_confirmation: '0000', nickname: 'PP' + i.to_s, preference_list: '021', website: 'http://www.google.com', company: 'BettiBianchi s.r.l.')
 	IncompleteUser.create(email: 'User' + i.to_s + '.Surname@travlendar.com', password: '0000', password_confirmation: '0000')
 	user.groups.push(Group.find(i % NUM_GROUPS + 1))
-	SocialUser.create(social_id: Social.find(i % NUM_SOCIALS + 1).id, link: 'www.linkedin.com/UserSurname' + i.to_s, user_id: user.id)
-	SocialUser.create(social_id: Social.find((i + 1) % NUM_SOCIALS + 1).id, link: 'www.linkedin.com/UserSurname' + i.to_s, user_id: user.id)
+	SocialUser.create(social_id: Social::Social_type.keys.sample, link: 'www.linkedin.com/UserSurname' + i.to_s, user_id: user.id)
+	SocialUser.create(social_id: Social::Social_type.keys.sample, link: 'www.linkedin.com/UserSurname' + i.to_s, user_id: user.id)
 
 	for j in 1..NUM_EMAILS_PER_USER do
 		email = Email.create(email: 'User' + i.to_s + '.Surname.' + j.to_s + '@travlendar.com', user_id: user.id)
