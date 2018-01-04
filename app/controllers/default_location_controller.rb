@@ -30,7 +30,7 @@ class DefaultLocationController < ApplicationController
 			render 'new'
 			return
 		else
-			location = get_location
+			location = get_location(params[:default_location][:location])
 		end
 
 
@@ -105,7 +105,7 @@ class DefaultLocationController < ApplicationController
 			render 'first_def_location'
 			return
 		else
-			location = get_location
+			location = get_location(params[:default_location][:location])
 		end
 
 
@@ -156,20 +156,6 @@ class DefaultLocationController < ApplicationController
 		else
 			RecomputeMeetingParticipationsJob.perform_later day_of_the_week, user
 		end
-	end
-
-	# This method helps the creators to get a location from the params passed by the user
-	def get_location
-		location_input = params[:default_location][:location].split(',')
-		latitude = location_input[0].to_f
-		longitude = location_input[1].to_f
-		location_name = location_input[2]
-		location = Location.find_by(latitude: latitude, longitude: longitude)
-
-		unless location
-			location = Location.create(latitude: latitude, longitude: longitude, description: location_name)
-		end
-		return location
 	end
 
 	# This method checks if the default location that has been passed is owned by the user
