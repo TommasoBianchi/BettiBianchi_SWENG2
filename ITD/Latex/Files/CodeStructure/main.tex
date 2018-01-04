@@ -1,0 +1,16 @@
+Ruby on Rails is a web framework that implements the Model-View-Controller design pattern, and as a consequence the code is divided in different folders following this distinction. Moreover, we have separate locations for test code and for the logs. \\
+Here the main folders in which you can find our code:
+
+\begin{itemize}
+\item~\textbf{app/controllers}: contains a file for each controller, each handling web request for different modules of the application.
+\item~\textbf{app/models}: contains a file for each model, representing the data stored in the database and the associations between them; they also contains method to easily access all the information they contain.
+\item~\textbf{app/view}: contains a file for each view of the application, that is more or less for each web page. Views are written in html enhanced with erb, an implementation of the eRuby (Embedded Ruby) templating system.
+\item~\textbf{app/helpers}: contains some helper function to assist the work of the controllers mainly. Here you can find the core logic that handles the scheduling of meetings, travels and breaks. 
+\item~\textbf{app/assets}: contains all the images, stylesheets and javascript files loaded by the web pages.
+\item~\textbf{app/jobs}: contains files specifying a handful of asynchronous jobs. It is used to perform long calculations such as the scheduling outside the web request thread.
+\item~\textbf{config}: contains configuration code, that remained mostly untouched from the default. Here you can find also the routing file, defining all the URLs of the application and the controller method that should be called to handle a request on each specific route.
+\item~\textbf{db}: contains code defining the structure of the database, specified via migrations, that are a tool to specify incremental, reversible changes to relational database schemas. Here you can find also the seeder, a file we used to fill in the database with fake data for development and testing purposes.
+\item~\textbf{log}: contains a file for the log of each environment (development, test and production). When running the default Rails server this will be populated with a record of all routes visited and all database queries executed.
+\item~\textbf{test/model}: contains the code of the unit tests.
+\item~\textbf{test/system}: contains the code of the system tests.
+\end{itemize}
