@@ -13,7 +13,12 @@
 		item.css('max-height', '0px')	
 	else
 		item.css('max-height', @maxHeights[date] + 'px')
-	item = $('#' + date + "-separator").toggleClass("closed")
+	$('#' + date + "-separator").toggleClass("closed")
+
+@toggleAll = () ->
+	$('.date-accordion').each((index, item) ->
+		toggle(item.id.replace('-accordion',''))
+	)
 
 @setMaxHeight = (date) ->
 	item = $('#' + date + "-accordion")
