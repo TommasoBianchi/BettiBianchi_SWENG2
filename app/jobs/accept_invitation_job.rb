@@ -1,3 +1,4 @@
+# This class is only used to perform asynchronously the accept_invitation function
 class AcceptInvitationJob < ApplicationJob
   queue_as :default
 
