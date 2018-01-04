@@ -1,4 +1,4 @@
-Thu, 04 Jan 2018 16:11:37 +0100
+Thu, 04 Jan 2018 16:19:42 +0100
 app/models/group.rb	Thu, 07 Dec 2017 10:26:55 +0100
 app/models/travel_step.rb	Thu, 04 Jan 2018 15:36:39 +0100
 app/models/contact.rb	Thu, 04 Jan 2018 15:36:39 +0100
@@ -41,9 +41,9 @@ app/helpers/notification_helper.rb	Fri, 15 Dec 2017 15:35:07 +0100
 app/helpers/user_helper.rb	Thu, 07 Dec 2017 10:26:55 +0100
 app/helpers/application_helper.rb	Thu, 07 Dec 2017 10:26:55 +0100
 app/helpers/break_helper.rb	Thu, 04 Jan 2018 16:09:54 +0100
-app/jobs/decline_invitation_job.rb	Tue, 19 Dec 2017 15:01:38 +0100
-app/jobs/invite_to_meeting_job.rb	Tue, 19 Dec 2017 15:01:59 +0100
+app/jobs/decline_invitation_job.rb	Thu, 04 Jan 2018 16:16:51 +0100
+app/jobs/invite_to_meeting_job.rb	Thu, 04 Jan 2018 16:16:55 +0100
 app/jobs/application_job.rb	Thu, 07 Dec 2017 10:26:55 +0100
-app/jobs/accept_invitation_job.rb	Tue, 19 Dec 2017 19:15:38 +0100
-app/jobs/recompute_meeting_participations_job.rb	Tue, 19 Dec 2017 19:29:25 +0100
-app/jobs/create_meeting_job.rb	Wed, 20 Dec 2017 09:49:19 +0100
+app/jobs/accept_invitation_job.rb	Thu, 04 Jan 2018 16:16:01 +0100
+app/jobs/recompute_meeting_participations_job.rb	Thu, 04 Jan 2018 16:16:59 +0100
+app/jobs/create_meeting_job.rb	Thu, 04 Jan 2018 16:19:39 +0100
