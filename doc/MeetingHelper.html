@@ -138,13 +138,16 @@
 
         <div class="method-description">
           
-          
+          <p>Update the schedule after accepting the invitation to a meeting</p>
+
+<p>meeting_participations is an ApplicationRecord::MeetingParticipation user
+is an ApplicationRecord::User</p>
           
           
 
           
           <div class="method-source-code" id="accept_invitation-source">
-            <pre><span class="ruby-comment"># File app/helpers/meeting_helper.rb, line 200</span>
+            <pre><span class="ruby-comment"># File app/helpers/meeting_helper.rb, line 205</span>
 <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier ruby-title">accept_invitation</span>(<span class="ruby-identifier">meeting_participation</span>, <span class="ruby-identifier">user</span>)
         <span class="ruby-identifier">update_schedule</span>([<span class="ruby-identifier">meeting_participation</span>])
 <span class="ruby-keyword">end</span></pre>
@@ -176,9 +179,8 @@ meeting_participation and store them on the db. In practice, use this only
 for the user that creates a meeting and not for the invited users</p>
 
 <p>start_date and end_date must be valid DateTime objects title must be a
-non-empty string location must be a valid <a
-href="Location.html">Location</a> already saved in the db user must be a
-valid <a href="User.html">User</a></p>
+non-empty string location must be an ApplicationRecord::Location already
+saved in the db user must be an ApplicationRecord::User</p>
 
 <p>returns a hash containing the meeting (nil in case of errors), the
 meeting_participation (nil in case of errors) and a status flag (encoded as
@@ -207,6 +209,7 @@ a Ruby Symbol) indicating either consistency, inconsistency or errors</p>
 
         <span class="ruby-comment">####### If meeting participation is not consistent break out of this function</span>
         <span class="ruby-keyword">if</span> <span class="ruby-identifier">meeting_data</span>[<span class="ruby-value">:is_consistent</span>] <span class="ruby-operator">==</span> <span class="ruby-keyword">false</span>
+                <span class="ruby-identifier">sleep</span> <span class="ruby-value">5</span> <span class="ruby-keyword">if</span> (<span class="ruby-constant">ENV</span>.<span class="ruby-identifier">fetch</span>(<span class="ruby-string">&quot;RAILS_ENV&quot;</span>) <span class="ruby-operator">==</span> <span class="ruby-string">&quot;test&quot;</span>) <span class="ruby-comment"># Fix needed to handle nested transactions</span>
                 <span class="ruby-constant">ActiveRecord</span><span class="ruby-operator">::</span><span class="ruby-constant">Base</span>.<span class="ruby-identifier">transaction</span> <span class="ruby-keyword">do</span>
                         <span class="ruby-identifier">meeting</span>.<span class="ruby-identifier">save</span>
                         <span class="ruby-identifier">meeting_participation</span>.<span class="ruby-identifier">save</span>
@@ -306,18 +309,21 @@ a Ruby Symbol) indicating either consistency, inconsistency or errors</p>
 
         <div class="method-description">
           
-          
+          <p>Update the schedule after declining the invitation to a meeting As a result
+some other MeetingParticipations may become consistent</p>
+
+<p>meeting_participation is an ApplicationRecord::MeetingParticipation user is
+an ApplicationRecord::User</p>
           
           
 
           
           <div class="method-source-code" id="decline_invitation-source">
-            <pre><span class="ruby-comment"># File app/helpers/meeting_helper.rb, line 204</span>
+            <pre><span class="ruby-comment"># File app/helpers/meeting_helper.rb, line 214</span>
 <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier ruby-title">decline_invitation</span>(<span class="ruby-identifier">meeting_participation</span>, <span class="ruby-identifier">user</span>)
         <span class="ruby-comment"># Grab all conflicting meeting participations from the db</span>
         <span class="ruby-identifier">conflicts</span> = <span class="ruby-identifier">meeting_participation</span>.<span class="ruby-identifier">conflicting_meeting_participations</span>
 
-        <span class="ruby-constant">Rails</span>.<span class="ruby-identifier">logger</span>.<span class="ruby-identifier">debug</span> <span class="ruby-node">&quot;decline_invitation -- about to recompute #{conflicts.length} meeting participations&quot;</span>
         <span class="ruby-comment"># Drop all the conflicts</span>
         <span class="ruby-constant">MeetingParticipationConflict</span>.<span class="ruby-identifier">where</span>(<span class="ruby-value">meeting_participation_1_id:</span> <span class="ruby-identifier">conflicts</span>.<span class="ruby-identifier">ids</span>)
                         .<span class="ruby-identifier">or</span>(<span class="ruby-constant">MeetingParticipationConflict</span>.<span class="ruby-identifier">where</span>(<span class="ruby-value">meeting_participation_2_id:</span> <span class="ruby-identifier">conflicts</span>.<span class="ruby-identifier">ids</span>)).<span class="ruby-identifier">delete_all</span>
@@ -352,8 +358,8 @@ a Ruby Symbol) indicating either consistency, inconsistency or errors</p>
 an already existing meeting) and store it on the db. In practice, use this
 only for the invited users and not for the user that creates a meeting</p>
 
-<p>meeting must be a valid <a href="Meeting.html">Meeting</a> already saved in
-the db user must be a valid <a href="User.html">User</a></p>
+<p>meeting must be an ApplicationRecord::Meeting already saved in the db user
+must be an ApplicationRecord::User</p>
 
 <p>returns a hash containing the meeting_participation (nil in case of errors)
 and a status flag (encoded as a Ruby Symbol)  indicating either
@@ -363,7 +369,7 @@ consistency, inconsistency or errors</p>
 
           
           <div class="method-source-code" id="invite_to_meeting-source">
-            <pre><span class="ruby-comment"># File app/helpers/meeting_helper.rb, line 116</span>
+            <pre><span class="ruby-comment"># File app/helpers/meeting_helper.rb, line 117</span>
 <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier ruby-title">invite_to_meeting</span>(<span class="ruby-identifier">meeting</span>, <span class="ruby-identifier">user</span>)
         <span class="ruby-identifier">meeting_data</span> = <span class="ruby-identifier">insert_meeting</span>({<span class="ruby-value">start_date:</span> <span class="ruby-identifier">meeting</span>.<span class="ruby-identifier">start_date</span>, <span class="ruby-value">end_date:</span> <span class="ruby-identifier">meeting</span>.<span class="ruby-identifier">end_date</span>, <span class="ruby-value">location:</span> <span class="ruby-identifier">meeting</span>.<span class="ruby-identifier">location</span>}, <span class="ruby-identifier">user</span>)
 
@@ -470,13 +476,16 @@ consistency, inconsistency or errors</p>
 
         <div class="method-description">
           
-          
+          <p>Update the schedule for a given user and for all the given days of the week</p>
+
+<p>days_of_the_week is an Array of Integers in range 0..6 user is an
+ApplicationRecord::User</p>
           
           
 
           
           <div class="method-source-code" id="recompute_meeting_participations-source">
-            <pre><span class="ruby-comment"># File app/helpers/meeting_helper.rb, line 217</span>
+            <pre><span class="ruby-comment"># File app/helpers/meeting_helper.rb, line 230</span>
 <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier ruby-title">recompute_meeting_participations</span>(<span class="ruby-identifier">days_of_the_week</span>, <span class="ruby-identifier">user</span>)
         <span class="ruby-comment"># Grab all the meeting participations to recompute</span>
         <span class="ruby-identifier">meeting_participations</span> = <span class="ruby-identifier">user</span>.<span class="ruby-identifier">meeting_participations</span>

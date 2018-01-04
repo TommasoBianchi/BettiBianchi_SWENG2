@@ -120,17 +120,15 @@
 
         <div class="method-description">
           
-          
+          <p>This method supports the notification page</p>
           
           
 
           
           <div class="method-source-code" id="index-source">
-            <pre><span class="ruby-comment"># File app/controllers/notification_controller.rb, line 2</span>
+            <pre><span class="ruby-comment"># File app/controllers/notification_controller.rb, line 4</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">index</span>
         <span class="ruby-ivar">@user</span> = <span class="ruby-identifier">current_user</span>
-        <span class="ruby-comment">#@pending_meeting = MeetingParticipation.where(&#39;response_status = :response_status AND user_id = :user&#39;,</span>
-        <span class="ruby-comment">#response_status: MeetingParticipation::Response_statuses[:pending], user: @user.id)</span>
         <span class="ruby-ivar">@pending_meetings</span> = <span class="ruby-identifier">get_invitation</span>(<span class="ruby-ivar">@user</span>)
         <span class="ruby-ivar">@warning_meeting</span> = <span class="ruby-identifier">get_inconsistent_meetings</span>(<span class="ruby-ivar">@user</span>)
         <span class="ruby-ivar">@undoable_breaks</span> = <span class="ruby-identifier">get_undoable_breaks</span>(<span class="ruby-ivar">@user</span>)
@@ -158,7 +156,8 @@
 
         <div class="method-description">
           
-          
+          <p>This method supports the resolve warning page where a user can
+accept/decline meetings</p>
           
           
 

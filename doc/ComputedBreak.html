@@ -118,13 +118,14 @@
 
         <div class="method-description">
           
-          
+          <p>This method is used from the views to get the description of a computed
+break</p>
           
           
 
           
           <div class="method-source-code" id="get_description-source">
-            <pre><span class="ruby-comment"># File app/models/computed_break.rb, line 10</span>
+            <pre><span class="ruby-comment"># File app/models/computed_break.rb, line 11</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">get_description</span>
         <span class="ruby-keyword">return</span> <span class="ruby-string">&quot;from &quot;</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">start_time_slot</span>.<span class="ruby-identifier">strftime</span>(<span class="ruby-string">&quot;%H:%M&quot;</span>) <span class="ruby-operator">+</span> <span class="ruby-string">&quot; to: &quot;</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">end_time_slot</span>.<span class="ruby-identifier">strftime</span>(<span class="ruby-string">&quot;%H:%M&quot;</span>)
 <span class="ruby-keyword">end</span></pre>

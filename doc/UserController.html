@@ -95,8 +95,6 @@
     
     <li ><a href="#method-i-index">#index</a>
     
-    <li ><a href="#method-i-my_user_page">#my_user_page</a>
-    
     <li ><a href="#method-i-new">#new</a>
     
     <li ><a href="#method-i-post_edit">#post_edit</a>
@@ -108,8 +106,6 @@
     <li ><a href="#method-i-settings">#settings</a>
     
     <li ><a href="#method-i-show">#show</a>
-    
-    <li ><a href="#method-i-user_pref_list_params">#user_pref_list_params</a>
     
   </ul>
 </div>
@@ -156,14 +152,15 @@
 
         <div class="method-description">
           
-          
+          <p>This method supports the create constraint page</p>
           
           
 
           
           <div class="method-source-code" id="add_constraint-source">
-            <pre><span class="ruby-comment"># File app/controllers/user_controller.rb, line 205</span>
+            <pre><span class="ruby-comment"># File app/controllers/user_controller.rb, line 208</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">add_constraint</span>
+        <span class="ruby-ivar">@back_path</span> = <span class="ruby-identifier">request</span>.<span class="ruby-identifier">referer</span>
         <span class="ruby-ivar">@constraint</span> = <span class="ruby-constant">Constraint</span>.<span class="ruby-identifier">new</span>
         <span class="ruby-ivar">@operators</span> = <span class="ruby-constant">Operator</span>.<span class="ruby-identifier">all</span>
         <span class="ruby-ivar">@values</span> = <span class="ruby-constant">Value</span>.<span class="ruby-identifier">all</span>
@@ -191,13 +188,13 @@
 
         <div class="method-description">
           
-          
+          <p>This method adds a user as contact</p>
           
           
 
           
           <div class="method-source-code" id="add_contact-source">
-            <pre><span class="ruby-comment"># File app/controllers/user_controller.rb, line 135</span>
+            <pre><span class="ruby-comment"># File app/controllers/user_controller.rb, line 136</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">add_contact</span>
         <span class="ruby-identifier">check_if_myself</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:user_id</span>])
         <span class="ruby-identifier">user</span> = <span class="ruby-constant">User</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:user_id</span>])
@@ -233,13 +230,13 @@
 
         <div class="method-description">
           
-          
+          <p>This method is used to change the preference list of a user</p>
           
           
 
           
           <div class="method-source-code" id="change_preference_list-source">
-            <pre><span class="ruby-comment"># File app/controllers/user_controller.rb, line 183</span>
+            <pre><span class="ruby-comment"># File app/controllers/user_controller.rb, line 188</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">change_preference_list</span>
         <span class="ruby-identifier">check_if_myself</span>
         <span class="ruby-identifier">user</span> = <span class="ruby-identifier">current_user</span>
@@ -274,18 +271,15 @@
 
         <div class="method-description">
           
-          
+          <p>This method supports the show contacts page</p>
           
           
 
           
           <div class="method-source-code" id="contacts-source">
-            <pre><span class="ruby-comment"># File app/controllers/user_controller.rb, line 120</span>
+            <pre><span class="ruby-comment"># File app/controllers/user_controller.rb, line 122</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">contacts</span>
         <span class="ruby-ivar">@user</span> = <span class="ruby-identifier">current_user</span>
-        <span class="ruby-identifier">puts</span> (<span class="ruby-string">&quot;ncjkdscnkdsjcnsdkj&quot;</span>)
-        <span class="ruby-identifier">puts</span> (<span class="ruby-ivar">@user</span>.<span class="ruby-identifier">id</span>)
-        <span class="ruby-identifier">puts</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:id</span>])
         <span class="ruby-identifier">check_if_myself</span>
         <span class="ruby-ivar">@contacts</span> = <span class="ruby-ivar">@user</span>.<span class="ruby-identifier">contacts</span>
 <span class="ruby-keyword">end</span></pre>
@@ -312,13 +306,13 @@
 
         <div class="method-description">
           
-          
+          <p>This method is used to create a new user when it performs the login</p>
           
           
 
           
           <div class="method-source-code" id="create-source">
-            <pre><span class="ruby-comment"># File app/controllers/user_controller.rb, line 15</span>
+            <pre><span class="ruby-comment"># File app/controllers/user_controller.rb, line 13</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">create</span>
         <span class="ruby-identifier">email_hash</span> = <span class="ruby-identifier">params</span>.<span class="ruby-identifier">slice</span>(<span class="ruby-value">:user</span>)[<span class="ruby-string">&#39;user&#39;</span>][<span class="ruby-string">&#39;email&#39;</span>]
         <span class="ruby-identifier">params</span>[<span class="ruby-value">:user</span>].<span class="ruby-identifier">delete</span>(<span class="ruby-string">&#39;email&#39;</span>)
@@ -376,13 +370,14 @@
 
         <div class="method-description">
           
-          
+          <p>This method is used to create a new constraint and add it to the user&#39;s
+ones</p>
           
           
 
           
           <div class="method-source-code" id="create_constraint-source">
-            <pre><span class="ruby-comment"># File app/controllers/user_controller.rb, line 211</span>
+            <pre><span class="ruby-comment"># File app/controllers/user_controller.rb, line 216</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">create_constraint</span>
         <span class="ruby-identifier">travel_mean</span> = <span class="ruby-identifier">params</span>[<span class="ruby-value">:constraint</span>][<span class="ruby-value">:travel_mean</span>]
         <span class="ruby-identifier">subject</span> = <span class="ruby-constant">Subject</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:constraint</span>][<span class="ruby-value">:subject</span>].<span class="ruby-identifier">to_i</span>)
@@ -418,13 +413,13 @@
 
         <div class="method-description">
           
-          
+          <p>This method is used to delete a constraint</p>
           
           
 
           
           <div class="method-source-code" id="delate_constraint-source">
-            <pre><span class="ruby-comment"># File app/controllers/user_controller.rb, line 199</span>
+            <pre><span class="ruby-comment"># File app/controllers/user_controller.rb, line 201</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">delate_constraint</span>
         <span class="ruby-identifier">delete_constraint_check</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:user_id</span>], <span class="ruby-identifier">params</span>[<span class="ruby-value">:constraint_id</span>])
         <span class="ruby-constant">Constraint</span>.<span class="ruby-identifier">delete</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:constraint_id</span>])
@@ -453,7 +448,7 @@
 
         <div class="method-description">
           
-          
+          <p>This method is used to delete a contact from user&#39;s contacts</p>
           
           
 
@@ -488,13 +483,13 @@
 
         <div class="method-description">
           
-          
+          <p>This method is used to delete an email from the edit page</p>
           
           
 
           
           <div class="method-source-code" id="delete_email-source">
-            <pre><span class="ruby-comment"># File app/controllers/user_controller.rb, line 113</span>
+            <pre><span class="ruby-comment"># File app/controllers/user_controller.rb, line 115</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">delete_email</span>
         <span class="ruby-identifier">check_delete_email_params</span>
         <span class="ruby-constant">Email</span>.<span class="ruby-identifier">delete</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:email_id</span>])
@@ -523,13 +518,13 @@
 
         <div class="method-description">
           
-          
+          <p>This method is used to delete a social form the user page</p>
           
           
 
           
           <div class="method-source-code" id="delete_social-source">
-            <pre><span class="ruby-comment"># File app/controllers/user_controller.rb, line 224</span>
+            <pre><span class="ruby-comment"># File app/controllers/user_controller.rb, line 230</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">delete_social</span>
         <span class="ruby-identifier">check_if_myself</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:user_id</span>])
         <span class="ruby-constant">SocialUser</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:social_user_id</span>]).<span class="ruby-identifier">delete</span>
@@ -558,13 +553,13 @@
 
         <div class="method-description">
           
-          
+          <p>This method supports the edit user page</p>
           
           
 
           
           <div class="method-source-code" id="edit-source">
-            <pre><span class="ruby-comment"># File app/controllers/user_controller.rb, line 63</span>
+            <pre><span class="ruby-comment"># File app/controllers/user_controller.rb, line 64</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">edit</span>
         <span class="ruby-ivar">@user</span> = <span class="ruby-identifier">current_user</span>
         <span class="ruby-identifier">primary_mail_id</span> = <span class="ruby-ivar">@user</span>.<span class="ruby-identifier">primary_email_id</span>
@@ -596,7 +591,7 @@
 
         <div class="method-description">
           
-          
+          <p>This method is used for the autocomplete of user search input field</p>
           
           
 
@@ -608,39 +603,6 @@
                 <span class="ruby-identifier">format</span>.<span class="ruby-identifier">html</span> {<span class="ruby-identifier">html_index</span>}
                 <span class="ruby-identifier">format</span>.<span class="ruby-identifier">json</span> {<span class="ruby-identifier">json_index</span>}
         <span class="ruby-keyword">end</span>
-<span class="ruby-keyword">end</span></pre>
-          </div>
-          
-        </div>
-
-        
-
-        
-      </div>
-
-    
-      <div id="method-i-my_user_page" class="method-detail ">
-        
-        <div class="method-heading">
-          <span class="method-name">my_user_page</span><span
-            class="method-args">()</span>
-          
-          <span class="method-click-advice">click to toggle source</span>
-          
-        </div>
-        
-
-        <div class="method-description">
-          
-          
-          
-          
-
-          
-          <div class="method-source-code" id="my_user_page-source">
-            <pre><span class="ruby-comment"># File app/controllers/user_controller.rb, line 11</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">my_user_page</span>
-        <span class="ruby-ivar">@user</span> = <span class="ruby-identifier">current_user</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
           
@@ -665,13 +627,13 @@
 
         <div class="method-description">
           
-          
+          <p>This method supports the new user page</p>
           
           
 
           
           <div class="method-source-code" id="new-source">
-            <pre><span class="ruby-comment"># File app/controllers/user_controller.rb, line 50</span>
+            <pre><span class="ruby-comment"># File app/controllers/user_controller.rb, line 49</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">new</span>
         <span class="ruby-ivar">@unregistered_user</span> = <span class="ruby-constant">IncompleteUser</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">session</span>[<span class="ruby-value">:tmp_checked</span>])
         <span class="ruby-ivar">@user</span> = <span class="ruby-constant">User</span>.<span class="ruby-identifier">new</span>
@@ -700,13 +662,13 @@
 
         <div class="method-description">
           
-          
+          <p>This method manages the actions performed by an user in the edit page</p>
           
           
 
           
           <div class="method-source-code" id="post_edit-source">
-            <pre><span class="ruby-comment"># File app/controllers/user_controller.rb, line 72</span>
+            <pre><span class="ruby-comment"># File app/controllers/user_controller.rb, line 74</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">post_edit</span>
         <span class="ruby-ivar">@user</span> = <span class="ruby-identifier">current_user</span>
         <span class="ruby-ivar">@emails</span> = <span class="ruby-ivar">@user</span>.<span class="ruby-identifier">emails</span>.<span class="ruby-identifier">where</span>.<span class="ruby-identifier">not</span>(<span class="ruby-value">id:</span> <span class="ruby-ivar">@user</span>.<span class="ruby-identifier">primary_email_id</span>)
@@ -735,7 +697,7 @@
                         <span class="ruby-keyword">else</span>
                                 <span class="ruby-identifier">render</span> <span class="ruby-string">&#39;edit&#39;</span>
                         <span class="ruby-keyword">end</span>
-                <span class="ruby-keyword">when</span> <span class="ruby-string">&quot;Upload Image&quot;</span>
+                <span class="ruby-keyword">when</span> <span class="ruby-string">&quot;Upload Image&quot;</span> <span class="ruby-comment">#button clicked = Upload Image. To be implemented</span>
                         <span class="ruby-identifier">uploaded_io</span> = <span class="ruby-identifier">params</span>[<span class="ruby-value">:file</span>]
                         <span class="ruby-constant">File</span>.<span class="ruby-identifier">open</span>(<span class="ruby-constant">Rails</span>.<span class="ruby-identifier">root</span>.<span class="ruby-identifier">join</span>(<span class="ruby-string">&#39;public&#39;</span>, <span class="ruby-string">&#39;profile_images&#39;</span>, <span class="ruby-ivar">@user</span>.<span class="ruby-identifier">primary_email</span>.<span class="ruby-identifier">email</span> <span class="ruby-operator">+</span> <span class="ruby-string">&quot;.png&quot;</span>), <span class="ruby-string">&#39;wb&#39;</span>) <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">file</span><span class="ruby-operator">|</span>
                                 <span class="ruby-identifier">file</span>.<span class="ruby-identifier">write</span>(<span class="ruby-identifier">uploaded_io</span>.<span class="ruby-identifier">read</span>)
@@ -769,13 +731,14 @@
 
         <div class="method-description">
           
-          
+          <p>This method is used from the autocomplete to retrieve users depending on
+the params passed by the current user (to add new users to contacts)</p>
           
           
 
           
           <div class="method-source-code" id="search-source">
-            <pre><span class="ruby-comment"># File app/controllers/user_controller.rb, line 148</span>
+            <pre><span class="ruby-comment"># File app/controllers/user_controller.rb, line 150</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">search</span>
         <span class="ruby-keyword">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:term</span>]
                 <span class="ruby-identifier">to_match</span> = <span class="ruby-string">&#39;%&#39;</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:term</span>] <span class="ruby-operator">+</span> <span class="ruby-string">&#39;%&#39;</span>
@@ -812,13 +775,14 @@
 
         <div class="method-description">
           
-          
+          <p>This method is used by the autocomplete process made only between user
+contacts (to invite them in a meeting)</p>
           
           
 
           
           <div class="method-source-code" id="search_contacts-source">
-            <pre><span class="ruby-comment"># File app/controllers/user_controller.rb, line 162</span>
+            <pre><span class="ruby-comment"># File app/controllers/user_controller.rb, line 165</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">search_contacts</span>
         <span class="ruby-keyword">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:term</span>]
                 <span class="ruby-identifier">to_match</span> = <span class="ruby-string">&#39;%&#39;</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:term</span>] <span class="ruby-operator">+</span> <span class="ruby-string">&#39;%&#39;</span>
@@ -857,13 +821,13 @@
 
         <div class="method-description">
           
-          
+          <p>This method supports the settings page</p>
           
           
 
           
           <div class="method-source-code" id="settings-source">
-            <pre><span class="ruby-comment"># File app/controllers/user_controller.rb, line 178</span>
+            <pre><span class="ruby-comment"># File app/controllers/user_controller.rb, line 182</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">settings</span>
         <span class="ruby-identifier">check_if_myself</span>
         <span class="ruby-ivar">@user</span> = <span class="ruby-identifier">current_user</span>
@@ -891,50 +855,17 @@
 
         <div class="method-description">
           
-          
+          <p>This method supports the show user page</p>
           
           
 
           
           <div class="method-source-code" id="show-source">
-            <pre><span class="ruby-comment"># File app/controllers/user_controller.rb, line 5</span>
+            <pre><span class="ruby-comment"># File app/controllers/user_controller.rb, line 6</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">show</span>
         <span class="ruby-identifier">require_login</span>
         <span class="ruby-ivar">@user</span> = <span class="ruby-constant">User</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:id</span>])
         <span class="ruby-ivar">@socials</span> = <span class="ruby-constant">Social</span><span class="ruby-operator">::</span><span class="ruby-constant">Social_type</span>
-<span class="ruby-keyword">end</span></pre>
-          </div>
-          
-        </div>
-
-        
-
-        
-      </div>
-
-    
-      <div id="method-i-user_pref_list_params" class="method-detail ">
-        
-        <div class="method-heading">
-          <span class="method-name">user_pref_list_params</span><span
-            class="method-args">()</span>
-          
-          <span class="method-click-advice">click to toggle source</span>
-          
-        </div>
-        
-
-        <div class="method-description">
-          
-          
-          
-          
-
-          
-          <div class="method-source-code" id="user_pref_list_params-source">
-            <pre><span class="ruby-comment"># File app/controllers/user_controller.rb, line 195</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">user_pref_list_params</span>
-        <span class="ruby-identifier">params</span>.<span class="ruby-identifier">require</span>(<span class="ruby-value">:user</span>).<span class="ruby-identifier">permit</span>(<span class="ruby-value">:preference_list</span>)
 <span class="ruby-keyword">end</span></pre>
           </div>
           

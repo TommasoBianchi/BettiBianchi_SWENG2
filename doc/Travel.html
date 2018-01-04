@@ -138,16 +138,15 @@
 
         <div class="method-description">
           
-          <p>validate :starting_point_consistency validate :ending_point_consistency
-validate :same_user_starting_ending_point</p>
+          <p>This method returns the duration of the travel in minutes</p>
           
           
 
           
           <div class="method-source-code" id="get_duration_integer_minutes-source">
-            <pre><span class="ruby-comment"># File app/models/travel.rb, line 26</span>
+            <pre><span class="ruby-comment"># File app/models/travel.rb, line 24</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">get_duration_integer_minutes</span>
-  ((<span class="ruby-identifier">end_time</span> <span class="ruby-operator">-</span> <span class="ruby-identifier">start_time</span>) <span class="ruby-operator">/</span> <span class="ruby-value">60</span>).<span class="ruby-identifier">to_i</span>
+        ((<span class="ruby-identifier">end_time</span> <span class="ruby-operator">-</span> <span class="ruby-identifier">start_time</span>) <span class="ruby-operator">/</span> <span class="ruby-value">60</span>).<span class="ruby-identifier">to_i</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
           
@@ -172,19 +171,19 @@ validate :same_user_starting_ending_point</p>
 
         <div class="method-description">
           
-          
+          <p>This method returns the ending point of a travel</p>
           
           
 
           
           <div class="method-source-code" id="get_ending_point-source">
-            <pre><span class="ruby-comment"># File app/models/travel.rb, line 50</span>
+            <pre><span class="ruby-comment"># File app/models/travel.rb, line 51</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">get_ending_point</span>
-  <span class="ruby-keyword">if</span> <span class="ruby-identifier">ending_location_meeting</span>.<span class="ruby-identifier">blank?</span>
-    <span class="ruby-identifier">ending_location_dl</span>
-  <span class="ruby-keyword">else</span>
-    <span class="ruby-identifier">ending_location_meeting</span>
-  <span class="ruby-keyword">end</span>
+        <span class="ruby-keyword">if</span> <span class="ruby-identifier">ending_location_meeting</span>.<span class="ruby-identifier">blank?</span>
+                <span class="ruby-identifier">ending_location_dl</span>
+        <span class="ruby-keyword">else</span>
+                <span class="ruby-identifier">ending_location_meeting</span>
+        <span class="ruby-keyword">end</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
           
@@ -209,7 +208,7 @@ validate :same_user_starting_ending_point</p>
 
         <div class="method-description">
           
-          
+          <p>This method returns the starting point of a travel</p>
           
           
 
@@ -217,11 +216,11 @@ validate :same_user_starting_ending_point</p>
           <div class="method-source-code" id="get_starting_point-source">
             <pre><span class="ruby-comment"># File app/models/travel.rb, line 42</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">get_starting_point</span>
-  <span class="ruby-keyword">if</span> <span class="ruby-identifier">starting_location_meeting</span>.<span class="ruby-identifier">blank?</span>
-    <span class="ruby-identifier">starting_location_dl</span>
-  <span class="ruby-keyword">else</span>
-    <span class="ruby-identifier">starting_location_meeting</span>
-  <span class="ruby-keyword">end</span>
+        <span class="ruby-keyword">if</span> <span class="ruby-identifier">starting_location_meeting</span>.<span class="ruby-identifier">blank?</span>
+                <span class="ruby-identifier">starting_location_dl</span>
+        <span class="ruby-keyword">else</span>
+                <span class="ruby-identifier">starting_location_meeting</span>
+        <span class="ruby-keyword">end</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
           
@@ -246,23 +245,23 @@ validate :same_user_starting_ending_point</p>
 
         <div class="method-description">
           
-          
+          <p>This method returns the user that has to perform the travel</p>
           
           
 
           
           <div class="method-source-code" id="get_user-source">
-            <pre><span class="ruby-comment"># File app/models/travel.rb, line 30</span>
+            <pre><span class="ruby-comment"># File app/models/travel.rb, line 29</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">get_user</span>
-  <span class="ruby-keyword">if</span> <span class="ruby-identifier">starting_location_dl</span>.<span class="ruby-identifier">present?</span>
-    <span class="ruby-identifier">starting_location_dl</span>.<span class="ruby-identifier">user</span>
-  <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">ending_location_dl</span>.<span class="ruby-identifier">present?</span>
-    <span class="ruby-identifier">ending_location_dl</span>.<span class="ruby-identifier">user</span>
-  <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">starting_location_meeting</span>.<span class="ruby-identifier">present?</span>
-    <span class="ruby-identifier">starting_location_meeting</span>.<span class="ruby-identifier">user</span>
-  <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">ending_location_meeting</span>.<span class="ruby-identifier">present?</span>
-    <span class="ruby-identifier">ending_location_meeting</span>.<span class="ruby-identifier">user</span>
-  <span class="ruby-keyword">end</span>
+        <span class="ruby-keyword">if</span> <span class="ruby-identifier">starting_location_dl</span>.<span class="ruby-identifier">present?</span>
+                <span class="ruby-identifier">starting_location_dl</span>.<span class="ruby-identifier">user</span>
+        <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">ending_location_dl</span>.<span class="ruby-identifier">present?</span>
+                <span class="ruby-identifier">ending_location_dl</span>.<span class="ruby-identifier">user</span>
+        <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">starting_location_meeting</span>.<span class="ruby-identifier">present?</span>
+                <span class="ruby-identifier">starting_location_meeting</span>.<span class="ruby-identifier">user</span>
+        <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">ending_location_meeting</span>.<span class="ruby-identifier">present?</span>
+                <span class="ruby-identifier">ending_location_meeting</span>.<span class="ruby-identifier">user</span>
+        <span class="ruby-keyword">end</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
           

@@ -128,14 +128,16 @@
 
         <div class="method-description">
           
-          
+          <p>This method creates a new default location. It checks if the parameters
+passed by the user are correct and in the right format</p>
           
           
 
           
           <div class="method-source-code" id="create-source">
-            <pre><span class="ruby-comment"># File app/controllers/default_location_controller.rb, line 20</span>
+            <pre><span class="ruby-comment"># File app/controllers/default_location_controller.rb, line 24</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">create</span>
+        <span class="ruby-ivar">@default_location</span> = <span class="ruby-constant">DefaultLocation</span>.<span class="ruby-identifier">new</span>
         <span class="ruby-identifier">user</span> = <span class="ruby-identifier">current_user</span>
         <span class="ruby-identifier">name</span> = <span class="ruby-identifier">params</span>[<span class="ruby-value">:default_location</span>][<span class="ruby-value">:name</span>]
 
@@ -143,21 +145,12 @@
                 <span class="ruby-identifier">render</span> <span class="ruby-string">&#39;new&#39;</span>
                 <span class="ruby-keyword">return</span>
         <span class="ruby-keyword">else</span>
-                <span class="ruby-identifier">location_input</span> = <span class="ruby-identifier">params</span>[<span class="ruby-value">:default_location</span>][<span class="ruby-value">:location</span>].<span class="ruby-identifier">split</span>(<span class="ruby-string">&#39;,&#39;</span>)
-                <span class="ruby-identifier">latitude</span> = <span class="ruby-identifier">location_input</span>[<span class="ruby-value">0</span>].<span class="ruby-identifier">to_f</span>
-                <span class="ruby-identifier">longitude</span> = <span class="ruby-identifier">location_input</span>[<span class="ruby-value">1</span>].<span class="ruby-identifier">to_f</span>
-                <span class="ruby-identifier">location_name</span> = <span class="ruby-identifier">location_input</span>[<span class="ruby-value">2</span>]
-                <span class="ruby-identifier">location</span> = <span class="ruby-constant">Location</span>.<span class="ruby-identifier">find_by</span>(<span class="ruby-value">latitude:</span> <span class="ruby-identifier">latitude</span>, <span class="ruby-value">longitude:</span> <span class="ruby-identifier">longitude</span>)
-
-                <span class="ruby-keyword">unless</span> <span class="ruby-identifier">location</span>
-                        <span class="ruby-identifier">location</span> = <span class="ruby-constant">Location</span>.<span class="ruby-identifier">create</span>(<span class="ruby-value">latitude:</span> <span class="ruby-identifier">latitude</span>, <span class="ruby-value">longitude:</span> <span class="ruby-identifier">longitude</span>, <span class="ruby-value">description:</span> <span class="ruby-identifier">location_name</span>)
-                <span class="ruby-keyword">end</span>
-
+                <span class="ruby-identifier">location</span> = <span class="ruby-identifier">get_location</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:default_location</span>][<span class="ruby-value">:location</span>])
         <span class="ruby-keyword">end</span>
 
 
         <span class="ruby-keyword">begin</span>
-                <span class="ruby-identifier">starting_hour</span> = <span class="ruby-identifier">params</span>[<span class="ruby-value">:default_location</span>][<span class="ruby-value">:starting_hour</span>].<span class="ruby-identifier">to_datetime</span>.<span class="ruby-identifier">hour</span> <span class="ruby-operator">*</span> <span class="ruby-value">60</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:default_location</span>][<span class="ruby-value">:starting_hour</span>].<span class="ruby-identifier">to_datetime</span>.<span class="ruby-identifier">min</span>
+                <span class="ruby-identifier">starting_hour</span> = <span class="ruby-identifier">get_datetime_from_starting_hour</span>
         <span class="ruby-keyword">rescue</span> <span class="ruby-constant">NoMethodError</span>
                 <span class="ruby-identifier">render</span> <span class="ruby-string">&#39;new&#39;</span>
                 <span class="ruby-keyword">return</span>
@@ -172,17 +165,11 @@
         <span class="ruby-ivar">@default_location</span> = <span class="ruby-constant">DefaultLocation</span>.<span class="ruby-identifier">new</span>(<span class="ruby-value">starting_hour:</span> <span class="ruby-identifier">starting_hour</span>, <span class="ruby-value">day_of_the_week:</span> <span class="ruby-identifier">day_of_the_week</span>, <span class="ruby-value">name:</span> <span class="ruby-identifier">name</span>, <span class="ruby-value">user_id:</span> <span class="ruby-identifier">user</span>.<span class="ruby-identifier">id</span>, <span class="ruby-value">location_id:</span> <span class="ruby-identifier">location</span>.<span class="ruby-identifier">id</span>)
         <span class="ruby-keyword">if</span> <span class="ruby-ivar">@default_location</span>.<span class="ruby-identifier">valid?</span>
                 <span class="ruby-ivar">@default_location</span>.<span class="ruby-identifier">save</span>
-                <span class="ruby-keyword">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:repetition</span>][<span class="ruby-value">:day_of_the_week</span>] <span class="ruby-operator">==</span> <span class="ruby-string">&#39;daily&#39;</span>
-                        <span class="ruby-keyword">for</span> <span class="ruby-identifier">i</span> <span class="ruby-keyword">in</span> <span class="ruby-value">1</span><span class="ruby-operator">..</span><span class="ruby-value">6</span>
-                                <span class="ruby-constant">DefaultLocation</span>.<span class="ruby-identifier">create</span>(<span class="ruby-value">starting_hour:</span> <span class="ruby-identifier">starting_hour</span>, <span class="ruby-value">day_of_the_week:</span> (<span class="ruby-identifier">day_of_the_week</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">i</span>) <span class="ruby-operator">%</span> <span class="ruby-value">7</span>, <span class="ruby-value">name:</span> <span class="ruby-identifier">name</span>, <span class="ruby-value">user_id:</span> <span class="ruby-identifier">user</span>.<span class="ruby-identifier">id</span>, <span class="ruby-value">location_id:</span> <span class="ruby-identifier">location</span>.<span class="ruby-identifier">id</span>)
-                        <span class="ruby-keyword">end</span>
-                        <span class="ruby-identifier">days</span> = [<span class="ruby-value">0</span>, <span class="ruby-value">1</span>, <span class="ruby-value">2</span>, <span class="ruby-value">3</span>, <span class="ruby-value">4</span>, <span class="ruby-value">5</span>, <span class="ruby-value">6</span>]
-                        <span class="ruby-constant">RecomputeMeetingParticipationsJob</span>.<span class="ruby-identifier">perform_later</span> <span class="ruby-identifier">days</span>
-                <span class="ruby-keyword">else</span>
-                        <span class="ruby-constant">RecomputeMeetingParticipationsJob</span>.<span class="ruby-identifier">perform_later</span> <span class="ruby-identifier">day_of_the_week</span>
-                <span class="ruby-keyword">end</span>
+                <span class="ruby-identifier">create_dl_in_database</span>
                 <span class="ruby-identifier">redirect_to</span> <span class="ruby-ivar">@default_location</span>
         <span class="ruby-keyword">else</span>
+                <span class="ruby-ivar">@default_location</span>.<span class="ruby-identifier">starting_hour</span> = <span class="ruby-string">&#39;&#39;</span>
+                <span class="ruby-ivar">@default_location</span>.<span class="ruby-identifier">day_of_the_week</span> = <span class="ruby-string">&#39;&#39;</span>
                 <span class="ruby-identifier">render</span> <span class="ruby-string">&#39;new&#39;</span>
                 <span class="ruby-keyword">return</span>
         <span class="ruby-keyword">end</span>
@@ -210,13 +197,14 @@
 
         <div class="method-description">
           
-          
+          <p>This method delete a default location. It has to delete also all the
+travels and travel step linked to it</p>
           
           
 
           
           <div class="method-source-code" id="delete-source">
-            <pre><span class="ruby-comment"># File app/controllers/default_location_controller.rb, line 73</span>
+            <pre><span class="ruby-comment"># File app/controllers/default_location_controller.rb, line 64</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">delete</span>
         <span class="ruby-identifier">check_if_mine</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:default_location_id</span>])
         <span class="ruby-identifier">check_if_me</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:user_id</span>].<span class="ruby-identifier">to_i</span>)
@@ -269,13 +257,13 @@
 
         <div class="method-description">
           
-          
+          <p>This method actually creates the first default location</p>
           
           
 
           
           <div class="method-source-code" id="first_creation-source">
-            <pre><span class="ruby-comment"># File app/controllers/default_location_controller.rb, line 107</span>
+            <pre><span class="ruby-comment"># File app/controllers/default_location_controller.rb, line 100</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">first_creation</span>
         <span class="ruby-identifier">user</span> = <span class="ruby-constant">User</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:user_id</span>])
         <span class="ruby-identifier">name</span> = <span class="ruby-identifier">params</span>[<span class="ruby-value">:default_location</span>][<span class="ruby-value">:name</span>]
@@ -284,21 +272,12 @@
                 <span class="ruby-identifier">render</span> <span class="ruby-string">&#39;first_def_location&#39;</span>
                 <span class="ruby-keyword">return</span>
         <span class="ruby-keyword">else</span>
-                <span class="ruby-identifier">location_input</span> = <span class="ruby-identifier">params</span>[<span class="ruby-value">:default_location</span>][<span class="ruby-value">:location</span>].<span class="ruby-identifier">split</span>(<span class="ruby-string">&#39;,&#39;</span>)
-                <span class="ruby-identifier">latitude</span> = <span class="ruby-identifier">location_input</span>[<span class="ruby-value">0</span>].<span class="ruby-identifier">to_f</span>
-                <span class="ruby-identifier">longitude</span> = <span class="ruby-identifier">location_input</span>[<span class="ruby-value">1</span>].<span class="ruby-identifier">to_f</span>
-                <span class="ruby-identifier">location_name</span> = <span class="ruby-identifier">location_input</span>[<span class="ruby-value">2</span>]
-                <span class="ruby-identifier">location</span> = <span class="ruby-constant">Location</span>.<span class="ruby-identifier">find_by</span>(<span class="ruby-value">latitude:</span> <span class="ruby-identifier">latitude</span>, <span class="ruby-value">longitude:</span> <span class="ruby-identifier">longitude</span>)
-
-                <span class="ruby-keyword">unless</span> <span class="ruby-identifier">location</span>
-                        <span class="ruby-identifier">location</span> = <span class="ruby-constant">Location</span>.<span class="ruby-identifier">create</span>(<span class="ruby-value">latitude:</span> <span class="ruby-identifier">latitude</span>, <span class="ruby-value">longitude:</span> <span class="ruby-identifier">longitude</span>, <span class="ruby-value">description:</span> <span class="ruby-identifier">location_name</span>)
-                <span class="ruby-keyword">end</span>
-
+                <span class="ruby-identifier">location</span> = <span class="ruby-identifier">get_location</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:default_location</span>][<span class="ruby-value">:location</span>])
         <span class="ruby-keyword">end</span>
 
 
         <span class="ruby-keyword">begin</span>
-                <span class="ruby-identifier">starting_hour</span> = <span class="ruby-identifier">params</span>[<span class="ruby-value">:default_location</span>][<span class="ruby-value">:starting_hour</span>].<span class="ruby-identifier">to_datetime</span>.<span class="ruby-identifier">hour</span> <span class="ruby-operator">*</span> <span class="ruby-value">60</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:default_location</span>][<span class="ruby-value">:starting_hour</span>].<span class="ruby-identifier">to_datetime</span>.<span class="ruby-identifier">min</span>
+                <span class="ruby-identifier">starting_hour</span> = <span class="ruby-identifier">get_datetime_from_starting_hour</span>
         <span class="ruby-keyword">rescue</span> <span class="ruby-constant">NoMethodError</span>
                 <span class="ruby-identifier">render</span> <span class="ruby-string">&#39;first_def_location&#39;</span>
                 <span class="ruby-keyword">return</span>
@@ -313,18 +292,12 @@
         <span class="ruby-ivar">@default_location</span> = <span class="ruby-constant">DefaultLocation</span>.<span class="ruby-identifier">new</span>(<span class="ruby-value">starting_hour:</span> <span class="ruby-identifier">starting_hour</span>, <span class="ruby-value">day_of_the_week:</span> <span class="ruby-identifier">day_of_the_week</span>, <span class="ruby-value">name:</span> <span class="ruby-identifier">name</span>, <span class="ruby-value">user_id:</span> <span class="ruby-identifier">user</span>.<span class="ruby-identifier">id</span>, <span class="ruby-value">location_id:</span> <span class="ruby-identifier">location</span>.<span class="ruby-identifier">id</span>)
         <span class="ruby-keyword">if</span> <span class="ruby-ivar">@default_location</span>.<span class="ruby-identifier">valid?</span>
                 <span class="ruby-ivar">@default_location</span>.<span class="ruby-identifier">save</span>
-                <span class="ruby-keyword">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:repetition</span>][<span class="ruby-value">:day_of_the_week</span>] <span class="ruby-operator">==</span> <span class="ruby-string">&#39;daily&#39;</span>
-                        <span class="ruby-keyword">for</span> <span class="ruby-identifier">i</span> <span class="ruby-keyword">in</span> <span class="ruby-value">1</span><span class="ruby-operator">..</span><span class="ruby-value">6</span>
-                                <span class="ruby-constant">DefaultLocation</span>.<span class="ruby-identifier">create</span>(<span class="ruby-value">starting_hour:</span> <span class="ruby-identifier">starting_hour</span>, <span class="ruby-value">day_of_the_week:</span> (<span class="ruby-identifier">day_of_the_week</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">i</span>) <span class="ruby-operator">%</span> <span class="ruby-value">7</span>, <span class="ruby-value">name:</span> <span class="ruby-identifier">name</span>, <span class="ruby-value">user_id:</span> <span class="ruby-identifier">user</span>.<span class="ruby-identifier">id</span>, <span class="ruby-value">location_id:</span> <span class="ruby-identifier">location</span>.<span class="ruby-identifier">id</span>)
-                        <span class="ruby-keyword">end</span>
-                        <span class="ruby-identifier">days</span> = [<span class="ruby-value">0</span>, <span class="ruby-value">1</span>, <span class="ruby-value">2</span>, <span class="ruby-value">3</span>, <span class="ruby-value">4</span>, <span class="ruby-value">5</span>, <span class="ruby-value">6</span>]
-                        <span class="ruby-constant">RecomputeMeetingParticipationsJob</span>.<span class="ruby-identifier">perform_later</span> <span class="ruby-identifier">days</span>, <span class="ruby-identifier">user</span>
-                <span class="ruby-keyword">else</span>
-                        <span class="ruby-constant">RecomputeMeetingParticipationsJob</span>.<span class="ruby-identifier">perform_later</span> <span class="ruby-identifier">day_of_the_week</span>, <span class="ruby-identifier">user</span>
-                <span class="ruby-keyword">end</span>
+                <span class="ruby-identifier">create_dl_in_database</span>
                 <span class="ruby-identifier">log_in</span>(<span class="ruby-identifier">user</span>)
                 <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">calendar_day_path</span>
         <span class="ruby-keyword">else</span>
+                <span class="ruby-ivar">@default_location</span>.<span class="ruby-identifier">starting_hour</span> = <span class="ruby-string">&#39;&#39;</span>
+                <span class="ruby-ivar">@default_location</span>.<span class="ruby-identifier">day_of_the_week</span> = <span class="ruby-string">&#39;&#39;</span>
                 <span class="ruby-identifier">render</span> <span class="ruby-string">&#39;first_def_location&#39;</span>
                 <span class="ruby-keyword">return</span>
         <span class="ruby-keyword">end</span>
@@ -352,13 +325,14 @@
 
         <div class="method-description">
           
-          
+          <p>This method supports the page the manage the creation of the first default
+location during the registration phase</p>
           
           
 
           
           <div class="method-source-code" id="first_def_location-source">
-            <pre><span class="ruby-comment"># File app/controllers/default_location_controller.rb, line 103</span>
+            <pre><span class="ruby-comment"># File app/controllers/default_location_controller.rb, line 95</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">first_def_location</span>
         <span class="ruby-ivar">@default_location</span> = <span class="ruby-constant">DefaultLocation</span>.<span class="ruby-identifier">new</span>
 <span class="ruby-keyword">end</span></pre>
@@ -385,14 +359,15 @@
 
         <div class="method-description">
           
-          
+          <p>This method supports the new default location page</p>
           
           
 
           
           <div class="method-source-code" id="new-source">
-            <pre><span class="ruby-comment"># File app/controllers/default_location_controller.rb, line 16</span>
+            <pre><span class="ruby-comment"># File app/controllers/default_location_controller.rb, line 18</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">new</span>
+        <span class="ruby-ivar">@back_path</span> = <span class="ruby-identifier">request</span>.<span class="ruby-identifier">referer</span>
         <span class="ruby-ivar">@default_location</span> = <span class="ruby-constant">DefaultLocation</span>.<span class="ruby-identifier">new</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
@@ -418,13 +393,13 @@
 
         <div class="method-description">
           
-          
+          <p>This method supports the show notification page</p>
           
           
 
           
           <div class="method-source-code" id="show-source">
-            <pre><span class="ruby-comment"># File app/controllers/default_location_controller.rb, line 4</span>
+            <pre><span class="ruby-comment"># File app/controllers/default_location_controller.rb, line 5</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">show</span>
         <span class="ruby-identifier">check_if_mine</span>
         <span class="ruby-ivar">@user</span> = <span class="ruby-identifier">current_user</span>

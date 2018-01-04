@@ -130,7 +130,7 @@
 
           
           <div class="method-source-code" id="digest-source">
-            <pre><span class="ruby-comment"># File app/models/user.rb, line 25</span>
+            <pre><span class="ruby-comment"># File app/models/user.rb, line 26</span>
 <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier ruby-title">digest</span>(<span class="ruby-identifier">string</span>)
         <span class="ruby-identifier">cost</span> = <span class="ruby-constant">ActiveModel</span><span class="ruby-operator">::</span><span class="ruby-constant">SecurePassword</span>.<span class="ruby-identifier">min_cost</span> <span class="ruby-operator">?</span> <span class="ruby-constant">BCrypt</span><span class="ruby-operator">::</span><span class="ruby-constant">Engine</span><span class="ruby-operator">::</span><span class="ruby-constant">MIN_COST</span> <span class="ruby-operator">:</span>
                                                  <span class="ruby-constant">BCrypt</span><span class="ruby-operator">::</span><span class="ruby-constant">Engine</span>.<span class="ruby-identifier">cost</span>
@@ -167,15 +167,14 @@
 
         <div class="method-description">
           
-          
+          <p>This method returns the first default location after a given date</p>
           
           
 
           
           <div class="method-source-code" id="get_first_location_after-source">
-            <pre><span class="ruby-comment"># File app/models/user.rb, line 58</span>
+            <pre><span class="ruby-comment"># File app/models/user.rb, line 60</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">get_first_location_after</span>(<span class="ruby-identifier">current_day</span>)
-        <span class="ruby-comment"># ATTENTION IT RETURNS THE FIRST DEFAULT LOCATION THAT STARTS AFTER current_day. if you want the current one use the get_last_default_location_before method</span>
         <span class="ruby-identifier">list_default_location</span> = []
         <span class="ruby-identifier">default_locations</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">dl</span><span class="ruby-operator">|</span>
                 <span class="ruby-keyword">if</span> <span class="ruby-identifier">dl</span>.<span class="ruby-identifier">day_of_the_week</span> <span class="ruby-operator">&gt;</span> <span class="ruby-identifier">current_day</span>.<span class="ruby-identifier">wday</span> <span class="ruby-operator">||</span> (<span class="ruby-identifier">dl</span>.<span class="ruby-identifier">day_of_the_week</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">current_day</span>.<span class="ruby-identifier">wday</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">dl</span>.<span class="ruby-identifier">starting_hour</span> <span class="ruby-operator">&gt;=</span> (<span class="ruby-identifier">current_day</span>.<span class="ruby-identifier">hour</span> <span class="ruby-operator">*</span> <span class="ruby-value">60</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">current_day</span>.<span class="ruby-identifier">min</span>))
@@ -213,13 +212,13 @@
 
         <div class="method-description">
           
-          
+          <p>This method returns the last default location before a given date</p>
           
           
 
           
           <div class="method-source-code" id="get_last_default_location_before-source">
-            <pre><span class="ruby-comment"># File app/models/user.rb, line 42</span>
+            <pre><span class="ruby-comment"># File app/models/user.rb, line 43</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">get_last_default_location_before</span>(<span class="ruby-identifier">current_day</span>)
         <span class="ruby-identifier">list_default_location</span> = []
         <span class="ruby-identifier">default_locations</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">dl</span><span class="ruby-operator">|</span>
@@ -258,13 +257,13 @@
 
         <div class="method-description">
           
-          
+          <p>This method returns the primary email of the user</p>
           
           
 
           
           <div class="method-source-code" id="primary_email-source">
-            <pre><span class="ruby-comment"># File app/models/user.rb, line 20</span>
+            <pre><span class="ruby-comment"># File app/models/user.rb, line 21</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">primary_email</span>
         <span class="ruby-constant">Email</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">primary_email_id</span>)
 <span class="ruby-keyword">end</span></pre>

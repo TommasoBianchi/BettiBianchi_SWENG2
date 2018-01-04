@@ -122,43 +122,45 @@
 
         <div class="method-description">
           
-          
+          <p>This method supports the page that shows the calendar daily page. It
+retrieves in the correct order all the events (meeting + travel + def
+location) that the user has to do during the day</p>
           
           
 
           
           <div class="method-source-code" id="show_day-source">
-            <pre><span class="ruby-comment"># File app/controllers/calendar_controller.rb, line 2</span>
+            <pre><span class="ruby-comment"># File app/controllers/calendar_controller.rb, line 5</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">show_day</span>
-  <span class="ruby-ivar">@user</span> = <span class="ruby-identifier">current_user</span>
+        <span class="ruby-ivar">@user</span> = <span class="ruby-identifier">current_user</span>
 
-  <span class="ruby-identifier">params</span>.<span class="ruby-identifier">require</span>(<span class="ruby-node">%i[day month year]</span>)
-  <span class="ruby-identifier">day</span> = <span class="ruby-identifier">validate_between</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:day</span>], <span class="ruby-value">1</span>, <span class="ruby-value">31</span>)
-  <span class="ruby-identifier">month</span> = <span class="ruby-identifier">validate_between</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:month</span>], <span class="ruby-value">1</span>, <span class="ruby-value">12</span>)
-  <span class="ruby-identifier">year</span> = <span class="ruby-identifier">validate_between</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:year</span>], <span class="ruby-value">2000</span>, <span class="ruby-value">2100</span>)
+        <span class="ruby-identifier">params</span>.<span class="ruby-identifier">require</span>(<span class="ruby-node">%i[day month year]</span>)
+        <span class="ruby-identifier">day</span> = <span class="ruby-identifier">validate_between</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:day</span>], <span class="ruby-value">1</span>, <span class="ruby-value">31</span>)
+        <span class="ruby-identifier">month</span> = <span class="ruby-identifier">validate_between</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:month</span>], <span class="ruby-value">1</span>, <span class="ruby-value">12</span>)
+        <span class="ruby-identifier">year</span> = <span class="ruby-identifier">validate_between</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:year</span>], <span class="ruby-value">2000</span>, <span class="ruby-value">2100</span>)
 
-  <span class="ruby-keyword">begin</span>
-    <span class="ruby-identifier">from_date</span> = <span class="ruby-constant">DateTime</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">year</span>, <span class="ruby-identifier">month</span>, <span class="ruby-identifier">day</span>)
-  <span class="ruby-keyword">rescue</span> <span class="ruby-constant">ArgumentError</span>
-    <span class="ruby-identifier">raise</span> <span class="ruby-constant">ActionController</span><span class="ruby-operator">::</span><span class="ruby-constant">RoutingError</span>, <span class="ruby-string">&#39;Not Found&#39;</span>
-  <span class="ruby-keyword">end</span>
-  <span class="ruby-identifier">to_date</span> = <span class="ruby-identifier">from_date</span> <span class="ruby-operator">+</span> <span class="ruby-value">1</span>.<span class="ruby-identifier">days</span>
+        <span class="ruby-keyword">begin</span>
+                <span class="ruby-identifier">from_date</span> = <span class="ruby-constant">DateTime</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">year</span>, <span class="ruby-identifier">month</span>, <span class="ruby-identifier">day</span>)
+        <span class="ruby-keyword">rescue</span> <span class="ruby-constant">ArgumentError</span>
+                <span class="ruby-identifier">raise</span> <span class="ruby-constant">ActionController</span><span class="ruby-operator">::</span><span class="ruby-constant">RoutingError</span>, <span class="ruby-string">&#39;Not Found&#39;</span>
+        <span class="ruby-keyword">end</span>
+        <span class="ruby-identifier">to_date</span> = <span class="ruby-identifier">from_date</span> <span class="ruby-operator">+</span> <span class="ruby-value">1</span>.<span class="ruby-identifier">days</span>
 
-  <span class="ruby-ivar">@schedule</span> = <span class="ruby-identifier">get_schedule</span>(<span class="ruby-identifier">from_date</span>, <span class="ruby-identifier">to_date</span>, <span class="ruby-ivar">@user</span>)
+        <span class="ruby-ivar">@schedule</span> = <span class="ruby-identifier">get_schedule</span>(<span class="ruby-identifier">from_date</span>, <span class="ruby-identifier">to_date</span>, <span class="ruby-ivar">@user</span>)
 
-  <span class="ruby-identifier">day_before</span> = <span class="ruby-identifier">from_date</span> <span class="ruby-operator">-</span> <span class="ruby-value">1</span>.<span class="ruby-identifier">days</span>
-  <span class="ruby-identifier">links</span> = {
-    <span class="ruby-value">day:</span> <span class="ruby-string">&#39;&#39;</span>,
-    <span class="ruby-value">week:</span> <span class="ruby-constant">Rails</span>.<span class="ruby-identifier">application</span>.<span class="ruby-identifier">routes</span>.<span class="ruby-identifier">url_helpers</span>.<span class="ruby-identifier">calendar_week_path</span>(<span class="ruby-identifier">year</span>, <span class="ruby-identifier">from_date</span>.<span class="ruby-identifier">cweek</span>),
-    <span class="ruby-value">month:</span> <span class="ruby-constant">Rails</span>.<span class="ruby-identifier">application</span>.<span class="ruby-identifier">routes</span>.<span class="ruby-identifier">url_helpers</span>.<span class="ruby-identifier">calendar_month_path</span>(<span class="ruby-identifier">year</span>, <span class="ruby-identifier">month</span>),
-    <span class="ruby-value">prev:</span> <span class="ruby-constant">Rails</span>.<span class="ruby-identifier">application</span>.<span class="ruby-identifier">routes</span>.<span class="ruby-identifier">url_helpers</span>.<span class="ruby-identifier">calendar_day_path</span>(<span class="ruby-identifier">day_before</span>.<span class="ruby-identifier">year</span>, <span class="ruby-identifier">day_before</span>.<span class="ruby-identifier">month</span>, <span class="ruby-identifier">day_before</span>.<span class="ruby-identifier">day</span>),
-    <span class="ruby-value">next:</span> <span class="ruby-constant">Rails</span>.<span class="ruby-identifier">application</span>.<span class="ruby-identifier">routes</span>.<span class="ruby-identifier">url_helpers</span>.<span class="ruby-identifier">calendar_day_path</span>(<span class="ruby-identifier">to_date</span>.<span class="ruby-identifier">year</span>, <span class="ruby-identifier">to_date</span>.<span class="ruby-identifier">month</span>, <span class="ruby-identifier">to_date</span>.<span class="ruby-identifier">day</span>)
-  }
+        <span class="ruby-identifier">day_before</span> = <span class="ruby-identifier">from_date</span> <span class="ruby-operator">-</span> <span class="ruby-value">1</span>.<span class="ruby-identifier">days</span>
+        <span class="ruby-identifier">links</span> = {
+                        <span class="ruby-value">day:</span> <span class="ruby-string">&#39;&#39;</span>,
+                        <span class="ruby-value">week:</span> <span class="ruby-constant">Rails</span>.<span class="ruby-identifier">application</span>.<span class="ruby-identifier">routes</span>.<span class="ruby-identifier">url_helpers</span>.<span class="ruby-identifier">calendar_week_path</span>(<span class="ruby-identifier">year</span>, <span class="ruby-identifier">from_date</span>.<span class="ruby-identifier">cweek</span>),
+                        <span class="ruby-value">month:</span> <span class="ruby-constant">Rails</span>.<span class="ruby-identifier">application</span>.<span class="ruby-identifier">routes</span>.<span class="ruby-identifier">url_helpers</span>.<span class="ruby-identifier">calendar_month_path</span>(<span class="ruby-identifier">year</span>, <span class="ruby-identifier">month</span>),
+                        <span class="ruby-value">prev:</span> <span class="ruby-constant">Rails</span>.<span class="ruby-identifier">application</span>.<span class="ruby-identifier">routes</span>.<span class="ruby-identifier">url_helpers</span>.<span class="ruby-identifier">calendar_day_path</span>(<span class="ruby-identifier">day_before</span>.<span class="ruby-identifier">year</span>, <span class="ruby-identifier">day_before</span>.<span class="ruby-identifier">month</span>, <span class="ruby-identifier">day_before</span>.<span class="ruby-identifier">day</span>),
+                        <span class="ruby-value">next:</span> <span class="ruby-constant">Rails</span>.<span class="ruby-identifier">application</span>.<span class="ruby-identifier">routes</span>.<span class="ruby-identifier">url_helpers</span>.<span class="ruby-identifier">calendar_day_path</span>(<span class="ruby-identifier">to_date</span>.<span class="ruby-identifier">year</span>, <span class="ruby-identifier">to_date</span>.<span class="ruby-identifier">month</span>, <span class="ruby-identifier">to_date</span>.<span class="ruby-identifier">day</span>)
+        }
 
-  <span class="ruby-identifier">prev_text</span> = <span class="ruby-identifier">day_before</span>.<span class="ruby-identifier">strftime</span> <span class="ruby-string">&#39;%d %b %Y&#39;</span>
-  <span class="ruby-identifier">next_text</span> = <span class="ruby-identifier">to_date</span>.<span class="ruby-identifier">strftime</span> <span class="ruby-string">&#39;%d %b %Y&#39;</span>
-  <span class="ruby-identifier">render</span> <span class="ruby-string">&#39;calendar/main&#39;</span>, <span class="ruby-value">locals:</span> { <span class="ruby-value">links:</span> <span class="ruby-identifier">links</span>, <span class="ruby-value">prev_text:</span> <span class="ruby-identifier">prev_text</span>, <span class="ruby-value">next_text:</span> <span class="ruby-identifier">next_text</span>, <span class="ruby-value">footer_link:</span> <span class="ruby-string">&#39;day&#39;</span> }
- <span class="ruby-keyword">end</span></pre>
+        <span class="ruby-identifier">prev_text</span> = <span class="ruby-identifier">day_before</span>.<span class="ruby-identifier">strftime</span> <span class="ruby-string">&#39;%d %b %Y&#39;</span>
+        <span class="ruby-identifier">next_text</span> = <span class="ruby-identifier">to_date</span>.<span class="ruby-identifier">strftime</span> <span class="ruby-string">&#39;%d %b %Y&#39;</span>
+        <span class="ruby-identifier">render</span> <span class="ruby-string">&#39;calendar/main&#39;</span>, <span class="ruby-value">locals:</span> {<span class="ruby-value">links:</span> <span class="ruby-identifier">links</span>, <span class="ruby-value">prev_text:</span> <span class="ruby-identifier">prev_text</span>, <span class="ruby-value">next_text:</span> <span class="ruby-identifier">next_text</span>, <span class="ruby-value">footer_link:</span> <span class="ruby-string">&#39;day&#39;</span>}
+<span class="ruby-keyword">end</span></pre>
           </div>
           
         </div>
@@ -182,38 +184,40 @@
 
         <div class="method-description">
           
-          
+          <p>This method supports the page that shows the calendar monthly page. It
+retrieves in the correct order all the meetings that the user has to do
+during the month</p>
           
           
 
           
           <div class="method-source-code" id="show_month-source">
-            <pre><span class="ruby-comment"># File app/controllers/calendar_controller.rb, line 62</span>
+            <pre><span class="ruby-comment"># File app/controllers/calendar_controller.rb, line 69</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">show_month</span>
-  <span class="ruby-ivar">@user</span> = <span class="ruby-identifier">current_user</span>
+        <span class="ruby-ivar">@user</span> = <span class="ruby-identifier">current_user</span>
 
-  <span class="ruby-identifier">params</span>.<span class="ruby-identifier">require</span>(<span class="ruby-node">%i[month year]</span>)
-  <span class="ruby-identifier">month</span> = <span class="ruby-identifier">validate_between</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:month</span>], <span class="ruby-value">1</span>, <span class="ruby-value">12</span>)
-  <span class="ruby-identifier">year</span> = <span class="ruby-identifier">validate_between</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:year</span>], <span class="ruby-value">2000</span>, <span class="ruby-value">2100</span>)
+        <span class="ruby-identifier">params</span>.<span class="ruby-identifier">require</span>(<span class="ruby-node">%i[month year]</span>)
+        <span class="ruby-identifier">month</span> = <span class="ruby-identifier">validate_between</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:month</span>], <span class="ruby-value">1</span>, <span class="ruby-value">12</span>)
+        <span class="ruby-identifier">year</span> = <span class="ruby-identifier">validate_between</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:year</span>], <span class="ruby-value">2000</span>, <span class="ruby-value">2100</span>)
 
-  <span class="ruby-identifier">from_date</span> = <span class="ruby-constant">DateTime</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">year</span>, <span class="ruby-identifier">month</span>)
-  <span class="ruby-identifier">to_date</span> = <span class="ruby-identifier">from_date</span> <span class="ruby-operator">+</span> <span class="ruby-value">1</span>.<span class="ruby-identifier">months</span>
+        <span class="ruby-identifier">from_date</span> = <span class="ruby-constant">DateTime</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">year</span>, <span class="ruby-identifier">month</span>)
+        <span class="ruby-identifier">to_date</span> = <span class="ruby-identifier">from_date</span> <span class="ruby-operator">+</span> <span class="ruby-value">1</span>.<span class="ruby-identifier">months</span>
 
-  <span class="ruby-ivar">@schedule</span> = <span class="ruby-identifier">get_schedule</span>(<span class="ruby-identifier">from_date</span>, <span class="ruby-identifier">to_date</span>, <span class="ruby-ivar">@user</span>)
+        <span class="ruby-ivar">@schedule</span> = <span class="ruby-identifier">get_schedule</span>(<span class="ruby-identifier">from_date</span>, <span class="ruby-identifier">to_date</span>, <span class="ruby-ivar">@user</span>)
 
-  <span class="ruby-identifier">next_month</span> = <span class="ruby-identifier">from_date</span> <span class="ruby-operator">+</span> <span class="ruby-value">1</span>.<span class="ruby-identifier">months</span>
-  <span class="ruby-identifier">prev_month</span> = <span class="ruby-identifier">from_date</span> <span class="ruby-operator">-</span> <span class="ruby-value">1</span>.<span class="ruby-identifier">months</span>
-  <span class="ruby-identifier">links</span> = {
-    <span class="ruby-value">day:</span> <span class="ruby-constant">Rails</span>.<span class="ruby-identifier">application</span>.<span class="ruby-identifier">routes</span>.<span class="ruby-identifier">url_helpers</span>.<span class="ruby-identifier">calendar_day_path</span>(<span class="ruby-identifier">year</span>, <span class="ruby-identifier">month</span>, <span class="ruby-value">1</span>),
-    <span class="ruby-value">week:</span> <span class="ruby-constant">Rails</span>.<span class="ruby-identifier">application</span>.<span class="ruby-identifier">routes</span>.<span class="ruby-identifier">url_helpers</span>.<span class="ruby-identifier">calendar_week_path</span>(<span class="ruby-identifier">year</span>, <span class="ruby-identifier">from_date</span>.<span class="ruby-identifier">cweek</span>),
-    <span class="ruby-value">month:</span> <span class="ruby-string">&#39;&#39;</span>,
-    <span class="ruby-value">prev:</span> <span class="ruby-constant">Rails</span>.<span class="ruby-identifier">application</span>.<span class="ruby-identifier">routes</span>.<span class="ruby-identifier">url_helpers</span>.<span class="ruby-identifier">calendar_month_path</span>(<span class="ruby-identifier">prev_month</span>.<span class="ruby-identifier">year</span>, <span class="ruby-identifier">prev_month</span>.<span class="ruby-identifier">month</span>),
-    <span class="ruby-value">next:</span> <span class="ruby-constant">Rails</span>.<span class="ruby-identifier">application</span>.<span class="ruby-identifier">routes</span>.<span class="ruby-identifier">url_helpers</span>.<span class="ruby-identifier">calendar_month_path</span>(<span class="ruby-identifier">next_month</span>.<span class="ruby-identifier">year</span>, <span class="ruby-identifier">next_month</span>.<span class="ruby-identifier">month</span>)
-  }
+        <span class="ruby-identifier">next_month</span> = <span class="ruby-identifier">from_date</span> <span class="ruby-operator">+</span> <span class="ruby-value">1</span>.<span class="ruby-identifier">months</span>
+        <span class="ruby-identifier">prev_month</span> = <span class="ruby-identifier">from_date</span> <span class="ruby-operator">-</span> <span class="ruby-value">1</span>.<span class="ruby-identifier">months</span>
+        <span class="ruby-identifier">links</span> = {
+                        <span class="ruby-value">day:</span> <span class="ruby-constant">Rails</span>.<span class="ruby-identifier">application</span>.<span class="ruby-identifier">routes</span>.<span class="ruby-identifier">url_helpers</span>.<span class="ruby-identifier">calendar_day_path</span>(<span class="ruby-identifier">year</span>, <span class="ruby-identifier">month</span>, <span class="ruby-value">1</span>),
+                        <span class="ruby-value">week:</span> <span class="ruby-constant">Rails</span>.<span class="ruby-identifier">application</span>.<span class="ruby-identifier">routes</span>.<span class="ruby-identifier">url_helpers</span>.<span class="ruby-identifier">calendar_week_path</span>(<span class="ruby-identifier">year</span>, <span class="ruby-identifier">from_date</span>.<span class="ruby-identifier">cweek</span>),
+                        <span class="ruby-value">month:</span> <span class="ruby-string">&#39;&#39;</span>,
+                        <span class="ruby-value">prev:</span> <span class="ruby-constant">Rails</span>.<span class="ruby-identifier">application</span>.<span class="ruby-identifier">routes</span>.<span class="ruby-identifier">url_helpers</span>.<span class="ruby-identifier">calendar_month_path</span>(<span class="ruby-identifier">prev_month</span>.<span class="ruby-identifier">year</span>, <span class="ruby-identifier">prev_month</span>.<span class="ruby-identifier">month</span>),
+                        <span class="ruby-value">next:</span> <span class="ruby-constant">Rails</span>.<span class="ruby-identifier">application</span>.<span class="ruby-identifier">routes</span>.<span class="ruby-identifier">url_helpers</span>.<span class="ruby-identifier">calendar_month_path</span>(<span class="ruby-identifier">next_month</span>.<span class="ruby-identifier">year</span>, <span class="ruby-identifier">next_month</span>.<span class="ruby-identifier">month</span>)
+        }
 
-  <span class="ruby-identifier">prev_text</span> = <span class="ruby-identifier">prev_month</span>.<span class="ruby-identifier">strftime</span> <span class="ruby-string">&#39;%b %Y&#39;</span>
-  <span class="ruby-identifier">next_text</span> = <span class="ruby-identifier">next_month</span>.<span class="ruby-identifier">strftime</span> <span class="ruby-string">&#39;%b %Y&#39;</span>
-  <span class="ruby-identifier">render</span> <span class="ruby-string">&#39;calendar/main&#39;</span>, <span class="ruby-value">locals:</span> { <span class="ruby-value">links:</span> <span class="ruby-identifier">links</span>, <span class="ruby-value">elements_to_skip:</span> [<span class="ruby-constant">Travel</span>, <span class="ruby-constant">DefaultLocation</span>, <span class="ruby-constant">Hash</span>], <span class="ruby-value">prev_text:</span> <span class="ruby-identifier">prev_text</span>, <span class="ruby-value">next_text:</span> <span class="ruby-identifier">next_text</span>, <span class="ruby-value">footer_link:</span> <span class="ruby-string">&#39;month&#39;</span> }
+        <span class="ruby-identifier">prev_text</span> = <span class="ruby-identifier">prev_month</span>.<span class="ruby-identifier">strftime</span> <span class="ruby-string">&#39;%b %Y&#39;</span>
+        <span class="ruby-identifier">next_text</span> = <span class="ruby-identifier">next_month</span>.<span class="ruby-identifier">strftime</span> <span class="ruby-string">&#39;%b %Y&#39;</span>
+        <span class="ruby-identifier">render</span> <span class="ruby-string">&#39;calendar/main&#39;</span>, <span class="ruby-value">locals:</span> {<span class="ruby-value">links:</span> <span class="ruby-identifier">links</span>, <span class="ruby-value">elements_to_skip:</span> [<span class="ruby-constant">Travel</span>, <span class="ruby-constant">DefaultLocation</span>, <span class="ruby-constant">Hash</span>], <span class="ruby-value">prev_text:</span> <span class="ruby-identifier">prev_text</span>, <span class="ruby-value">next_text:</span> <span class="ruby-identifier">next_text</span>, <span class="ruby-value">footer_link:</span> <span class="ruby-string">&#39;month&#39;</span>}
 <span class="ruby-keyword">end</span></pre>
           </div>
           
@@ -238,40 +242,42 @@
 
         <div class="method-description">
           
-          
+          <p>This method supports the page that shows the calendar weekly page. It
+retrieves in the correct order all the meetings that the user has to do
+during the week</p>
           
           
 
           
           <div class="method-source-code" id="show_week-source">
-            <pre><span class="ruby-comment"># File app/controllers/calendar_controller.rb, line 33</span>
+            <pre><span class="ruby-comment"># File app/controllers/calendar_controller.rb, line 38</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">show_week</span>
-  <span class="ruby-ivar">@user</span> = <span class="ruby-identifier">current_user</span>
+        <span class="ruby-ivar">@user</span> = <span class="ruby-identifier">current_user</span>
 
-  <span class="ruby-identifier">params</span>.<span class="ruby-identifier">require</span>(<span class="ruby-node">%i[week year]</span>)
-  <span class="ruby-identifier">week</span> = <span class="ruby-identifier">validate_between</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:week</span>], <span class="ruby-value">1</span>, <span class="ruby-value">53</span>)
-  <span class="ruby-identifier">year</span> = <span class="ruby-identifier">validate_between</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:year</span>], <span class="ruby-value">2000</span>, <span class="ruby-value">2100</span>)
+        <span class="ruby-identifier">params</span>.<span class="ruby-identifier">require</span>(<span class="ruby-node">%i[week year]</span>)
+        <span class="ruby-identifier">week</span> = <span class="ruby-identifier">validate_between</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:week</span>], <span class="ruby-value">1</span>, <span class="ruby-value">53</span>)
+        <span class="ruby-identifier">year</span> = <span class="ruby-identifier">validate_between</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:year</span>], <span class="ruby-value">2000</span>, <span class="ruby-value">2100</span>)
 
-  <span class="ruby-identifier">from_date</span> = <span class="ruby-constant">DateTime</span>.<span class="ruby-identifier">commercial</span>(<span class="ruby-identifier">year</span>, <span class="ruby-identifier">week</span>)
-  <span class="ruby-identifier">to_date</span> = <span class="ruby-identifier">from_date</span> <span class="ruby-operator">+</span> <span class="ruby-value">1</span>.<span class="ruby-identifier">weeks</span>
+        <span class="ruby-identifier">from_date</span> = <span class="ruby-constant">DateTime</span>.<span class="ruby-identifier">commercial</span>(<span class="ruby-identifier">year</span>, <span class="ruby-identifier">week</span>)
+        <span class="ruby-identifier">to_date</span> = <span class="ruby-identifier">from_date</span> <span class="ruby-operator">+</span> <span class="ruby-value">1</span>.<span class="ruby-identifier">weeks</span>
 
-  <span class="ruby-ivar">@schedule</span> = <span class="ruby-identifier">get_schedule</span>(<span class="ruby-identifier">from_date</span>, <span class="ruby-identifier">to_date</span>, <span class="ruby-ivar">@user</span>)
+        <span class="ruby-ivar">@schedule</span> = <span class="ruby-identifier">get_schedule</span>(<span class="ruby-identifier">from_date</span>, <span class="ruby-identifier">to_date</span>, <span class="ruby-ivar">@user</span>)
 
-  <span class="ruby-comment"># Week number according to the ISO-8601 standard, weeks starting on Monday.</span>
-  <span class="ruby-comment"># The first week of the year is the week that contains that year&#39;s first Thursday (=&#39;First 4-day week&#39;).</span>
-  <span class="ruby-identifier">prev_week</span> = <span class="ruby-identifier">from_date</span> <span class="ruby-operator">-</span> <span class="ruby-value">4</span>.<span class="ruby-identifier">days</span>
-  <span class="ruby-identifier">next_week</span> = <span class="ruby-identifier">from_date</span> <span class="ruby-operator">+</span> <span class="ruby-value">10</span>.<span class="ruby-identifier">days</span>
-  <span class="ruby-identifier">links</span> = {
-    <span class="ruby-value">day:</span> <span class="ruby-constant">Rails</span>.<span class="ruby-identifier">application</span>.<span class="ruby-identifier">routes</span>.<span class="ruby-identifier">url_helpers</span>.<span class="ruby-identifier">calendar_day_path</span>(<span class="ruby-identifier">year</span>, <span class="ruby-identifier">from_date</span>.<span class="ruby-identifier">month</span>, <span class="ruby-identifier">from_date</span>.<span class="ruby-identifier">day</span>),
-    <span class="ruby-value">week:</span> <span class="ruby-string">&#39;&#39;</span>,
-    <span class="ruby-value">month:</span> <span class="ruby-constant">Rails</span>.<span class="ruby-identifier">application</span>.<span class="ruby-identifier">routes</span>.<span class="ruby-identifier">url_helpers</span>.<span class="ruby-identifier">calendar_month_path</span>(<span class="ruby-identifier">year</span>, <span class="ruby-identifier">from_date</span>.<span class="ruby-identifier">month</span>),
-    <span class="ruby-value">prev:</span> <span class="ruby-constant">Rails</span>.<span class="ruby-identifier">application</span>.<span class="ruby-identifier">routes</span>.<span class="ruby-identifier">url_helpers</span>.<span class="ruby-identifier">calendar_week_path</span>(<span class="ruby-identifier">prev_week</span>.<span class="ruby-identifier">year</span>, <span class="ruby-identifier">prev_week</span>.<span class="ruby-identifier">cweek</span>),
-    <span class="ruby-value">next:</span> <span class="ruby-constant">Rails</span>.<span class="ruby-identifier">application</span>.<span class="ruby-identifier">routes</span>.<span class="ruby-identifier">url_helpers</span>.<span class="ruby-identifier">calendar_week_path</span>(<span class="ruby-identifier">next_week</span>.<span class="ruby-identifier">year</span>, <span class="ruby-identifier">next_week</span>.<span class="ruby-identifier">cweek</span>)
-  }
+        <span class="ruby-comment"># Week number according to the ISO-8601 standard, weeks starting on Monday.</span>
+        <span class="ruby-comment"># The first week of the year is the week that contains that year&#39;s first Thursday (=&#39;First 4-day week&#39;).</span>
+        <span class="ruby-identifier">prev_week</span> = <span class="ruby-identifier">from_date</span> <span class="ruby-operator">-</span> <span class="ruby-value">4</span>.<span class="ruby-identifier">days</span>
+        <span class="ruby-identifier">next_week</span> = <span class="ruby-identifier">from_date</span> <span class="ruby-operator">+</span> <span class="ruby-value">10</span>.<span class="ruby-identifier">days</span>
+        <span class="ruby-identifier">links</span> = {
+                        <span class="ruby-value">day:</span> <span class="ruby-constant">Rails</span>.<span class="ruby-identifier">application</span>.<span class="ruby-identifier">routes</span>.<span class="ruby-identifier">url_helpers</span>.<span class="ruby-identifier">calendar_day_path</span>(<span class="ruby-identifier">year</span>, <span class="ruby-identifier">from_date</span>.<span class="ruby-identifier">month</span>, <span class="ruby-identifier">from_date</span>.<span class="ruby-identifier">day</span>),
+                        <span class="ruby-value">week:</span> <span class="ruby-string">&#39;&#39;</span>,
+                        <span class="ruby-value">month:</span> <span class="ruby-constant">Rails</span>.<span class="ruby-identifier">application</span>.<span class="ruby-identifier">routes</span>.<span class="ruby-identifier">url_helpers</span>.<span class="ruby-identifier">calendar_month_path</span>(<span class="ruby-identifier">year</span>, <span class="ruby-identifier">from_date</span>.<span class="ruby-identifier">month</span>),
+                        <span class="ruby-value">prev:</span> <span class="ruby-constant">Rails</span>.<span class="ruby-identifier">application</span>.<span class="ruby-identifier">routes</span>.<span class="ruby-identifier">url_helpers</span>.<span class="ruby-identifier">calendar_week_path</span>(<span class="ruby-identifier">prev_week</span>.<span class="ruby-identifier">year</span>, <span class="ruby-identifier">prev_week</span>.<span class="ruby-identifier">cweek</span>),
+                        <span class="ruby-value">next:</span> <span class="ruby-constant">Rails</span>.<span class="ruby-identifier">application</span>.<span class="ruby-identifier">routes</span>.<span class="ruby-identifier">url_helpers</span>.<span class="ruby-identifier">calendar_week_path</span>(<span class="ruby-identifier">next_week</span>.<span class="ruby-identifier">year</span>, <span class="ruby-identifier">next_week</span>.<span class="ruby-identifier">cweek</span>)
+        }
 
-  <span class="ruby-identifier">prev_text</span> = (<span class="ruby-identifier">from_date</span> <span class="ruby-operator">-</span> <span class="ruby-value">1</span>.<span class="ruby-identifier">weeks</span>).<span class="ruby-identifier">strftime</span> <span class="ruby-string">&#39;%d %b %Y&#39;</span>
-  <span class="ruby-identifier">next_text</span> = (<span class="ruby-identifier">from_date</span> <span class="ruby-operator">+</span> <span class="ruby-value">1</span>.<span class="ruby-identifier">weeks</span>).<span class="ruby-identifier">strftime</span> <span class="ruby-string">&#39;%d %b %Y&#39;</span>
-  <span class="ruby-identifier">render</span> <span class="ruby-string">&#39;calendar/main&#39;</span>, <span class="ruby-value">locals:</span> { <span class="ruby-value">links:</span> <span class="ruby-identifier">links</span>, <span class="ruby-value">elements_to_skip:</span> [<span class="ruby-constant">Travel</span>, <span class="ruby-constant">DefaultLocation</span>, <span class="ruby-constant">Hash</span>], <span class="ruby-value">prev_text:</span> <span class="ruby-identifier">prev_text</span>, <span class="ruby-value">next_text:</span> <span class="ruby-identifier">next_text</span>, <span class="ruby-value">footer_link:</span> <span class="ruby-string">&#39;week&#39;</span> }
+        <span class="ruby-identifier">prev_text</span> = (<span class="ruby-identifier">from_date</span> <span class="ruby-operator">-</span> <span class="ruby-value">1</span>.<span class="ruby-identifier">weeks</span>).<span class="ruby-identifier">strftime</span> <span class="ruby-string">&#39;%d %b %Y&#39;</span>
+        <span class="ruby-identifier">next_text</span> = (<span class="ruby-identifier">from_date</span> <span class="ruby-operator">+</span> <span class="ruby-value">1</span>.<span class="ruby-identifier">weeks</span>).<span class="ruby-identifier">strftime</span> <span class="ruby-string">&#39;%d %b %Y&#39;</span>
+        <span class="ruby-identifier">render</span> <span class="ruby-string">&#39;calendar/main&#39;</span>, <span class="ruby-value">locals:</span> {<span class="ruby-value">links:</span> <span class="ruby-identifier">links</span>, <span class="ruby-value">elements_to_skip:</span> [<span class="ruby-constant">Travel</span>, <span class="ruby-constant">DefaultLocation</span>, <span class="ruby-constant">Hash</span>], <span class="ruby-value">prev_text:</span> <span class="ruby-identifier">prev_text</span>, <span class="ruby-value">next_text:</span> <span class="ruby-identifier">next_text</span>, <span class="ruby-value">footer_link:</span> <span class="ruby-string">&#39;week&#39;</span>}
 <span class="ruby-keyword">end</span></pre>
           </div>
           

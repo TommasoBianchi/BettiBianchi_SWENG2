@@ -75,8 +75,6 @@
     
     <li ><a href="#method-i-index">#index</a>
     
-    <li ><a href="#method-i-login">#login</a>
-    
     <li ><a href="#method-i-post_index">#post_index</a>
     
   </ul>
@@ -138,7 +136,7 @@
 
         <div class="method-description">
           
-          
+          <p>This method permits to the user to log out from the system</p>
           
           
 
@@ -172,47 +170,15 @@
 
         <div class="method-description">
           
-          
+          <p>This method supports the index page of the system</p>
           
           
 
           
           <div class="method-source-code" id="index-source">
-            <pre><span class="ruby-comment"># File app/controllers/homepage_controller.rb, line 6</span>
+            <pre><span class="ruby-comment"># File app/controllers/homepage_controller.rb, line 7</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">index</span>
         <span class="ruby-ivar">@user</span> = <span class="ruby-constant">User</span>.<span class="ruby-identifier">new</span>
-<span class="ruby-keyword">end</span></pre>
-          </div>
-          
-        </div>
-
-        
-
-        
-      </div>
-
-    
-      <div id="method-i-login" class="method-detail ">
-        
-        <div class="method-heading">
-          <span class="method-name">login</span><span
-            class="method-args">()</span>
-          
-          <span class="method-click-advice">click to toggle source</span>
-          
-        </div>
-        
-
-        <div class="method-description">
-          
-          
-          
-          
-
-          
-          <div class="method-source-code" id="login-source">
-            <pre><span class="ruby-comment"># File app/controllers/homepage_controller.rb, line 47</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">login</span>;
 <span class="ruby-keyword">end</span></pre>
           </div>
           
@@ -237,13 +203,13 @@
 
         <div class="method-description">
           
-          
+          <p>This method manages the request made by the user on the homepage</p>
           
           
 
           
           <div class="method-source-code" id="post_index-source">
-            <pre><span class="ruby-comment"># File app/controllers/homepage_controller.rb, line 10</span>
+            <pre><span class="ruby-comment"># File app/controllers/homepage_controller.rb, line 12</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">post_index</span>
         <span class="ruby-keyword">return</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">validate_input</span>
 

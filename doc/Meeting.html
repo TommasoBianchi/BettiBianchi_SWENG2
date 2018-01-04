@@ -120,15 +120,16 @@
 
         <div class="method-description">
           
-          
+          <p>This method retrieve all the meeting participations linked with the current
+meeting</p>
           
           
 
           
           <div class="method-source-code" id="get_meeting_participaton-source">
-            <pre><span class="ruby-comment"># File app/models/meeting.rb, line 14</span>
+            <pre><span class="ruby-comment"># File app/models/meeting.rb, line 16</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">get_meeting_participaton</span>(<span class="ruby-identifier">user_to_search</span>)
-  <span class="ruby-identifier">meeting_participations</span>.<span class="ruby-identifier">find_by</span>(<span class="ruby-value">user_id:</span> <span class="ruby-identifier">user_to_search</span>.<span class="ruby-identifier">id</span>)
+        <span class="ruby-identifier">meeting_participations</span>.<span class="ruby-identifier">find_by</span>(<span class="ruby-value">user_id:</span> <span class="ruby-identifier">user_to_search</span>.<span class="ruby-identifier">id</span>)
 <span class="ruby-keyword">end</span></pre>
           </div>
           
@@ -153,15 +154,15 @@
 
         <div class="method-description">
           
-          
+          <p>This method retrieve all the participants of a meeting</p>
           
           
 
           
           <div class="method-source-code" id="get_participants-source">
-            <pre><span class="ruby-comment"># File app/models/meeting.rb, line 10</span>
+            <pre><span class="ruby-comment"># File app/models/meeting.rb, line 11</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">get_participants</span>(<span class="ruby-identifier">response_status_number</span>)
-  <span class="ruby-identifier">meeting_participations</span>.<span class="ruby-identifier">where</span>(<span class="ruby-value">response_status:</span> <span class="ruby-identifier">response_status_number</span>)
+        <span class="ruby-identifier">meeting_participations</span>.<span class="ruby-identifier">where</span>(<span class="ruby-value">response_status:</span> <span class="ruby-identifier">response_status_number</span>)
 <span class="ruby-keyword">end</span></pre>
           </div>
           

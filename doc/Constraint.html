@@ -134,13 +134,14 @@
 
         <div class="method-description">
           
-          
+          <p>This method is used by the travel helper to check if a travel is doable in
+according to this constraint</p>
           
           
 
           
           <div class="method-source-code" id="check_path-source">
-            <pre><span class="ruby-comment"># File app/models/constraint.rb, line 23</span>
+            <pre><span class="ruby-comment"># File app/models/constraint.rb, line 25</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">check_path</span>(<span class="ruby-identifier">path</span>)
         <span class="ruby-identifier">lv</span> = <span class="ruby-identifier">subject</span>.<span class="ruby-identifier">get_path_value</span>(<span class="ruby-identifier">path</span>)
         <span class="ruby-identifier">rv</span> = <span class="ruby-identifier">value</span>.<span class="ruby-identifier">value</span>
@@ -174,13 +175,13 @@
 
         <div class="method-description">
           
-          
+          <p>This method is used form the views to get the description of a constraint</p>
           
           
 
           
           <div class="method-source-code" id="get_description-source">
-            <pre><span class="ruby-comment"># File app/models/constraint.rb, line 19</span>
+            <pre><span class="ruby-comment"># File app/models/constraint.rb, line 20</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">get_description</span>
         <span class="ruby-constant">Travel_mean_names</span>[<span class="ruby-constant">Travel</span><span class="ruby-operator">::</span><span class="ruby-constant">Travel_means</span>.<span class="ruby-identifier">keys</span>[<span class="ruby-identifier">travel_mean</span>]] <span class="ruby-operator">+</span> <span class="ruby-string">&quot; if &quot;</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">subject</span>.<span class="ruby-identifier">name</span> <span class="ruby-operator">+</span> <span class="ruby-string">&quot; &quot;</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">operator</span>.<span class="ruby-identifier">description</span> <span class="ruby-operator">+</span> <span class="ruby-string">&quot; &quot;</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">value</span>.<span class="ruby-identifier">value</span>
 <span class="ruby-keyword">end</span></pre>

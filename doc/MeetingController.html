@@ -132,13 +132,13 @@
 
         <div class="method-description">
           
-          
+          <p>This method is used to accept an invitation to a meeting</p>
           
           
 
           
           <div class="method-source-code" id="accept-source">
-            <pre><span class="ruby-comment"># File app/controllers/meeting_controller.rb, line 80</span>
+            <pre><span class="ruby-comment"># File app/controllers/meeting_controller.rb, line 85</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">accept</span>
         <span class="ruby-identifier">session</span>[<span class="ruby-value">:return_to</span>] <span class="ruby-operator">||=</span> <span class="ruby-identifier">request</span>.<span class="ruby-identifier">referer</span>
         <span class="ruby-identifier">mp</span> = <span class="ruby-constant">MeetingParticipation</span>.<span class="ruby-identifier">find_by</span>(<span class="ruby-value">meeting_id:</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:meeting_id</span>], <span class="ruby-value">user_id:</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:user_id</span>])
@@ -170,13 +170,14 @@
 
         <div class="method-description">
           
-          
+          <p>This meeting creates the new meeting. It checks if the parameters passed by
+the user are correct and in the right format</p>
           
           
 
           
           <div class="method-source-code" id="create-source">
-            <pre><span class="ruby-comment"># File app/controllers/meeting_controller.rb, line 38</span>
+            <pre><span class="ruby-comment"># File app/controllers/meeting_controller.rb, line 44</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">create</span>
         <span class="ruby-ivar">@meeting</span> = <span class="ruby-constant">Meeting</span>.<span class="ruby-identifier">new</span>
         <span class="ruby-keyword">unless</span> <span class="ruby-identifier">check_params_validity</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:meeting</span>])
@@ -201,14 +202,12 @@
 
         <span class="ruby-identifier">title</span> = <span class="ruby-identifier">params</span>[<span class="ruby-value">:meeting</span>][<span class="ruby-value">:title</span>]
         <span class="ruby-identifier">abstract</span> = <span class="ruby-identifier">params</span>[<span class="ruby-value">:meeting</span>][<span class="ruby-value">:abstract</span>]
-        <span class="ruby-identifier">location_input</span> = <span class="ruby-identifier">params</span>[<span class="ruby-value">:meeting</span>][<span class="ruby-value">:location</span>].<span class="ruby-identifier">split</span>(<span class="ruby-string">&#39;,&#39;</span>)
-        <span class="ruby-identifier">latitude</span> = <span class="ruby-identifier">location_input</span>[<span class="ruby-value">0</span>].<span class="ruby-identifier">to_f</span>
-        <span class="ruby-identifier">longitude</span> = <span class="ruby-identifier">location_input</span>[<span class="ruby-value">1</span>].<span class="ruby-identifier">to_f</span>
-        <span class="ruby-identifier">location_name</span> = <span class="ruby-identifier">location_input</span>[<span class="ruby-value">2</span>]
-        <span class="ruby-identifier">location</span> = <span class="ruby-constant">Location</span>.<span class="ruby-identifier">find_by</span>(<span class="ruby-value">latitude:</span> <span class="ruby-identifier">latitude</span>, <span class="ruby-value">longitude:</span> <span class="ruby-identifier">longitude</span>)
 
-        <span class="ruby-keyword">unless</span> <span class="ruby-identifier">location</span>
-                <span class="ruby-identifier">location</span> = <span class="ruby-constant">Location</span>.<span class="ruby-identifier">create</span>(<span class="ruby-value">latitude:</span> <span class="ruby-identifier">latitude</span>, <span class="ruby-value">longitude:</span> <span class="ruby-identifier">longitude</span>, <span class="ruby-value">description:</span> <span class="ruby-identifier">location_name</span>)
+        <span class="ruby-keyword">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:meeting</span>][<span class="ruby-value">:location</span>] <span class="ruby-operator">==</span> <span class="ruby-string">&#39;&#39;</span>
+                <span class="ruby-identifier">render</span> <span class="ruby-string">&#39;new&#39;</span>
+                <span class="ruby-keyword">return</span>
+        <span class="ruby-keyword">else</span>
+                <span class="ruby-identifier">location</span> = <span class="ruby-identifier">get_location</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:meeting</span>][<span class="ruby-value">:location</span>])
         <span class="ruby-keyword">end</span>
 
         <span class="ruby-identifier">user</span> = <span class="ruby-identifier">current_user</span>
@@ -241,13 +240,13 @@
 
         <div class="method-description">
           
-          
+          <p>This method is used to decline an invitation to a meeting</p>
           
           
 
           
           <div class="method-source-code" id="decline-source">
-            <pre><span class="ruby-comment"># File app/controllers/meeting_controller.rb, line 89</span>
+            <pre><span class="ruby-comment"># File app/controllers/meeting_controller.rb, line 95</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">decline</span>
         <span class="ruby-identifier">mp</span> = <span class="ruby-constant">MeetingParticipation</span>.<span class="ruby-identifier">find_by</span>(<span class="ruby-value">meeting_id:</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:meeting_id</span>], <span class="ruby-value">user_id:</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:user_id</span>])
         <span class="ruby-identifier">mp</span>.<span class="ruby-identifier">response_status</span> = <span class="ruby-value">2</span>
@@ -280,13 +279,13 @@
 
         <div class="method-description">
           
-          
+          <p>This method supports the new meeting page</p>
           
           
 
           
           <div class="method-source-code" id="new-source">
-            <pre><span class="ruby-comment"># File app/controllers/meeting_controller.rb, line 29</span>
+            <pre><span class="ruby-comment"># File app/controllers/meeting_controller.rb, line 34</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">new</span>
         <span class="ruby-keyword">unless</span> <span class="ruby-ivar">@meeting</span>
                 <span class="ruby-ivar">@meeting</span> = <span class="ruby-constant">Meeting</span>.<span class="ruby-identifier">new</span>
@@ -318,13 +317,13 @@
 
         <div class="method-description">
           
-          
+          <p>This method nominate admin a participant of the meeting</p>
           
           
 
           
           <div class="method-source-code" id="nominate_admin-source">
-            <pre><span class="ruby-comment"># File app/controllers/meeting_controller.rb, line 22</span>
+            <pre><span class="ruby-comment"># File app/controllers/meeting_controller.rb, line 26</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">nominate_admin</span>
         <span class="ruby-identifier">m</span> = <span class="ruby-constant">MeetingParticipation</span>.<span class="ruby-identifier">find_by</span>(<span class="ruby-value">meeting_id:</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:meeting_id</span>], <span class="ruby-value">user_id:</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:user_id</span>])
         <span class="ruby-identifier">m</span>.<span class="ruby-identifier">is_admin</span> = <span class="ruby-keyword">true</span>
@@ -354,13 +353,13 @@
 
         <div class="method-description">
           
-          
+          <p>This method supports the participants page</p>
           
           
 
           
           <div class="method-source-code" id="participants_page-source">
-            <pre><span class="ruby-comment"># File app/controllers/meeting_controller.rb, line 11</span>
+            <pre><span class="ruby-comment"># File app/controllers/meeting_controller.rb, line 13</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">participants_page</span>
         <span class="ruby-ivar">@user</span> = <span class="ruby-identifier">current_user</span>
         <span class="ruby-ivar">@meeting</span> = <span class="ruby-constant">Meeting</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-string">&#39;id&#39;</span>])
@@ -388,13 +387,13 @@
 
         <div class="method-description">
           
-          
+          <p>This method delete a participant from a meeting</p>
           
           
 
           
           <div class="method-source-code" id="remove_from_meeting-source">
-            <pre><span class="ruby-comment"># File app/controllers/meeting_controller.rb, line 16</span>
+            <pre><span class="ruby-comment"># File app/controllers/meeting_controller.rb, line 19</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">remove_from_meeting</span>
         <span class="ruby-identifier">m</span> = <span class="ruby-constant">MeetingParticipation</span>.<span class="ruby-identifier">find_by</span>(<span class="ruby-value">meeting_id:</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:meeting_id</span>], <span class="ruby-value">user_id:</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:user_id</span>])
         <span class="ruby-identifier">m</span>.<span class="ruby-identifier">delete</span>
@@ -423,18 +422,18 @@
 
         <div class="method-description">
           
-          
+          <p>This method supports the show meeting page</p>
           
           
 
           
           <div class="method-source-code" id="show-source">
-            <pre><span class="ruby-comment"># File app/controllers/meeting_controller.rb, line 5</span>
+            <pre><span class="ruby-comment"># File app/controllers/meeting_controller.rb, line 6</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">show</span>
         <span class="ruby-ivar">@back_path</span> = <span class="ruby-identifier">request</span>.<span class="ruby-identifier">referer</span>
         <span class="ruby-ivar">@user</span> = <span class="ruby-identifier">current_user</span>
         <span class="ruby-ivar">@meeting</span> = <span class="ruby-constant">Meeting</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-string">&#39;id&#39;</span>])
-        <span class="ruby-keyword">end</span></pre>
+<span class="ruby-keyword">end</span></pre>
           </div>
           
         </div>

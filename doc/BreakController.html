@@ -122,13 +122,13 @@
 
         <div class="method-description">
           
-          
+          <p>Add a break to the db</p>
           
           
 
           
           <div class="method-source-code" id="add_break-source">
-            <pre><span class="ruby-comment"># File app/controllers/break_controller.rb, line 15</span>
+            <pre><span class="ruby-comment"># File app/controllers/break_controller.rb, line 17</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">add_break</span>
         <span class="ruby-identifier">check_if_myself</span>
         <span class="ruby-ivar">@break</span> = <span class="ruby-constant">Break</span>.<span class="ruby-identifier">new</span>
@@ -156,13 +156,14 @@
 
         <div class="method-description">
           
-          
+          <p>This method creates a break. It checks if the parameters passed by the user
+are correct and in the right format</p>
           
           
 
           
           <div class="method-source-code" id="create_break-source">
-            <pre><span class="ruby-comment"># File app/controllers/break_controller.rb, line 20</span>
+            <pre><span class="ruby-comment"># File app/controllers/break_controller.rb, line 23</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">create_break</span>
         <span class="ruby-identifier">check_if_myself</span>
         <span class="ruby-ivar">@break</span> = <span class="ruby-constant">Break</span>.<span class="ruby-identifier">new</span>
@@ -234,13 +235,13 @@
 
         <div class="method-description">
           
-          
+          <p>Delete a break from the db</p>
           
           
 
           
           <div class="method-source-code" id="delete_break-source">
-            <pre><span class="ruby-comment"># File app/controllers/break_controller.rb, line 3</span>
+            <pre><span class="ruby-comment"># File app/controllers/break_controller.rb, line 4</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">delete_break</span>
         <span class="ruby-identifier">check_if_myself</span>
         <span class="ruby-keyword">unless</span> <span class="ruby-identifier">check_delete_break_params</span>

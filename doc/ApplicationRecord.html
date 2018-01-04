@@ -120,13 +120,15 @@
 
         <div class="method-description">
           
-          
+          <p>This method is used to convert the day of the week from the format in which
+it is written in the db (integer) to a format that can be easilly read by a
+user</p>
           
           
 
           
           <div class="method-source-code" id="get_day_name-source">
-            <pre><span class="ruby-comment"># File app/models/application_record.rb, line 4</span>
+            <pre><span class="ruby-comment"># File app/models/application_record.rb, line 6</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">get_day_name</span>(<span class="ruby-identifier">day_of_the_week</span>)
         <span class="ruby-keyword">case</span> <span class="ruby-identifier">day_of_the_week</span>
                 <span class="ruby-keyword">when</span> <span class="ruby-value">0</span>
@@ -170,13 +172,14 @@
 
         <div class="method-description">
           
-          
+          <p>This method returns the correct hour format from an integer number that
+represent minutes after midnight</p>
           
           
 
           
           <div class="method-source-code" id="get_time-source">
-            <pre><span class="ruby-comment"># File app/models/application_record.rb, line 25</span>
+            <pre><span class="ruby-comment"># File app/models/application_record.rb, line 28</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">get_time</span>(<span class="ruby-identifier">integer_time_slot</span>)
         <span class="ruby-keyword">if</span> <span class="ruby-identifier">integer_time_slot</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">60</span> <span class="ruby-operator">*</span> <span class="ruby-value">12</span>
                 <span class="ruby-identifier">integer_time_slot</span> = <span class="ruby-identifier">integer_time_slot</span> <span class="ruby-operator">-</span> <span class="ruby-value">60</span> <span class="ruby-operator">*</span> <span class="ruby-value">12</span>
