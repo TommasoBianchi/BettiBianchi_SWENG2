@@ -1,12 +1,14 @@
+# This is a helper module containing functions to be called to update the scheduling of meeting participations
 module MeetingHelper
 
 	# This function has to be called to create both a meeting and a meeting_participation and store them on the db.
+	#
 	# In practice, use this only for the user that creates a meeting and not for the invited users
 	#
-	# start_date and end_date must be valid DateTime objects
-	# title must be a non-empty string
-	# location must be an ApplicationRecord::Location already saved in the db
-	# user must be an ApplicationRecord::User
+	# * start_date and end_date must be valid DateTime objects
+	# * title must be a non-empty string
+	# * location must be an ApplicationRecord::Location already saved in the db
+	# * user must be an ApplicationRecord::User
 	#
 	# returns a hash containing the meeting (nil in case of errors), the meeting_participation (nil in case of errors)
 	# and a status flag (encoded as a Ruby Symbol) indicating either consistency, inconsistency or errors
@@ -107,10 +109,11 @@ module MeetingHelper
 	end
 
 	# This function has to be called to create only a meeting_participation (for an already existing meeting) and store it on the db.
+	# 
 	# In practice, use this only for the invited users and not for the user that creates a meeting
 	#
-	# meeting must be an ApplicationRecord::Meeting already saved in the db
-	# user must be an ApplicationRecord::User
+	# * meeting must be an ApplicationRecord::Meeting already saved in the db
+	# * user must be an ApplicationRecord::User
 	#
 	# returns a hash containing the meeting_participation (nil in case of errors) and a status flag (encoded as a Ruby Symbol) 
 	# indicating either consistency, inconsistency or errors
@@ -200,17 +203,18 @@ module MeetingHelper
 
 	# Update the schedule after accepting the invitation to a meeting
 	#
-	# meeting_participations is an ApplicationRecord::MeetingParticipation
-	# user is an ApplicationRecord::User
+	# * meeting_participations is an ApplicationRecord::MeetingParticipation
+	# * user is an ApplicationRecord::User
 	def self.accept_invitation(meeting_participation, user)
 		update_schedule([meeting_participation])
 	end
 
 	# Update the schedule after declining the invitation to a meeting
+	# 
 	# As a result some other MeetingParticipations may become consistent
 	#
-	# meeting_participation is an ApplicationRecord::MeetingParticipation
-	# user is an ApplicationRecord::User
+	# * meeting_participation is an ApplicationRecord::MeetingParticipation
+	# * user is an ApplicationRecord::User
 	def self.decline_invitation(meeting_participation, user)
 		# Grab all conflicting meeting participations from the db
 		conflicts = meeting_participation.conflicting_meeting_participations
@@ -225,8 +229,8 @@ module MeetingHelper
 
 	# Update the schedule for a given user and for all the given days of the week
 	#
-	# days_of_the_week is an Array of Integers in range 0..6
-	# user is an ApplicationRecord::User
+	# * days_of_the_week is an Array of Integers in range 0..6
+	# * user is an ApplicationRecord::User
 	def self.recompute_meeting_participations(days_of_the_week, user)
 		# Grab all the meeting participations to recompute
 		meeting_participations = user.meeting_participations

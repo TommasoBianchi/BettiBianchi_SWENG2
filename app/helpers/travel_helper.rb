@@ -1,15 +1,20 @@
+# This is a helper module containing functions to compute travels between different locations
+#
+# It uses the Google Directions API as an external shortest path provider
 module TravelHelper
 
 	# Call the external shortest path provider to compute the shortest path between two locations
 	# using a given travel_mean
+	#
 	# Optionally, a suggested time for departure and/or arrival may be passed, though it is not ensured to be followed exactly
+	#
 	# This function assumes that the request is made for the italian region, and uses the Europe/Rome timezone offset
 	#
-	# start_location is an ApplicationRecord::Location
-	# end_location is an ApplicationRecord::Location
-	# travel_mean is a Ruby symbol among this ones: [:driving, :public_transportation, :walking, :biking]
-	# departure_time is a DateTime
-	# arrival_time is a DateTime
+	# * start_location is an ApplicationRecord::Location
+	# * end_location is an ApplicationRecord::Location
+	# * travel_mean is a Ruby symbol among this ones: [:driving, :public_transportation, :walking, :biking]
+	# * departure_time is a DateTime
+	# * arrival_time is a DateTime
 	#
 	# Returns a hash containing the distance of the travel in meters, the duration in seconds, an array of steps and the start
 	# and end time in case the provider returns them
@@ -95,13 +100,14 @@ module TravelHelper
 
 	# Compute the best travel for a user between two given locations taking into consideration its preference list and
 	# its constraints
+	#
 	# Optionally, a suggested time for departure and/or arrival may be passed, though it is not ensured to be followed exactly
 	#
-	# from_location is an ApplicationRecord::Location
-	# to_location is an ApplicationRecord::Location
-	# user is an ApplicationRecord::User
-	# departure_time is a DateTime
-	# arrival_time is a DateTime
+	# * from_location is an ApplicationRecord::Location
+	# * to_location is an ApplicationRecord::Location
+	# * user is an ApplicationRecord::User
+	# * departure_time is a DateTime
+	# * arrival_time is a DateTime
 	#
 	# Returns a hash containing the distance of the travel in meters, the duration in seconds, an array of steps and the start
 	# and end time in case the provider returns them

@@ -81,6 +81,11 @@
 
   <section class="description">
     
+<p>This is a helper module containing functions to compute travels between
+different locations</p>
+
+<p>It uses the Google Directions API as an external shortest path provider</p>
+
   </section>
 
   
@@ -143,13 +148,21 @@
         <div class="method-description">
           
           <p>Compute the best travel for a user between two given locations taking into
-consideration its preference list and its constraints Optionally, a
-suggested time for departure and/or arrival may be passed, though it is not
-ensured to be followed exactly</p>
+consideration its preference list and its constraints</p>
 
-<p>from_location is an ApplicationRecord::Location to_location is an
-ApplicationRecord::Location user is an ApplicationRecord::User
-departure_time is a DateTime arrival_time is a DateTime</p>
+<p>Optionally, a suggested time for departure and/or arrival may be passed,
+though it is not ensured to be followed exactly</p>
+<ul><li>
+<p>from_location is an ApplicationRecord::Location</p>
+</li><li>
+<p>to_location is an ApplicationRecord::Location</p>
+</li><li>
+<p>user is an ApplicationRecord::User</p>
+</li><li>
+<p>departure_time is a DateTime</p>
+</li><li>
+<p>arrival_time is a DateTime</p>
+</li></ul>
 
 <p>Returns a hash containing the distance of the travel in meters, the
 duration in seconds, an array of steps and the start and end time in case
@@ -159,7 +172,7 @@ the provider returns them</p>
 
           
           <div class="method-source-code" id="best_travel-source">
-            <pre><span class="ruby-comment"># File app/helpers/travel_helper.rb, line 108</span>
+            <pre><span class="ruby-comment"># File app/helpers/travel_helper.rb, line 114</span>
 <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier ruby-title">best_travel</span>(<span class="ruby-identifier">from_location</span>, <span class="ruby-identifier">to_location</span>, <span class="ruby-identifier">user</span>, <span class="ruby-identifier">departure_time</span> = <span class="ruby-constant">DateTime</span>.<span class="ruby-identifier">now</span>, <span class="ruby-identifier">arrival_time</span> = <span class="ruby-keyword">nil</span>)
         <span class="ruby-identifier">weighted_list</span> = []            
         <span class="ruby-identifier">preference_list</span> = <span class="ruby-identifier">user</span>.<span class="ruby-identifier">preference_list</span>.<span class="ruby-identifier">chars</span>.<span class="ruby-identifier">map</span> {<span class="ruby-operator">|</span><span class="ruby-identifier">c</span><span class="ruby-operator">|</span> <span class="ruby-constant">Travel</span><span class="ruby-operator">::</span><span class="ruby-constant">Travel_means</span>.<span class="ruby-identifier">keys</span>[<span class="ruby-identifier">c</span>.<span class="ruby-identifier">to_i</span>]}
@@ -225,15 +238,25 @@ the provider returns them</p>
         <div class="method-description">
           
           <p>Call the external shortest path provider to compute the shortest path
-between two locations using a given travel_mean Optionally, a suggested
-time for departure and/or arrival may be passed, though it is not ensured
-to be followed exactly This function assumes that the request is made for
-the italian region, and uses the Europe/Rome timezone offset</p>
+between two locations using a given travel_mean</p>
 
-<p>start_location is an ApplicationRecord::Location end_location is an
-ApplicationRecord::Location travel_mean is a Ruby symbol among this ones:
-[:driving, :public_transportation, :walking, :biking] departure_time is a
-DateTime arrival_time is a DateTime</p>
+<p>Optionally, a suggested time for departure and/or arrival may be passed,
+though it is not ensured to be followed exactly</p>
+
+<p>This function assumes that the request is made for the italian region, and
+uses the Europe/Rome timezone offset</p>
+<ul><li>
+<p>start_location is an ApplicationRecord::Location</p>
+</li><li>
+<p>end_location is an ApplicationRecord::Location</p>
+</li><li>
+<p>travel_mean is a Ruby symbol among this ones: [:driving,
+:public_transportation, :walking, :biking]</p>
+</li><li>
+<p>departure_time is a DateTime</p>
+</li><li>
+<p>arrival_time is a DateTime</p>
+</li></ul>
 
 <p>Returns a hash containing the distance of the travel in meters, the
 duration in seconds, an array of steps and the start and end time in case
@@ -243,7 +266,7 @@ the provider returns them</p>
 
           
           <div class="method-source-code" id="shortest_path-source">
-            <pre><span class="ruby-comment"># File app/helpers/travel_helper.rb, line 16</span>
+            <pre><span class="ruby-comment"># File app/helpers/travel_helper.rb, line 21</span>
 <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier ruby-title">shortest_path</span>(<span class="ruby-identifier">start_location</span>, <span class="ruby-identifier">end_location</span>, <span class="ruby-identifier">travel_mean</span> = <span class="ruby-value">:driving</span>, <span class="ruby-identifier">departure_time</span> = <span class="ruby-keyword">nil</span>, <span class="ruby-identifier">arrival_time</span> = <span class="ruby-keyword">nil</span>)
         <span class="ruby-comment"># If the application needs to scale to more countries in different timezones these values needs to be stored</span>
         <span class="ruby-comment"># somehow on the db (maybe alongside the user&#39;s data) and NOT be constant values here</span>

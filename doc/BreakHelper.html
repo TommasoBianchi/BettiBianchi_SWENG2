@@ -83,6 +83,9 @@
 
   <section class="description">
     
+<p>This is a helper module containing various functions to recompute flexible
+breaks in various way</p>
+
   </section>
 
   
@@ -116,14 +119,15 @@
         <div class="method-description">
           
           <p>Update every occurrence of a given break</p>
-
+<ul><li>
 <p>b is an ApplicationRecord::Break</p>
+</li></ul>
           
           
 
           
           <div class="method-source-code" id="full_update_break-source">
-            <pre><span class="ruby-comment"># File app/helpers/break_helper.rb, line 63</span>
+            <pre><span class="ruby-comment"># File app/helpers/break_helper.rb, line 64</span>
 <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier ruby-title">full_update_break</span>(<span class="ruby-identifier">b</span>)
         <span class="ruby-comment"># Drop all already computed breaks</span>
         <span class="ruby-constant">ComputedBreak</span>.<span class="ruby-identifier">where</span>(<span class="ruby-value">break:</span> <span class="ruby-identifier">b</span>).<span class="ruby-identifier">delete_all</span>
@@ -166,15 +170,19 @@
           
           <p>Update all the breaks of a given user between from_date and to_date (they
 should be the same date at different times)</p>
-
-<p>from_date is a DateTime to_date is a DateTime user is an
-ApplicationRecord::User</p>
+<ul><li>
+<p>from_date is a DateTime</p>
+</li><li>
+<p>to_date is a DateTime</p>
+</li><li>
+<p>user is an ApplicationRecord::User</p>
+</li></ul>
           
           
 
           
           <div class="method-source-code" id="update_all_breaks-source">
-            <pre><span class="ruby-comment"># File app/helpers/break_helper.rb, line 45</span>
+            <pre><span class="ruby-comment"># File app/helpers/break_helper.rb, line 46</span>
 <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier ruby-title">update_all_breaks</span>(<span class="ruby-identifier">from_date</span>, <span class="ruby-identifier">to_date</span>, <span class="ruby-identifier">user</span>)
         <span class="ruby-comment"># TODO: maybe from_date and to_date are in different wdays. Deal with it</span>
 
@@ -213,14 +221,17 @@ ApplicationRecord::User</p>
         <div class="method-description">
           
           <p>Update a single break in a given day</p>
-
-<p>b is an ApplicationRecord::Break day is a DateTime</p>
+<ul><li>
+<p>b is an ApplicationRecord::Break</p>
+</li><li>
+<p>day is a DateTime</p>
+</li></ul>
           
           
 
           
           <div class="method-source-code" id="update_break-source">
-            <pre><span class="ruby-comment"># File app/helpers/break_helper.rb, line 7</span>
+            <pre><span class="ruby-comment"># File app/helpers/break_helper.rb, line 8</span>
 <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier ruby-title">update_break</span>(<span class="ruby-identifier">b</span>, <span class="ruby-identifier">day</span>)
         <span class="ruby-keyword">return</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">b</span>.<span class="ruby-identifier">day_of_the_week</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">day</span>.<span class="ruby-identifier">wday</span>
 
