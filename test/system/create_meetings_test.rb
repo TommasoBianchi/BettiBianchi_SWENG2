@@ -3,7 +3,6 @@ require "application_system_test_case"
 class CreateMeetingsTest < ApplicationSystemTestCase
   
 	test "create a meeting" do
-		return
 		login_test_user
 
 		title = "_system_test_meeting_#{rand(1..10000000)}"
@@ -32,11 +31,9 @@ class CreateMeetingsTest < ApplicationSystemTestCase
 		create_meeting title1, date, "12:00pm", "4:00pm", "Via Ponzio Milano"
 		create_meeting title2, date, "3:00pm", "6:00pm", "Porta Genova"
 
-		#sleep 10 # To give time to schedule the meeting and the travels properly
+		sleep 20 # To give time to schedule the meeting and the travels properly
 		
-		visit current_path
-		#sleep 50
-		# Reload the page to see the scheduled meeting
+		visit current_path # Reload the page to see the scheduled meeting
 		find('a[title=Notifications]').click
 		find('.meeting-title', :text => title1)
 	end
