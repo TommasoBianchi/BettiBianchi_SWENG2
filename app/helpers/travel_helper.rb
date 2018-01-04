@@ -1,5 +1,18 @@
 module TravelHelper
 
+	# Call the external shortest path provider to compute the shortest path between two locations
+	# using a given travel_mean
+	# Optionally, a suggested time for departure and/or arrival may be passed, though it is not ensured to be followed exactly
+	# This function assumes that the request is made for the italian region, and uses the Europe/Rome timezone offset
+	#
+	# start_location is an ApplicationRecord::Location
+	# end_location is an ApplicationRecord::Location
+	# travel_mean is a Ruby symbol among this ones: [:driving, :public_transportation, :walking, :biking]
+	# departure_time is a DateTime
+	# arrival_time is a DateTime
+	#
+	# Returns a hash containing the distance of the travel in meters, the duration in seconds, an array of steps and the start
+	# and end time in case the provider returns them
 	def self.shortest_path(start_location, end_location, travel_mean = :driving, departure_time = nil, arrival_time = nil)
 		# If the application needs to scale to more countries in different timezones these values needs to be stored
 		# somehow on the db (maybe alongside the user's data) and NOT be constant values here
@@ -80,6 +93,18 @@ module TravelHelper
 		return result
 	end
 
+	# Compute the best travel for a user between two given locations taking into consideration its preference list and
+	# its constraints
+	# Optionally, a suggested time for departure and/or arrival may be passed, though it is not ensured to be followed exactly
+	#
+	# from_location is an ApplicationRecord::Location
+	# to_location is an ApplicationRecord::Location
+	# user is an ApplicationRecord::User
+	# departure_time is a DateTime
+	# arrival_time is a DateTime
+	#
+	# Returns a hash containing the distance of the travel in meters, the duration in seconds, an array of steps and the start
+	# and end time in case the provider returns them
 	def self.best_travel(from_location, to_location, user, departure_time = DateTime.now, arrival_time = nil)
 		weighted_list = []		
 		preference_list = user.preference_list.chars.map {|c| Travel::Travel_means.keys[c.to_i]}
