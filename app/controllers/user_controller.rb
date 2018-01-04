@@ -203,6 +203,7 @@ class UserController < ApplicationController
 	end
 
 	def add_constraint
+		@back_path = request.referer
 		@constraint = Constraint.new
 		@operators = Operator.all
 		@values = Value.all

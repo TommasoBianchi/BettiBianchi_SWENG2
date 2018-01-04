@@ -23,6 +23,6 @@ class Social < ApplicationRecord
 	end
 end
 
-# Facebook 0
-# Linkedin 1
-# Instagram 2
+# Facebook 1
+# Linkedin 2
+# Instagram 3

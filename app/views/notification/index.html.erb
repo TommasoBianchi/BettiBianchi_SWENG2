@@ -18,16 +18,11 @@
 						<% meeting = single_warning_mp.meeting %>
 						<div class="single-warning meeting rounded-box">
 							<div class="meeting-date">
-								<%= single_warning_mp.id %>:
-								<%= meeting.start_date %>:
 								<%= meeting.start_date.strftime "%I:%M %p" %>
 								-
 								<%= meeting.end_date.strftime "%I:%M %p" %></div>
 							<div class="meeting-title"><%= meeting.title %></div>
 							<div class="meeting-location"><%= meeting.location.description %></div>
-							<a href="<%= meeting_path meeting.id %>">
-								<div class="detail">Details</div>
-							</a>
 						</div>
 					<% end %>
 				</div>
@@ -51,7 +46,6 @@
 			<% end %>
 		<% end %>
 		</div>
-
 		<% if @pending_meetings.count > 0 %>
 
 			<% first = true %>
@@ -144,5 +138,4 @@
 			var new_path = "/notification/resolve_warning/" + clicked_div.attr('id');
 			document.location.href = new_path;
 		});
-
 		</script>
