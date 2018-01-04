@@ -57,6 +57,12 @@ class ApplicationSystemTestCase < ActionDispatch::SystemTestCase
 		find('.logout').click
 	end
 
+	# Make sure puma server runs with more than one thread available
+	Capybara.register_server :rails_puma_custom do |app, port, host|
+		Rack::Handler::Puma.run(app, Port: port, Threads: "5:5")
+	end
+	Capybara.server = :rails_puma_custom
+
 	private
 	Test_user_email = "_test_user_@test.travlendar.com"
 	Test_user_password = "000000"
