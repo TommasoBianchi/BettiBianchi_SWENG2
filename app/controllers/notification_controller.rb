@@ -33,6 +33,7 @@ class NotificationController < ApplicationController
 					current_day = ub.start_time_slot.midnight
 					breaks_day.push current_day
 				end
+					breaks_day.push ub
 			end
 		end
 
