@@ -34,13 +34,13 @@
 					</div>
 				<% end %>
 				<% item = warning_mps %>
-				<div class="date-separator rounded-box" id="<%= item.strftime '%Y%m%d' %>-separator" onclick="toggle('<%= item.strftime "%Y%m%d" %>2')">
+				<div class="date-separator rounded-box" id="<%= item.strftime '%Y%m%d' %>-w-separator" onclick="toggle('<%= item.strftime "%Y%m%d" %>-w')">
 					<div><%= item.strftime "%a %d %b %Y" %></div>
 				</div>
-				<div id="<%= item.strftime '%Y%m%d' %>2-accordion" class="date-accordion">
+				<div id="<%= item.strftime '%Y%m%d' %>-w-accordion" class="date-accordion">
 					<script type="text/javascript">
 			  $(window).on('load', function () {
-				  setMaxHeight("<%= item.strftime '%Y%m%d' %>")
+				  setMaxHeight("<%= item.strftime '%Y%m%d' %>-w")
 			  })
 					</script>
 			<% end %>
@@ -80,13 +80,13 @@
 						<% else %>
 							</div>
 						<% end %>
-						<div class="date-separator rounded-box" id="<%= item.strftime '%Y%m%d' %>-separator" onclick="toggle('<%= item.strftime "%Y%m%d" %>')">
+						<div class="date-separator rounded-box" id="<%= item.strftime '%Y%m%d' %>-i-separator" onclick="toggle('<%= item.strftime "%Y%m%d" %>'-i)">
 							<div><%= item.strftime "%a %d %b %Y" %></div>
 						</div>
-						<div id="<%= item.strftime '%Y%m%d' %>-accordion" class="date-accordion">
+						<div id="<%= item.strftime '%Y%m%d' %>-i-accordion" class="date-accordion">
 							<script type="text/javascript">
 				  $(window).on('load', function () {
-					  setMaxHeight("<%= item.strftime '%Y%m%d' %>")
+					  setMaxHeight("<%= item.strftime '%Y%m%d' %>-i")
 				  })
 							</script>
 					<% end %>
@@ -114,13 +114,13 @@
 						<% else %>
 							</div>
 						<% end %>
-						<div class="date-separator rounded-box" id="<%= item.strftime '%Y%m%d' %>-separator" onclick="toggle('<%= item.strftime "%Y%m%d" %>')">
+						<div class="date-separator rounded-box" id="<%= item.strftime '%Y%m%d' %>-b-separator" onclick="toggle('<%= item.strftime "%Y%m%d" %>-b')">
 							<div><%= item.strftime "%a %d %b %Y" %></div>
 						</div>
-						<div id="<%= item.strftime '%Y%m%d' %>-accordion" class="date-accordion">
+						<div id="<%= item.strftime '%Y%m%d' %>-b-accordion" class="date-accordion">
 							<script type="text/javascript">
 				  $(window).on('load', function () {
-					  setMaxHeight("<%= item.strftime '%Y%m%d' %>")
+					  setMaxHeight("<%= item.strftime '%Y%m%d' %>-b")
 				  })
 							</script>
 					<% end %>
@@ -138,4 +138,8 @@
 			var new_path = "/notification/resolve_warning/" + clicked_div.attr('id');
 			document.location.href = new_path;
 		});
+
+		$(window).on('load', function () {
+			toggleAll()
+		})
 		</script>
