@@ -89,9 +89,8 @@ class UserController < ApplicationController
 					return
 				end
 			when "Create Social" #button clicked = Create Social
-				user = current_user
-				SocialUser.create(social_id: params[:social_user][:social], user_id: params[:id], link: params[:social_user][:link])
-				redirect_to user
+				s = SocialUser.create(social_id: params[:social_user][:social], user_id: params[:id], link: params[:social_user][:link])
+				redirect_to @user
 			when "Edit User" #button clicked = Edit User
 				if @user.update_attributes(user_edit_params)
 					redirect_to @user
