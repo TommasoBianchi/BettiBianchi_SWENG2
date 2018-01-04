@@ -3,7 +3,7 @@ module BreakHelper
 
 	# Update a single break in a given day
 	#
-	# * b is an ApplicationRecord::Break
+	# * b is a Break
 	# * day is a DateTime
 	def self.update_break(b, day)
 		return unless b.day_of_the_week == day.wday
@@ -42,7 +42,7 @@ module BreakHelper
 	#
 	# * from_date is a DateTime
 	# * to_date is a DateTime
-	# * user is an ApplicationRecord::User
+	# * user is a User
 	def self.update_all_breaks(from_date, to_date, user)
 		# TODO: maybe from_date and to_date are in different wdays. Deal with it
 
@@ -60,7 +60,7 @@ module BreakHelper
 
 	# Update every occurrence of a given break
 	#
-	# * b is an ApplicationRecord::Break
+	# * b is a Break
 	def self.full_update_break(b)
 		# Drop all already computed breaks
 		ComputedBreak.where(break: b).delete_all

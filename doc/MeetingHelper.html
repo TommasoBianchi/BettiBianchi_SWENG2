@@ -143,9 +143,10 @@ scheduling of meeting participations</p>
           
           <p>Update the schedule after accepting the invitation to a meeting</p>
 <ul><li>
-<p>meeting_participations is an ApplicationRecord::MeetingParticipation</p>
+<p>meeting_participations is a <a
+href="MeetingParticipation.html">MeetingParticipation</a></p>
 </li><li>
-<p>user is an ApplicationRecord::User</p>
+<p>user is a <a href="User.html">User</a></p>
 </li></ul>
           
           
@@ -189,9 +190,10 @@ the invited users</p>
 </li><li>
 <p>title must be a non-empty string</p>
 </li><li>
-<p>location must be an ApplicationRecord::Location already saved in the db</p>
+<p>location must be a <a href="Location.html">Location</a> already saved in
+the db</p>
 </li><li>
-<p>user must be an ApplicationRecord::User</p>
+<p>user must be a <a href="User.html">User</a></p>
 </li></ul>
 
 <p>returns a hash containing the meeting (nil in case of errors), the
@@ -325,9 +327,10 @@ a Ruby Symbol) indicating either consistency, inconsistency or errors</p>
 
 <p>As a result some other MeetingParticipations may become consistent</p>
 <ul><li>
-<p>meeting_participation is an ApplicationRecord::MeetingParticipation</p>
+<p>meeting_participation is a <a
+href="MeetingParticipation.html">MeetingParticipation</a></p>
 </li><li>
-<p>user is an ApplicationRecord::User</p>
+<p>user is a <a href="User.html">User</a></p>
 </li></ul>
           
           
@@ -375,9 +378,10 @@ an already existing meeting) and store it on the db.</p>
 <p>In practice, use this only for the invited users and not for the user that
 creates a meeting</p>
 <ul><li>
-<p>meeting must be an ApplicationRecord::Meeting already saved in the db</p>
+<p>meeting must be a <a href="Meeting.html">Meeting</a> already saved in the
+db</p>
 </li><li>
-<p>user must be an ApplicationRecord::User</p>
+<p>user must be a <a href="User.html">User</a></p>
 </li></ul>
 
 <p>returns a hash containing the meeting_participation (nil in case of errors)
@@ -499,7 +503,7 @@ consistency, inconsistency or errors</p>
 <ul><li>
 <p>days_of_the_week is an Array of Integers in range 0..6</p>
 </li><li>
-<p>user is an ApplicationRecord::User</p>
+<p>user is a <a href="User.html">User</a></p>
 </li></ul>
           
           

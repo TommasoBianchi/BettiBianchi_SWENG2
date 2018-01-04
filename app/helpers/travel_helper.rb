@@ -10,8 +10,8 @@ module TravelHelper
 	#
 	# This function assumes that the request is made for the italian region, and uses the Europe/Rome timezone offset
 	#
-	# * start_location is an ApplicationRecord::Location
-	# * end_location is an ApplicationRecord::Location
+	# * start_location is a Location
+	# * end_location is a Location
 	# * travel_mean is a Ruby symbol among this ones: [:driving, :public_transportation, :walking, :biking]
 	# * departure_time is a DateTime
 	# * arrival_time is a DateTime
@@ -103,9 +103,9 @@ module TravelHelper
 	#
 	# Optionally, a suggested time for departure and/or arrival may be passed, though it is not ensured to be followed exactly
 	#
-	# * from_location is an ApplicationRecord::Location
-	# * to_location is an ApplicationRecord::Location
-	# * user is an ApplicationRecord::User
+	# * from_location is a Location
+	# * to_location is a Location
+	# * user is a User
 	# * departure_time is a DateTime
 	# * arrival_time is a DateTime
 	#
