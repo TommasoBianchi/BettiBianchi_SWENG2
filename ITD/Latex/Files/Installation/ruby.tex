@@ -1,9 +1,20 @@
 You can find full installation instruction for the Ruby language \href{https://www.ruby-lang.org/en/documentation/installation/}{here}. Below there is a short summary for the most used operating systems.
 
 \begin{itemize}
+\item~\textbf{Linux rvm (tested and suggested)}
+
+RVM (Ruby Version Manager) is a command-line tool which allows you to easily install, manage, and work with multiple ruby environments from interpreters to sets of gems. To install it open a terminal and copy-paste the following code: \\
+\verb;sudo apt-get install libgdbm-dev libncurses5-dev automake libtool bison libffi-dev curl; \\
+\verb;gpg --keyserver hkp://keys.gnupg.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3; \\
+\verb;curl -sSL https://get.rvm.io | bash -s stable; \\
+\verb;source ~/.rvm/scripts/rvm; \\
+\verb;rvm install 2.5.0;  \\ 
+\verb;rvm use 2.5.0 --default; \\
+\verb;gem install bundler; \\
+
 \item~\textbf{Linux (Debian or Ubuntu)}
 
-Open a console and type in \emph{sudo apt-get install ruby-full}.
+Open a console and type in \verb;sudo apt-get install ruby-full;.
 
 \item~\textbf{Windows}
 
@@ -11,7 +22,7 @@ Download the installer from \href{http://railsinstaller.org/en}{here}, then run 
 
 \item~\textbf{MacOSX (Using Homebrew)}
 
-Open a console and type \emph{brew install ruby}.
+Open a console and type \verb;brew install ruby;.
 
 \item~\textbf{MacOSX (Installer)}
 
