@@ -36,7 +36,7 @@ class ApplicationSystemTestCase < ActionDispatch::SystemTestCase
 	def login(email: nil, nickname: nil, password: nil)
 		visit homepage_path
 
-		fill_in "emailField", with: (email or nickname)
+		fill_in "emailField", with: (nickname or email)
 		fill_in "homepage_password", with: password
 
 		find('input[name="login"]').click
@@ -59,7 +59,7 @@ class ApplicationSystemTestCase < ActionDispatch::SystemTestCase
 
 	# Make sure puma server runs with more than one thread available
 	Capybara.register_server :rails_puma_custom do |app, port, host|
-		Rack::Handler::Puma.run(app, Port: port, Threads: "5:5")
+		Rack::Handler::Puma.run(app, Port: port, Threads: "0:5")
 	end
 	Capybara.server = :rails_puma_custom
 
