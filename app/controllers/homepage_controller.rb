@@ -3,10 +3,12 @@ class HomepageController < ApplicationController
 
 	skip_before_action :require_login
 
+	# This method supports the index page of the system
 	def index
 		@user = User.new
 	end
 
+	# This method manages the request made by the user on the homepage
 	def post_index
 		return unless validate_input
 
@@ -44,9 +46,7 @@ class HomepageController < ApplicationController
 		end # end button clicked
 	end
 
-	def login;
-	end
-
+	# This method permits to the user to log out from the system
 	def destroy
 		log_out
 		redirect_to homepage_path
@@ -54,11 +54,13 @@ class HomepageController < ApplicationController
 
 	private
 
+	# This method redirects the user to the complete registration page
 	def go_to_complete_registration(incomplete_user)
 		session[:tmp_checked] = incomplete_user.id
 		redirect_to '/user/new'
 	end
 
+	# This method validates the input of the homepage
 	def validate_input
 		if params['homepage']['email'].present? && params['homepage']['password'].present?
 			true
@@ -69,6 +71,7 @@ class HomepageController < ApplicationController
 		end
 	end
 
+	# This method manages the login of a user that has not completed yet the registration phase
 	def login_incomplete_user
 		incomplete_user = IncompleteUser.find_by(email: params[:homepage][:email].downcase)
 		if incomplete_user && incomplete_user.authenticate(params[:homepage][:password])
@@ -81,6 +84,7 @@ class HomepageController < ApplicationController
 		end
 	end
 
+	# THis method manages the signup of a new user
 	def signup_incomplete_user
 		incomplete_user = IncompleteUser.find_by(email: params[:homepage][:email].downcase)
 		if incomplete_user && incomplete_user.authenticate(params[:homepage][:password])
@@ -94,6 +98,7 @@ class HomepageController < ApplicationController
 		end
 	end
 
+	# This method manages the correct login of a user. It check if the password is correct and the redirect it to the first page of the system
 	def user_existing_email(user)
 		if user && user.authenticate(params[:homepage][:password]) # normal registered user
 			if user.default_locations.count == 0
