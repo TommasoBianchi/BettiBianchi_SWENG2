@@ -5,9 +5,9 @@
 
 <script type="text/javascript">
 	var map;
-	var name = 'Default Location';
-  var latitude = <%= latitude %>;
-  var longitude = <%= longitude %>;
+	var name = "<%= name %>";
+  	var latitude = <%= latitude %>;
+  	var longitude = <%= longitude %>;
 	function initMap() {
 		map = new google.maps.Map(document.getElementById('map'), {
 			center: {lat: latitude, lng: longitude},
