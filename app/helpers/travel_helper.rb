@@ -114,6 +114,7 @@ module TravelHelper
 	def self.best_travel(from_location, to_location, user, departure_time = DateTime.now, arrival_time = nil)
 		weighted_list = []		
 		preference_list = user.preference_list.chars.map {|c| Travel::Travel_means.keys[c.to_i]}
+		fastest_travel = {path: nil, duration: Float::MAX}
 
 		preference_list.each do |travel_mean|
 			path = shortest_path(from_location, to_location, travel_mean, departure_time, arrival_time)
@@ -126,6 +127,12 @@ module TravelHelper
 			end
 			unless path[:end_time]
 				path[:end_time] = if arrival_time then arrival_time else (departure_time + path[:duration].seconds) end
+			end
+
+			# Save the fastest path in case no one remains available after the constraint satisfaction phase
+			if path[:duration] < fastest_travel[:duration]
+				fastest_travel[:path] = path
+				fastest_travel[:duration] = path[:duration]
 			end
 
 			# Constraint satisfaction
@@ -145,7 +152,7 @@ module TravelHelper
 		end
 
 		if weighted_list.length == 0
-			return nil 
+			return fastest_travel[:path] 
 		end
 
 		weighted_list = weighted_list.sort_by {|el| el[:weighted_duration]}

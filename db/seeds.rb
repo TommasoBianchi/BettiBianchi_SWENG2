@@ -165,7 +165,7 @@ for i in 1..NUM_USERS do
 	user = User.find(i)
 	for k in 1..NUM_CONTACTS_PER_USER do
 		j = rand(1..NUM_USERS)
-		j = rand(1..NUM_USERS) while j == k
+		j = rand(1..NUM_USERS) while (j == i or user.contacts.ids.include?(j))
 		user.contacts.push(User.find(j))
 
 		puts "Contact #{i} -> #{j}"

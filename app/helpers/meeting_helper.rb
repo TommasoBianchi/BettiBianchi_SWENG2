@@ -274,7 +274,7 @@ module MeetingHelper
 		after_meeting = user_meetings.where(is_consistent: true)
 						.where('"meetings"."start_date" > ?', new_meeting[:end_date]).order('meetings.start_date').first
 
-		if arriving_travel == nil or (before_meeting != nil and arriving_travel[:duration] > (new_meeting[:start_date].to_i - before_meeting.leaving_travel.end_time.to_i))
+		if before_meeting != nil and (arriving_travel == nil or arriving_travel[:duration] > (new_meeting[:start_date].to_i - before_meeting.leaving_travel.end_time.to_i))
 			new_meeting[:arriving_from_dl] = nil
 			arriving_travel = TravelHelper.best_travel(before_meeting.meeting.location, new_meeting[:location], user, before_meeting.meeting.end_date, nil)
 			if arriving_travel == nil or (arriving_travel[:duration] > (new_meeting[:start_date].to_i - before_meeting.meeting.end_date.to_i))
@@ -289,7 +289,7 @@ module MeetingHelper
 			end
 		end
 
-		if leaving_travel == nil or (after_meeting != nil and leaving_travel[:duration] > (after_meeting.arriving_travel.start_time.to_i - new_meeting[:end_date].to_i))
+		if after_meeting != nil and (leaving_travel == nil or leaving_travel[:duration] > (after_meeting.arriving_travel.start_time.to_i - new_meeting[:end_date].to_i))
 			new_meeting[:leaving_to_dl] = nil
 			leaving_travel = TravelHelper.best_travel(new_meeting[:location], after_meeting.meeting.location, user, new_meeting[:end_date], nil)
 			if leaving_travel == nil or (leaving_travel[:duration] > (after_meeting.meeting.start_date - new_meeting[:end_date]))
