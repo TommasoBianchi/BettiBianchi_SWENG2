@@ -101,7 +101,8 @@ module BreakHelper
 		backward_index = forward_index - 1
 		while (forward_index < doability_bitmask.length or backward_index > 0) do 
 			# At each step proceed from the index closest to the default one
-			if forward_index - default_index < default_index - backward_index
+			# But be careful if one of the two indices is already out of range
+			if (backward_index < 0 or forward_index - default_index < default_index - backward_index) and forward_index < doability_bitmask.length
 				slot_count = 0
 				for i in forward_index..doability_bitmask.length - 1
 					if doability_bitmask[i] == 0 or slot_count >= cb.duration
