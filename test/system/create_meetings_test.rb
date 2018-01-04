@@ -32,10 +32,10 @@ class CreateMeetingsTest < ApplicationSystemTestCase
 		create_meeting title1, date, "12:00pm", "4:00pm", "Via Ponzio Milano"
 		create_meeting title2, date, "3:00pm", "6:00pm", "Porta Genova"
 
-		sleep 10 # To give time to schedule the meeting and the travels properly
+		#sleep 10 # To give time to schedule the meeting and the travels properly
 		
 		visit current_path
-		sleep 50
+		#sleep 50
 		# Reload the page to see the scheduled meeting
 		find('a[title=Notifications]').click
 		find('.meeting-title', :text => title1)

@@ -26,8 +26,8 @@ class DefaultLocationController < ApplicationController
 			return
 		else
 			location_input = params[:default_location][:location].split(',')
-			latitude = location_input[0].to_i
-			longitude = location_input[1].to_i
+			latitude = location_input[0].to_f
+			longitude = location_input[1].to_f
 			location_name = location_input[2]
 			location = Location.find_by(latitude: latitude, longitude: longitude)
 
@@ -113,8 +113,8 @@ class DefaultLocationController < ApplicationController
 			return
 		else
 			location_input = params[:default_location][:location].split(',')
-			latitude = location_input[0].to_i
-			longitude = location_input[1].to_i
+			latitude = location_input[0].to_f
+			longitude = location_input[1].to_f
 			location_name = location_input[2]
 			location = Location.find_by(latitude: latitude, longitude: longitude)
 
