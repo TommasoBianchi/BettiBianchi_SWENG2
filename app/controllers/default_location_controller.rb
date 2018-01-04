@@ -14,10 +14,12 @@ class DefaultLocationController < ApplicationController
 	end
 
 	def new
+		@back_path = request.referer
 		@default_location = DefaultLocation.new
 	end
 
 	def create
+		@default_location = DefaultLocation.new
 		user = current_user
 		name = params[:default_location][:name]
 
@@ -65,6 +67,8 @@ class DefaultLocationController < ApplicationController
 			end
 			redirect_to @default_location
 		else
+			@default_location.starting_hour = ''
+			@default_location.day_of_the_week = ''
 			render 'new'
 			return
 		end
