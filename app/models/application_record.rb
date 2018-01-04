@@ -1,6 +1,8 @@
 class ApplicationRecord < ActiveRecord::Base
 	self.abstract_class = true
 
+	# This method is used to convert the day of the week from the format in which it is written in the db (integer) to
+	# a format that can be easilly read by a user
 	def get_day_name(day_of_the_week)
 		case day_of_the_week
 			when 0
@@ -22,6 +24,7 @@ class ApplicationRecord < ActiveRecord::Base
 		end
 	end
 
+	# This method returns the correct hour format from an integer number that represent minutes after midnight
 	def get_time(integer_time_slot)
 		if integer_time_slot > 60 * 12
 			integer_time_slot = integer_time_slot - 60 * 12

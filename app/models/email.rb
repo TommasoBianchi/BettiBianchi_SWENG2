@@ -9,6 +9,8 @@ class Email < ApplicationRecord
 	end
 
 	private
+
+	# This method checks if the email is valid
 	def is_email
 		reg_ex_pattern = /\A([\w+\-].?)+@[a-z\d\-]+(\.[a-z]+)*\.[a-z]+\z/i
 		unless reg_ex_pattern.match?(email)

@@ -7,11 +7,14 @@ class Operator < ApplicationRecord
 
 	validate :operator_correctness
 
+	# This method invoke the action that the operator should perform
 	def invoke(lval, rval)
 		return Operators[operator].call lval, rval
 	end
 
 	private
+
+	# This method checks if the operator is correct
 	def operator_correctness
 		if operator.blank?
 			return
@@ -21,19 +24,22 @@ class Operator < ApplicationRecord
 		end
 	end
 
-	# Real operators
+	# Real operator
 	def self.equality(a, b)
 		return a == b
 	end
 
+	# Real operator
 	def self.inequality(a, b)
 		return a != b
 	end
 
+	# Real operator
 	def self.lesser_than(a, b)
 		return a < b
 	end
 
+	# Real operator
 	def self.greater_than(a, b)
 		return a > b
 	end
