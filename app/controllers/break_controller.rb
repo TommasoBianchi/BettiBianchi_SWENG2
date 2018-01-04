@@ -1,5 +1,6 @@
 class BreakController < ApplicationController
 
+	# Delete a break from the db
 	def delete_break
 		check_if_myself
 		unless check_delete_break_params
@@ -12,11 +13,13 @@ class BreakController < ApplicationController
 		redirect_to settings_page_path(id: params[:user_id])
 	end
 
+	# Add a break to the db
 	def add_break
 		check_if_myself
 		@break = Break.new
 	end
 
+	# This method creates a break. It checks if the parameters passed by the user are correct and in the right format
 	def create_break
 		check_if_myself
 		@break = Break.new
@@ -68,12 +71,7 @@ class BreakController < ApplicationController
 
 	private
 
-	def check_if_myself(id = params[:id].to_i)
-		unless current_user.id == id.to_i
-			raise ActionController::RoutingError, 'Not Found'
-		end
-	end
-
+	# This method checks if the params passed to delete a break are correct
 	def check_delete_break_params
 		params.permit(:break_id, :user_id)
 		if params[:user_id].to_i != current_user.id
@@ -86,6 +84,7 @@ class BreakController < ApplicationController
 		true
 	end
 
+	# This method checks if the dates that have been passed by the user have been made using the timepicker in the page
 	def check_date_consistency(date_from_timepicker)
 		params_ok = true
 		begin
@@ -100,16 +99,19 @@ class BreakController < ApplicationController
 		params_ok
 	end
 
+	# This method insert the errors in the @break variable if it's needed
 	def fill_time_errors
 		@break.errors.add(:start_time_slot, 'inconsistent time sequence')
 		@break.errors.add(:end_time_slot, 'inconsistent time sequence')
 		@break.errors.add(:default_time, 'inconsistent time sequence')
 	end
 
+	# This method checks if the dates are in the right order
 	def check_if_consistent_times(starting_hour, default_time_hour, ending_hour)
 		(starting_hour <= default_time_hour) && (default_time_hour <= ending_hour)
 	end
 
+	# This method checks if the request has been made by me
 	def check_if_myself(id = params[:id].to_i)
 		unless current_user.id == id.to_i
 			raise ActionController::RoutingError, 'Not Found'
