@@ -55,8 +55,10 @@ module BreakHelper
 		# Drop all already computed breaks
 		ComputedBreak.where(break: b).delete_all
 
-		# Compute the last day in which the user has a meeting participation		
-		last_day = b.user.meeting_participations.joins(:meeting).order('meetings.start_date').last.meeting.start_date.midnight
+		# Compute the last day in which the user has a meeting participation	
+		meeting_participations = b.user.meeting_participations.joins(:meeting).order('meetings.start_date')	
+		return if meeting_participations.count == 0
+		last_day = meeting_participations.last.meeting.start_date.midnight
 
 		# For each day in the user's schedule from now on recompute the break b
 		current_day = DateTime.now.utc.midnight
