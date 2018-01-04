@@ -38,6 +38,9 @@ gem 'jquery-ui-rails'
 # RestClient
 gem 'rest-client'
 
+# Rdoc (to generate HTML documentation from comments)
+gem 'rdoc', '~> 6.0', '>= 6.0.1'
+
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 

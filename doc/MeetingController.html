@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta charset="UTF-8">
+
+<title>class MeetingController - RDoc Documentation</title>
+
+<script type="text/javascript">
+  var rdoc_rel_prefix = "./";
+  var index_rel_prefix = "./";
+</script>
+
+<script src="./js/jquery.js"></script>
+<script src="./js/darkfish.js"></script>
+
+<link href="./css/fonts.css" rel="stylesheet">
+<link href="./css/rdoc.css" rel="stylesheet">
+
+
+
+<body id="top" role="document" class="class">
+<nav role="navigation">
+  <div id="project-navigation">
+    <div id="home-section" role="region" title="Quick navigation" class="nav-section">
+  <h2>
+    <a href="./index.html" rel="home">Home</a>
+  </h2>
+
+  <div id="table-of-contents-navigation">
+    <a href="./table_of_contents.html#pages">Pages</a>
+    <a href="./table_of_contents.html#classes">Classes</a>
+    <a href="./table_of_contents.html#methods">Methods</a>
+  </div>
+</div>
+
+    <div id="search-section" role="search" class="project-section initially-hidden">
+  <form action="#" method="get" accept-charset="utf-8">
+    <div id="search-field-wrapper">
+      <input id="search-field" role="combobox" aria-label="Search"
+             aria-autocomplete="list" aria-controls="search-results"
+             type="text" name="search" placeholder="Search" spellcheck="false"
+             title="Type to search, Up and Down to navigate, Enter to load">
+    </div>
+
+    <ul id="search-results" aria-label="Search Results"
+        aria-busy="false" aria-expanded="false"
+        aria-atomic="false" class="initially-hidden"></ul>
+  </form>
+</div>
+
+  </div>
+
+  
+
+  <div id="class-metadata">
+    
+    <div id="parent-class-section" class="nav-section">
+  <h3>Parent</h3>
+
+  
+  <p class="link"><a href="ApplicationController.html">ApplicationController</a>
+  
+</div>
+
+    
+    
+    <!-- Method Quickref -->
+<div id="method-list-section" class="nav-section">
+  <h3>Methods</h3>
+
+  <ul class="link-list" role="directory">
+    
+    <li ><a href="#method-i-accept">#accept</a>
+    
+    <li ><a href="#method-i-create">#create</a>
+    
+    <li ><a href="#method-i-decline">#decline</a>
+    
+    <li ><a href="#method-i-new">#new</a>
+    
+    <li ><a href="#method-i-nominate_admin">#nominate_admin</a>
+    
+    <li ><a href="#method-i-participants_page">#participants_page</a>
+    
+    <li ><a href="#method-i-remove_from_meeting">#remove_from_meeting</a>
+    
+    <li ><a href="#method-i-show">#show</a>
+    
+  </ul>
+</div>
+
+  </div>
+</nav>
+
+<main role="main" aria-labelledby="class-MeetingController">
+  <h1 id="class-MeetingController" class="class">
+    class MeetingController
+  </h1>
+
+  <section class="description">
+    
+  </section>
+
+  
+  <section id="5Buntitled-5D" class="documentation-section">
+    
+
+    
+
+    
+
+    
+
+    
+     <section id="public-instance-5Buntitled-5D-method-details" class="method-section">
+       <header>
+         <h3>Public Instance Methods</h3>
+       </header>
+
+    
+      <div id="method-i-accept" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">accept</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="accept-source">
+            <pre><span class="ruby-comment"># File app/controllers/meeting_controller.rb, line 80</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">accept</span>
+        <span class="ruby-identifier">session</span>[<span class="ruby-value">:return_to</span>] <span class="ruby-operator">||=</span> <span class="ruby-identifier">request</span>.<span class="ruby-identifier">referer</span>
+        <span class="ruby-identifier">mp</span> = <span class="ruby-constant">MeetingParticipation</span>.<span class="ruby-identifier">find_by</span>(<span class="ruby-value">meeting_id:</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:meeting_id</span>], <span class="ruby-value">user_id:</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:user_id</span>])
+        <span class="ruby-identifier">mp</span>.<span class="ruby-identifier">response_status</span> = <span class="ruby-value">1</span>
+        <span class="ruby-identifier">mp</span>.<span class="ruby-identifier">save</span>
+        <span class="ruby-constant">AcceptInvitationJob</span>.<span class="ruby-identifier">perform_later</span> <span class="ruby-identifier">mp</span>, <span class="ruby-identifier">mp</span>.<span class="ruby-identifier">user</span>
+        <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">session</span>.<span class="ruby-identifier">delete</span>(<span class="ruby-value">:return_to</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-create" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">create</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="create-source">
+            <pre><span class="ruby-comment"># File app/controllers/meeting_controller.rb, line 38</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">create</span>
+        <span class="ruby-ivar">@meeting</span> = <span class="ruby-constant">Meeting</span>.<span class="ruby-identifier">new</span>
+        <span class="ruby-keyword">unless</span> <span class="ruby-identifier">check_params_validity</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:meeting</span>])
+                <span class="ruby-identifier">render</span> <span class="ruby-string">&#39;new&#39;</span>
+                <span class="ruby-keyword">return</span>
+        <span class="ruby-keyword">end</span>
+
+        <span class="ruby-identifier">date</span> = <span class="ruby-identifier">params</span>[<span class="ruby-value">:meeting</span>][<span class="ruby-value">:date</span>].<span class="ruby-identifier">split</span>(<span class="ruby-string">&#39;/&#39;</span>).<span class="ruby-identifier">map</span> {<span class="ruby-operator">|</span><span class="ruby-identifier">s</span><span class="ruby-operator">|</span> <span class="ruby-identifier">s</span>.<span class="ruby-identifier">to_i</span>}
+
+        <span class="ruby-identifier">start_time</span> = <span class="ruby-identifier">params</span>[<span class="ruby-value">:meeting</span>][<span class="ruby-value">:start_time</span>].<span class="ruby-identifier">to_datetime</span>
+        <span class="ruby-identifier">end_time</span> = <span class="ruby-identifier">params</span>[<span class="ruby-value">:meeting</span>][<span class="ruby-value">:end_time</span>].<span class="ruby-identifier">to_datetime</span>
+
+        <span class="ruby-identifier">start_date</span> = <span class="ruby-constant">DateTime</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">date</span>[<span class="ruby-value">0</span>], <span class="ruby-identifier">date</span>[<span class="ruby-value">1</span>], <span class="ruby-identifier">date</span>[<span class="ruby-value">2</span>], <span class="ruby-identifier">start_time</span>.<span class="ruby-identifier">hour</span>, <span class="ruby-identifier">start_time</span>.<span class="ruby-identifier">minute</span>, <span class="ruby-value">0</span>)
+        <span class="ruby-identifier">end_date</span> = <span class="ruby-constant">DateTime</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">date</span>[<span class="ruby-value">0</span>], <span class="ruby-identifier">date</span>[<span class="ruby-value">1</span>], <span class="ruby-identifier">date</span>[<span class="ruby-value">2</span>], <span class="ruby-identifier">end_time</span>.<span class="ruby-identifier">hour</span>, <span class="ruby-identifier">end_time</span>.<span class="ruby-identifier">minute</span>, <span class="ruby-value">0</span>)
+
+        <span class="ruby-keyword">unless</span> <span class="ruby-identifier">start_date</span> <span class="ruby-operator">&lt;</span> <span class="ruby-identifier">end_date</span>
+                <span class="ruby-ivar">@meeting</span>.<span class="ruby-identifier">errors</span>.<span class="ruby-identifier">add</span>(<span class="ruby-value">:start_time</span>, <span class="ruby-string">&quot;Not valid&quot;</span>)
+                <span class="ruby-ivar">@meeting</span>.<span class="ruby-identifier">errors</span>.<span class="ruby-identifier">add</span>(<span class="ruby-value">:end_time</span>, <span class="ruby-string">&quot;Not valid&quot;</span>)
+                <span class="ruby-identifier">render</span> <span class="ruby-string">&#39;new&#39;</span>
+                <span class="ruby-keyword">return</span>
+        <span class="ruby-keyword">end</span>
+
+        <span class="ruby-identifier">title</span> = <span class="ruby-identifier">params</span>[<span class="ruby-value">:meeting</span>][<span class="ruby-value">:title</span>]
+        <span class="ruby-identifier">abstract</span> = <span class="ruby-identifier">params</span>[<span class="ruby-value">:meeting</span>][<span class="ruby-value">:abstract</span>]
+        <span class="ruby-identifier">location_input</span> = <span class="ruby-identifier">params</span>[<span class="ruby-value">:meeting</span>][<span class="ruby-value">:location</span>].<span class="ruby-identifier">split</span>(<span class="ruby-string">&#39;,&#39;</span>)
+        <span class="ruby-identifier">latitude</span> = <span class="ruby-identifier">location_input</span>[<span class="ruby-value">0</span>].<span class="ruby-identifier">to_f</span>
+        <span class="ruby-identifier">longitude</span> = <span class="ruby-identifier">location_input</span>[<span class="ruby-value">1</span>].<span class="ruby-identifier">to_f</span>
+        <span class="ruby-identifier">location_name</span> = <span class="ruby-identifier">location_input</span>[<span class="ruby-value">2</span>]
+        <span class="ruby-identifier">location</span> = <span class="ruby-constant">Location</span>.<span class="ruby-identifier">find_by</span>(<span class="ruby-value">latitude:</span> <span class="ruby-identifier">latitude</span>, <span class="ruby-value">longitude:</span> <span class="ruby-identifier">longitude</span>)
+
+        <span class="ruby-keyword">unless</span> <span class="ruby-identifier">location</span>
+                <span class="ruby-identifier">location</span> = <span class="ruby-constant">Location</span>.<span class="ruby-identifier">create</span>(<span class="ruby-value">latitude:</span> <span class="ruby-identifier">latitude</span>, <span class="ruby-value">longitude:</span> <span class="ruby-identifier">longitude</span>, <span class="ruby-value">description:</span> <span class="ruby-identifier">location_name</span>)
+        <span class="ruby-keyword">end</span>
+
+        <span class="ruby-identifier">user</span> = <span class="ruby-identifier">current_user</span>
+        <span class="ruby-identifier">invited_users</span> = <span class="ruby-identifier">params</span>[<span class="ruby-value">:meeting</span>][<span class="ruby-value">:participants</span>].<span class="ruby-identifier">split</span>(<span class="ruby-string">&quot; &quot;</span>).<span class="ruby-identifier">map</span> {<span class="ruby-operator">|</span><span class="ruby-identifier">s</span><span class="ruby-operator">|</span> <span class="ruby-constant">User</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">s</span>.<span class="ruby-identifier">to_i</span>)}
+        <span class="ruby-constant">CreateMeetingJob</span>.<span class="ruby-identifier">perform_later</span> <span class="ruby-identifier">start_date</span>.<span class="ruby-identifier">to_i</span>, <span class="ruby-identifier">end_date</span>.<span class="ruby-identifier">to_i</span>, <span class="ruby-identifier">title</span>, <span class="ruby-identifier">abstract</span>, <span class="ruby-identifier">location</span>, <span class="ruby-identifier">user</span>, <span class="ruby-identifier">invited_users</span>
+
+        <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">calendar_day_path</span>(<span class="ruby-value">year:</span> <span class="ruby-identifier">date</span>[<span class="ruby-value">0</span>], <span class="ruby-value">month:</span> <span class="ruby-identifier">date</span>[<span class="ruby-value">1</span>], <span class="ruby-value">day:</span> <span class="ruby-identifier">date</span>[<span class="ruby-value">2</span>])
+
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-decline" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">decline</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="decline-source">
+            <pre><span class="ruby-comment"># File app/controllers/meeting_controller.rb, line 89</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">decline</span>
+        <span class="ruby-identifier">mp</span> = <span class="ruby-constant">MeetingParticipation</span>.<span class="ruby-identifier">find_by</span>(<span class="ruby-value">meeting_id:</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:meeting_id</span>], <span class="ruby-value">user_id:</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:user_id</span>])
+        <span class="ruby-identifier">mp</span>.<span class="ruby-identifier">response_status</span> = <span class="ruby-value">2</span>
+        <span class="ruby-identifier">mp</span>.<span class="ruby-identifier">save</span>
+
+        <span class="ruby-constant">DeclineInvitationJob</span>.<span class="ruby-identifier">perform_later</span> <span class="ruby-identifier">mp</span>, <span class="ruby-identifier">mp</span>.<span class="ruby-identifier">user</span>
+
+        <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">notification_index_path</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-new" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">new</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="new-source">
+            <pre><span class="ruby-comment"># File app/controllers/meeting_controller.rb, line 29</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">new</span>
+        <span class="ruby-keyword">unless</span> <span class="ruby-ivar">@meeting</span>
+                <span class="ruby-ivar">@meeting</span> = <span class="ruby-constant">Meeting</span>.<span class="ruby-identifier">new</span>
+        <span class="ruby-keyword">end</span>
+        <span class="ruby-ivar">@users</span> = <span class="ruby-constant">User</span>.<span class="ruby-identifier">all</span>
+        <span class="ruby-ivar">@user_selected</span> = <span class="ruby-string">&#39;&#39;</span>
+        <span class="ruby-ivar">@user_names</span> = <span class="ruby-node">%w[a b]</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-nominate_admin" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">nominate_admin</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="nominate_admin-source">
+            <pre><span class="ruby-comment"># File app/controllers/meeting_controller.rb, line 22</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">nominate_admin</span>
+        <span class="ruby-identifier">m</span> = <span class="ruby-constant">MeetingParticipation</span>.<span class="ruby-identifier">find_by</span>(<span class="ruby-value">meeting_id:</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:meeting_id</span>], <span class="ruby-value">user_id:</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:user_id</span>])
+        <span class="ruby-identifier">m</span>.<span class="ruby-identifier">is_admin</span> = <span class="ruby-keyword">true</span>
+        <span class="ruby-identifier">m</span>.<span class="ruby-identifier">save</span>
+        <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">participants_page_path</span>(<span class="ruby-value">id:</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:meeting_id</span>])
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-participants_page" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">participants_page</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="participants_page-source">
+            <pre><span class="ruby-comment"># File app/controllers/meeting_controller.rb, line 11</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">participants_page</span>
+        <span class="ruby-ivar">@user</span> = <span class="ruby-identifier">current_user</span>
+        <span class="ruby-ivar">@meeting</span> = <span class="ruby-constant">Meeting</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-string">&#39;id&#39;</span>])
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-remove_from_meeting" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">remove_from_meeting</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="remove_from_meeting-source">
+            <pre><span class="ruby-comment"># File app/controllers/meeting_controller.rb, line 16</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">remove_from_meeting</span>
+        <span class="ruby-identifier">m</span> = <span class="ruby-constant">MeetingParticipation</span>.<span class="ruby-identifier">find_by</span>(<span class="ruby-value">meeting_id:</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:meeting_id</span>], <span class="ruby-value">user_id:</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:user_id</span>])
+        <span class="ruby-identifier">m</span>.<span class="ruby-identifier">delete</span>
+        <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">participants_page_path</span>(<span class="ruby-value">id:</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:meeting_id</span>])
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-show" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">show</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="show-source">
+            <pre><span class="ruby-comment"># File app/controllers/meeting_controller.rb, line 5</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">show</span>
+        <span class="ruby-ivar">@back_path</span> = <span class="ruby-identifier">request</span>.<span class="ruby-identifier">referer</span>
+        <span class="ruby-ivar">@user</span> = <span class="ruby-identifier">current_user</span>
+        <span class="ruby-ivar">@meeting</span> = <span class="ruby-constant">Meeting</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-string">&#39;id&#39;</span>])
+        <span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+    </section>
+  
+  </section>
+</main>
+
+
+<footer id="validator-badges" role="contentinfo">
+  <p><a href="https://validator.w3.org/check/referer">Validate</a>
+  <p>Generated by <a href="https://ruby.github.io/rdoc/">RDoc</a> 6.0.1.
+  <p>Based on <a href="http://deveiate.org/projects/Darkfish-RDoc/">Darkfish</a> by <a href="http://deveiate.org">Michael Granger</a>.
+</footer>
+
