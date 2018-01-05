@@ -3,7 +3,8 @@ In our particular case, since we make the choice of providing small prototypes, 
 We decided to build two types of test called Model Test and System Test.
 
 \subsection{Model Test}
-model test blabla
+This type of tests runs on the model of the project that contains the description of all the data on which the system is built. For this reason having consistent data is crucial; they must be formatted properly and must respect some constraints. \\
+The model, on a Ruby on Rails system, is directly related with the tables on the database so it must provide proper validations that has to be tested correctly. It is important to have the largest possible number of model objects tested since the beginning of the implementation process, since that in this way we would be sure that all the components that will create and update data will not insert wrong and inconsistent informations. 
 
 \subsection{System Test}
 system test blablablac
