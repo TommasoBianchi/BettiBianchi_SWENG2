@@ -1,3 +1,4 @@
+# This is the father class of all models classes from which all inherit
 class ApplicationRecord < ActiveRecord::Base
 	self.abstract_class = true
 

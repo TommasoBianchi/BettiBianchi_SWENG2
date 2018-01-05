@@ -1,3 +1,4 @@
+# This class manages the model(relations, validations and base methods) of the IncompleteUser object
 class IncompleteUser < ApplicationRecord
 	validates :email, presence: true, uniqueness: true
 	validates :password, presence: true

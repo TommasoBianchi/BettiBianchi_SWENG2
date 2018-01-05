@@ -1,3 +1,4 @@
+# This class manages the model(relations, validations and base methods) of the Constraint object
 class Constraint < ApplicationRecord
 
 	# This should be a constant

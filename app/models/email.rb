@@ -1,3 +1,4 @@
+# This class manages the model(relations, validations and base methods) of the Email object
 class Email < ApplicationRecord
 	belongs_to :user, optional: true
 

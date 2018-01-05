@@ -1,7 +1,9 @@
+# This class manages the model(relations, validations and base methods) of the Social object
 class Social < ApplicationRecord
 	has_many :social_users
 	has_many :users, through: :social_users
 
+	# This should be a constant
 	Social_type = {
 			1 => {name: 'facebook', icon_path: 'social_icons/facebook_icon.png', social_id: 1},
 			2 => {name: 'linkedin', icon_path: 'social_icons/linkedin_icon.png', social_id: 2},
@@ -24,7 +26,3 @@ class Social < ApplicationRecord
 		end
 	end
 end
-
-# Facebook 1
-# Linkedin 2
-# Instagram 3

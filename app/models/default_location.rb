@@ -1,3 +1,4 @@
+# This class manages the model(relations, validations and base methods) of the DefaultLocation object
 class DefaultLocation < ApplicationRecord
 	belongs_to :user
 	belongs_to :location

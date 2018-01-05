@@ -1,3 +1,4 @@
+# This class manages the model(relations, validations and base methods) of the Subject object
 class Subject < ApplicationRecord
 	has_many :operators
 	has_many :values
@@ -11,6 +12,8 @@ class Subject < ApplicationRecord
 	end
 
 	private
+
+	# This should be a constant
 	Subjects = {
 		"Distance" => :distance,
 		"Duration" => :duration,

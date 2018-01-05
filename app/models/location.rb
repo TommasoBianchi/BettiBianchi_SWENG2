@@ -1,3 +1,4 @@
+# This class manages the model(relations, validations and base methods) of the Location object
 class Location < ApplicationRecord
 	has_many :default_locations
 	has_many :meetings

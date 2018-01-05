@@ -1,3 +1,4 @@
+# This class manages the model(relations, validations and base methods) of the Travel object
 class TravelStep < ApplicationRecord
 	# This should be a constant
 	Travel_means = {

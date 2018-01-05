@@ -1,3 +1,4 @@
+# This class manages the model(relations, validations and base methods) of the Operator object
 class Operator < ApplicationRecord
 
 	belongs_to :subject

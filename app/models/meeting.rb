@@ -1,3 +1,4 @@
+# This class manages the model(relations, validations and base methods) of the Meeting object
 class Meeting < ApplicationRecord
 	belongs_to :location
 	has_many :meeting_participations

@@ -1,4 +1,6 @@
+# This class manages the model(relations, validations and base methods) of the MeetingParticipation object
 class MeetingParticipation < ApplicationRecord
+
 	# This should be a constant
 	Response_statuses = {
 			pending: 0,

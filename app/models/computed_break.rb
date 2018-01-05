@@ -1,3 +1,4 @@
+# This class manages the model(relations, validations and base methods) of the ComputedBreak object
 class ComputedBreak < ApplicationRecord
 	belongs_to :user
 	belongs_to :break
