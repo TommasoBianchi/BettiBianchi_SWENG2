@@ -1,3 +1,5 @@
+# This class manages the show page of a travel; everything related with the creation of a travel
+# is managed by the travel helper
 class TravelController < ApplicationController
 	before_action :check_my_travel
 

@@ -1,3 +1,4 @@
+# This class manages everything related with breaks (add, delete, create)
 class BreakController < ApplicationController
 
 	# Delete a break from the db

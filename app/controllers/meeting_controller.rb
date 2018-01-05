@@ -1,3 +1,4 @@
+# # This class manages everything related with meetings (show, create, remove and view pariticpants, nominate administrators)
 class MeetingController < ApplicationController
 
 	before_action :check_participation, except: [:new, :create]

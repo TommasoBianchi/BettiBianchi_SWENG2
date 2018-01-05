@@ -1,3 +1,4 @@
+# This class manages everything related with default locations (show, creation, creation of the first default location, delete)
 class DefaultLocationController < ApplicationController
 	skip_before_action :require_one_default_location, :only => [:first_def_location, :first_creation]
 

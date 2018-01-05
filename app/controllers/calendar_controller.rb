@@ -1,3 +1,4 @@
+# This class manages everything related with the calendar (daily, weekly and montly views)
 class CalendarController < ApplicationController
 
 	# This method supports the page that shows the calendar daily page. It retrieves in the correct order all the

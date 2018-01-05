@@ -1,3 +1,4 @@
+# This class manages everything related with the homepgae (login, signup)
 class HomepageController < ApplicationController
 	ERROR_MESSAGE = 'Invalid email/password combination'.freeze
 

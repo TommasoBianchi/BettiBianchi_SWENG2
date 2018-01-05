@@ -1,3 +1,5 @@
+# This class manages everything related with the user (show, create, edit, add/remove contacts, add/remove emails,
+# add/remove socials, add/remove constraint)
 class UserController < ApplicationController
 	skip_before_action :require_login
 	wrap_parameters :user, include: [:nickname, :password, :password_confirmation]

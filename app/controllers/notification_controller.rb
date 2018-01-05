@@ -1,3 +1,4 @@
+# This class manages everything related with the notifications (warnings, invitations, undoable breaks, resolve warning)
 class NotificationController < ApplicationController
 
 	# This method supports the notification page
