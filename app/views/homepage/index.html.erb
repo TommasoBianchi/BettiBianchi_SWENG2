@@ -15,7 +15,7 @@
 				Travlendar+<br></a>
 			<a class="subtitle">Organize your daily schedule!</a><br>
 			<% flash.each do |message_type, message| %>
-				<div class="alert alert-<%= message_type %>"><%= message %></div>
+				<div class="homepage-alert alert alert-<%= message_type %>"><%= message %></div>
 			<% end %>
 		</div>
 		<div id="emailPasswordContainer">
@@ -28,7 +28,7 @@
 		</div>
 
 		<div id="loginProvidersContainer">
-			<%= link_to image_tag("homepage/externalLoginGoogle.png", alt: "External login provider 1", class: 'externalLoginProvider'), 'http://www.google.com' %>
+			<%= image_tag("homepage/externalLoginGoogle.png", alt: "External login provider 1", class: 'externalLoginProvider') %>
 			<%= image_tag("homepage/externalLoginFacebook.png", alt: "External login provider 2", class: 'externalLoginProvider') %>
 			<%= image_tag("homepage/externalLoginLinkedin.png", alt: "External login provider 3", class: 'externalLoginProvider') %>
 			<%= image_tag("homepage/externalLoginTwitter.png", alt: "External login provider 4", class: 'externalLoginProvider') %>
