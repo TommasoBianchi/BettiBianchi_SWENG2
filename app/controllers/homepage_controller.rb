@@ -1,5 +1,7 @@
 # This class manages everything related with the homepgae (login, signup)
 class HomepageController < ApplicationController
+
+	# This is a constant used to signal errors during the login process
 	ERROR_MESSAGE = 'Invalid email/password combination'.freeze
 
 	skip_before_action :require_login

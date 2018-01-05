@@ -414,7 +414,9 @@ module MeetingHelper
 		end		
 	end
 
+	# This is a constant that contains the google API Key used to get the travels from google
 	GoogleAPIKey = 'AIzaSyDba6PxTVz-07hIVjksboJ4AEkOP2WeuAs'.freeze
 
+	# This constant represent the base path used for autocomplete
 	BaseURL = 'https://maps.googleapis.com/maps/api/place/autocomplete/json?'.freeze
 end
