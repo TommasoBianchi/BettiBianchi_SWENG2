@@ -1,3 +1,9 @@
-Clone the source code from \href{https://github.com/TommasoBianchi/BettiBianchi_SWENG2}{here} if you haven't already, then navigate to the Travlendar folder. Open a console and type \verb;bundle install; to download all the dependencies, then \verb;rake db:setup; to build the database and finally \verb;rails server; to run the rails server on localhost. \\
-In case you have problems installing the pg gem, try running \verb;bundle config build.pg --with-pg-config=[path_to_postgres_installation]/bin/pg_config;.
+Clone the source code from \href{https://github.com/TommasoBianchi/BettiBianchi_SWENG2}{here} if you haven't already, then navigate to the Travlendar folder. Open a console and type 
+\begin{commandshell}bundle install\end{commandshell}
+to download all the dependencies, then 
+\begin{commandshell}rake db:setup\end{commandshell} to build the database and finally 
+\begin{commandshell}rails server\end{commandshell}
+to run the rails server on localhost. \\
+In case you have problems installing the pg gem, try running 
+\begin{commandshell}bundle config build.pg --with-pg-config=[path_to_postgres_installation]/bin/pg_config;\end{commandshell}
 You should now be able to access the application on \href{http://localhost:3000/}{http://localhost:3000/}.

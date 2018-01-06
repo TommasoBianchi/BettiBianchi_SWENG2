@@ -1,0 +1,1 @@
+bundle config build.pg --with-pg-config=[path_to_postgres_installation]/bin/pg_config;

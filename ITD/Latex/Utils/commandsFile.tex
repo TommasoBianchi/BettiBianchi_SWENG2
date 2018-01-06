@@ -119,6 +119,7 @@
 \usepackage{xspace}
 \usepackage{enumitem}
 \usepackage{amssymb}
+\usepackage[listings]{tcolorbox} % for displaying an ubuntu-like black terminal
 \usepackage{hyperref}
 \usepackage[superscript,biblabel]{cite} % superscript citations
 \usepackage{float}	% make figures and table stay where I want them to be
@@ -151,7 +152,7 @@
 \titleformat{\subsubsection}
   {\normalfont\fontfamily{phv}\fontsize{13}{16}\selectfont}{\thesubsubsection}{1em}{}
 
-\newcommand{\comment}[1]{{\color{Red}$\blacktriangleright$ Comment: #1 $\blacktriangleleft$}}
+%\newcommand{\comment}[1]{{\color{Red}$\blacktriangleright$ Comment: #1 $\blacktriangleleft$}}
 
 %hack to be able to nameref items in description list
 \makeatletter
