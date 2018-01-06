@@ -78,9 +78,9 @@ module TravelHelper
 
 			if step['travel_mode'] == "TRANSIT"
 				formatted_step[:departure_stop] = step['transit_details']['departure_stop']['name']
-				formatted_step[:departure_time] = step['transit_details']['departure_time']['text']
+				formatted_step[:departure_time] = Time.at(step['transit_details']['departure_time']['value'] + time_zone_offset)
 				formatted_step[:arrival_stop] = step['transit_details']['arrival_stop']['name']
-				formatted_step[:arrival_time] = step['transit_details']['arrival_time']['text']
+				formatted_step[:arrival_time] = Time.at(step['transit_details']['arrival_time']['value'] + time_zone_offset)
 			end
 
 			formatted_steps.push(formatted_step)

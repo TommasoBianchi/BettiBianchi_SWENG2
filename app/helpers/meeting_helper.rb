@@ -30,7 +30,7 @@ module MeetingHelper
 
 		####### If meeting participation is not consistent break out of this function
 		if meeting_data[:is_consistent] == false
-			sleep 5 if (ENV.fetch("RAILS_ENV") == "test") # Fix needed to handle nested transactions
+			sleep 5 if (ENV.fetch("RAILS_ENV") { "development" } == "test") # Fix needed to handle nested transactions
 			ActiveRecord::Base.transaction do
 				meeting.save
 				meeting_participation.save
