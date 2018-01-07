@@ -9,7 +9,12 @@ class TravelHelperTest < ActionView::TestCase
 			result = TravelHelper.shortest_path start_location, end_location, travel_mean, departure_time
 			next unless result
 
-			assert (result[:start_time] == departure_time) if result[:start_time]
+			if result[:start_time]
+				assert (result[:start_time] == departure_time) unless travel_mean == :public_transportation
+				# Public transportation travels may actually start slightly after the requested departure 
+				# time as they should stick to public transportation schedules
+				assert (result[:start_time] >= departure_time) if travel_mean == :public_transportation
+			end
 			assert (result[:distance] >= great_circle_distance(start_location.latitude, start_location.longitude,
 													  end_location.latitude, end_location.longitude))
 		end
