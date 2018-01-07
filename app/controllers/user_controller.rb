@@ -139,7 +139,7 @@ class UserController < ApplicationController
 		check_if_myself(params[:user_id])
 		user = User.find(params[:user_id])
 		to_add = User.find(params[:to_add_id])
-		if to_add && user != to_add && !Contact.where(from_user: user.id).ids.include?(to_add.id)
+		if to_add && user != to_add && !Contact.where(from_user: user.id).map {|c| c.to_user.id}.include?(to_add.id)
 			user.contacts.push(to_add)
 			user.save
 			redirect_to contacts_page_path(id: params[:user_id])
