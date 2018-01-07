@@ -1,12 +1,14 @@
+# This is a helper module containing functions to be called to update the scheduling of meeting participations
 module MeetingHelper
 
 	# This function has to be called to create both a meeting and a meeting_participation and store them on the db.
+	#
 	# In practice, use this only for the user that creates a meeting and not for the invited users
 	#
-	# start_date and end_date must be valid DateTime objects
-	# title must be a non-empty string
-	# location must be a valid Location already saved in the db
-	# user must be a valid User
+	# * start_date and end_date must be valid DateTime objects
+	# * title must be a non-empty string
+	# * location must be a Location already saved in the db
+	# * user must be a User
 	#
 	# returns a hash containing the meeting (nil in case of errors), the meeting_participation (nil in case of errors)
 	# and a status flag (encoded as a Ruby Symbol) indicating either consistency, inconsistency or errors
@@ -28,6 +30,7 @@ module MeetingHelper
 
 		####### If meeting participation is not consistent break out of this function
 		if meeting_data[:is_consistent] == false
+			sleep 5 if (ENV.fetch("RAILS_ENV") { "development" } == "test") # Fix needed to handle nested transactions
 			ActiveRecord::Base.transaction do
 				meeting.save
 				meeting_participation.save
@@ -106,10 +109,11 @@ module MeetingHelper
 	end
 
 	# This function has to be called to create only a meeting_participation (for an already existing meeting) and store it on the db.
+	# 
 	# In practice, use this only for the invited users and not for the user that creates a meeting
 	#
-	# meeting must be a valid Meeting already saved in the db
-	# user must be a valid User
+	# * meeting must be a Meeting already saved in the db
+	# * user must be a User
 	#
 	# returns a hash containing the meeting_participation (nil in case of errors) and a status flag (encoded as a Ruby Symbol) 
 	# indicating either consistency, inconsistency or errors
@@ -197,15 +201,24 @@ module MeetingHelper
 		end
 	end
 
+	# Update the schedule after accepting the invitation to a meeting
+	#
+	# * meeting_participations is a MeetingParticipation
+	# * user is a User
 	def self.accept_invitation(meeting_participation, user)
 		update_schedule([meeting_participation])
 	end
 
+	# Update the schedule after declining the invitation to a meeting
+	# 
+	# As a result some other MeetingParticipations may become consistent
+	#
+	# * meeting_participation is a MeetingParticipation
+	# * user is a User
 	def self.decline_invitation(meeting_participation, user)
 		# Grab all conflicting meeting participations from the db
 		conflicts = meeting_participation.conflicting_meeting_participations
 
-		Rails.logger.debug "decline_invitation -- about to recompute #{conflicts.length} meeting participations"
 		# Drop all the conflicts
 		MeetingParticipationConflict.where(meeting_participation_1_id: conflicts.ids)
 				.or(MeetingParticipationConflict.where(meeting_participation_2_id: conflicts.ids)).delete_all
@@ -214,6 +227,10 @@ module MeetingHelper
 		update_schedule(conflicts)
 	end
 
+	# Update the schedule for a given user and for all the given days of the week
+	#
+	# * days_of_the_week is an Array of Integers in range 0..6
+	# * user is a User
 	def self.recompute_meeting_participations(days_of_the_week, user)
 		# Grab all the meeting participations to recompute
 		meeting_participations = user.meeting_participations
@@ -257,7 +274,7 @@ module MeetingHelper
 		after_meeting = user_meetings.where(is_consistent: true)
 						.where('"meetings"."start_date" > ?', new_meeting[:end_date]).order('meetings.start_date').first
 
-		if arriving_travel == nil or (before_meeting != nil and arriving_travel[:duration] > (new_meeting[:start_date].to_i - before_meeting.leaving_travel.end_time.to_i))
+		if before_meeting != nil and (arriving_travel == nil or arriving_travel[:duration] > (new_meeting[:start_date].to_i - before_meeting.leaving_travel.end_time.to_i))
 			new_meeting[:arriving_from_dl] = nil
 			arriving_travel = TravelHelper.best_travel(before_meeting.meeting.location, new_meeting[:location], user, before_meeting.meeting.end_date, nil)
 			if arriving_travel == nil or (arriving_travel[:duration] > (new_meeting[:start_date].to_i - before_meeting.meeting.end_date.to_i))
@@ -272,7 +289,7 @@ module MeetingHelper
 			end
 		end
 
-		if leaving_travel == nil or (after_meeting != nil and leaving_travel[:duration] > (after_meeting.arriving_travel.start_time.to_i - new_meeting[:end_date].to_i))
+		if after_meeting != nil and (leaving_travel == nil or leaving_travel[:duration] > (after_meeting.arriving_travel.start_time.to_i - new_meeting[:end_date].to_i))
 			new_meeting[:leaving_to_dl] = nil
 			leaving_travel = TravelHelper.best_travel(new_meeting[:location], after_meeting.meeting.location, user, new_meeting[:end_date], nil)
 			if leaving_travel == nil or (leaving_travel[:duration] > (after_meeting.meeting.start_date - new_meeting[:end_date]))
@@ -329,7 +346,7 @@ module MeetingHelper
 		travel_steps = []
 		previous_step_start_time = travel.start_time
 		data[:steps].each do |step|
-			travel_step = TravelStep.new()
+			travel_step = TravelStep.new
 			travel_step.travel_mean = Travel::Travel_means[step[:travel_mean]]
 			travel_step.distance = step[:distance]
 			travel_step.travel = travel
@@ -397,7 +414,9 @@ module MeetingHelper
 		end		
 	end
 
+	# This is a constant that contains the google API Key used to get the travels from google
 	GoogleAPIKey = 'AIzaSyDba6PxTVz-07hIVjksboJ4AEkOP2WeuAs'.freeze
 
+	# This constant represent the base path used for autocomplete
 	BaseURL = 'https://maps.googleapis.com/maps/api/place/autocomplete/json?'.freeze
 end

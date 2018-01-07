@@ -1,4 +1,6 @@
+# This class manages the model(relations, validations and base methods) of the MeetingParticipation object
 class MeetingParticipation < ApplicationRecord
+
 	# This should be a constant
 	Response_statuses = {
 			pending: 0,
@@ -18,6 +20,7 @@ class MeetingParticipation < ApplicationRecord
 
 	validate :response_status_correctness
 
+	# This method returns the conflicting meeting participations of the current one
 	def conflicting_meeting_participations
 		return MeetingParticipation.where('id in
       ((select meeting_participation_1_id from meeting_participation_conflicts where meeting_participation_2_id = :id) 
@@ -25,12 +28,14 @@ class MeetingParticipation < ApplicationRecord
       (select meeting_participation_2_id from meeting_participation_conflicts where meeting_participation_1_id = :id))', {id: self.id})
 	end
 
+	# This method is used from a view to retrieve the name and surname of the user to which belongs this meeting participation
 	def get_name_surname
 		user.name + ' ' + user.surname
 	end
 
 	private
 
+	# This method check if the response status is correct
 	def response_status_correctness
 		return if response_status.blank?
 		unless Response_statuses.values.include? response_status

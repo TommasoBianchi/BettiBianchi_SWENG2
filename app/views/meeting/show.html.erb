@@ -36,9 +36,6 @@
 			<ul class="colored-container light-grey-container date-time-block">
 				<%= link_to('View Participants', participants_page_path(@meeting), id: @profile) %>
 			</ul>
-			<ul class="colored-container light-grey-container date-time-block">
-				<%= @meeting.start_date.strftime("%I:%M%p") + " - " + @meeting.end_date.strftime("%I:%M%p") %>
-			</ul>
 		</div>
 
 		<div class="response-block-container only-pending">

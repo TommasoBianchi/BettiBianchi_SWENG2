@@ -1,3 +1,4 @@
+# This class manages the model(relations, validations and base methods) of the Subject object
 class Subject < ApplicationRecord
 	has_many :operators
 	has_many :values
@@ -5,11 +6,14 @@ class Subject < ApplicationRecord
 	validates :name, presence: true
 	validate :name_correctness
 
+	# This method returns the path value of a subject
 	def get_path_value(path)
 		return path[Subjects[name]]
 	end
 
 	private
+
+	# This should be a constant
 	Subjects = {
 		"Distance" => :distance,
 		"Duration" => :duration,
@@ -17,6 +21,7 @@ class Subject < ApplicationRecord
 		"End time" => :end_time
 	}
 
+	# This method checks if the name of a subject is correct (between the ones in Subjects)
 	def name_correctness
 	  	if name.blank?
 	  		return

@@ -67,7 +67,7 @@
 		<div class="social-container">
 			<% @user.social_users.each do |social| %>
 				<div class=" social-boxes light-light-grey-container colored-container">
-					<%= link_to image_tag(Social.find(social.social_id).icon_path, alt: Social.find(social.social_id).name, class: 'social-icon'), 'http://' + social.link %>
+					<%= link_to image_tag(@socials[social.social_id][:icon_path], alt: @socials[social.social_id][:name], class: 'social-icon'), 'http://' + social.link %>
 				</div>
 			<% end %>
 		</div>

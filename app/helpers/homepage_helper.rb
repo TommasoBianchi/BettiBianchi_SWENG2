@@ -1,3 +1,4 @@
+# This is a helper module containing various functions to manage user's sessions
 module HomepageHelper
   # Logs in the given user.
   def log_in(user)

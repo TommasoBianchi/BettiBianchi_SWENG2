@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta charset="UTF-8">
+
+<title>class BreakController - RDoc Documentation</title>
+
+<script type="text/javascript">
+  var rdoc_rel_prefix = "./";
+  var index_rel_prefix = "./";
+</script>
+
+<script src="./js/jquery.js"></script>
+<script src="./js/darkfish.js"></script>
+
+<link href="./css/fonts.css" rel="stylesheet">
+<link href="./css/rdoc.css" rel="stylesheet">
+
+
+
+<body id="top" role="document" class="class">
+<nav role="navigation">
+  <div id="project-navigation">
+    <div id="home-section" role="region" title="Quick navigation" class="nav-section">
+  <h2>
+    <a href="./index.html" rel="home">Home</a>
+  </h2>
+
+  <div id="table-of-contents-navigation">
+    <a href="./table_of_contents.html#pages">Pages</a>
+    <a href="./table_of_contents.html#classes">Classes</a>
+    <a href="./table_of_contents.html#methods">Methods</a>
+  </div>
+</div>
+
+    <div id="search-section" role="search" class="project-section initially-hidden">
+  <form action="#" method="get" accept-charset="utf-8">
+    <div id="search-field-wrapper">
+      <input id="search-field" role="combobox" aria-label="Search"
+             aria-autocomplete="list" aria-controls="search-results"
+             type="text" name="search" placeholder="Search" spellcheck="false"
+             title="Type to search, Up and Down to navigate, Enter to load">
+    </div>
+
+    <ul id="search-results" aria-label="Search Results"
+        aria-busy="false" aria-expanded="false"
+        aria-atomic="false" class="initially-hidden"></ul>
+  </form>
+</div>
+
+  </div>
+
+  
+
+  <div id="class-metadata">
+    
+    <div id="parent-class-section" class="nav-section">
+  <h3>Parent</h3>
+
+  
+  <p class="link"><a href="ApplicationController.html">ApplicationController</a>
+  
+</div>
+
+    
+    
+    <!-- Method Quickref -->
+<div id="method-list-section" class="nav-section">
+  <h3>Methods</h3>
+
+  <ul class="link-list" role="directory">
+    
+    <li ><a href="#method-i-add_break">#add_break</a>
+    
+    <li ><a href="#method-i-create_break">#create_break</a>
+    
+    <li ><a href="#method-i-delete_break">#delete_break</a>
+    
+  </ul>
+</div>
+
+  </div>
+</nav>
+
+<main role="main" aria-labelledby="class-BreakController">
+  <h1 id="class-BreakController" class="class">
+    class BreakController
+  </h1>
+
+  <section class="description">
+    
+<p>This class manages everything related with breaks (add, delete, create)</p>
+
+  </section>
+
+  
+  <section id="5Buntitled-5D" class="documentation-section">
+    
+
+    
+
+    
+
+    
+
+    
+     <section id="public-instance-5Buntitled-5D-method-details" class="method-section">
+       <header>
+         <h3>Public Instance Methods</h3>
+       </header>
+
+    
+      <div id="method-i-add_break" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">add_break</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Add a break to the db</p>
+          
+          
+
+          
+          <div class="method-source-code" id="add_break-source">
+            <pre><span class="ruby-comment"># File app/controllers/break_controller.rb, line 18</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">add_break</span>
+        <span class="ruby-identifier">check_if_myself</span>
+        <span class="ruby-ivar">@break</span> = <span class="ruby-constant">Break</span>.<span class="ruby-identifier">new</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-create_break" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">create_break</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>This method creates a break. It checks if the parameters passed by the user
+are correct and in the right format</p>
+          
+          
+
+          
+          <div class="method-source-code" id="create_break-source">
+            <pre><span class="ruby-comment"># File app/controllers/break_controller.rb, line 24</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">create_break</span>
+        <span class="ruby-identifier">check_if_myself</span>
+        <span class="ruby-ivar">@break</span> = <span class="ruby-constant">Break</span>.<span class="ruby-identifier">new</span>
+        
+        <span class="ruby-keyword">unless</span> <span class="ruby-identifier">check_date_consistency</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:break</span>][<span class="ruby-value">:start_time_slot</span>]) <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">check_date_consistency</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:break</span>][<span class="ruby-value">:end_time_slot</span>]) <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">check_date_consistency</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:break</span>][<span class="ruby-value">:default_time</span>])
+                <span class="ruby-identifier">fill_time_errors</span>
+                <span class="ruby-identifier">render</span> <span class="ruby-string">&#39;add_break&#39;</span>
+                <span class="ruby-keyword">return</span>
+        <span class="ruby-keyword">end</span>
+
+        <span class="ruby-keyword">begin</span>
+                <span class="ruby-identifier">starting_hour</span> = <span class="ruby-identifier">params</span>[<span class="ruby-value">:break</span>][<span class="ruby-value">:start_time_slot</span>].<span class="ruby-identifier">to_datetime</span>.<span class="ruby-identifier">hour</span> <span class="ruby-operator">*</span> <span class="ruby-value">60</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:break</span>][<span class="ruby-value">:start_time_slot</span>].<span class="ruby-identifier">to_datetime</span>.<span class="ruby-identifier">min</span>
+        <span class="ruby-keyword">rescue</span> <span class="ruby-constant">NoMethodError</span>
+                <span class="ruby-identifier">render</span> <span class="ruby-string">&#39;add_break&#39;</span>
+                <span class="ruby-keyword">return</span>
+        <span class="ruby-keyword">end</span>
+
+        <span class="ruby-keyword">begin</span>
+                <span class="ruby-identifier">ending_hour</span> = <span class="ruby-identifier">params</span>[<span class="ruby-value">:break</span>][<span class="ruby-value">:end_time_slot</span>].<span class="ruby-identifier">to_datetime</span>.<span class="ruby-identifier">hour</span> <span class="ruby-operator">*</span> <span class="ruby-value">60</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:break</span>][<span class="ruby-value">:end_time_slot</span>].<span class="ruby-identifier">to_datetime</span>.<span class="ruby-identifier">min</span>
+        <span class="ruby-keyword">rescue</span> <span class="ruby-constant">NoMethodError</span>
+                <span class="ruby-identifier">render</span> <span class="ruby-string">&#39;add_break&#39;</span>
+                <span class="ruby-keyword">return</span>
+        <span class="ruby-keyword">end</span>
+
+        <span class="ruby-keyword">begin</span>
+                <span class="ruby-identifier">default_time_hour</span> = <span class="ruby-identifier">params</span>[<span class="ruby-value">:break</span>][<span class="ruby-value">:default_time</span>].<span class="ruby-identifier">to_datetime</span>.<span class="ruby-identifier">hour</span> <span class="ruby-operator">*</span> <span class="ruby-value">60</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:break</span>][<span class="ruby-value">:default_time</span>].<span class="ruby-identifier">to_datetime</span>.<span class="ruby-identifier">min</span>
+        <span class="ruby-keyword">rescue</span> <span class="ruby-constant">NoMethodError</span>
+                <span class="ruby-identifier">render</span> <span class="ruby-string">&#39;add_break&#39;</span>
+                <span class="ruby-keyword">return</span>
+        <span class="ruby-keyword">end</span>
+
+        <span class="ruby-keyword">unless</span> <span class="ruby-identifier">check_if_consistent_times</span>(<span class="ruby-identifier">starting_hour</span>, <span class="ruby-identifier">default_time_hour</span>, <span class="ruby-identifier">ending_hour</span>)
+                <span class="ruby-identifier">fill_time_errors</span>
+        <span class="ruby-keyword">end</span>
+
+        <span class="ruby-identifier">duration</span> = <span class="ruby-identifier">params</span>[<span class="ruby-value">:break</span>][<span class="ruby-value">:duration</span>].<span class="ruby-identifier">to_i</span>
+        <span class="ruby-keyword">if</span> <span class="ruby-identifier">duration</span> <span class="ruby-operator">&lt;</span> <span class="ruby-value">1</span>
+                <span class="ruby-ivar">@break</span>.<span class="ruby-identifier">errors</span>.<span class="ruby-identifier">add</span>(<span class="ruby-value">:duration</span>, <span class="ruby-string">&#39;Negative duration is not valid&#39;</span>)
+        <span class="ruby-keyword">end</span>
+
+        <span class="ruby-identifier">day_of_the_week</span> = <span class="ruby-identifier">get_day_by_name</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:break</span>][<span class="ruby-value">:day_of_the_week</span>])
+        <span class="ruby-identifier">name</span> = <span class="ruby-identifier">params</span>[<span class="ruby-value">:break</span>][<span class="ruby-value">:name</span>]
+        <span class="ruby-identifier">user</span> = <span class="ruby-identifier">current_user</span>
+        <span class="ruby-identifier">new_break</span> = <span class="ruby-constant">Break</span>.<span class="ruby-identifier">create</span>(<span class="ruby-value">default_time:</span> <span class="ruby-identifier">default_time_hour</span>, <span class="ruby-value">start_time_slot:</span> <span class="ruby-identifier">starting_hour</span>, <span class="ruby-value">end_time_slot:</span> <span class="ruby-identifier">ending_hour</span>,
+                                                                                                         <span class="ruby-value">duration:</span> <span class="ruby-identifier">duration</span>, <span class="ruby-value">name:</span> <span class="ruby-identifier">name</span>, <span class="ruby-value">day_of_the_week:</span> <span class="ruby-identifier">day_of_the_week</span>, <span class="ruby-value">user_id:</span> <span class="ruby-identifier">user</span>.<span class="ruby-identifier">id</span>)
+        <span class="ruby-constant">BreakHelper</span>.<span class="ruby-identifier">full_update_break</span>(<span class="ruby-identifier">new_break</span>)
+        <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">settings_page_path</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-delete_break" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">delete_break</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Delete a break from the db</p>
+          
+          
+
+          
+          <div class="method-source-code" id="delete_break-source">
+            <pre><span class="ruby-comment"># File app/controllers/break_controller.rb, line 5</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">delete_break</span>
+        <span class="ruby-identifier">check_if_myself</span>
+        <span class="ruby-keyword">unless</span> <span class="ruby-identifier">check_delete_break_params</span>
+                <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">settings_page_path</span>(<span class="ruby-value">id:</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:user_id</span>])
+                <span class="ruby-keyword">return</span>
+        <span class="ruby-keyword">end</span>
+        <span class="ruby-identifier">to_delete</span> = <span class="ruby-constant">ComputedBreak</span>.<span class="ruby-identifier">where</span>(<span class="ruby-value">break_id:</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:break_id</span>])
+        <span class="ruby-constant">ComputedBreak</span>.<span class="ruby-identifier">delete</span>(<span class="ruby-identifier">to_delete</span>.<span class="ruby-identifier">ids</span>)
+        <span class="ruby-constant">Break</span>.<span class="ruby-identifier">delete</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:break_id</span>])
+        <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">settings_page_path</span>(<span class="ruby-value">id:</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:user_id</span>])
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+    </section>
+  
+  </section>
+</main>
+
+
+<footer id="validator-badges" role="contentinfo">
+  <p><a href="https://validator.w3.org/check/referer">Validate</a>
+  <p>Generated by <a href="https://ruby.github.io/rdoc/">RDoc</a> 6.0.1.
+  <p>Based on <a href="http://deveiate.org/projects/Darkfish-RDoc/">Darkfish</a> by <a href="http://deveiate.org">Michael Granger</a>.
+</footer>
+

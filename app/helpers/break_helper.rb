@@ -1,6 +1,10 @@
+# This is a helper module containing various functions to recompute flexible breaks in various way
 module BreakHelper
 
 	# Update a single break in a given day
+	#
+	# * b is a Break
+	# * day is a DateTime
 	def self.update_break(b, day)
 		return unless b.day_of_the_week == day.wday
 
@@ -34,7 +38,11 @@ module BreakHelper
 		_update_break b, day, time_intervals
 	end
 
-	# Update all the breaks of a given user between from_date and to_date
+	# Update all the breaks of a given user between from_date and to_date (they should be the same date at different times)
+	#
+	# * from_date is a DateTime
+	# * to_date is a DateTime
+	# * user is a User
 	def self.update_all_breaks(from_date, to_date, user)
 		# TODO: maybe from_date and to_date are in different wdays. Deal with it
 
@@ -51,12 +59,16 @@ module BreakHelper
 	end
 
 	# Update every occurrence of a given break
+	#
+	# * b is a Break
 	def self.full_update_break(b)
 		# Drop all already computed breaks
 		ComputedBreak.where(break: b).delete_all
 
-		# Compute the last day in which the user has a meeting participation		
-		last_day = b.user.meeting_participations.joins(:meeting).order('meetings.start_date').last.meeting.start_date.midnight
+		# Compute the last day in which the user has a meeting participation	
+		meeting_participations = b.user.meeting_participations.joins(:meeting).order('meetings.start_date')	
+		return if meeting_participations.count == 0
+		last_day = meeting_participations.last.meeting.start_date.midnight
 
 		# For each day in the user's schedule from now on recompute the break b
 		current_day = DateTime.now.utc.midnight
@@ -99,7 +111,8 @@ module BreakHelper
 		backward_index = forward_index - 1
 		while (forward_index < doability_bitmask.length or backward_index > 0) do 
 			# At each step proceed from the index closest to the default one
-			if forward_index - default_index < default_index - backward_index
+			# But be careful if one of the two indices is already out of range
+			if (backward_index < 0 or forward_index - default_index < default_index - backward_index) and forward_index < doability_bitmask.length
 				slot_count = 0
 				for i in forward_index..doability_bitmask.length - 1
 					if doability_bitmask[i] == 0 or slot_count >= cb.duration

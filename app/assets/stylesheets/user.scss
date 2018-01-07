@@ -3,6 +3,7 @@
 // You can use Sass (SCSS) here: http://sass-lang.com/
 @import "main.scss";
 @import "calendar";
+
 .mainContent {
   //color: $dark_grey;
 }
@@ -38,7 +39,7 @@ input.error {
   margin-top: 18px;
 }
 
-.nickname-container{
+.nickname-container {
   font-size: 22px;
   font-style: italic;
   margin: 5px 5px 25px;
@@ -73,7 +74,7 @@ input.error {
   display: inline-flex;
 }
 
-.logout{
+.logout {
   text-transform: uppercase;
   position: absolute;
   right: 20px;
@@ -118,7 +119,7 @@ input.error {
   color: #575756;
 }
 
-.list-of-default-location{
+.list-of-default-location {
   margin-top: 20px;
   margin-bottom: 20px;
 }
@@ -126,6 +127,7 @@ input.error {
 .delete-image {
   float: right;
   height: 19px;
+  cursor: pointer;
 }
 
 .add-image {
@@ -139,13 +141,35 @@ input.error {
 }
 
 /* CSS for create constraint page */
-select, option{
+select, option {
   @extend .colored-container;
   @extend .white-container;
   padding: 3px;
 }
 
 /* CSS for edit profile page only */
-.add-email-div{
+.add-email-div {
   display: none;
+}
+
+.add-social-div {
+  display: none;
+}
+
+.new-social-content {
+  display: block;
+}
+
+#choose-social, #choose-link {
+  display: inline-grid;
+}
+
+.social-input{
+  padding-top: 8%;
+  padding-bottom: 8%;
+  padding-left: 1%;
+  padding-right: 1%;
+  margin-top: 10%;
+  margin-bottom: 10%;
+  height: 82%;
 }

@@ -1,3 +1,4 @@
+# This class manages the model(relations, validations and base methods) of the Status object
 class Status < ApplicationRecord
 	# This should be a constant
 	Types = {
@@ -10,7 +11,9 @@ class Status < ApplicationRecord
 
 	validate :type_correctness
 
-	private 
+	private
+
+	# This method checks the validity of a status
 	def response_status_correctness
 		if type.blank?
 			return

@@ -4,7 +4,7 @@
 	<%= render 'shared/calendar_sidebar' %>
 	<section class="mainContent">
 
-		<%= render 'shared/title_back_action', title: 'Create Constraint' %>
+		<%= render 'shared/title_back_action', title: 'Create Constraint', path: @back_path %>
 
 		<div id="emailPasswordContainer">
 
@@ -20,7 +20,7 @@
 				</p>
 				<p>
 					if
-					<%= form.select(:subject, [["Distance", 1], ["Duration", 2], ["Start time", 3], ["End time", 4]], {}, {id: 'subject-content', onchange: 'countrySelected();'}) %>
+					<%= form.select(:subject, [["Distance", 1], ["Duration", 2], ["Start time", 3], ["End time", 4]], {}, {id: 'subject-content', onchange: 'subjectSelected();'}) %>
 					is
 					<%= form.select(:operator) do %>
 					<% end %>
@@ -52,7 +52,7 @@
 	values.push(['<%= value.subject_id %>', '<%=value.value %>']);
 	<% end %>
 
-	function countrySelected() {
+	function subjectSelected() {
 		subject_id = $("select[name='constraint[subject]']").val();
 		console.log(subject_id);
 
@@ -74,7 +74,6 @@
 	}
 
 	$(function () {
-		console.log('ciao');
-		countrySelected();
+		subjectSelected();
 	});
 </script>

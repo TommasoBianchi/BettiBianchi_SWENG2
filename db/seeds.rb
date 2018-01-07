@@ -36,7 +36,7 @@ def create_travel_steps(travel)
 end
 
 NUM_GROUPS = 3
-NUM_SOCIALS = 4
+NUM_SOCIALS = Social::Social_type.count
 NUM_EMAILS_PER_USER = 2
 # NUM_STATUSES_PER_USER = 2
 NUM_CONTACTS_PER_USER = 3
@@ -54,6 +54,7 @@ MAX_DISTANCE = 20
 NUM_RESPONSE_STATUSES = 3
 NUM_DEFAULT_LOCATIONS_PER_USER = 3
 NUM_TRAVEL_STEPS = 3
+NUM_VALUES_PER_SUBJECT = 3
 
 locations = []
 locations.push Location.create({latitude: 45.4830988, longitude: 9.2165046, description: "Via Niccolò Paganini, 17, 20131 Milano Mi, Italia"})
@@ -73,10 +74,11 @@ for i in 1..NUM_GROUPS do
 	puts "Group #{i}"
 end
 
-for i in 1..NUM_SOCIALS do
-	Social.create(name: 'Social' + i.to_s, icon_path: 'social_icons/linkedin_icon.png')
+Social::Social_type.each do |social|
+	Social.create(name: social[1][:name], icon_path: social[1][:icon_path])
 	puts "Social #{i}"
 end
+
 
 NUM_OPERATORS = Operator::Operators.length
 Subject::Subjects.keys.each do |name|
@@ -89,6 +91,10 @@ Subject::Subjects.keys.each do |name|
 
 		puts "Operator #{i}"
 	end
+
+	for j in 1..NUM_VALUES_PER_SUBJECT do
+		Value.create(value: (1500 * j).to_s, subject_id: subject.id)
+	end
 end
 NUM_SUBJECTS = Subject::Subjects.keys.length
 
@@ -96,11 +102,13 @@ for i in 1..NUM_USERS do
 	user = User.create(name: 'User' + i.to_s, surname: 'Surname' + i.to_s, password: '0000', password_confirmation: '0000', nickname: 'PP' + i.to_s, preference_list: '021', website: 'http://www.google.com', company: 'BettiBianchi s.r.l.')
 	IncompleteUser.create(email: 'User' + i.to_s + '.Surname@travlendar.com', password: '0000', password_confirmation: '0000')
 	user.groups.push(Group.find(i % NUM_GROUPS + 1))
-	SocialUser.create(social_id: Social.find(i % NUM_SOCIALS + 1).id, link: 'www.linkedin.com/UserSurname' + i.to_s, user_id: user.id)
-	SocialUser.create(social_id: Social.find((i + 1) % NUM_SOCIALS + 1).id, link: 'www.linkedin.com/UserSurname' + i.to_s, user_id: user.id)
+	k = Social::Social_type.keys.sample
+	SocialUser.create(social_id: k, link: 'www.#{Social::Social_type[k][:name]}.com', user_id: user.id)
+	k = Social::Social_type.keys.sample
+	SocialUser.create(social_id: k, link: 'www.#{Social::Social_type[k][:name]}.com', user_id: user.id)
 
 	for j in 1..NUM_EMAILS_PER_USER do
-		email = Email.create(email: 'User' + i.to_s + '.Surname.' + j.to_s + '@travlendar.com', user_id: i)
+		email = Email.create(email: 'User' + i.to_s + '.Surname.' + j.to_s + '@travlendar.com', user_id: user.id)
 		user.emails.push(email)
 	end
 
@@ -140,16 +148,16 @@ for i in 1..NUM_USERS do
 	duration_greater_op = Operator.where(subject: duration_subject, operator: 3).first
 	# Do not walk if distance is greater than 5 km
 	Constraint.create({travel_mean: 0, subject: distance_subject, operator: distance_greater_op,
-										 value: Value.create({value: "5000", subject: distance_subject}), user: user})
+										 value: Value.where(subject: distance_subject).sample, user: user})
 	# Do not walk if duration is greater than 30 min
 	Constraint.create({travel_mean: 0, subject: duration_subject, operator: duration_greater_op,
-										 value: Value.create({value: "1800", subject: duration_subject}), user: user})
+										 value: Value.where(subject: duration_subject).sample, user: user})
 	# Do not use public transportation if duration is greater than 2 h
 	Constraint.create({travel_mean: 2, subject: duration_subject, operator: duration_greater_op,
-										 value: Value.create({value: "7200", subject: duration_subject}), user: user})
+										 value: Value.where(subject: duration_subject).sample, user: user})
 	# Do not use driving if distance is lesser than 2 km
 	Constraint.create({travel_mean: 1, subject: distance_subject, operator: distance_lesser_op,
-										 value: Value.create({value: "2000", subject: distance_subject}), user: user})
+										 value: Value.where(subject: distance_subject).sample, user: user})
 	#######
 
 	puts "User #{i}"
@@ -159,7 +167,7 @@ for i in 1..NUM_USERS do
 	user = User.find(i)
 	for k in 1..NUM_CONTACTS_PER_USER do
 		j = rand(1..NUM_USERS)
-		j = rand(1..NUM_USERS) while j == k
+		j = rand(1..NUM_USERS) while (j == i or user.contacts.ids.include?(j))
 		user.contacts.push(User.find(j))
 
 		puts "Contact #{i} -> #{j}"

@@ -115,6 +115,7 @@ textarea:focus {
 img.externalLoginProvider {
   width: 70%;
   padding: 1%;
+  /*cursor: pointer;*/
 }
 
 .mainTitle {
@@ -135,4 +136,9 @@ img.externalLoginProvider {
   color: $dark_grey;
   font-style: oblique;
   font-style: bold;
+}
+
+.homepage-alert{
+  margin-top: 5%;
+  color: red;
 }

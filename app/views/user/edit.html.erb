@@ -30,50 +30,79 @@
 					<%= form.submit 'Edit User', class: 'monoConfirmationButton' %>
 				</div>
 
-				<!-- used to upload file, it doesn't work
+			<% end %>
 
-				<%= form_tag({action: :post_edit}, multipart: true) do %>
-					<%= label :profile_image, 'Profile Image (png only)' %>
-					<%= file_field_tag 'profile_image', class: 'white-container' %>
+			<div id="preference-list-container">
+				<div class="title-add-container ">
+					Emails
+					<%= image_tag("add_icon.png", alt: 'add_icon', class: 'add-image', id: 'add_email_button') %>
+				</div>
+			</div>
+
+			<% flash.each do |message_type, message| %>
+				<div class="alert alert-<%= message_type %>"><%= message %></div>
+			<% end %>
+
+			<div class="add-email-div">
+				<%= form_with scope: :email, local: true do |form| %>
+
+					<%= form.text_field :email, id: 'name', type: 'text' %>
+
 					<div id="buttonsContainer">
-						<%= submit_tag 'Upload Image', class: 'monoConfirmationButton' %>
+						<%= form.submit 'Create Email', class: 'monoConfirmationButton' %>
+					</div>
+
+				<% end %>
+			</div>
+			<div id="preference-list-container">
+				<% @emails.each do |email| %>
+					<div class="constraint-container colored-container light-light-grey-container">
+						<%= email.email %>
+						<%= link_to image_tag("cancel_icon.png", alt: "Delate", class: 'delete-image'), delete_email_path(user_id: @user.id, email_id: email.id) %>
+					</div>
+
+
+				<% end %>
+			</div>
+
+			<div id="preference-list-container">
+				<div class="title-add-container ">
+					Socials
+					<%= image_tag("add_icon.png", alt: 'add_icon', class: 'add-image', id: 'add_social_button') %>
+				</div>
+			</div>
+
+			<div class="add-social-div">
+				<%= form_with scope: :social_user, local: true do |form| %>
+					<div class='new-social-content'>
+						<div id="choose-social">
+							<%= form.label :social, class: 'label' %>
+							<%= form.select(:social, [], {}, {class: 'social-input'}) do %>
+							<% end %>
+
+						</div>
+						<div id="choose-link">
+							<%= form.label :link, class: 'label' %>
+							<%= form.text_field :link, id: 'link', type: 'text' %>
+						</div>
+
+					</div>
+					<div id="buttonsContainer">
+						<%= form.submit 'Create Social', class: 'monoConfirmationButton' %>
 					</div>
 				<% end %>
+			</div>
 
-					-->
-				
-				<div id="preference-list-container">
-					<div class="title-add-container ">
-						Emails
-						<%= image_tag("add_icon.png", alt: 'add_icon', class: 'add-image', id: 'add_email_button') %>
+			<div id="preference-list-container">
+				<% @user.social_users.each do |social_user| %>
+					<div class="constraint-container colored-container light-light-grey-container">
+						<%= social_user.link %>
+						<%= link_to image_tag("cancel_icon.png", alt: "Delate", class: 'delete-image'), delete_social_path(user_id: @user.id, social_user_id: social_user.id) %>
 					</div>
-				</div>
-
-				<div class="add-email-div">
-					<%= form_with scope: :email, local: true do |form| %>
-
-						<!-- sono arrivato qui devo aggiungere il metodo che mi controlla che post ho fatto etc.. -->
-						<%= form.label :email, class: 'label' %>
-						<%= form.text_field :email, id: 'name', type: 'text' %>
-
-						<div id="buttonsContainer">
-							<%= form.submit 'Create Email', class: 'monoConfirmationButton' %>
-						</div>
-
-					<% end %>
-				</div>
-				<div id="preference-list-container">
-					<% @emails.each do |email| %>
-						<div class="constraint-container colored-container light-light-grey-container">
-							<%= email.email %>
-							<%= link_to image_tag("cancel_icon.png", alt: "Delate", class: 'delete-image'), delete_email_path(user_id: @user.id, email_id: email.id) %>
-						</div>
 
 
-					<% end %>
-				</div>
-
-			<% end %>
+				<% end %>
+			</div>
 		</div>
 
 	</section>
@@ -105,4 +134,26 @@
 			$('.add-email-div').toggle();
 		});
 	});
+
+	$(function () {
+		$('#add_social_button').click(function () {
+			$('.add-social-div').toggle();
+		});
+	});
+
+
+	var socials = [];
+	<% @socials.each do |social| %>
+	socials.push(['<%= social[1][:name] %>', '<%= social[1][:social_id] %>']);
+	<% end %>
+
+	$(function () {
+		var $inputOperator = $("select[name='social_user[social]']");
+		$inputOperator.empty();
+		socials.forEach(function (social) {
+			$inputOperator.append($("<option>", {value: social[1], html: social[0]}));
+		});
+
+	});
+
 </script>

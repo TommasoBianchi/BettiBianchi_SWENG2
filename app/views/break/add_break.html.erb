@@ -1,5 +1,4 @@
-<!---<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-timepicker/1.8.1/jquery.timepicker.min.css"></link>-->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-timepicker/1.8.1/jquery.timepicker.min.js"></script>
+
 <%= render 'shared/header', selected: 'settings' %>
 <div id="content">
 	<script type="text/javascript"></script>
@@ -17,7 +16,7 @@
 				<%= form.text_field :name, id: 'name', type: 'text' %>
 					<div class='date-container'>
 						<%= form.label :day_of_the_week, class: 'label', value: 'Day Of The Week' %>
-						<%= form.text_field :day_of_the_week, id: 'day_of_the_week', type: 'text' %>
+						<%= form.text_field :day_of_the_week, id: 'day_of_the_week', type: 'text', onfocus: "javascript:$(this).autocomplete('search','');" %>
 					</div>
 
 				<div class='date-time-container'>
@@ -52,7 +51,7 @@
 	</section>
 </div>
 <%= render 'shared/footer' %>
-
+<%= render 'shared/timepicker' %>
 <script type="text/javascript">
 
 	<% if !@break.valid? %>
