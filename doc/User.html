@@ -92,6 +92,9 @@
 
   <section class="description">
     
+<p>This class manages the model(relations, validations and base methods) of
+the <a href="User.html">User</a> object</p>
+
   </section>
 
   
@@ -130,7 +133,7 @@
 
           
           <div class="method-source-code" id="digest-source">
-            <pre><span class="ruby-comment"># File app/models/user.rb, line 26</span>
+            <pre><span class="ruby-comment"># File app/models/user.rb, line 27</span>
 <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier ruby-title">digest</span>(<span class="ruby-identifier">string</span>)
         <span class="ruby-identifier">cost</span> = <span class="ruby-constant">ActiveModel</span><span class="ruby-operator">::</span><span class="ruby-constant">SecurePassword</span>.<span class="ruby-identifier">min_cost</span> <span class="ruby-operator">?</span> <span class="ruby-constant">BCrypt</span><span class="ruby-operator">::</span><span class="ruby-constant">Engine</span><span class="ruby-operator">::</span><span class="ruby-constant">MIN_COST</span> <span class="ruby-operator">:</span>
                                                  <span class="ruby-constant">BCrypt</span><span class="ruby-operator">::</span><span class="ruby-constant">Engine</span>.<span class="ruby-identifier">cost</span>
@@ -173,7 +176,7 @@
 
           
           <div class="method-source-code" id="get_first_location_after-source">
-            <pre><span class="ruby-comment"># File app/models/user.rb, line 60</span>
+            <pre><span class="ruby-comment"># File app/models/user.rb, line 61</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">get_first_location_after</span>(<span class="ruby-identifier">current_day</span>)
         <span class="ruby-identifier">list_default_location</span> = []
         <span class="ruby-identifier">default_locations</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">dl</span><span class="ruby-operator">|</span>
@@ -218,7 +221,7 @@
 
           
           <div class="method-source-code" id="get_last_default_location_before-source">
-            <pre><span class="ruby-comment"># File app/models/user.rb, line 43</span>
+            <pre><span class="ruby-comment"># File app/models/user.rb, line 44</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">get_last_default_location_before</span>(<span class="ruby-identifier">current_day</span>)
         <span class="ruby-identifier">list_default_location</span> = []
         <span class="ruby-identifier">default_locations</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">dl</span><span class="ruby-operator">|</span>
@@ -263,7 +266,7 @@
 
           
           <div class="method-source-code" id="primary_email-source">
-            <pre><span class="ruby-comment"># File app/models/user.rb, line 21</span>
+            <pre><span class="ruby-comment"># File app/models/user.rb, line 22</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">primary_email</span>
         <span class="ruby-constant">Email</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">primary_email_id</span>)
 <span class="ruby-keyword">end</span></pre>

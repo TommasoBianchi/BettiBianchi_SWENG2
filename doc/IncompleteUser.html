@@ -86,6 +86,9 @@
 
   <section class="description">
     
+<p>This class manages the model(relations, validations and base methods) of
+the <a href="IncompleteUser.html">IncompleteUser</a> object</p>
+
   </section>
 
   
@@ -124,7 +127,7 @@
 
           
           <div class="method-source-code" id="digest-source">
-            <pre><span class="ruby-comment"># File app/models/incomplete_user.rb, line 10</span>
+            <pre><span class="ruby-comment"># File app/models/incomplete_user.rb, line 11</span>
 <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier ruby-title">digest</span>(<span class="ruby-identifier">string</span>)
         <span class="ruby-identifier">cost</span> = <span class="ruby-constant">ActiveModel</span><span class="ruby-operator">::</span><span class="ruby-constant">SecurePassword</span>.<span class="ruby-identifier">min_cost</span> <span class="ruby-operator">?</span> <span class="ruby-constant">BCrypt</span><span class="ruby-operator">::</span><span class="ruby-constant">Engine</span><span class="ruby-operator">::</span><span class="ruby-constant">MIN_COST</span> <span class="ruby-operator">:</span>
                                                  <span class="ruby-constant">BCrypt</span><span class="ruby-operator">::</span><span class="ruby-constant">Engine</span>.<span class="ruby-identifier">cost</span>

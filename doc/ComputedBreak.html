@@ -86,6 +86,9 @@
 
   <section class="description">
     
+<p>This class manages the model(relations, validations and base methods) of
+the <a href="ComputedBreak.html">ComputedBreak</a> object</p>
+
   </section>
 
   
@@ -125,7 +128,7 @@ break</p>
 
           
           <div class="method-source-code" id="get_description-source">
-            <pre><span class="ruby-comment"># File app/models/computed_break.rb, line 11</span>
+            <pre><span class="ruby-comment"># File app/models/computed_break.rb, line 12</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">get_description</span>
         <span class="ruby-keyword">return</span> <span class="ruby-string">&quot;from &quot;</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">start_time_slot</span>.<span class="ruby-identifier">strftime</span>(<span class="ruby-string">&quot;%H:%M&quot;</span>) <span class="ruby-operator">+</span> <span class="ruby-string">&quot; to: &quot;</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">end_time_slot</span>.<span class="ruby-identifier">strftime</span>(<span class="ruby-string">&quot;%H:%M&quot;</span>)
 <span class="ruby-keyword">end</span></pre>

@@ -88,6 +88,9 @@
 
   <section class="description">
     
+<p>This class manages the model(relations, validations and base methods) of
+the <a href="MeetingParticipation.html">MeetingParticipation</a> object</p>
+
   </section>
 
   
@@ -141,7 +144,7 @@ one</p>
 
           
           <div class="method-source-code" id="conflicting_meeting_participations-source">
-            <pre><span class="ruby-comment"># File app/models/meeting_participation.rb, line 22</span>
+            <pre><span class="ruby-comment"># File app/models/meeting_participation.rb, line 24</span>
   <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">conflicting_meeting_participations</span>
           <span class="ruby-keyword">return</span> <span class="ruby-constant">MeetingParticipation</span>.<span class="ruby-identifier">where</span>(<span class="ruby-string">&#39;id in
 ((select meeting_participation_1_id from meeting_participation_conflicts where meeting_participation_2_id = :id) 
@@ -178,7 +181,7 @@ user to which belongs this meeting participation</p>
 
           
           <div class="method-source-code" id="get_name_surname-source">
-            <pre><span class="ruby-comment"># File app/models/meeting_participation.rb, line 30</span>
+            <pre><span class="ruby-comment"># File app/models/meeting_participation.rb, line 32</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">get_name_surname</span>
         <span class="ruby-identifier">user</span>.<span class="ruby-identifier">name</span> <span class="ruby-operator">+</span> <span class="ruby-string">&#39; &#39;</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">user</span>.<span class="ruby-identifier">surname</span>
 <span class="ruby-keyword">end</span></pre>

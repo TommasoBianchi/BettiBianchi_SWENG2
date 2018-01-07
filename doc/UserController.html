@@ -120,6 +120,10 @@
 
   <section class="description">
     
+<p>This class manages everything related with the user (show, create, edit,
+add/remove contacts, add/remove emails, add/remove socials, add/remove
+constraint)</p>
+
   </section>
 
   
@@ -158,7 +162,7 @@
 
           
           <div class="method-source-code" id="add_constraint-source">
-            <pre><span class="ruby-comment"># File app/controllers/user_controller.rb, line 208</span>
+            <pre><span class="ruby-comment"># File app/controllers/user_controller.rb, line 210</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">add_constraint</span>
         <span class="ruby-ivar">@back_path</span> = <span class="ruby-identifier">request</span>.<span class="ruby-identifier">referer</span>
         <span class="ruby-ivar">@constraint</span> = <span class="ruby-constant">Constraint</span>.<span class="ruby-identifier">new</span>
@@ -194,7 +198,7 @@
 
           
           <div class="method-source-code" id="add_contact-source">
-            <pre><span class="ruby-comment"># File app/controllers/user_controller.rb, line 136</span>
+            <pre><span class="ruby-comment"># File app/controllers/user_controller.rb, line 138</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">add_contact</span>
         <span class="ruby-identifier">check_if_myself</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:user_id</span>])
         <span class="ruby-identifier">user</span> = <span class="ruby-constant">User</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:user_id</span>])
@@ -236,7 +240,7 @@
 
           
           <div class="method-source-code" id="change_preference_list-source">
-            <pre><span class="ruby-comment"># File app/controllers/user_controller.rb, line 188</span>
+            <pre><span class="ruby-comment"># File app/controllers/user_controller.rb, line 190</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">change_preference_list</span>
         <span class="ruby-identifier">check_if_myself</span>
         <span class="ruby-identifier">user</span> = <span class="ruby-identifier">current_user</span>
@@ -277,7 +281,7 @@
 
           
           <div class="method-source-code" id="contacts-source">
-            <pre><span class="ruby-comment"># File app/controllers/user_controller.rb, line 122</span>
+            <pre><span class="ruby-comment"># File app/controllers/user_controller.rb, line 124</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">contacts</span>
         <span class="ruby-ivar">@user</span> = <span class="ruby-identifier">current_user</span>
         <span class="ruby-identifier">check_if_myself</span>
@@ -312,7 +316,7 @@
 
           
           <div class="method-source-code" id="create-source">
-            <pre><span class="ruby-comment"># File app/controllers/user_controller.rb, line 13</span>
+            <pre><span class="ruby-comment"># File app/controllers/user_controller.rb, line 15</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">create</span>
         <span class="ruby-identifier">email_hash</span> = <span class="ruby-identifier">params</span>.<span class="ruby-identifier">slice</span>(<span class="ruby-value">:user</span>)[<span class="ruby-string">&#39;user&#39;</span>][<span class="ruby-string">&#39;email&#39;</span>]
         <span class="ruby-identifier">params</span>[<span class="ruby-value">:user</span>].<span class="ruby-identifier">delete</span>(<span class="ruby-string">&#39;email&#39;</span>)
@@ -377,7 +381,7 @@ ones</p>
 
           
           <div class="method-source-code" id="create_constraint-source">
-            <pre><span class="ruby-comment"># File app/controllers/user_controller.rb, line 216</span>
+            <pre><span class="ruby-comment"># File app/controllers/user_controller.rb, line 218</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">create_constraint</span>
         <span class="ruby-identifier">travel_mean</span> = <span class="ruby-identifier">params</span>[<span class="ruby-value">:constraint</span>][<span class="ruby-value">:travel_mean</span>]
         <span class="ruby-identifier">subject</span> = <span class="ruby-constant">Subject</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:constraint</span>][<span class="ruby-value">:subject</span>].<span class="ruby-identifier">to_i</span>)
@@ -419,7 +423,7 @@ ones</p>
 
           
           <div class="method-source-code" id="delate_constraint-source">
-            <pre><span class="ruby-comment"># File app/controllers/user_controller.rb, line 201</span>
+            <pre><span class="ruby-comment"># File app/controllers/user_controller.rb, line 203</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">delate_constraint</span>
         <span class="ruby-identifier">delete_constraint_check</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:user_id</span>], <span class="ruby-identifier">params</span>[<span class="ruby-value">:constraint_id</span>])
         <span class="ruby-constant">Constraint</span>.<span class="ruby-identifier">delete</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:constraint_id</span>])
@@ -454,7 +458,7 @@ ones</p>
 
           
           <div class="method-source-code" id="delete_contact-source">
-            <pre><span class="ruby-comment"># File app/controllers/user_controller.rb, line 129</span>
+            <pre><span class="ruby-comment"># File app/controllers/user_controller.rb, line 131</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">delete_contact</span>
         <span class="ruby-identifier">contact_delate_check</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:user_id</span>], <span class="ruby-identifier">params</span>[<span class="ruby-value">:to_delete_id</span>])
         <span class="ruby-constant">Contact</span>.<span class="ruby-identifier">delete</span>(<span class="ruby-constant">Contact</span>.<span class="ruby-identifier">where</span>(<span class="ruby-value">from_user:</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:user_id</span>], <span class="ruby-value">to_user:</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:to_delete_id</span>]))
@@ -489,7 +493,7 @@ ones</p>
 
           
           <div class="method-source-code" id="delete_email-source">
-            <pre><span class="ruby-comment"># File app/controllers/user_controller.rb, line 115</span>
+            <pre><span class="ruby-comment"># File app/controllers/user_controller.rb, line 117</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">delete_email</span>
         <span class="ruby-identifier">check_delete_email_params</span>
         <span class="ruby-constant">Email</span>.<span class="ruby-identifier">delete</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:email_id</span>])
@@ -524,7 +528,7 @@ ones</p>
 
           
           <div class="method-source-code" id="delete_social-source">
-            <pre><span class="ruby-comment"># File app/controllers/user_controller.rb, line 230</span>
+            <pre><span class="ruby-comment"># File app/controllers/user_controller.rb, line 232</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">delete_social</span>
         <span class="ruby-identifier">check_if_myself</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:user_id</span>])
         <span class="ruby-constant">SocialUser</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:social_user_id</span>]).<span class="ruby-identifier">delete</span>
@@ -559,7 +563,7 @@ ones</p>
 
           
           <div class="method-source-code" id="edit-source">
-            <pre><span class="ruby-comment"># File app/controllers/user_controller.rb, line 64</span>
+            <pre><span class="ruby-comment"># File app/controllers/user_controller.rb, line 66</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">edit</span>
         <span class="ruby-ivar">@user</span> = <span class="ruby-identifier">current_user</span>
         <span class="ruby-identifier">primary_mail_id</span> = <span class="ruby-ivar">@user</span>.<span class="ruby-identifier">primary_email_id</span>
@@ -597,7 +601,7 @@ ones</p>
 
           
           <div class="method-source-code" id="index-source">
-            <pre><span class="ruby-comment"># File app/controllers/user_controller.rb, line 56</span>
+            <pre><span class="ruby-comment"># File app/controllers/user_controller.rb, line 58</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">index</span>
         <span class="ruby-identifier">respond_to</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">format</span><span class="ruby-operator">|</span>
                 <span class="ruby-identifier">format</span>.<span class="ruby-identifier">html</span> {<span class="ruby-identifier">html_index</span>}
@@ -633,7 +637,7 @@ ones</p>
 
           
           <div class="method-source-code" id="new-source">
-            <pre><span class="ruby-comment"># File app/controllers/user_controller.rb, line 49</span>
+            <pre><span class="ruby-comment"># File app/controllers/user_controller.rb, line 51</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">new</span>
         <span class="ruby-ivar">@unregistered_user</span> = <span class="ruby-constant">IncompleteUser</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">session</span>[<span class="ruby-value">:tmp_checked</span>])
         <span class="ruby-ivar">@user</span> = <span class="ruby-constant">User</span>.<span class="ruby-identifier">new</span>
@@ -668,7 +672,7 @@ ones</p>
 
           
           <div class="method-source-code" id="post_edit-source">
-            <pre><span class="ruby-comment"># File app/controllers/user_controller.rb, line 74</span>
+            <pre><span class="ruby-comment"># File app/controllers/user_controller.rb, line 76</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">post_edit</span>
         <span class="ruby-ivar">@user</span> = <span class="ruby-identifier">current_user</span>
         <span class="ruby-ivar">@emails</span> = <span class="ruby-ivar">@user</span>.<span class="ruby-identifier">emails</span>.<span class="ruby-identifier">where</span>.<span class="ruby-identifier">not</span>(<span class="ruby-value">id:</span> <span class="ruby-ivar">@user</span>.<span class="ruby-identifier">primary_email_id</span>)
@@ -738,7 +742,7 @@ the params passed by the current user (to add new users to contacts)</p>
 
           
           <div class="method-source-code" id="search-source">
-            <pre><span class="ruby-comment"># File app/controllers/user_controller.rb, line 150</span>
+            <pre><span class="ruby-comment"># File app/controllers/user_controller.rb, line 152</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">search</span>
         <span class="ruby-keyword">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:term</span>]
                 <span class="ruby-identifier">to_match</span> = <span class="ruby-string">&#39;%&#39;</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:term</span>] <span class="ruby-operator">+</span> <span class="ruby-string">&#39;%&#39;</span>
@@ -782,7 +786,7 @@ contacts (to invite them in a meeting)</p>
 
           
           <div class="method-source-code" id="search_contacts-source">
-            <pre><span class="ruby-comment"># File app/controllers/user_controller.rb, line 165</span>
+            <pre><span class="ruby-comment"># File app/controllers/user_controller.rb, line 167</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">search_contacts</span>
         <span class="ruby-keyword">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:term</span>]
                 <span class="ruby-identifier">to_match</span> = <span class="ruby-string">&#39;%&#39;</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:term</span>] <span class="ruby-operator">+</span> <span class="ruby-string">&#39;%&#39;</span>
@@ -827,7 +831,7 @@ contacts (to invite them in a meeting)</p>
 
           
           <div class="method-source-code" id="settings-source">
-            <pre><span class="ruby-comment"># File app/controllers/user_controller.rb, line 182</span>
+            <pre><span class="ruby-comment"># File app/controllers/user_controller.rb, line 184</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">settings</span>
         <span class="ruby-identifier">check_if_myself</span>
         <span class="ruby-ivar">@user</span> = <span class="ruby-identifier">current_user</span>
@@ -861,7 +865,7 @@ contacts (to invite them in a meeting)</p>
 
           
           <div class="method-source-code" id="show-source">
-            <pre><span class="ruby-comment"># File app/controllers/user_controller.rb, line 6</span>
+            <pre><span class="ruby-comment"># File app/controllers/user_controller.rb, line 8</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">show</span>
         <span class="ruby-identifier">require_login</span>
         <span class="ruby-ivar">@user</span> = <span class="ruby-constant">User</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:id</span>])

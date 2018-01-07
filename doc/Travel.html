@@ -92,6 +92,9 @@
 
   <section class="description">
     
+<p>This class manages the model(relations, validations and base methods) of
+the <a href="Travel.html">Travel</a> object</p>
+
   </section>
 
   
@@ -144,7 +147,7 @@
 
           
           <div class="method-source-code" id="get_duration_integer_minutes-source">
-            <pre><span class="ruby-comment"># File app/models/travel.rb, line 24</span>
+            <pre><span class="ruby-comment"># File app/models/travel.rb, line 25</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">get_duration_integer_minutes</span>
         ((<span class="ruby-identifier">end_time</span> <span class="ruby-operator">-</span> <span class="ruby-identifier">start_time</span>) <span class="ruby-operator">/</span> <span class="ruby-value">60</span>).<span class="ruby-identifier">to_i</span>
 <span class="ruby-keyword">end</span></pre>
@@ -177,7 +180,7 @@
 
           
           <div class="method-source-code" id="get_ending_point-source">
-            <pre><span class="ruby-comment"># File app/models/travel.rb, line 51</span>
+            <pre><span class="ruby-comment"># File app/models/travel.rb, line 52</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">get_ending_point</span>
         <span class="ruby-keyword">if</span> <span class="ruby-identifier">ending_location_meeting</span>.<span class="ruby-identifier">blank?</span>
                 <span class="ruby-identifier">ending_location_dl</span>
@@ -214,7 +217,7 @@
 
           
           <div class="method-source-code" id="get_starting_point-source">
-            <pre><span class="ruby-comment"># File app/models/travel.rb, line 42</span>
+            <pre><span class="ruby-comment"># File app/models/travel.rb, line 43</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">get_starting_point</span>
         <span class="ruby-keyword">if</span> <span class="ruby-identifier">starting_location_meeting</span>.<span class="ruby-identifier">blank?</span>
                 <span class="ruby-identifier">starting_location_dl</span>
@@ -251,7 +254,7 @@
 
           
           <div class="method-source-code" id="get_user-source">
-            <pre><span class="ruby-comment"># File app/models/travel.rb, line 29</span>
+            <pre><span class="ruby-comment"># File app/models/travel.rb, line 30</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">get_user</span>
         <span class="ruby-keyword">if</span> <span class="ruby-identifier">starting_location_dl</span>.<span class="ruby-identifier">present?</span>
                 <span class="ruby-identifier">starting_location_dl</span>.<span class="ruby-identifier">user</span>

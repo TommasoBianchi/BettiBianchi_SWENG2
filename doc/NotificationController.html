@@ -88,6 +88,9 @@
 
   <section class="description">
     
+<p>This class manages everything related with the notifications (warnings,
+invitations, undoable breaks, resolve warning)</p>
+
   </section>
 
   
@@ -126,7 +129,7 @@
 
           
           <div class="method-source-code" id="index-source">
-            <pre><span class="ruby-comment"># File app/controllers/notification_controller.rb, line 4</span>
+            <pre><span class="ruby-comment"># File app/controllers/notification_controller.rb, line 5</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">index</span>
         <span class="ruby-ivar">@user</span> = <span class="ruby-identifier">current_user</span>
         <span class="ruby-ivar">@pending_meetings</span> = <span class="ruby-identifier">get_invitation</span>(<span class="ruby-ivar">@user</span>)
@@ -163,7 +166,7 @@ accept/decline meetings</p>
 
           
           <div class="method-source-code" id="resolve_warning-source">
-            <pre><span class="ruby-comment"># File app/controllers/notification_controller.rb, line 12</span>
+            <pre><span class="ruby-comment"># File app/controllers/notification_controller.rb, line 13</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">resolve_warning</span>
         <span class="ruby-identifier">check_if_mine</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:meeting_participation_id</span>])
         <span class="ruby-identifier">mp</span> = <span class="ruby-constant">MeetingParticipation</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:meeting_participation_id</span>])

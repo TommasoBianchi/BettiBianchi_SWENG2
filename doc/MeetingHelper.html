@@ -107,12 +107,13 @@ scheduling of meeting participations</p>
       
         <dt id="BaseURL">BaseURL
         
-        <dd>
+        <dd><p>This constant represent the base path used for autocomplete</p>
         
       
         <dt id="GoogleAPIKey">GoogleAPIKey
         
-        <dd>
+        <dd><p>This is a constant that contains the google API Key used to get the travels
+from google</p>
         
       
       </dl>
@@ -223,7 +224,7 @@ a Ruby Symbol) indicating either consistency, inconsistency or errors</p>
 
         <span class="ruby-comment">####### If meeting participation is not consistent break out of this function</span>
         <span class="ruby-keyword">if</span> <span class="ruby-identifier">meeting_data</span>[<span class="ruby-value">:is_consistent</span>] <span class="ruby-operator">==</span> <span class="ruby-keyword">false</span>
-                <span class="ruby-identifier">sleep</span> <span class="ruby-value">5</span> <span class="ruby-keyword">if</span> (<span class="ruby-constant">ENV</span>.<span class="ruby-identifier">fetch</span>(<span class="ruby-string">&quot;RAILS_ENV&quot;</span>) <span class="ruby-operator">==</span> <span class="ruby-string">&quot;test&quot;</span>) <span class="ruby-comment"># Fix needed to handle nested transactions</span>
+                <span class="ruby-identifier">sleep</span> <span class="ruby-value">5</span> <span class="ruby-keyword">if</span> (<span class="ruby-constant">ENV</span>.<span class="ruby-identifier">fetch</span>(<span class="ruby-string">&quot;RAILS_ENV&quot;</span>) { <span class="ruby-string">&quot;development&quot;</span> } <span class="ruby-operator">==</span> <span class="ruby-string">&quot;test&quot;</span>) <span class="ruby-comment"># Fix needed to handle nested transactions</span>
                 <span class="ruby-constant">ActiveRecord</span><span class="ruby-operator">::</span><span class="ruby-constant">Base</span>.<span class="ruby-identifier">transaction</span> <span class="ruby-keyword">do</span>
                         <span class="ruby-identifier">meeting</span>.<span class="ruby-identifier">save</span>
                         <span class="ruby-identifier">meeting_participation</span>.<span class="ruby-identifier">save</span>
