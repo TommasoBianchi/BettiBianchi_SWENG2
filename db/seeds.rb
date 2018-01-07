@@ -102,8 +102,10 @@ for i in 1..NUM_USERS do
 	user = User.create(name: 'User' + i.to_s, surname: 'Surname' + i.to_s, password: '0000', password_confirmation: '0000', nickname: 'PP' + i.to_s, preference_list: '021', website: 'http://www.google.com', company: 'BettiBianchi s.r.l.')
 	IncompleteUser.create(email: 'User' + i.to_s + '.Surname@travlendar.com', password: '0000', password_confirmation: '0000')
 	user.groups.push(Group.find(i % NUM_GROUPS + 1))
-	SocialUser.create(social_id: Social::Social_type.keys.sample, link: 'www.linkedin.com/UserSurname' + i.to_s, user_id: user.id)
-	SocialUser.create(social_id: Social::Social_type.keys.sample, link: 'www.linkedin.com/UserSurname' + i.to_s, user_id: user.id)
+	k = Social::Social_type.keys.sample
+	SocialUser.create(social_id: k, link: 'www.#{Social::Social_type[k][:name]}.com', user_id: user.id)
+	k = Social::Social_type.keys.sample
+	SocialUser.create(social_id: k, link: 'www.#{Social::Social_type[k][:name]}.com', user_id: user.id)
 
 	for j in 1..NUM_EMAILS_PER_USER do
 		email = Email.create(email: 'User' + i.to_s + '.Surname.' + j.to_s + '@travlendar.com', user_id: user.id)
