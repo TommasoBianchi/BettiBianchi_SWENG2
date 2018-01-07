@@ -5,9 +5,9 @@ class Social < ApplicationRecord
 
 	# This should be a constant
 	Social_type = {
-			1 => {name: 'facebook', icon_path: 'social_icons/facebook_icon.png', social_id: 1},
-			2 => {name: 'linkedin', icon_path: 'social_icons/linkedin_icon.png', social_id: 2},
-			3 => {name: 'instagram', icon_path: 'social_icons/instagram_icon.png', social_id: 3}
+			1 => {name: 'Facebook', icon_path: 'social_icons/facebook_icon.png', social_id: 1},
+			2 => {name: 'Linkedin', icon_path: 'social_icons/linkedin_icon.png', social_id: 2},
+			3 => {name: 'Instagram', icon_path: 'social_icons/instagram_icon.png', social_id: 3}
 	}
 
 	validates :name, :icon_path, presence: true
