@@ -1,23 +1,24 @@
-Testing is a crucial part of the developing process of a system and Ruby on Rails knows it perfectly. It dedicates a whole independent folder of the system to facilitate their implementation. \\
-In our particular case, since we make the choice of providing small prototypes, tests become precious: after that a test, that certify that a specific functionality of the project works, has been created, every subsequent modifications will have to deal with it to check if this change has introduced a bug in the system or not. \\
-We decided to build two types of test called Model Test and System Test.
+Testing is a crucial part of the development process of a system and Ruby on Rails knows it perfectly. It dedicates a whole independent folder of the system to facilitate their implementation. \\
+In our particular case, since we made the choice of providing small prototypes, tests became precious: after a test, that certifies that a specific functionality of the project works, has been created, every subsequent modification will have to deal with it to ensure no bug have been introduced. \\
+We decided to build two types of test: Model Tests and System Tests.
 
-\subsection{Model Test}
-This type of tests runs on the model of the project that contains the description of all the data on which the system is built. For this reason having consistent data is crucial; they must be formatted properly and must respect some constraints. \\
-The model, on a Ruby on Rails system, is directly related with the tables on the database so it must provide proper validations that has to be tested correctly. It is important to have the largest possible number of model objects tested since the beginning of the implementation process, since that in this way we would be sure that all the components that will create and update data will not insert wrong and inconsistent informations. 
+\subsection{Model Tests}
+This type of test runs on the models of the project, that contain the description of all the data on which the system is based. For this reason having consistent data is crucial; they must be formatted properly and must respect some constraints. \\
+The model, on a Ruby on Rails system, is directly related with the tables on the database so it must provide proper validations that has to be tested correctly. It is important to have the largest possible number of model objects tested since the beginning of the implementation process: in this way we are sure that all the components, that will create and update data, will not insert wrong and inconsistent information. \\
+All model tests can be found in the proper folder of the project. 
 
-\subsection{System Test}
-System testing of software is testing conducted on a complete, integrated system to evaluate the system's compliance with its specified requirements. System testing falls within the scope of black-box testing, and as such, should require no knowledge of the inner design of the code or logic. Ruby on Rails provide out-of-the-box a great system test framework called Capybara, that enabled us to test how the system should appear and should interact with users ignoring all or most of the logic running on the server. \\
+\subsection{System Tests}
+System testing of software is testing conducted on a complete, integrated system to evaluate its compliance with its specified requirements. System testing falls within the scope of black-box testing, and as such, should require no knowledge of the inner design of the code or logic. Ruby on Rails provide out-of-the-box a great system test framework called Capybara, that enabled us to test how the system should appear and should interact with users ignoring all or most of the logic running on the server. \\
 We have tested in this way the features that we consider to be the key ones for the interaction of the user with our system.
 
 \subsubsection*{Login and Signup}
-The purpose of this test is very easy: if a new user register in our website, then the next time he comes back he should be able to login using the same credentials. Also, users should be able to log out and be redirected back to the homepage.
+The purpose of this test is very easy: if a new user registers in our website, then the next time he comes back he should be able to login using the same credentials. Also, users should be able to log out and be redirected back to the homepage.
 
 \subsubsection*{Section Navigation}
-Our website provides users a top-page navigation bar, or header, and a bottom-page navigarion bar, or footer, to give them easy access to the main sections of the \projectname application. The purpose of this test is just to check that each of those sections are reachable by clicking on the apposite button.
+Our website provides users a top-page navigation bar, or header, and a bottom-page navigation bar, or footer, to give them easy access to the main sections of the \projectname~ application. The purpose of this test is just to check that each of those sections is reachable by clicking on the proper button.
 
 \subsubsection*{Meeting Creation}
-This system test contains two test cases: the former's purpose is to check that the meeting creation page works as expected and that a user is able to visualize the meeting just created on his calendar; the latter's one is to check that if a user creates two overlapping meetings, a warning is correctly generated and listed in the appropriate slot in the notification page.
+This system test contains two test cases: the former's purpose is to check that the meeting creation page works as expected and that a user is able to visualize the new meeting on his calendar afterwards; the latter's one is to check that if a user creates two overlapping meetings, a warning is correctly generated and listed in the appropriate slot in the notification page.
 
 \subsubsection*{Default Location Creation}
 The purpose of this test is to ensure that users are able to create a new default location and visualize it in the appropriate slot in the settings page afterwards.

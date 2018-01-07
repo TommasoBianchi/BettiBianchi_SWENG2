@@ -1,6 +1,7 @@
-We managed to implement most of the requirements of the \projectname~project. We have decided to develop them following the guide we wrote on the DD document and, at the end, we succeeded to reach a fully usable version of the system, passing through lot of prototypes. \\
-Moreover we present a table that enumerates all the requirements listed in the RASD document, pointing if they have been implemented or not. All the requirements that form the foundation of the system, concerning meetings, travels, users and breaks have been fully developed in order to be able to provide to the stakeholders a complete and suitable version of \projectname. \\
-The requirements that have not been implemented are mostly nice-to-have features that do not impact of the core of the system but mainly enhance the user experience and provide a more complete set of tools for managing meetings. They have not been implemented because of the limited time that we had and to allocate more time for ensuring completeness, robustness and stability of the core features.
+We managed to implement most of the requirements of the \projectname~project. We have decided to develop them following the implementation plan we presented in the DD document and, at the end, we succeeded to reach a fully usable version of the system, passing through lot of prototypes. \\
+All the requirements that form the foundation of the system, concerning meetings, travels, users and breaks have been fully developed in order to be able to provide the stakeholders a sufficiently complete first version of \projectname. \\
+The requirements that have not been implemented are mostly nice-to-have features that do not impact the core of the system but mainly enhance the user experience and provide a more complete set of tools for managing meetings. They have not been implemented in order to allocate more time for ensuring completeness, robustness and stability of the main features.\\ 
+Below we present a table that enumerates all the requirements listed in the RASD document, pointing if they have been implemented or not.
 
 \newcounter{countReq}
 \newcommand{\reqNum}{\stepcounter{countReq}\thecountReq}
@@ -12,7 +13,7 @@ The requirements that have not been implemented are mostly nice-to-have features
 	\textbf{R\reqNum}~Each user must provide an email that is not already present in the system & Implemented	\\ \hline
 	\textbf{R\reqNum}~Each user must provide a nickname that is not already present in the system & Implemented	\\ \hline
 	\textbf{R\reqNum}~Users have to be registered into the system before logging in & Implemented	\\ \hline
-	\textbf{R\reqNum}~Users have to provide an existing email or nickname and the associated password in order to log in; in alternative they can use a supported external login system & Partially Implemented	\\ \hline
+	\textbf{R\reqNum}~Users have to provide an existing email or nickname and the associated password in order to log in; in alternative they can use a supported external login system & Partially Implemented(not the External Login)	\\ \hline
 	\textbf{R\reqNum}~A user must be logged into the system to perform any action except registering and logging in & Implemented	\\ \hline
 	\textbf{R\reqNum}~Users cannot have meetings while their status is set to auto-decline & Not Implemented	\\ \hline
 	\textbf{R\reqNum}~A user cannot have different default locations sharing the start time & Implemented	\\ \hline
