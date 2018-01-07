@@ -51,7 +51,7 @@ class DefaultLocationController < ApplicationController
 		@default_location = DefaultLocation.new(starting_hour: starting_hour, day_of_the_week: day_of_the_week, name: name, user_id: user.id, location_id: location.id)
 		if @default_location.valid?
 			@default_location.save
-			create_dl_in_database
+			create_dl_in_database(starting_hour, day_of_the_week, name, user, location)
 			redirect_to @default_location
 		else
 			@default_location.starting_hour = ''
@@ -126,7 +126,7 @@ class DefaultLocationController < ApplicationController
 		@default_location = DefaultLocation.new(starting_hour: starting_hour, day_of_the_week: day_of_the_week, name: name, user_id: user.id, location_id: location.id)
 		if @default_location.valid?
 			@default_location.save
-			create_dl_in_database
+			create_dl_in_database(starting_hour, day_of_the_week, name, user, location)
 			log_in(user)
 			redirect_to calendar_day_path
 		else
@@ -147,7 +147,7 @@ class DefaultLocationController < ApplicationController
 	end
 
 	# This method helps the creators to create all the default locations
-	def create_dl_in_database
+	def create_dl_in_database(starting_hour, day_of_the_week, name, user, location)
 		if params[:repetition][:day_of_the_week] == 'daily'
 			for i in 1..6
 				DefaultLocation.create(starting_hour: starting_hour, day_of_the_week: (day_of_the_week + i) % 7, name: name, user_id: user.id, location_id: location.id)
