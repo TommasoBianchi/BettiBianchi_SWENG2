@@ -96,6 +96,9 @@
 
   <section class="description">
     
+<p>This class manages everything related with default locations (show,
+creation, creation of the first default location, delete)</p>
+
   </section>
 
   
@@ -135,7 +138,7 @@ passed by the user are correct and in the right format</p>
 
           
           <div class="method-source-code" id="create-source">
-            <pre><span class="ruby-comment"># File app/controllers/default_location_controller.rb, line 24</span>
+            <pre><span class="ruby-comment"># File app/controllers/default_location_controller.rb, line 25</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">create</span>
         <span class="ruby-ivar">@default_location</span> = <span class="ruby-constant">DefaultLocation</span>.<span class="ruby-identifier">new</span>
         <span class="ruby-identifier">user</span> = <span class="ruby-identifier">current_user</span>
@@ -165,7 +168,7 @@ passed by the user are correct and in the right format</p>
         <span class="ruby-ivar">@default_location</span> = <span class="ruby-constant">DefaultLocation</span>.<span class="ruby-identifier">new</span>(<span class="ruby-value">starting_hour:</span> <span class="ruby-identifier">starting_hour</span>, <span class="ruby-value">day_of_the_week:</span> <span class="ruby-identifier">day_of_the_week</span>, <span class="ruby-value">name:</span> <span class="ruby-identifier">name</span>, <span class="ruby-value">user_id:</span> <span class="ruby-identifier">user</span>.<span class="ruby-identifier">id</span>, <span class="ruby-value">location_id:</span> <span class="ruby-identifier">location</span>.<span class="ruby-identifier">id</span>)
         <span class="ruby-keyword">if</span> <span class="ruby-ivar">@default_location</span>.<span class="ruby-identifier">valid?</span>
                 <span class="ruby-ivar">@default_location</span>.<span class="ruby-identifier">save</span>
-                <span class="ruby-identifier">create_dl_in_database</span>
+                <span class="ruby-identifier">create_dl_in_database</span>(<span class="ruby-identifier">starting_hour</span>, <span class="ruby-identifier">day_of_the_week</span>, <span class="ruby-identifier">name</span>, <span class="ruby-identifier">user</span>, <span class="ruby-identifier">location</span>)
                 <span class="ruby-identifier">redirect_to</span> <span class="ruby-ivar">@default_location</span>
         <span class="ruby-keyword">else</span>
                 <span class="ruby-ivar">@default_location</span>.<span class="ruby-identifier">starting_hour</span> = <span class="ruby-string">&#39;&#39;</span>
@@ -204,7 +207,7 @@ travels and travel step linked to it</p>
 
           
           <div class="method-source-code" id="delete-source">
-            <pre><span class="ruby-comment"># File app/controllers/default_location_controller.rb, line 64</span>
+            <pre><span class="ruby-comment"># File app/controllers/default_location_controller.rb, line 65</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">delete</span>
         <span class="ruby-identifier">check_if_mine</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:default_location_id</span>])
         <span class="ruby-identifier">check_if_me</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:user_id</span>].<span class="ruby-identifier">to_i</span>)
@@ -263,7 +266,7 @@ travels and travel step linked to it</p>
 
           
           <div class="method-source-code" id="first_creation-source">
-            <pre><span class="ruby-comment"># File app/controllers/default_location_controller.rb, line 100</span>
+            <pre><span class="ruby-comment"># File app/controllers/default_location_controller.rb, line 101</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">first_creation</span>
         <span class="ruby-identifier">user</span> = <span class="ruby-constant">User</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:user_id</span>])
         <span class="ruby-identifier">name</span> = <span class="ruby-identifier">params</span>[<span class="ruby-value">:default_location</span>][<span class="ruby-value">:name</span>]
@@ -292,7 +295,7 @@ travels and travel step linked to it</p>
         <span class="ruby-ivar">@default_location</span> = <span class="ruby-constant">DefaultLocation</span>.<span class="ruby-identifier">new</span>(<span class="ruby-value">starting_hour:</span> <span class="ruby-identifier">starting_hour</span>, <span class="ruby-value">day_of_the_week:</span> <span class="ruby-identifier">day_of_the_week</span>, <span class="ruby-value">name:</span> <span class="ruby-identifier">name</span>, <span class="ruby-value">user_id:</span> <span class="ruby-identifier">user</span>.<span class="ruby-identifier">id</span>, <span class="ruby-value">location_id:</span> <span class="ruby-identifier">location</span>.<span class="ruby-identifier">id</span>)
         <span class="ruby-keyword">if</span> <span class="ruby-ivar">@default_location</span>.<span class="ruby-identifier">valid?</span>
                 <span class="ruby-ivar">@default_location</span>.<span class="ruby-identifier">save</span>
-                <span class="ruby-identifier">create_dl_in_database</span>
+                <span class="ruby-identifier">create_dl_in_database</span>(<span class="ruby-identifier">starting_hour</span>, <span class="ruby-identifier">day_of_the_week</span>, <span class="ruby-identifier">name</span>, <span class="ruby-identifier">user</span>, <span class="ruby-identifier">location</span>)
                 <span class="ruby-identifier">log_in</span>(<span class="ruby-identifier">user</span>)
                 <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">calendar_day_path</span>
         <span class="ruby-keyword">else</span>
@@ -332,7 +335,7 @@ location during the registration phase</p>
 
           
           <div class="method-source-code" id="first_def_location-source">
-            <pre><span class="ruby-comment"># File app/controllers/default_location_controller.rb, line 95</span>
+            <pre><span class="ruby-comment"># File app/controllers/default_location_controller.rb, line 96</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">first_def_location</span>
         <span class="ruby-ivar">@default_location</span> = <span class="ruby-constant">DefaultLocation</span>.<span class="ruby-identifier">new</span>
 <span class="ruby-keyword">end</span></pre>
@@ -365,7 +368,7 @@ location during the registration phase</p>
 
           
           <div class="method-source-code" id="new-source">
-            <pre><span class="ruby-comment"># File app/controllers/default_location_controller.rb, line 18</span>
+            <pre><span class="ruby-comment"># File app/controllers/default_location_controller.rb, line 19</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">new</span>
         <span class="ruby-ivar">@back_path</span> = <span class="ruby-identifier">request</span>.<span class="ruby-identifier">referer</span>
         <span class="ruby-ivar">@default_location</span> = <span class="ruby-constant">DefaultLocation</span>.<span class="ruby-identifier">new</span>
@@ -399,7 +402,7 @@ location during the registration phase</p>
 
           
           <div class="method-source-code" id="show-source">
-            <pre><span class="ruby-comment"># File app/controllers/default_location_controller.rb, line 5</span>
+            <pre><span class="ruby-comment"># File app/controllers/default_location_controller.rb, line 6</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">show</span>
         <span class="ruby-identifier">check_if_mine</span>
         <span class="ruby-ivar">@user</span> = <span class="ruby-identifier">current_user</span>

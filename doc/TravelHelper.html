@@ -103,22 +103,24 @@ different locations</p>
       
         <dt id="BaseURL">BaseURL
         
-        <dd>
+        <dd><p>URL where to send API request for travels</p>
         
       
         <dt id="GoogleAPIKey">GoogleAPIKey
         
-        <dd>
+        <dd><p>Key for the Google Directions API</p>
         
       
         <dt id="TravelMeansToTravelModes">TravelMeansToTravelModes
         
-        <dd>
+        <dd><p>Dictionary to translate travel means (used by the application) to travel
+modes (used by the Google Directions API)</p>
         
       
         <dt id="TravelModesToTravelMeans">TravelModesToTravelMeans
         
-        <dd>
+        <dd><p>Dictionary to translate travel modes (as returned by the Google Directions
+API) to travel means (used by the application)</p>
         
       
       </dl>
@@ -176,6 +178,7 @@ the provider returns them</p>
 <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier ruby-title">best_travel</span>(<span class="ruby-identifier">from_location</span>, <span class="ruby-identifier">to_location</span>, <span class="ruby-identifier">user</span>, <span class="ruby-identifier">departure_time</span> = <span class="ruby-constant">DateTime</span>.<span class="ruby-identifier">now</span>, <span class="ruby-identifier">arrival_time</span> = <span class="ruby-keyword">nil</span>)
         <span class="ruby-identifier">weighted_list</span> = []            
         <span class="ruby-identifier">preference_list</span> = <span class="ruby-identifier">user</span>.<span class="ruby-identifier">preference_list</span>.<span class="ruby-identifier">chars</span>.<span class="ruby-identifier">map</span> {<span class="ruby-operator">|</span><span class="ruby-identifier">c</span><span class="ruby-operator">|</span> <span class="ruby-constant">Travel</span><span class="ruby-operator">::</span><span class="ruby-constant">Travel_means</span>.<span class="ruby-identifier">keys</span>[<span class="ruby-identifier">c</span>.<span class="ruby-identifier">to_i</span>]}
+        <span class="ruby-identifier">fastest_travel</span> = {<span class="ruby-value">path:</span> <span class="ruby-keyword">nil</span>, <span class="ruby-value">duration:</span> <span class="ruby-constant">Float</span><span class="ruby-operator">::</span><span class="ruby-constant">MAX</span>}
 
         <span class="ruby-identifier">preference_list</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">travel_mean</span><span class="ruby-operator">|</span>
                 <span class="ruby-identifier">path</span> = <span class="ruby-identifier">shortest_path</span>(<span class="ruby-identifier">from_location</span>, <span class="ruby-identifier">to_location</span>, <span class="ruby-identifier">travel_mean</span>, <span class="ruby-identifier">departure_time</span>, <span class="ruby-identifier">arrival_time</span>)
@@ -188,6 +191,12 @@ the provider returns them</p>
                 <span class="ruby-keyword">end</span>
                 <span class="ruby-keyword">unless</span> <span class="ruby-identifier">path</span>[<span class="ruby-value">:end_time</span>]
                         <span class="ruby-identifier">path</span>[<span class="ruby-value">:end_time</span>] = <span class="ruby-keyword">if</span> <span class="ruby-identifier">arrival_time</span> <span class="ruby-keyword">then</span> <span class="ruby-identifier">arrival_time</span> <span class="ruby-keyword">else</span> (<span class="ruby-identifier">departure_time</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">path</span>[<span class="ruby-value">:duration</span>].<span class="ruby-identifier">seconds</span>) <span class="ruby-keyword">end</span>
+                <span class="ruby-keyword">end</span>
+
+                <span class="ruby-comment"># Save the fastest path in case no one remains available after the constraint satisfaction phase</span>
+                <span class="ruby-keyword">if</span> <span class="ruby-identifier">path</span>[<span class="ruby-value">:duration</span>] <span class="ruby-operator">&lt;</span> <span class="ruby-identifier">fastest_travel</span>[<span class="ruby-value">:duration</span>]
+                        <span class="ruby-identifier">fastest_travel</span>[<span class="ruby-value">:path</span>] = <span class="ruby-identifier">path</span>
+                        <span class="ruby-identifier">fastest_travel</span>[<span class="ruby-value">:duration</span>] = <span class="ruby-identifier">path</span>[<span class="ruby-value">:duration</span>]
                 <span class="ruby-keyword">end</span>
 
                 <span class="ruby-comment"># Constraint satisfaction</span>
@@ -207,7 +216,7 @@ the provider returns them</p>
         <span class="ruby-keyword">end</span>
 
         <span class="ruby-keyword">if</span> <span class="ruby-identifier">weighted_list</span>.<span class="ruby-identifier">length</span> <span class="ruby-operator">==</span> <span class="ruby-value">0</span>
-                <span class="ruby-keyword">return</span> <span class="ruby-keyword">nil</span> 
+                <span class="ruby-keyword">return</span> <span class="ruby-identifier">fastest_travel</span>[<span class="ruby-value">:path</span>] 
         <span class="ruby-keyword">end</span>
 
         <span class="ruby-identifier">weighted_list</span> = <span class="ruby-identifier">weighted_list</span>.<span class="ruby-identifier">sort_by</span> {<span class="ruby-operator">|</span><span class="ruby-identifier">el</span><span class="ruby-operator">|</span> <span class="ruby-identifier">el</span>[<span class="ruby-value">:weighted_duration</span>]}
@@ -327,9 +336,9 @@ the provider returns them</p>
 
                 <span class="ruby-keyword">if</span> <span class="ruby-identifier">step</span>[<span class="ruby-string">&#39;travel_mode&#39;</span>] <span class="ruby-operator">==</span> <span class="ruby-string">&quot;TRANSIT&quot;</span>
                         <span class="ruby-identifier">formatted_step</span>[<span class="ruby-value">:departure_stop</span>] = <span class="ruby-identifier">step</span>[<span class="ruby-string">&#39;transit_details&#39;</span>][<span class="ruby-string">&#39;departure_stop&#39;</span>][<span class="ruby-string">&#39;name&#39;</span>]
-                        <span class="ruby-identifier">formatted_step</span>[<span class="ruby-value">:departure_time</span>] = <span class="ruby-identifier">step</span>[<span class="ruby-string">&#39;transit_details&#39;</span>][<span class="ruby-string">&#39;departure_time&#39;</span>][<span class="ruby-string">&#39;text&#39;</span>]
+                        <span class="ruby-identifier">formatted_step</span>[<span class="ruby-value">:departure_time</span>] = <span class="ruby-constant">Time</span>.<span class="ruby-identifier">at</span>(<span class="ruby-identifier">step</span>[<span class="ruby-string">&#39;transit_details&#39;</span>][<span class="ruby-string">&#39;departure_time&#39;</span>][<span class="ruby-string">&#39;value&#39;</span>] <span class="ruby-operator">+</span> <span class="ruby-identifier">time_zone_offset</span>)
                         <span class="ruby-identifier">formatted_step</span>[<span class="ruby-value">:arrival_stop</span>] = <span class="ruby-identifier">step</span>[<span class="ruby-string">&#39;transit_details&#39;</span>][<span class="ruby-string">&#39;arrival_stop&#39;</span>][<span class="ruby-string">&#39;name&#39;</span>]
-                        <span class="ruby-identifier">formatted_step</span>[<span class="ruby-value">:arrival_time</span>] = <span class="ruby-identifier">step</span>[<span class="ruby-string">&#39;transit_details&#39;</span>][<span class="ruby-string">&#39;arrival_time&#39;</span>][<span class="ruby-string">&#39;text&#39;</span>]
+                        <span class="ruby-identifier">formatted_step</span>[<span class="ruby-value">:arrival_time</span>] = <span class="ruby-constant">Time</span>.<span class="ruby-identifier">at</span>(<span class="ruby-identifier">step</span>[<span class="ruby-string">&#39;transit_details&#39;</span>][<span class="ruby-string">&#39;arrival_time&#39;</span>][<span class="ruby-string">&#39;value&#39;</span>] <span class="ruby-operator">+</span> <span class="ruby-identifier">time_zone_offset</span>)
                 <span class="ruby-keyword">end</span>
 
                 <span class="ruby-identifier">formatted_steps</span>.<span class="ruby-identifier">push</span>(<span class="ruby-identifier">formatted_step</span>)

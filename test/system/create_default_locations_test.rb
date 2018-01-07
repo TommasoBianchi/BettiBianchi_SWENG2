@@ -11,8 +11,8 @@ class CreateDefaultLocationsTest < ApplicationSystemTestCase
 
 		name = "Test default location #{rand(1..100000000)}"
 		fill_in "name", with: name
-		fill_in "dl_date", with: "Wednesday"
-		fill_in "meeting_start_time", with: "7:00am"
+		fill_in "day_of_the_week", with: "Wednesday"
+		fill_in "starting_hour", with: "7:00am"
 		fill_in "pac-input", with: "Via Padova Milano"
 		find('.pac-item:first-child').click
 		sleep 1 # To give time to google to fill in the autocomplete

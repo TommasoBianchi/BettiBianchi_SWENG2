@@ -11,9 +11,9 @@
 	<div id="mainWrapper">
 		<!--<div class="logoContainer"> <img src="Images/logoImage.jpg" class="logo"> </div> -->
 		<div class="logoContainer">
-			<a class="mainTitle">
-				Travlendar+<br></a>
-			<a class="subtitle">Organize your daily schedule!</a><br>
+			<div class="mainTitle">
+				Travlendar+<br></div>
+			<div class="subtitle">Organize your daily schedule!</div><br>
 			<% flash.each do |message_type, message| %>
 				<div class="homepage-alert alert alert-<%= message_type %>"><%= message %></div>
 			<% end %>

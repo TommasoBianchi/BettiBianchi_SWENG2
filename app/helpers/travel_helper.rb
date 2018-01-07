@@ -162,8 +162,10 @@ module TravelHelper
 
 	private
 
+	# Key for the Google Directions API
 	GoogleAPIKey = 'AIzaSyDba6PxTVz-07hIVjksboJ4AEkOP2WeuAs'
 
+	# Dictionary to translate travel means (used by the application) to travel modes (used by the Google Directions API)
 	TravelMeansToTravelModes = {
 		walking: 'walking',
 		driving: 'driving',
@@ -171,6 +173,7 @@ module TravelHelper
 		public_transportation: 'transit'
 	}
 
+	# Dictionary to translate travel modes (as returned by the Google Directions API) to travel means (used by the application)
 	TravelModesToTravelMeans = {
 		'DRIVING' => :driving,
 		'WALKING' => :walking,
@@ -178,5 +181,6 @@ module TravelHelper
 		'TRANSIT' => :public_transportation
 	}
 
+	# URL where to send API request for travels
 	BaseURL = 'https://maps.googleapis.com/maps/api/directions/json'
 end

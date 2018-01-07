@@ -83,6 +83,9 @@
 
   <section class="description">
     
+<p>This is a helper module containing various functions to manage user&#39;s
+sessions</p>
+
   </section>
 
   
@@ -121,7 +124,7 @@
 
           
           <div class="method-source-code" id="current_user-source">
-            <pre><span class="ruby-comment"># File app/helpers/homepage_helper.rb, line 14</span>
+            <pre><span class="ruby-comment"># File app/helpers/homepage_helper.rb, line 15</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">current_user</span>
   <span class="ruby-keyword">if</span> <span class="ruby-ivar">@current_user</span>.<span class="ruby-identifier">nil?</span>
     <span class="ruby-ivar">@current_user</span> = <span class="ruby-constant">User</span>.<span class="ruby-identifier">find_by</span>(<span class="ruby-value">id:</span> <span class="ruby-identifier">session</span>[<span class="ruby-value">:user_id</span>])
@@ -158,7 +161,7 @@
 
           
           <div class="method-source-code" id="log_in-source">
-            <pre><span class="ruby-comment"># File app/helpers/homepage_helper.rb, line 3</span>
+            <pre><span class="ruby-comment"># File app/helpers/homepage_helper.rb, line 4</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">log_in</span>(<span class="ruby-identifier">user</span>)
   <span class="ruby-identifier">session</span>[<span class="ruby-value">:user_id</span>] = <span class="ruby-identifier">user</span>.<span class="ruby-identifier">id</span>
 <span class="ruby-keyword">end</span></pre>
@@ -191,7 +194,7 @@
 
           
           <div class="method-source-code" id="log_out-source">
-            <pre><span class="ruby-comment"># File app/helpers/homepage_helper.rb, line 8</span>
+            <pre><span class="ruby-comment"># File app/helpers/homepage_helper.rb, line 9</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">log_out</span>
   <span class="ruby-identifier">session</span>.<span class="ruby-identifier">delete</span>(<span class="ruby-value">:user_id</span>)
   <span class="ruby-ivar">@current_user</span> = <span class="ruby-keyword">nil</span>

@@ -86,6 +86,9 @@
 
   <section class="description">
     
+<p>This class manages the show page of a travel; everything related with the
+creation of a travel is managed by the travel helper</p>
+
   </section>
 
   
@@ -124,7 +127,7 @@
 
           
           <div class="method-source-code" id="show-source">
-            <pre><span class="ruby-comment"># File app/controllers/travel_controller.rb, line 5</span>
+            <pre><span class="ruby-comment"># File app/controllers/travel_controller.rb, line 7</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">show</span>
         <span class="ruby-ivar">@travel</span> = <span class="ruby-constant">Travel</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:id</span>])
         <span class="ruby-ivar">@travel_schedule</span> = []
