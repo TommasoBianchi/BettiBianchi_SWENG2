@@ -1,0 +1,15 @@
+<%= render 'shared/header', selected: 'settings' %>
+<div id="content">
+	<script type="text/javascript"></script>
+	<%= render 'shared/calendar_sidebar' %>
+	<section class="mainContent">
+
+
+		<%= render 'shared/title_back_action', title: 'Create Default Location', path: @back_path %>
+		<%= render 'shared/new_default_location' %>
+
+	</section>
+</div>
+<%= render 'shared/footer' %>
+
+

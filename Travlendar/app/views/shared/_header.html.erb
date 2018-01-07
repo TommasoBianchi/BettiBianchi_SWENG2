@@ -1,0 +1,27 @@
+<% unless defined? selected %>
+	<% selected = nil %>
+<% end %>
+
+<header>
+	<%= link_to calendar_day_path, id: "logo-a" do %>
+		<div id="logo">
+			Travlendar+
+		</div>
+	<% end %>
+
+	<div id="headerLinks">
+		<a href="<%= user_path id: current_user.id %>" title="Profile" class="<%= if selected == 'profile' then 'selected' end %>">Profile</a><!---
+		--><a href="<%= calendar_day_path %>" title="Calendar" class="<%= if selected == 'calendar' then 'selected' end %>">Calendar</a><!---
+		--><a href="<%= settings_page_path id: current_user.id %>" title="Settings" class="<%= if selected == 'settings' then 'selected' end %>">Settings</a><!---
+		--><a href="<%= notification_index_path %>" title="Notifications" class="<%= if selected == 'notifications' then 'selected' end %>">
+			<div>Notifications</div>
+			<div id="notifications-amount">
+				<%= current_user.meeting_participations.where(response_status:
+							 MeetingParticipation::Response_statuses[:pending]).count +
+				   current_user.meeting_participations.where(is_consistent: false,
+				   			response_status: MeetingParticipation::Response_statuses[:accepted]).count +
+				   current_user.computed_breaks.where(is_doable: false).count %>
+			</div>
+		</a>
+	</div>
+</header>

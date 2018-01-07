@@ -1,0 +1,73 @@
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<title>Travlendar+: Complete Registration</title>
+</head>
+
+<body>
+<div class="outer">
+	<div id="mainWrapper">
+		<div class="logoContainer">
+			<a class="title">Complete your Registration!</a>
+		</div>
+		<div id="emailPasswordContainer">
+
+			<%= form_with scope: :user, local: true do |form| %>
+
+				<script type="text/javascript">
+			<% if !@user.valid? %>
+			$(window).on('load', function () {
+				<% @user.errors.each do |error, message| %>
+				displayError("<%= error.to_s %>", "<%= message %>")
+				<% end %>
+			})
+			<% end %>
+				</script>
+
+				<%= form.label :email, class: 'label' %>
+				<%= form.text_field :email, id: 'email', type: 'text', value: if @unregistered_user
+																																				@unregistered_user.email
+																																			elsif @user.emails
+																																				@user.emails.first.email
+																																			end %>
+				<%= form.label :password, class: 'label' %>
+				<%= form.text_field :password, id: 'password', type: 'password', value: if @unregistered_user
+																																									@unregistered_user.password
+																																								elsif @user.password
+																																									@user.password
+																																								end %>
+				<%= form.label :password_confirmation, class: 'label' %>
+				<%= form.text_field :password_confirmation, id: 'password_confirmation', type: 'password', value: if @unregistered_user
+																																																						@unregistered_user.password
+																																																					elsif @user.password
+																																																						@user.password
+																																																					end %>
+				<%= form.label :name, class: 'label' %>
+				<%= form.text_field :name, id: 'name', type: 'text' %>
+				<%= form.label :surname, class: 'label' %>
+				<%= form.text_field :surname, id: 'surname', type: 'text' %>
+				<%= form.label :nickname, class: 'label' %>
+				<%= form.text_field :nickname, id: 'nickname', type: 'text' %>
+				<%= form.label :brief, class: 'label' %>
+				<%= form.text_area :brief, id: 'brief', type: 'text' %>
+
+				<%= form.label :preference_list, class: 'label' %>
+				<%= render 'shared/preference_list', form: form %>
+
+
+				<div id="buttonsContainer">
+					<%= form.submit 'Save User', class: 'monoConfirmationButton' %>
+				</div>
+
+			<% end %>
+		</div>
+
+
+	</div>
+</div>
+
+
+</body>
+
+</html>

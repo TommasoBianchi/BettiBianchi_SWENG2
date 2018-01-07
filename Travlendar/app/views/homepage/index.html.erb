@@ -1,0 +1,40 @@
+<!doctype html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<title>Travlendar+: Login</title>
+</head>
+
+<body>
+<div class="outer">
+	<div id="mainWrapper">
+		<!--<div class="logoContainer"> <img src="Images/logoImage.jpg" class="logo"> </div> -->
+		<div class="logoContainer">
+			<div class="mainTitle">
+				Travlendar+<br></div>
+			<div class="subtitle">Organize your daily schedule!</div><br>
+			<% flash.each do |message_type, message| %>
+				<div class="homepage-alert alert alert-<%= message_type %>"><%= message %></div>
+			<% end %>
+		</div>
+		<div id="emailPasswordContainer">
+			<%= form_for(:homepage) do |f| %>
+				<%= f.text_field :email, placeholder: 'Nickname/Email', type: 'text', id: 'emailField' %>
+				<%= f.text_field :password, placeholder: 'Password', type: 'password' %>
+				<%= f.submit 'SIGNUP', name: 'signup', class: "confirmationButton" %>
+				<%= f.submit 'LOGIN', name: 'login', class: "confirmationButton" %>
+			<% end %>
+		</div>
+
+		<div id="loginProvidersContainer">
+			<%= image_tag("homepage/externalLoginGoogle.png", alt: "External login provider 1", class: 'externalLoginProvider') %>
+			<%= image_tag("homepage/externalLoginFacebook.png", alt: "External login provider 2", class: 'externalLoginProvider') %>
+			<%= image_tag("homepage/externalLoginLinkedin.png", alt: "External login provider 3", class: 'externalLoginProvider') %>
+			<%= image_tag("homepage/externalLoginTwitter.png", alt: "External login provider 4", class: 'externalLoginProvider') %>
+		</div>
+	</div>
+</div>
+</body>
+
+</html>

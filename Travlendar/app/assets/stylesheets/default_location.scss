@@ -1,0 +1,20 @@
+// Place all the styles related to the DefaultLocation controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+/* show default location */
+
+#map-container{
+  width: 400px !important;
+  height: 400px !important;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 50px !important;
+}
+
+#full-map-container {
+  width: 600px !important;
+  height: 400px !important;
+  margin-left: auto;
+  margin-right: auto;
+}

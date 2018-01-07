@@ -1,0 +1,11 @@
+<% if params[:year].nil? %>
+	<% year = DateTime.now.year %>
+<% else %>
+	<% year = params[:year] %>
+<% end %>
+
+<section class="sidebar">
+	<% for month in 1..12 %>
+		<%= render 'shared/month_calendar', year: year.to_i, month: month %>
+	<% end %>
+</section>

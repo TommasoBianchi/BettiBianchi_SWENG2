@@ -1,0 +1,25 @@
+<%= render 'shared/header', selected: 'settings' %>
+<div id="content">
+	<script type="text/javascript"></script>
+	<%= render 'shared/calendar_sidebar' %>
+	<section class="mainContent">
+		<%= render 'shared/title_back_action', title: @default_location.name %>
+		<b>
+			<p>
+				from: <%= @start_weekday %> <%= @start_time %>
+			</p>
+			<p>
+				to: <%= @end_weekday %> <%= @end_time %>
+			</p>
+		</b>
+		<div id="map-container">
+			<%= render 'shared/google_map', latitude: @default_location.location.latitude, longitude: @default_location.location.longitude, name: @default_location.name %>
+		</div>
+
+
+		<div class="response-block-container only-pending">
+			<%= link_to "DELETE", delete_default_location_path(default_location_id: @default_location.id, user_id: @user.id), class: "single-response-button light-grey-container colored-container" %>
+		</div>
+	</section>
+</div>
+<%= render 'shared/footer' %>

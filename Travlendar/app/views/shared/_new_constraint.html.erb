@@ -1,0 +1,10 @@
+<%= form_with scope: :constraint, local: true do |form| %>
+
+
+	<%= form.label :travel_mean, class: 'label' %>
+	<%= form.text_field :travel_mean, id: 'travel-mean', type: 'text' %>
+
+	<div id="buttonsContainer">
+		<%= form.submit 'Create Constraint', class: 'monoConfirmationButton' %>
+	</div>
+<% end %>

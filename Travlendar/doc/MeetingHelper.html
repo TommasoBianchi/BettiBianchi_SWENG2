@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta charset="UTF-8">
+
+<title>module MeetingHelper - RDoc Documentation</title>
+
+<script type="text/javascript">
+  var rdoc_rel_prefix = "./";
+  var index_rel_prefix = "./";
+</script>
+
+<script src="./js/jquery.js"></script>
+<script src="./js/darkfish.js"></script>
+
+<link href="./css/fonts.css" rel="stylesheet">
+<link href="./css/rdoc.css" rel="stylesheet">
+
+
+
+<body id="top" role="document" class="module">
+<nav role="navigation">
+  <div id="project-navigation">
+    <div id="home-section" role="region" title="Quick navigation" class="nav-section">
+  <h2>
+    <a href="./index.html" rel="home">Home</a>
+  </h2>
+
+  <div id="table-of-contents-navigation">
+    <a href="./table_of_contents.html#pages">Pages</a>
+    <a href="./table_of_contents.html#classes">Classes</a>
+    <a href="./table_of_contents.html#methods">Methods</a>
+  </div>
+</div>
+
+    <div id="search-section" role="search" class="project-section initially-hidden">
+  <form action="#" method="get" accept-charset="utf-8">
+    <div id="search-field-wrapper">
+      <input id="search-field" role="combobox" aria-label="Search"
+             aria-autocomplete="list" aria-controls="search-results"
+             type="text" name="search" placeholder="Search" spellcheck="false"
+             title="Type to search, Up and Down to navigate, Enter to load">
+    </div>
+
+    <ul id="search-results" aria-label="Search Results"
+        aria-busy="false" aria-expanded="false"
+        aria-atomic="false" class="initially-hidden"></ul>
+  </form>
+</div>
+
+  </div>
+
+  
+
+  <div id="class-metadata">
+    
+    
+    
+    
+    <!-- Method Quickref -->
+<div id="method-list-section" class="nav-section">
+  <h3>Methods</h3>
+
+  <ul class="link-list" role="directory">
+    
+    <li ><a href="#method-c-accept_invitation">::accept_invitation</a>
+    
+    <li ><a href="#method-c-create_meeting">::create_meeting</a>
+    
+    <li ><a href="#method-c-decline_invitation">::decline_invitation</a>
+    
+    <li ><a href="#method-c-invite_to_meeting">::invite_to_meeting</a>
+    
+    <li ><a href="#method-c-recompute_meeting_participations">::recompute_meeting_participations</a>
+    
+  </ul>
+</div>
+
+  </div>
+</nav>
+
+<main role="main" aria-labelledby="module-MeetingHelper">
+  <h1 id="module-MeetingHelper" class="module">
+    module MeetingHelper
+  </h1>
+
+  <section class="description">
+    
+<p>This is a helper module containing functions to be called to update the
+scheduling of meeting participations</p>
+
+  </section>
+
+  
+  <section id="5Buntitled-5D" class="documentation-section">
+    
+
+    
+
+    
+    <section class="constants-list">
+      <header>
+        <h3>Constants</h3>
+      </header>
+      <dl>
+      
+        <dt id="BaseURL">BaseURL
+        
+        <dd><p>This constant represent the base path used for autocomplete</p>
+        
+      
+        <dt id="GoogleAPIKey">GoogleAPIKey
+        
+        <dd><p>This is a constant that contains the google API Key used to get the travels
+from google</p>
+        
+      
+      </dl>
+    </section>
+    
+
+    
+
+    
+     <section id="public-class-5Buntitled-5D-method-details" class="method-section">
+       <header>
+         <h3>Public Class Methods</h3>
+       </header>
+
+    
+      <div id="method-c-accept_invitation" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">accept_invitation</span><span
+            class="method-args">(meeting_participation, user)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Update the schedule after accepting the invitation to a meeting</p>
+<ul><li>
+<p>meeting_participations is a <a
+href="MeetingParticipation.html">MeetingParticipation</a></p>
+</li><li>
+<p>user is a <a href="User.html">User</a></p>
+</li></ul>
+          
+          
+
+          
+          <div class="method-source-code" id="accept_invitation-source">
+            <pre><span class="ruby-comment"># File app/helpers/meeting_helper.rb, line 208</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier ruby-title">accept_invitation</span>(<span class="ruby-identifier">meeting_participation</span>, <span class="ruby-identifier">user</span>)
+        <span class="ruby-identifier">update_schedule</span>([<span class="ruby-identifier">meeting_participation</span>])
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-c-create_meeting" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">create_meeting</span><span
+            class="method-args">(start_date, end_date, title, abstract, location, user)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>This function has to be called to create both a meeting and a
+meeting_participation and store them on the db.</p>
+
+<p>In practice, use this only for the user that creates a meeting and not for
+the invited users</p>
+<ul><li>
+<p>start_date and end_date must be valid DateTime objects</p>
+</li><li>
+<p>title must be a non-empty string</p>
+</li><li>
+<p>location must be a <a href="Location.html">Location</a> already saved in
+the db</p>
+</li><li>
+<p>user must be a <a href="User.html">User</a></p>
+</li></ul>
+
+<p>returns a hash containing the meeting (nil in case of errors), the
+meeting_participation (nil in case of errors) and a status flag (encoded as
+a Ruby Symbol) indicating either consistency, inconsistency or errors</p>
+          
+          
+
+          
+          <div class="method-source-code" id="create_meeting-source">
+            <pre><span class="ruby-comment"># File app/helpers/meeting_helper.rb, line 15</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier ruby-title">create_meeting</span>(<span class="ruby-identifier">start_date</span>, <span class="ruby-identifier">end_date</span>, <span class="ruby-identifier">title</span>, <span class="ruby-identifier">abstract</span>, <span class="ruby-identifier">location</span>, <span class="ruby-identifier">user</span>)
+        <span class="ruby-keyword">if</span> <span class="ruby-identifier">start_date</span> <span class="ruby-operator">&gt;=</span> <span class="ruby-identifier">end_date</span>
+                <span class="ruby-keyword">return</span> {<span class="ruby-value">meeting:</span> <span class="ruby-keyword">nil</span>, <span class="ruby-value">meeting_participation:</span> <span class="ruby-keyword">nil</span>, <span class="ruby-value">status:</span> <span class="ruby-value">:errors</span>}
+        <span class="ruby-keyword">end</span>
+
+        <span class="ruby-identifier">meeting_data</span> = <span class="ruby-identifier">insert_meeting</span>({<span class="ruby-value">start_date:</span> <span class="ruby-identifier">start_date</span>, <span class="ruby-value">end_date:</span> <span class="ruby-identifier">end_date</span>, <span class="ruby-value">location:</span> <span class="ruby-identifier">location</span>}, <span class="ruby-identifier">user</span>)
+
+        <span class="ruby-comment">####### Store the meeting and the meeting participation</span>
+        <span class="ruby-identifier">meeting</span> = <span class="ruby-constant">Meeting</span>.<span class="ruby-identifier">new</span>({<span class="ruby-value">start_date:</span> <span class="ruby-identifier">start_date</span>, <span class="ruby-value">end_date:</span> <span class="ruby-identifier">end_date</span>, <span class="ruby-value">title:</span> <span class="ruby-identifier">title</span>, <span class="ruby-value">location:</span> <span class="ruby-identifier">location</span>, <span class="ruby-value">abstract:</span> <span class="ruby-identifier">abstract</span>})
+        <span class="ruby-identifier">meeting_participation</span> = <span class="ruby-constant">MeetingParticipation</span>.<span class="ruby-identifier">new</span>
+        <span class="ruby-identifier">meeting_participation</span>.<span class="ruby-identifier">meeting</span> = <span class="ruby-identifier">meeting</span>
+        <span class="ruby-identifier">meeting_participation</span>.<span class="ruby-identifier">is_admin</span> = <span class="ruby-keyword">true</span>
+        <span class="ruby-identifier">meeting_participation</span>.<span class="ruby-identifier">user</span> = <span class="ruby-identifier">user</span>
+        <span class="ruby-identifier">meeting_participation</span>.<span class="ruby-identifier">is_consistent</span> = <span class="ruby-identifier">meeting_data</span>[<span class="ruby-value">:is_consistent</span>]
+        <span class="ruby-identifier">meeting_participation</span>.<span class="ruby-identifier">response_status</span> = <span class="ruby-constant">MeetingParticipation</span><span class="ruby-operator">::</span><span class="ruby-constant">Response_statuses</span>[<span class="ruby-value">:accepted</span>]
+
+        <span class="ruby-comment">####### If meeting participation is not consistent break out of this function</span>
+        <span class="ruby-keyword">if</span> <span class="ruby-identifier">meeting_data</span>[<span class="ruby-value">:is_consistent</span>] <span class="ruby-operator">==</span> <span class="ruby-keyword">false</span>
+                <span class="ruby-identifier">sleep</span> <span class="ruby-value">5</span> <span class="ruby-keyword">if</span> (<span class="ruby-constant">ENV</span>.<span class="ruby-identifier">fetch</span>(<span class="ruby-string">&quot;RAILS_ENV&quot;</span>) { <span class="ruby-string">&quot;development&quot;</span> } <span class="ruby-operator">==</span> <span class="ruby-string">&quot;test&quot;</span>) <span class="ruby-comment"># Fix needed to handle nested transactions</span>
+                <span class="ruby-constant">ActiveRecord</span><span class="ruby-operator">::</span><span class="ruby-constant">Base</span>.<span class="ruby-identifier">transaction</span> <span class="ruby-keyword">do</span>
+                        <span class="ruby-identifier">meeting</span>.<span class="ruby-identifier">save</span>
+                        <span class="ruby-identifier">meeting_participation</span>.<span class="ruby-identifier">save</span>
+                        <span class="ruby-identifier">meeting_data</span>[<span class="ruby-value">:conflict_set</span>].<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">id</span><span class="ruby-operator">|</span>
+                                <span class="ruby-comment"># insert in conflict set</span>
+                                <span class="ruby-constant">MeetingParticipationConflict</span>.<span class="ruby-identifier">create</span>({<span class="ruby-value">meeting_participation_1_id:</span> <span class="ruby-identifier">meeting_participation</span>.<span class="ruby-identifier">id</span>, <span class="ruby-value">meeting_participation_2_id:</span> <span class="ruby-identifier">id</span>})
+                        <span class="ruby-keyword">end</span>
+                <span class="ruby-keyword">end</span>
+                <span class="ruby-keyword">return</span> {<span class="ruby-value">meeting:</span> <span class="ruby-identifier">meeting</span>, <span class="ruby-value">meeting_participation:</span> <span class="ruby-identifier">meeting_participation</span>, <span class="ruby-value">status:</span> <span class="ruby-value">:inconsistent</span>}
+        <span class="ruby-keyword">end</span>
+
+        <span class="ruby-comment">#######################</span>
+        <span class="ruby-comment"># From here on we are dealing with only consistent meeting participations</span>
+        <span class="ruby-comment">#######################</span>
+
+        <span class="ruby-comment">####### Store the arriving travel</span>
+        <span class="ruby-identifier">arriving_travel</span>, <span class="ruby-identifier">arriving_travel_steps</span> = <span class="ruby-identifier">store_travel</span> <span class="ruby-identifier">meeting_data</span>[<span class="ruby-value">:arriving_travel</span>]
+
+        <span class="ruby-comment"># Link the starting default location if needed</span>
+        <span class="ruby-identifier">arriving_travel</span>.<span class="ruby-identifier">starting_location_dl</span> = <span class="ruby-identifier">meeting_data</span>[<span class="ruby-value">:arriving_from_dl</span>] <span class="ruby-keyword">if</span> <span class="ruby-identifier">meeting_data</span>[<span class="ruby-value">:arriving_from_dl</span>]
+
+        <span class="ruby-comment"># Update the leaving travel of the last meeting before the new one if needed</span>
+        <span class="ruby-keyword">if</span> <span class="ruby-identifier">meeting_data</span>[<span class="ruby-value">:link_before_meeting</span>]
+                <span class="ruby-identifier">meeting_data</span>[<span class="ruby-value">:before_meeting</span>].<span class="ruby-identifier">leaving_travel</span> = <span class="ruby-identifier">arriving_travel</span>
+        <span class="ruby-keyword">end</span>
+        <span class="ruby-identifier">valid_before_meeting</span> = (<span class="ruby-operator">!</span><span class="ruby-identifier">meeting_data</span>[<span class="ruby-value">:link_before_meeting</span>] <span class="ruby-keyword">or</span> <span class="ruby-identifier">meeting_data</span>[<span class="ruby-value">:before_meeting</span>].<span class="ruby-identifier">valid?</span>)
+
+        <span class="ruby-comment">####### Store the leaving travel</span>
+        <span class="ruby-identifier">leaving_travel</span>, <span class="ruby-identifier">leaving_travel_steps</span> = <span class="ruby-identifier">store_travel</span> <span class="ruby-identifier">meeting_data</span>[<span class="ruby-value">:leaving_travel</span>]
+
+        <span class="ruby-comment"># Link the ending default location if needed</span>
+        <span class="ruby-identifier">leaving_travel</span>.<span class="ruby-identifier">ending_location_dl</span> = <span class="ruby-identifier">meeting_data</span>[<span class="ruby-value">:leaving_to_dl</span>] <span class="ruby-keyword">if</span> <span class="ruby-identifier">meeting_data</span>[<span class="ruby-value">:leaving_to_dl</span>]
+
+        <span class="ruby-comment"># Update the arriving travel of the first meeting after the new one if needed</span>
+        <span class="ruby-keyword">if</span> <span class="ruby-identifier">meeting_data</span>[<span class="ruby-value">:link_after_meeting</span>]
+                <span class="ruby-identifier">meeting_data</span>[<span class="ruby-value">:after_meeting</span>].<span class="ruby-identifier">arriving_travel</span> = <span class="ruby-identifier">leaving_travel</span>
+        <span class="ruby-keyword">end</span>
+        <span class="ruby-identifier">valid_after_meeting</span> = (<span class="ruby-operator">!</span><span class="ruby-identifier">meeting_data</span>[<span class="ruby-value">:link_after_meeting</span>] <span class="ruby-keyword">or</span> <span class="ruby-identifier">meeting_data</span>[<span class="ruby-value">:after_meeting</span>].<span class="ruby-identifier">valid?</span>)
+
+        <span class="ruby-identifier">meeting_participation</span>.<span class="ruby-identifier">arriving_travel</span> = <span class="ruby-identifier">arriving_travel</span>
+        <span class="ruby-identifier">meeting_participation</span>.<span class="ruby-identifier">leaving_travel</span> = <span class="ruby-identifier">leaving_travel</span>
+
+        <span class="ruby-comment">####### If everything can be successfully validated, persist it on the db</span>
+        <span class="ruby-keyword">if</span> [<span class="ruby-identifier">meeting</span>.<span class="ruby-identifier">valid?</span>, <span class="ruby-identifier">meeting_participation</span>.<span class="ruby-identifier">valid?</span>, <span class="ruby-identifier">arriving_travel</span>.<span class="ruby-identifier">valid?</span>, <span class="ruby-identifier">leaving_travel</span>.<span class="ruby-identifier">valid?</span>,
+                <span class="ruby-identifier">valid_before_meeting</span>, <span class="ruby-identifier">valid_after_meeting</span>].<span class="ruby-identifier">all?</span>
+                <span class="ruby-constant">ActiveRecord</span><span class="ruby-operator">::</span><span class="ruby-constant">Base</span>.<span class="ruby-identifier">transaction</span> <span class="ruby-keyword">do</span>
+                        <span class="ruby-identifier">meeting</span>.<span class="ruby-identifier">save</span>
+                        <span class="ruby-identifier">meeting_participation</span>.<span class="ruby-identifier">save</span>
+                        <span class="ruby-identifier">arriving_travel</span>.<span class="ruby-identifier">save</span>
+                        <span class="ruby-identifier">arriving_travel_steps</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">step</span><span class="ruby-operator">|</span> <span class="ruby-identifier">step</span>.<span class="ruby-identifier">save</span> <span class="ruby-keyword">end</span>
+                        <span class="ruby-identifier">leaving_travel</span>.<span class="ruby-identifier">save</span>
+                        <span class="ruby-identifier">leaving_travel_steps</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">step</span><span class="ruby-operator">|</span> <span class="ruby-identifier">step</span>.<span class="ruby-identifier">save</span> <span class="ruby-keyword">end</span>
+                        <span class="ruby-keyword">if</span> <span class="ruby-identifier">meeting_data</span>[<span class="ruby-value">:link_before_meeting</span>]
+                                <span class="ruby-identifier">meeting_data</span>[<span class="ruby-value">:before_meeting</span>].<span class="ruby-identifier">save</span>
+                        <span class="ruby-keyword">end</span>
+                        <span class="ruby-keyword">if</span> <span class="ruby-identifier">meeting_data</span>[<span class="ruby-value">:link_after_meeting</span>]
+                                <span class="ruby-identifier">meeting_data</span>[<span class="ruby-value">:after_meeting</span>].<span class="ruby-identifier">save</span>
+                        <span class="ruby-keyword">end</span>
+                <span class="ruby-keyword">end</span>
+
+                <span class="ruby-constant">BreakHelper</span>.<span class="ruby-identifier">update_all_breaks</span>(<span class="ruby-identifier">arriving_travel</span>.<span class="ruby-identifier">start_time</span>, <span class="ruby-identifier">leaving_travel</span>.<span class="ruby-identifier">end_time</span>, <span class="ruby-identifier">user</span>)
+
+                <span class="ruby-keyword">return</span> {<span class="ruby-value">meeting:</span> <span class="ruby-identifier">meeting</span>, <span class="ruby-value">meeting_participation:</span> <span class="ruby-identifier">meeting_participation</span>, <span class="ruby-value">status:</span> <span class="ruby-value">:consistent</span>}
+        <span class="ruby-keyword">else</span>
+                <span class="ruby-comment"># Print errors</span>
+                <span class="ruby-constant">Rails</span>.<span class="ruby-identifier">logger</span>.<span class="ruby-identifier">debug</span> <span class="ruby-string">&quot;------------ ERRORS (MeetingHelper.create_meeting) ------------&quot;</span>
+                <span class="ruby-constant">Rails</span>.<span class="ruby-identifier">logger</span>.<span class="ruby-identifier">debug</span> <span class="ruby-string">&quot;Meeting has errors&quot;</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">meeting</span>.<span class="ruby-identifier">valid?</span>
+                <span class="ruby-constant">Rails</span>.<span class="ruby-identifier">logger</span>.<span class="ruby-identifier">debug</span> <span class="ruby-string">&quot;Meeting participation has errors&quot;</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">meeting_participation</span>.<span class="ruby-identifier">valid?</span>
+                <span class="ruby-constant">Rails</span>.<span class="ruby-identifier">logger</span>.<span class="ruby-identifier">debug</span> <span class="ruby-string">&quot;Arriving travel has errors&quot;</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">arriving_travel</span>.<span class="ruby-identifier">valid?</span>
+                <span class="ruby-constant">Rails</span>.<span class="ruby-identifier">logger</span>.<span class="ruby-identifier">debug</span> <span class="ruby-string">&quot;Leaving travel has errors&quot;</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">leaving_travel</span>.<span class="ruby-identifier">valid?</span>
+                <span class="ruby-constant">Rails</span>.<span class="ruby-identifier">logger</span>.<span class="ruby-identifier">debug</span> <span class="ruby-string">&quot;Before meeting has errors&quot;</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">valid_before_meeting</span>
+                <span class="ruby-constant">Rails</span>.<span class="ruby-identifier">logger</span>.<span class="ruby-identifier">debug</span> <span class="ruby-string">&quot;After meeting has errors&quot;</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">valid_after_meeting</span>
+                <span class="ruby-constant">Rails</span>.<span class="ruby-identifier">logger</span>.<span class="ruby-identifier">debug</span> <span class="ruby-string">&quot;------------ ERRORS (MeetingHelper.create_meeting) ------------&quot;</span>
+                <span class="ruby-keyword">return</span> {<span class="ruby-value">meeting:</span> <span class="ruby-keyword">nil</span>, <span class="ruby-value">meeting_participation:</span> <span class="ruby-keyword">nil</span>, <span class="ruby-value">status:</span> <span class="ruby-value">:errors</span>}
+        <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-c-decline_invitation" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">decline_invitation</span><span
+            class="method-args">(meeting_participation, user)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Update the schedule after declining the invitation to a meeting</p>
+
+<p>As a result some other MeetingParticipations may become consistent</p>
+<ul><li>
+<p>meeting_participation is a <a
+href="MeetingParticipation.html">MeetingParticipation</a></p>
+</li><li>
+<p>user is a <a href="User.html">User</a></p>
+</li></ul>
+          
+          
+
+          
+          <div class="method-source-code" id="decline_invitation-source">
+            <pre><span class="ruby-comment"># File app/helpers/meeting_helper.rb, line 218</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier ruby-title">decline_invitation</span>(<span class="ruby-identifier">meeting_participation</span>, <span class="ruby-identifier">user</span>)
+        <span class="ruby-comment"># Grab all conflicting meeting participations from the db</span>
+        <span class="ruby-identifier">conflicts</span> = <span class="ruby-identifier">meeting_participation</span>.<span class="ruby-identifier">conflicting_meeting_participations</span>
+
+        <span class="ruby-comment"># Drop all the conflicts</span>
+        <span class="ruby-constant">MeetingParticipationConflict</span>.<span class="ruby-identifier">where</span>(<span class="ruby-value">meeting_participation_1_id:</span> <span class="ruby-identifier">conflicts</span>.<span class="ruby-identifier">ids</span>)
+                        .<span class="ruby-identifier">or</span>(<span class="ruby-constant">MeetingParticipationConflict</span>.<span class="ruby-identifier">where</span>(<span class="ruby-value">meeting_participation_2_id:</span> <span class="ruby-identifier">conflicts</span>.<span class="ruby-identifier">ids</span>)).<span class="ruby-identifier">delete_all</span>
+
+        <span class="ruby-comment"># Update the schedule</span>
+        <span class="ruby-identifier">update_schedule</span>(<span class="ruby-identifier">conflicts</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-c-invite_to_meeting" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">invite_to_meeting</span><span
+            class="method-args">(meeting, user)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>This function has to be called to create only a meeting_participation (for
+an already existing meeting) and store it on the db.</p>
+
+<p>In practice, use this only for the invited users and not for the user that
+creates a meeting</p>
+<ul><li>
+<p>meeting must be a <a href="Meeting.html">Meeting</a> already saved in the
+db</p>
+</li><li>
+<p>user must be a <a href="User.html">User</a></p>
+</li></ul>
+
+<p>returns a hash containing the meeting_participation (nil in case of errors)
+and a status flag (encoded as a Ruby Symbol)  indicating either
+consistency, inconsistency or errors</p>
+          
+          
+
+          
+          <div class="method-source-code" id="invite_to_meeting-source">
+            <pre><span class="ruby-comment"># File app/helpers/meeting_helper.rb, line 120</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier ruby-title">invite_to_meeting</span>(<span class="ruby-identifier">meeting</span>, <span class="ruby-identifier">user</span>)
+        <span class="ruby-identifier">meeting_data</span> = <span class="ruby-identifier">insert_meeting</span>({<span class="ruby-value">start_date:</span> <span class="ruby-identifier">meeting</span>.<span class="ruby-identifier">start_date</span>, <span class="ruby-value">end_date:</span> <span class="ruby-identifier">meeting</span>.<span class="ruby-identifier">end_date</span>, <span class="ruby-value">location:</span> <span class="ruby-identifier">meeting</span>.<span class="ruby-identifier">location</span>}, <span class="ruby-identifier">user</span>)
+
+        <span class="ruby-comment">####### Store the meeting participation</span>
+        <span class="ruby-identifier">meeting_participation</span> = <span class="ruby-constant">MeetingParticipation</span>.<span class="ruby-identifier">new</span>
+        <span class="ruby-identifier">meeting_participation</span>.<span class="ruby-identifier">meeting</span> = <span class="ruby-identifier">meeting</span>
+        <span class="ruby-identifier">meeting_participation</span>.<span class="ruby-identifier">is_admin</span> = <span class="ruby-keyword">false</span>
+        <span class="ruby-identifier">meeting_participation</span>.<span class="ruby-identifier">user</span> = <span class="ruby-identifier">user</span>
+        <span class="ruby-identifier">meeting_participation</span>.<span class="ruby-identifier">is_consistent</span> = <span class="ruby-identifier">meeting_data</span>[<span class="ruby-value">:is_consistent</span>]
+        <span class="ruby-identifier">meeting_participation</span>.<span class="ruby-identifier">response_status</span> = <span class="ruby-constant">MeetingParticipation</span><span class="ruby-operator">::</span><span class="ruby-constant">Response_statuses</span>[<span class="ruby-value">:pending</span>]
+
+        <span class="ruby-comment">####### If meeting participation is not consistent break out of this function</span>
+        <span class="ruby-keyword">if</span> <span class="ruby-identifier">meeting_data</span>[<span class="ruby-value">:is_consistent</span>] <span class="ruby-operator">==</span> <span class="ruby-keyword">false</span>
+                <span class="ruby-constant">ActiveRecord</span><span class="ruby-operator">::</span><span class="ruby-constant">Base</span>.<span class="ruby-identifier">transaction</span> <span class="ruby-keyword">do</span>
+                        <span class="ruby-identifier">meeting_participation</span>.<span class="ruby-identifier">save</span>
+                        <span class="ruby-identifier">meeting_data</span>[<span class="ruby-value">:conflict_set</span>].<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">id</span><span class="ruby-operator">|</span>
+                                <span class="ruby-comment"># insert in conflict set</span>
+                                <span class="ruby-constant">MeetingParticipationConflict</span>.<span class="ruby-identifier">create</span>({<span class="ruby-value">meeting_participation_1_id:</span> <span class="ruby-identifier">meeting_participation</span>.<span class="ruby-identifier">id</span>, <span class="ruby-value">meeting_participation_2_id:</span> <span class="ruby-identifier">id</span>})
+                        <span class="ruby-keyword">end</span>
+                <span class="ruby-keyword">end</span>
+                <span class="ruby-keyword">return</span> {<span class="ruby-value">meeting_participation:</span> <span class="ruby-identifier">meeting_participation</span>, <span class="ruby-value">status:</span> <span class="ruby-value">:inconsistent</span>}
+        <span class="ruby-keyword">end</span>
+
+        <span class="ruby-comment">#######################</span>
+        <span class="ruby-comment"># From here on we are dealing with only consistent meeting participations</span>
+        <span class="ruby-comment">#######################</span>
+
+        <span class="ruby-comment">####### Store the arriving travel</span>
+        <span class="ruby-identifier">arriving_travel</span>, <span class="ruby-identifier">arriving_travel_steps</span> = <span class="ruby-identifier">store_travel</span> <span class="ruby-identifier">meeting_data</span>[<span class="ruby-value">:arriving_travel</span>]
+
+        <span class="ruby-comment"># Link the starting default location if needed</span>
+        <span class="ruby-identifier">arriving_travel</span>.<span class="ruby-identifier">starting_location_dl</span> = <span class="ruby-identifier">meeting_data</span>[<span class="ruby-value">:arriving_from_dl</span>] <span class="ruby-keyword">if</span> <span class="ruby-identifier">meeting_data</span>[<span class="ruby-value">:arriving_from_dl</span>]
+
+        <span class="ruby-comment"># Update the leaving travel of the last meeting before the new one if needed</span>
+        <span class="ruby-keyword">if</span> <span class="ruby-identifier">meeting_data</span>[<span class="ruby-value">:link_before_meeting</span>]
+                <span class="ruby-identifier">meeting_data</span>[<span class="ruby-value">:before_meeting</span>].<span class="ruby-identifier">leaving_travel</span> = <span class="ruby-identifier">arriving_travel</span>
+        <span class="ruby-keyword">end</span>
+        <span class="ruby-identifier">valid_before_meeting</span> = (<span class="ruby-operator">!</span><span class="ruby-identifier">meeting_data</span>[<span class="ruby-value">:link_before_meeting</span>] <span class="ruby-keyword">or</span> <span class="ruby-identifier">meeting_data</span>[<span class="ruby-value">:before_meeting</span>].<span class="ruby-identifier">valid?</span>)
+
+        <span class="ruby-comment">####### Store the leaving travel</span>
+        <span class="ruby-identifier">leaving_travel</span>, <span class="ruby-identifier">leaving_travel_steps</span> = <span class="ruby-identifier">store_travel</span> <span class="ruby-identifier">meeting_data</span>[<span class="ruby-value">:leaving_travel</span>]
+
+        <span class="ruby-comment"># Link the ending default location if needed</span>
+        <span class="ruby-identifier">leaving_travel</span>.<span class="ruby-identifier">ending_location_dl</span> = <span class="ruby-identifier">meeting_data</span>[<span class="ruby-value">:leaving_to_dl</span>] <span class="ruby-keyword">if</span> <span class="ruby-identifier">meeting_data</span>[<span class="ruby-value">:leaving_to_dl</span>]
+
+        <span class="ruby-comment"># Update the arriving travel of the first meeting after the new one if needed</span>
+        <span class="ruby-keyword">if</span> <span class="ruby-identifier">meeting_data</span>[<span class="ruby-value">:link_after_meeting</span>]
+                <span class="ruby-identifier">meeting_data</span>[<span class="ruby-value">:after_meeting</span>].<span class="ruby-identifier">arriving_travel</span> = <span class="ruby-identifier">leaving_travel</span>
+        <span class="ruby-keyword">end</span>
+        <span class="ruby-identifier">valid_after_meeting</span> = (<span class="ruby-operator">!</span><span class="ruby-identifier">meeting_data</span>[<span class="ruby-value">:link_after_meeting</span>] <span class="ruby-keyword">or</span> <span class="ruby-identifier">meeting_data</span>[<span class="ruby-value">:after_meeting</span>].<span class="ruby-identifier">valid?</span>)
+
+        <span class="ruby-identifier">meeting_participation</span>.<span class="ruby-identifier">arriving_travel</span> = <span class="ruby-identifier">arriving_travel</span>
+        <span class="ruby-identifier">meeting_participation</span>.<span class="ruby-identifier">leaving_travel</span> = <span class="ruby-identifier">leaving_travel</span>
+
+        <span class="ruby-comment">####### If everything can be successfully validated, persist it on the db</span>
+        <span class="ruby-keyword">if</span> [<span class="ruby-identifier">meeting_participation</span>.<span class="ruby-identifier">valid?</span>, <span class="ruby-identifier">arriving_travel</span>.<span class="ruby-identifier">valid?</span>, <span class="ruby-identifier">leaving_travel</span>.<span class="ruby-identifier">valid?</span>,
+                <span class="ruby-identifier">valid_before_meeting</span>, <span class="ruby-identifier">valid_after_meeting</span>].<span class="ruby-identifier">all?</span>
+                <span class="ruby-constant">ActiveRecord</span><span class="ruby-operator">::</span><span class="ruby-constant">Base</span>.<span class="ruby-identifier">transaction</span> <span class="ruby-keyword">do</span>
+                        <span class="ruby-identifier">meeting_participation</span>.<span class="ruby-identifier">save</span>
+                        <span class="ruby-identifier">arriving_travel</span>.<span class="ruby-identifier">save</span>
+                        <span class="ruby-identifier">arriving_travel_steps</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">step</span><span class="ruby-operator">|</span> <span class="ruby-identifier">step</span>.<span class="ruby-identifier">save</span> <span class="ruby-keyword">end</span>
+                        <span class="ruby-identifier">leaving_travel</span>.<span class="ruby-identifier">save</span>
+                        <span class="ruby-identifier">leaving_travel_steps</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">step</span><span class="ruby-operator">|</span> <span class="ruby-identifier">step</span>.<span class="ruby-identifier">save</span> <span class="ruby-keyword">end</span>
+                        <span class="ruby-keyword">if</span> <span class="ruby-identifier">meeting_data</span>[<span class="ruby-value">:link_before_meeting</span>]
+                                <span class="ruby-identifier">meeting_data</span>[<span class="ruby-value">:before_meeting</span>].<span class="ruby-identifier">save</span>
+                        <span class="ruby-keyword">end</span>
+                        <span class="ruby-keyword">if</span> <span class="ruby-identifier">meeting_data</span>[<span class="ruby-value">:link_after_meeting</span>]
+                                <span class="ruby-identifier">meeting_data</span>[<span class="ruby-value">:after_meeting</span>].<span class="ruby-identifier">save</span>
+                        <span class="ruby-keyword">end</span>
+                <span class="ruby-keyword">end</span>
+                <span class="ruby-keyword">return</span> {<span class="ruby-value">meeting_participation:</span> <span class="ruby-identifier">meeting_participation</span>, <span class="ruby-value">status:</span> <span class="ruby-value">:consistent</span>}
+        <span class="ruby-keyword">else</span>
+                <span class="ruby-comment"># Print errors</span>
+                <span class="ruby-constant">Rails</span>.<span class="ruby-identifier">logger</span>.<span class="ruby-identifier">debug</span> <span class="ruby-string">&quot;------------ ERRORS (MeetingHelper.invite_to_meeting) ------------&quot;</span>
+                <span class="ruby-constant">Rails</span>.<span class="ruby-identifier">logger</span>.<span class="ruby-identifier">debug</span> <span class="ruby-string">&quot;Meeting participation has errors&quot;</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">meeting_participation</span>.<span class="ruby-identifier">valid?</span>
+                <span class="ruby-constant">Rails</span>.<span class="ruby-identifier">logger</span>.<span class="ruby-identifier">debug</span> <span class="ruby-string">&quot;Arriving travel has errors&quot;</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">arriving_travel</span>.<span class="ruby-identifier">valid?</span>
+                <span class="ruby-constant">Rails</span>.<span class="ruby-identifier">logger</span>.<span class="ruby-identifier">debug</span> <span class="ruby-string">&quot;Leaving travel has errors&quot;</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">leaving_travel</span>.<span class="ruby-identifier">valid?</span>
+                <span class="ruby-constant">Rails</span>.<span class="ruby-identifier">logger</span>.<span class="ruby-identifier">debug</span> <span class="ruby-string">&quot;Before meeting has errors&quot;</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">valid_before_meeting</span>
+                <span class="ruby-constant">Rails</span>.<span class="ruby-identifier">logger</span>.<span class="ruby-identifier">debug</span> <span class="ruby-string">&quot;After meeting has errors&quot;</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">valid_after_meeting</span>
+                <span class="ruby-constant">Rails</span>.<span class="ruby-identifier">logger</span>.<span class="ruby-identifier">debug</span> <span class="ruby-string">&quot;------------ ERRORS (MeetingHelper.invite_to_meeting) ------------&quot;</span>
+                <span class="ruby-keyword">return</span> {<span class="ruby-value">meeting_participation:</span> <span class="ruby-keyword">nil</span>, <span class="ruby-value">status:</span> <span class="ruby-value">:errors</span>}
+        <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-c-recompute_meeting_participations" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">recompute_meeting_participations</span><span
+            class="method-args">(days_of_the_week, user)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Update the schedule for a given user and for all the given days of the week</p>
+<ul><li>
+<p>days_of_the_week is an Array of Integers in range 0..6</p>
+</li><li>
+<p>user is a <a href="User.html">User</a></p>
+</li></ul>
+          
+          
+
+          
+          <div class="method-source-code" id="recompute_meeting_participations-source">
+            <pre><span class="ruby-comment"># File app/helpers/meeting_helper.rb, line 234</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier ruby-title">recompute_meeting_participations</span>(<span class="ruby-identifier">days_of_the_week</span>, <span class="ruby-identifier">user</span>)
+        <span class="ruby-comment"># Grab all the meeting participations to recompute</span>
+        <span class="ruby-identifier">meeting_participations</span> = <span class="ruby-identifier">user</span>.<span class="ruby-identifier">meeting_participations</span>
+                                                                .<span class="ruby-identifier">where</span>.<span class="ruby-identifier">not</span>(<span class="ruby-value">response_status:</span> <span class="ruby-constant">MeetingParticipation</span><span class="ruby-operator">::</span><span class="ruby-constant">Response_statuses</span>[<span class="ruby-value">:declined</span>])
+                                                                .<span class="ruby-identifier">select</span> {<span class="ruby-operator">|</span><span class="ruby-identifier">mp</span><span class="ruby-operator">|</span> <span class="ruby-identifier">days_of_the_week</span>.<span class="ruby-identifier">include?</span> <span class="ruby-identifier">mp</span>.<span class="ruby-identifier">meeting</span>.<span class="ruby-identifier">start_date</span>.<span class="ruby-identifier">wday</span>}
+
+        <span class="ruby-comment"># Update the schedule</span>
+        <span class="ruby-identifier">update_schedule</span>(<span class="ruby-identifier">meeting_participations</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+    </section>
+  
+  </section>
+</main>
+
+
+<footer id="validator-badges" role="contentinfo">
+  <p><a href="https://validator.w3.org/check/referer">Validate</a>
+  <p>Generated by <a href="https://ruby.github.io/rdoc/">RDoc</a> 6.0.1.
+  <p>Based on <a href="http://deveiate.org/projects/Darkfish-RDoc/">Darkfish</a> by <a href="http://deveiate.org">Michael Granger</a>.
+</footer>
+

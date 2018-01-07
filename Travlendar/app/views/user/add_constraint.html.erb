@@ -1,0 +1,79 @@
+<%= render 'shared/header', selected: 'settings' %>
+<div id="content">
+	<script type="text/javascript"></script>
+	<%= render 'shared/calendar_sidebar' %>
+	<section class="mainContent">
+
+		<%= render 'shared/title_back_action', title: 'Create Constraint', path: @back_path %>
+
+		<div id="emailPasswordContainer">
+
+			<%= form_with scope: :constraint, local: true do |form| %>
+				<p>
+					I don't want to
+
+					<%= form.select(:travel_mean) do %>
+						<% [['Walk', 0], ['Drive', 1], ['use the Public Transportation', 2], ['go by Bike', 3]].each do |tm| -%>
+							<%= content_tag(:option, tm.first, value: tm.last) %>
+						<% end %>
+					<% end %>
+				</p>
+				<p>
+					if
+					<%= form.select(:subject, [["Distance", 1], ["Duration", 2], ["Start time", 3], ["End time", 4]], {}, {id: 'subject-content', onchange: 'subjectSelected();'}) %>
+					is
+					<%= form.select(:operator) do %>
+					<% end %>
+					then
+
+					<%= form.select(:value) do %>
+					<% end %>
+
+				</p>
+				<div id="buttonsContainer">
+					<%= form.submit 'Create Constraint', class: 'monoConfirmationButton' %>
+				</div>
+
+			<% end %>
+		</div>
+
+	</section>
+</div>
+<%= render 'shared/footer' %>
+
+
+<script>
+	var operators = [];
+	<% @operators.each do |operator| %>
+	operators.push(['<%= operator.subject_id %>', '<%=operator.description %>']);
+	<% end %>
+	var values = [];
+	<% @values.each do |value| %>
+	values.push(['<%= value.subject_id %>', '<%=value.value %>']);
+	<% end %>
+
+	function subjectSelected() {
+		subject_id = $("select[name='constraint[subject]']").val();
+		console.log(subject_id);
+
+		var $inputOperator = $("select[name='constraint[operator]']");
+		$inputOperator.empty();
+		operators.forEach(function (operator) {
+			if (operator[0] == subject_id) {
+				$inputOperator.append($("<option>", {value: operator[1], html: operator[1]}));
+			}
+		});
+
+		var $inputValue = $("select[name='constraint[value]']");
+		$inputValue.empty();
+		values.forEach(function (value) {
+			if (value[0] == subject_id) {
+				$inputValue.append($("<option>", {value: value[1], html: value[1]}));
+			}
+		});
+	}
+
+	$(function () {
+		subjectSelected();
+	});
+</script>

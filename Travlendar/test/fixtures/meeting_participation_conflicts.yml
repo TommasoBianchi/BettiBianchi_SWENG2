@@ -1,0 +1,9 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  meeting_participation_1_id: 1 
+  meeting_participation_2_id: 2
+
+two:
+  meeting_participation_1_id: 3
+  meeting_participation_2_id: 4

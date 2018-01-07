@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171201104917) do
+ActiveRecord::Schema.define(version: 20171219150900) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -44,6 +44,7 @@ ActiveRecord::Schema.define(version: 20171201104917) do
     t.integer "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "break_id"
   end
 
   create_table "constraints", force: :cascade do |t|
@@ -95,7 +96,7 @@ ActiveRecord::Schema.define(version: 20171201104917) do
   end
 
   create_table "incomplete_users", force: :cascade do |t|
-    t.string "password", null: false
+    t.string "password_digest", null: false
     t.string "email", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -106,6 +107,13 @@ ActiveRecord::Schema.define(version: 20171201104917) do
     t.decimal "longitude", null: false
     t.decimal "latitude", null: false
     t.string "description", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "meeting_participation_conflicts", force: :cascade do |t|
+    t.integer "meeting_participation_1_id"
+    t.integer "meeting_participation_2_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -178,6 +186,9 @@ ActiveRecord::Schema.define(version: 20171201104917) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "travel_id"
+    t.string "description", null: false
+    t.string "from"
+    t.string "to"
   end
 
   create_table "travels", force: :cascade do |t|
@@ -187,13 +198,15 @@ ActiveRecord::Schema.define(version: 20171201104917) do
     t.decimal "distance", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "starting_location_dl_id"
+    t.integer "ending_location_dl_id"
   end
 
   create_table "users", force: :cascade do |t|
     t.string "name", null: false
     t.string "surname", null: false
     t.string "nickname", null: false
-    t.string "password", null: false
+    t.string "password_digest", null: false
     t.string "company"
     t.string "website"
     t.text "brief"
@@ -214,6 +227,7 @@ ActiveRecord::Schema.define(version: 20171201104917) do
   end
 
   add_foreign_key "breaks", "users"
+  add_foreign_key "computed_breaks", "breaks"
   add_foreign_key "computed_breaks", "users"
   add_foreign_key "constraints", "\"values\"", column: "value_id"
   add_foreign_key "constraints", "operators"
@@ -226,6 +240,8 @@ ActiveRecord::Schema.define(version: 20171201104917) do
   add_foreign_key "emails", "users"
   add_foreign_key "group_users", "groups"
   add_foreign_key "group_users", "users"
+  add_foreign_key "meeting_participation_conflicts", "meeting_participations", column: "meeting_participation_1_id"
+  add_foreign_key "meeting_participation_conflicts", "meeting_participations", column: "meeting_participation_2_id"
   add_foreign_key "meeting_participations", "meetings"
   add_foreign_key "meeting_participations", "travels", column: "arriving_travel_id"
   add_foreign_key "meeting_participations", "travels", column: "leaving_travel_id"
@@ -236,6 +252,8 @@ ActiveRecord::Schema.define(version: 20171201104917) do
   add_foreign_key "social_users", "users"
   add_foreign_key "statuses", "users"
   add_foreign_key "travel_steps", "travels"
+  add_foreign_key "travels", "default_locations", column: "ending_location_dl_id"
+  add_foreign_key "travels", "default_locations", column: "starting_location_dl_id"
   add_foreign_key "users", "emails", column: "primary_email_id"
   add_foreign_key "values", "subjects"
 end

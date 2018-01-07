@@ -1,0 +1,56 @@
+<%= render 'shared/header', selected: 'calendar' %>
+<div id="content">
+	<%= render 'shared/calendar_sidebar' %>
+	<section class="mainContent">
+		<%= render 'shared/title_back_action', title: @meeting.title, path: @back_path %>
+		<% unless @meeting.abstract.blank? %>
+			<div class="abstract-container">
+				<h3>
+					<%= @meeting.abstract %>
+				</h3>
+			</div>
+		<% end %>
+		<div class="date-time-block-container">
+			<div class="colored-container light-blue-container date-time-block">
+				<%= @meeting.start_date.strftime("%m/%d/%Y") %>
+			</div>
+			<div class="colored-container light-blue-container date-time-block">
+				<%= @meeting.start_date.strftime("%I:%M%p") + " - " + @meeting.end_date.strftime("%I:%M%p") %>
+			</div>
+		</div>
+
+		<!--
+		<div id="location" class="location-block-container" onclick="goToLocation(<%= @meeting.location.latitude %>,<%= @meeting.location.longitude %>)">
+			<%= image_tag("meeting_page/location_icon.png", id: "location_icon", class: "location-block") %>
+			<div class="location-description-block">
+				<%= @meeting.location.description %>
+			</div>
+		</div>
+		-->
+
+		<div id="map-container">
+			<%= render 'shared/google_map', latitude: @meeting.location.latitude, longitude: @meeting.location.longitude, name: @meeting.title %>
+		</div>
+
+		<div class="date-time-block-container">
+			<ul class="colored-container light-grey-container date-time-block">
+				<%= link_to('View Participants', participants_page_path(@meeting), id: @profile) %>
+			</ul>
+		</div>
+
+		<div class="response-block-container only-pending">
+			<%= link_to "ACCEPT", accept_meeting_path(meeting_id: @meeting.id, user_id: @user.id), class: "single-response-button light-grey-container colored-container" %>
+			<%= link_to "DECLINE", decline_meeting_path(meeting_id: @meeting.id, user_id: @user.id), class: "single-response-button light-grey-container colored-container" %>
+			<div class="single-response-button light-grey-container colored-container"> RESCHEDULE</div>
+		</div>
+	</section>
+</div>
+<%= render 'shared/footer' %>
+
+
+
+<script type="text/javascript">
+	<% unless  @meeting.get_meeting_participaton(@user).response_status == 0 %>
+	$('.only-pending').hide();
+	<% end %>
+</script>

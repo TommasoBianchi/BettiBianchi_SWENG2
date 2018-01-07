@@ -1,0 +1,89 @@
+<%= render 'shared/header', selected: 'calendar' %>
+<div id="content">
+
+	<%= render 'shared/calendar_sidebar' %>
+	<section class="mainContent">
+
+		<%= render 'shared/title_back_action', title: 'Create Meeting' %>
+
+		<div id="emailPasswordContainer">
+
+			<%= form_with scope: :meeting, local: true do |form| %>
+
+
+				<%= form.label :title, class: 'label' %>
+				<%= form.text_field :title, id: 'title', type: 'text' %>
+				<%= form.label :abstract, class: 'label' %>
+				<%= form.text_area :abstract, id: 'abstract', type: 'text' %>
+				<div class='date-time-container'>
+					<div class='date-container'>
+						<%= form.label :date, class: 'label' %>
+						<%= form.text_field :date, id: 'date', type: 'text' %>
+					</div>
+					<div class='time-container'>
+						<%= form.label :start_time, class: 'label' %>
+						<%= form.text_field :start_time, class: 'time', id: 'start_date', type: 'text' %>
+					</div>
+					<div class='time-container'>
+						<%= form.label :end_time, class: 'label' %>
+						<%= form.text_field :end_time, class: 'time', id: 'end_date', type: 'text' %>
+					</div>
+				</div>
+
+				<%= render 'shared/get_location', form: form %>
+				<%= render 'shared/get_user2', form: form %>
+
+				<div id="buttonsContainer">
+					<%= form.submit 'Create Meeting', class: 'monoConfirmationButton' %>
+				</div>
+
+			<% end %>
+		</div>
+
+	</section>
+</div>
+<%= render 'shared/footer', selected: 'create-meeting' %>
+
+<script type="text/javascript">
+
+	<% if !@meeting.valid? %>
+	$(window).on('load', function () {
+		<% @meeting.errors.each do |error, message| %>
+		displayError("<%= error.to_s %>", "<%= message %>");
+		<% end %>
+	})
+	<% end %>
+</script>
+
+
+<script>
+	$(function () {
+		$('#start_date').timepicker({'step': 5});
+
+		$('#start_date').on('changeTime', function () {
+			var start_time_value = $('#start_date').val();
+			$('#end_date').timepicker({
+				'step': 5,
+				'minTime': start_time_value,
+				'maxTime': '11.55pm',
+				'showDuration': true
+			});
+		});
+		$('#end_date').timepicker({
+			'step': 5,
+			'minTime': '00.00am',
+			'maxTime': '11.55pm',
+			'showDuration': true,
+			'timeFormat': 'H:i'
+		});
+	});
+
+	$(function () {
+		$("#date").datepicker({
+			dateFormat: "yy/mm/dd"
+		});
+	});
+
+</script>
+
+<%= render 'shared/timepicker'  %>

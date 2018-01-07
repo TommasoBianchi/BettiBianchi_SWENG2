@@ -10,6 +10,19 @@
 // Read Sprockets README (https://github.com/rails/sprockets#sprockets-directives) for details
 // about supported directives.
 //
+
+//= require jquery3
+
 //= require rails-ujs
 //= require turbolinks
+
+//= require jquery-ui
+// not require jquery_ujs
+
 //= require_tree .
+
+
+function goToLocation(latitude, longitude) {
+  google_link = "https://www.google.com/maps/search/?api=1&query=" + latitude + "," + longitude
+  window.open(google_link, '_blank');
+}
