@@ -168,8 +168,10 @@ class UserController < ApplicationController
 		if params[:term]
 			to_match = '%' + params[:term] + '%'
 			user = current_user
+			users_not_to_find = user.contacts.all.ids
+			users_not_to_find.push current_user.id
 			@users = User.where("(name ILIKE :search OR surname ILIKE :search OR nickname ILIKE :search) AND
-					id != :current_id AND id NOT IN (:contacts)", search: to_match, current_id: user.id, contacts: user.contacts.all.ids)
+					id NOT IN (:ids)", search: to_match, ids: users_not_to_find)
 		else
 			@users = User.all
 		end
