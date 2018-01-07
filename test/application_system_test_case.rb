@@ -23,8 +23,8 @@ class ApplicationSystemTestCase < ActionDispatch::SystemTestCase
 	
 		# Insert first default location
 		fill_in "name", with: "First default location"
-		fill_in "dl_date", with: "Monday"
-		fill_in "meeting_start_time", with: "7:00am"
+		fill_in "day_of_the_week", with: "Monday"
+		fill_in "starting_hour", with: "7:00am"
 		fill_in "pac-input", with: "Via Milano Milano"
 		find('.pac-item:first-child').click
 		sleep 1 # To give time to google to fill in the autocomplete
