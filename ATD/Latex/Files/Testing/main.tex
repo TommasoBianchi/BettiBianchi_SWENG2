@@ -3,13 +3,17 @@
 	\def\arraystretch{1.5}
 	\begin{tabular}{|m{7cm}|m{7cm}|}
 		\hline
-		\textbf{Test Name}            &    \\ \hline
-		\textbf{Event Flow}             &   \\ \hline
-		\textbf{Expected Output}  &     \\ \hline
-		\textbf{Actual Output}       &     \\ \hline
-		\textbf{Notes} & \\ \hline
+		\textbf{Test Name}            &  Unauthorized access  \\ \hline
+		\textbf{Event Flow}             &  
+			\begin{enumerate}
+				\item~Try to load a page inside the application without being logged in.
+			\end{enumerate}
+		 \\ \hline
+		\textbf{Expected Output}  &  The system prevents you from doing that.   \\ \hline
+		\textbf{Actual Output}       &  The system prevents you from doing that.   \\ \hline
+		\textbf{Notes} & The system redirects you to the login page. \\ \hline
 	\end{tabular}
-	\caption{Test name}
+	\caption{Unauthorized access}
 \end{table}
 
 
@@ -33,13 +37,19 @@
 \def\arraystretch{1.5}
 \begin{tabular}{|m{7cm}|m{7cm}|}
 	\hline
-	\textbf{Test Name}            &    \\ \hline
-	\textbf{Event Flow}             &   \\ \hline
-	\textbf{Expected Output}  &     \\ \hline
-	\textbf{Actual Output}       &     \\ \hline
+	\textbf{Test Name}            &  Invalid Login  \\ \hline
+	\textbf{Event Flow}             &  
+		\begin{enumerate}
+				\item~Go to the login page.
+				\item~Insert invalid data, such as non-existent username or incorrect password.
+				\item~Click the login button.
+		\end{enumerate}
+		 \\ \hline
+	\textbf{Expected Output}  &  The system prevents you from logging in.  \\ \hline
+	\textbf{Actual Output}       &  The system prevents you from logging in.   \\ \hline
 	\textbf{Notes} & \\ \hline
 \end{tabular}
-\caption{Test name}
+\caption{Invalid Login}
 \end{table}
 
 
@@ -63,13 +73,19 @@
 \def\arraystretch{1.5}
 \begin{tabular}{|m{7cm}|m{7cm}|}
 	\hline
-	\textbf{Test Name}            &    \\ \hline
-	\textbf{Event Flow}             &   \\ \hline
-	\textbf{Expected Output}  &     \\ \hline
-	\textbf{Actual Output}       &     \\ \hline
+	\textbf{Test Name}            &  Valid Login  \\ \hline
+	\textbf{Event Flow}             &  
+		\begin{enumerate}
+			\item~Go to the login page.
+			\item~Insert correct data.
+			\item~Click the login button.
+		\end{enumerate}
+	 \\ \hline
+	\textbf{Expected Output}  &  The system shows you your calendar.   \\ \hline
+	\textbf{Actual Output}       &  The system shows you your calendar.   \\ \hline
 	\textbf{Notes} & \\ \hline
 \end{tabular}
-\caption{Test name}
+\caption{Valid Login}
 \end{table}
 
 
@@ -93,13 +109,21 @@
 \def\arraystretch{1.5}
 \begin{tabular}{|m{7cm}|m{7cm}|}
 	\hline
-	\textbf{Test Name}            &    \\ \hline
-	\textbf{Event Flow}             &   \\ \hline
-	\textbf{Expected Output}  &     \\ \hline
-	\textbf{Actual Output}       &     \\ \hline
+	\textbf{Test Name}            &  Meeting Update  \\ \hline
+	\textbf{Event Flow}             & 
+		\begin{enumerate}
+			\item~Login.
+			\item~Open the page of a meeting already in your calendar.
+			\item~Click on the update button.
+			\item~Change the start time, end time and location.
+			\item~Click on the save button.
+		\end{enumerate}
+	\\ \hline
+	\textbf{Expected Output}  &  The system shows the calendar with the updated version of the meeting.   \\ \hline
+	\textbf{Actual Output}       &  The system shows the calendar with the updated version of the meeting.   \\ \hline
 	\textbf{Notes} & \\ \hline
 \end{tabular}
-\caption{Test name}
+\caption{Meeting Update}
 \end{table}
 
 
