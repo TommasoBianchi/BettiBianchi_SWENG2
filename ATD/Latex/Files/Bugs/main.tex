@@ -1,5 +1,0 @@
-While testing the application we have found some bugs, that we list here:
-
-\begin{itemize}
-	\item~If you try to create two different meetings in two locations whose string representation are not the same, but that get geocoded to the same latitude-longitude pair (for example "Duomo Milano" and "Duomo di Milano"), than the second meeting is not correctly created and the application's execution flow stops. This is probably because of a unique constraint failing at the database level.
-\end{itemize}
