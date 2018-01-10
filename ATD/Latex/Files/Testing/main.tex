@@ -113,18 +113,40 @@
 \def\arraystretch{1.5}
 \begin{tabular}{|m{7cm}|m{7cm}|}
 	\hline
-	\textbf{Test Name}            & Meeting Valid Creation   \\ \hline
+	\textbf{Test Name}            & Appointment Valid Creation   \\ \hline
 	\textbf{Event Flow}             & 
 	 	\begin{enumerate}
 	 	\item Login.
-	 	\item Click on the button to create a new meeting.
-	 	\item Insert a title, 
+	 	\item Click on the button to create a new appointment.
+	 	\item Insert a title, two subsequent dates.
+	 	\item Click on 'ADD' button.
 	 \end{enumerate} \\ \hline
-	\textbf{Expected Output}  &     \\ \hline
-	\textbf{Actual Output}       &     \\ \hline
-	\textbf{Notes} & \\ \hline
+	\textbf{Expected Output}  &  The system redirects you to the calendar page where the new appointment is placed.   \\ \hline
+	\textbf{Actual Output}       & The system redirects you to the calendar page where the new appointment is placed.    \\ \hline
+	\textbf{Notes} & A user can create an appointment without inserting a location. However this is in contradiction with requirements number 8 of the RASD document. \\ \hline
 \end{tabular}
-\caption{Test name}
+\caption{Appointment Valid Creation}
+\end{table}
+
+
+\begin{table}[h]	
+	\centering
+	\def\arraystretch{1.5}
+	\begin{tabular}{|m{7cm}|m{7cm}|}
+		\hline
+		\textbf{Test Name}            & Appointment Invalid Creation   \\ \hline
+		\textbf{Event Flow}             & 
+		\begin{enumerate}
+			\item Login.
+			\item Click on the button to create a new appointment.
+			\item Insert a title, an end date that is before a start date and a location.
+			\item Click on 'ADD' button.
+		\end{enumerate} \\ \hline
+		\textbf{Expected Output}  &  The system do not allow you to create an appointment because of invalid dates.   \\ \hline
+		\textbf{Actual Output}       & The system redirects you to the calendar page where the new appointment is placed without an ending date with a default duration of 2 hours.    \\ \hline
+		\textbf{Notes} & This is in contradiction with requirements number 10 of the RASD document that prevents an appointment to have such dates. \\ \hline
+	\end{tabular}
+	\caption{Appointment Invalid Creation}
 \end{table}
 
 
@@ -133,22 +155,7 @@
 \def\arraystretch{1.5}
 \begin{tabular}{|m{7cm}|m{7cm}|}
 	\hline
-	\textbf{Test Name}            &    \\ \hline
-	\textbf{Event Flow}             &   \\ \hline
-	\textbf{Expected Output}  &     \\ \hline
-	\textbf{Actual Output}       &     \\ \hline
-	\textbf{Notes} & \\ \hline
-\end{tabular}
-\caption{Test name}
-\end{table}
-
-
-\begin{table}[h]	
-\centering
-\def\arraystretch{1.5}
-\begin{tabular}{|m{7cm}|m{7cm}|}
-	\hline
-	\textbf{Test Name}            &  Meeting Update  \\ \hline
+	\textbf{Test Name}            &  Appointment Update  \\ \hline
 	\textbf{Event Flow}             & 
 		\begin{enumerate}
 			\item~Login.
@@ -162,22 +169,28 @@
 	\textbf{Actual Output}       &  The system shows the calendar with the updated version of the meeting.   \\ \hline
 	\textbf{Notes} & \\ \hline
 \end{tabular}
-\caption{Meeting Update}
+\caption{Appointment Update}
 \end{table}
 
 
 \begin{table}[h]	
-\centering
-\def\arraystretch{1.5}
-\begin{tabular}{|m{7cm}|m{7cm}|}
-	\hline
-	\textbf{Test Name}            &    \\ \hline
-	\textbf{Event Flow}             &   \\ \hline
-	\textbf{Expected Output}  &     \\ \hline
-	\textbf{Actual Output}       &     \\ \hline
-	\textbf{Notes} & \\ \hline
-\end{tabular}
-\caption{Test name}
+	\centering
+	\def\arraystretch{1.5}
+	\begin{tabular}{|m{7cm}|m{7cm}|}
+		\hline
+		\textbf{Test Name}            & Appointment Delete   \\ \hline
+		\textbf{Event Flow}             & 
+		\begin{enumerate}
+			\item Login.
+			\item Click on an appointment.
+			\item Click on 'Delete' button.
+			\item Click on 'Yes' to confirm the deletion.
+		\end{enumerate} \\ \hline
+		\textbf{Expected Output}  &  The system redirects you to the calendar page where the deleted appointment do not exist anymore.  \\ \hline
+		\textbf{Actual Output}       & The system redirects you to the calendar page where the deleted appointment do not exist anymore.    \\ \hline
+		\textbf{Notes} & \\ \hline
+	\end{tabular}
+	\caption{Appointment Delete}
 \end{table}
 
 
@@ -203,17 +216,23 @@
 
 
 \begin{table}[h]	
-\centering
-\def\arraystretch{1.5}
-\begin{tabular}{|m{7cm}|m{7cm}|}
-	\hline
-	\textbf{Test Name}            &    \\ \hline
-	\textbf{Event Flow}             &   \\ \hline
-	\textbf{Expected Output}  &     \\ \hline
-	\textbf{Actual Output}       &     \\ \hline
-	\textbf{Notes} & \\ \hline
-\end{tabular}
-\caption{Test name}
+	\centering
+	\def\arraystretch{1.5}
+	\begin{tabular}{|m{7cm}|m{7cm}|}
+		\hline
+		\textbf{Test Name}            & Create an appointment that overlaps with another already present and generate a warning  \\ \hline
+		\textbf{Event Flow}             & 
+		\begin{enumerate}
+			\item Login.
+			\item Click on the button to create a new appointment.
+			\item Insert a title, a start date that is in the middle of an other appointment, a later end date and a location.
+			\item Click on 'ADD' button.
+		\end{enumerate} \\ \hline
+		\textbf{Expected Output}  &  The system prevent the user creating a new appointment because it overlaps with an existing one and signal it to the user.  \\ \hline
+		\textbf{Actual Output}       & The system redirects you to the calendar page where the deleted appointment do not exist anymore.    \\ \hline
+		\textbf{Notes} & \\ \hline
+	\end{tabular}
+	\caption{Appointment Delete}
 \end{table}
 
 
@@ -239,17 +258,23 @@
 
 
 \begin{table}[h]	
-\centering
-\def\arraystretch{1.5}
-\begin{tabular}{|m{7cm}|m{7cm}|}
-	\hline
-	\textbf{Test Name}            &    \\ \hline
-	\textbf{Event Flow}             &   \\ \hline
-	\textbf{Expected Output}  &     \\ \hline
-	\textbf{Actual Output}       &     \\ \hline
-	\textbf{Notes} & \\ \hline
-\end{tabular}
-\caption{Test name}
+	\centering
+	\def\arraystretch{1.5}
+	\begin{tabular}{|m{7cm}|m{7cm}|}
+		\hline
+		\textbf{Test Name}            & Create an appointment that covers all the break time slot and signalled it to the user.\\ \hline
+		\textbf{Event Flow}             & 
+		\begin{enumerate}
+			\item Login.
+			\item Click on the button to create a new appointment.
+			\item Insert a title, a start date that before 12.00, an end date that is after 14.00 and a location.
+			\item Click on 'ADD' button.
+		\end{enumerate} \\ \hline
+		\textbf{Expected Output}  &  The system creates the appointment and signals to the user that the break of that day is not doable anymore.  \\ \hline
+		\textbf{Actual Output}       & The system creates the appointment.   \\ \hline
+		\textbf{Notes} & In case the break is inhibited due to an appointment that starts before 12.00 and ends after 14.00, the warning is not signalled. When the break is inhibited by a travel that the system should plan between two subsequent appointments, a warning is generated but it is not shown to the user because it is covered by the warning that signals that the appointment has been created. \\ \hline
+	\end{tabular}
+	\caption{Appointment Delete}
 \end{table}
 
 
