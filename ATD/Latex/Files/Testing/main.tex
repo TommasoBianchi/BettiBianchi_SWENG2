@@ -18,13 +18,62 @@
 	\def\arraystretch{1.5}
 	\begin{tabular}{|m{7cm}|m{7cm}|}
 		\hline
-		\textbf{Test Name}            &    \\ \hline
-		\textbf{Event Flow}             &   \\ \hline
-		\textbf{Expected Output}  &     \\ \hline
-		\textbf{Actual Output}       &     \\ \hline
+		\textbf{Test Name}            &  Invalid Signup  \\ \hline
+		\textbf{Event Flow}             &  
+		\begin{enumerate}
+			\item Click on 'Registrati' button.
+			\begin{enumerate}
+				\item Fill with an used username, a valid email and a valid password.
+				\item Fill with an new username, a used email and a valid password.
+				\item Fill with an new username, a valid email and two different passwords in password and password confirmation fields.
+			\end{enumerate}
+		\item Click on 'Conferma' button.
+		\end{enumerate} \\ \hline
+		\textbf{Expected Output}  &  The system do not let you to signup for invalid credentials, staying in the same page showing errors messages.   \\ \hline
+		\textbf{Actual Output}       & 
+		\begin{enumerate}[label=\Alph*]
+			\item The system does not let the user to signup but redirects the user to the login page without signalling errors.
+			\item The system lets the user to signup and show the calendar page.
+			\item The system does not let the user to signup but redirects the user to the login page without signalling errors.
+		\end{enumerate}    \\ \hline
+		\textbf{Notes} &  TO FIX ENUMERATIONS \\ \hline
+	\end{tabular}
+	\caption{Invalid Signup}
+\end{table}
+
+
+\begin{table}[h]	
+\centering
+\def\arraystretch{1.5}
+\begin{tabular}{|m{7cm}|m{7cm}|}
+	\hline
+	\textbf{Test Name}            &    \\ \hline
+	\textbf{Event Flow}             &   \\ \hline
+	\textbf{Expected Output}  &     \\ \hline
+	\textbf{Actual Output}       &     \\ \hline
+	\textbf{Notes} & \\ \hline
+\end{tabular}
+\caption{Test name}
+\end{table}
+
+
+\begin{table}[h]	
+	\centering
+	\def\arraystretch{1.5}
+	\begin{tabular}{|m{7cm}|m{7cm}|}
+		\hline
+		\textbf{Test Name}            &  Valid Signup  \\ \hline
+		\textbf{Event Flow}             &  
+		\begin{enumerate}
+			\item Click on 'Registrati' button.
+			\item Insert a non-used nickname, a non-used email and two equal passwords in password and password confirmation files.
+			\item Click on 'Conferma' button.
+		\end{enumerate} \\ \hline
+		\textbf{Expected Output}  &  The system redirects the user to an empty calendar page.   \\ \hline
+		\textbf{Actual Output}       & The system redirects the user to an empty calendar page.    \\ \hline
 		\textbf{Notes} & \\ \hline
 	\end{tabular}
-	\caption{Test name}
+	\caption{Valid Signup}
 \end{table}
 
 
@@ -48,38 +97,13 @@
 \def\arraystretch{1.5}
 \begin{tabular}{|m{7cm}|m{7cm}|}
 	\hline
-	\textbf{Test Name}            &    \\ \hline
-	\textbf{Event Flow}             &   \\ \hline
-	\textbf{Expected Output}  &     \\ \hline
-	\textbf{Actual Output}       &     \\ \hline
-	\textbf{Notes} & \\ \hline
-\end{tabular}
-\caption{Test name}
-\end{table}
-
-
-\begin{table}[h]	
-\centering
-\def\arraystretch{1.5}
-\begin{tabular}{|m{7cm}|m{7cm}|}
-	\hline
-	\textbf{Test Name}            &    \\ \hline
-	\textbf{Event Flow}             &   \\ \hline
-	\textbf{Expected Output}  &     \\ \hline
-	\textbf{Actual Output}       &     \\ \hline
-	\textbf{Notes} & \\ \hline
-\end{tabular}
-\caption{Test name}
-\end{table}
-
-
-\begin{table}[h]	
-\centering
-\def\arraystretch{1.5}
-\begin{tabular}{|m{7cm}|m{7cm}|}
-	\hline
-	\textbf{Test Name}            &    \\ \hline
-	\textbf{Event Flow}             &   \\ \hline
+	\textbf{Test Name}            & Meeting Valid Creation   \\ \hline
+	\textbf{Event Flow}             & 
+	 	\begin{enumerate}
+	 	\item Login.
+	 	\item Click on the button to create a new meeting.
+	 	\item Insert a title, 
+	 \end{enumerate} \\ \hline
 	\textbf{Expected Output}  &     \\ \hline
 	\textbf{Actual Output}       &     \\ \hline
 	\textbf{Notes} & \\ \hline
