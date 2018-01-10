@@ -3,17 +3,39 @@
 	\def\arraystretch{1.5}
 	\begin{tabular}{|m{7cm}|m{7cm}|}
 		\hline
-		\textbf{Test Name}            &  Unauthorized access  \\ \hline
+		\textbf{Test Name}            &  Valid Signup  \\ \hline
 		\textbf{Event Flow}             &  
-			\begin{enumerate}
-				\item~Try to load a page inside the application without being logged in.
-			\end{enumerate}
-		 \\ \hline
-		\textbf{Expected Output}  &  The system prevents you from doing that.   \\ \hline
-		\textbf{Actual Output}       &  The system prevents you from doing that.   \\ \hline
-		\textbf{Notes} & The system redirects you to the login page. \\ \hline
+		\begin{enumerate}
+			\item Click on the registration button.
+			\item Insert a non-used nickname, a non-used email and two equal passwords in password and password confirmation files.
+			\item Click on the confirmation button.
+		\end{enumerate} \\ \hline
+		\textbf{Expected Output}  &  The system redirects the user to an empty calendar page.   \\ \hline
+		\textbf{Actual Output}       & The system redirects the user to an empty calendar page.    \\ \hline
+		\textbf{Notes} & \\ \hline
 	\end{tabular}
-	\caption{Unauthorized access}
+	\caption{Valid Signup}
+\end{table}
+
+
+\begin{table}[h]	
+	\centering
+	\def\arraystretch{1.5}
+	\begin{tabular}{|m{7cm}|m{7cm}|}
+		\hline
+		\textbf{Test Name}            &  Valid Login  \\ \hline
+		\textbf{Event Flow}             &  
+		\begin{enumerate}
+			\item~Go to the login page.
+			\item~Insert correct data.
+			\item~Click the login button.
+		\end{enumerate}
+		\\ \hline
+		\textbf{Expected Output}  &  The system shows you your calendar.   \\ \hline
+		\textbf{Actual Output}       &  The system shows you your calendar.   \\ \hline
+		\textbf{Notes} & \\ \hline
+	\end{tabular}
+	\caption{Valid Login}
 \end{table}
 
 
@@ -25,22 +47,23 @@
 		\textbf{Test Name}            &  Invalid Signup  \\ \hline
 		\textbf{Event Flow}             &  
 		\begin{enumerate}
-			\item Click on 'Registrati' button.
-			\begin{enumerate}
+			\item Click on the registration button.
+			\item Fill the form with invalid data.
+			\begin{enumerate}[label*=\arabic*.]			
 				\item Fill with an used username, a valid email and a valid password.
 				\item Fill with an new username, a used email and a valid password.
 				\item Fill with an new username, a valid email and two different passwords in password and password confirmation fields.
 			\end{enumerate}
-		\item Click on 'Conferma' button.
+		\item Click on the confirmation button.
 		\end{enumerate} \\ \hline
 		\textbf{Expected Output}  &  The system do not let you to signup for invalid credentials, staying in the same page showing errors messages.   \\ \hline
 		\textbf{Actual Output}       & 
-		\begin{enumerate}[label=\Alph*]
+		\begin{enumerate}
 			\item The system does not let the user to signup but redirects the user to the login page without signalling errors.
 			\item The system lets the user to signup and show the calendar page.
 			\item The system does not let the user to signup but redirects the user to the login page without signalling errors.
 		\end{enumerate}    \\ \hline
-		\textbf{Notes} &  TO FIX ENUMERATIONS \\ \hline
+		\textbf{Notes} &   \\ \hline
 	\end{tabular}
 	\caption{Invalid Signup}
 \end{table}
@@ -72,39 +95,17 @@
 	\def\arraystretch{1.5}
 	\begin{tabular}{|m{7cm}|m{7cm}|}
 		\hline
-		\textbf{Test Name}            &  Valid Signup  \\ \hline
+		\textbf{Test Name}            &  Unauthorized access  \\ \hline
 		\textbf{Event Flow}             &  
 		\begin{enumerate}
-			\item Click on 'Registrati' button.
-			\item Insert a non-used nickname, a non-used email and two equal passwords in password and password confirmation files.
-			\item Click on 'Conferma' button.
-		\end{enumerate} \\ \hline
-		\textbf{Expected Output}  &  The system redirects the user to an empty calendar page.   \\ \hline
-		\textbf{Actual Output}       & The system redirects the user to an empty calendar page.    \\ \hline
-		\textbf{Notes} & \\ \hline
-	\end{tabular}
-	\caption{Valid Signup}
-\end{table}
-
-
-\begin{table}[h]	
-\centering
-\def\arraystretch{1.5}
-\begin{tabular}{|m{7cm}|m{7cm}|}
-	\hline
-	\textbf{Test Name}            &  Valid Login  \\ \hline
-	\textbf{Event Flow}             &  
-		\begin{enumerate}
-			\item~Go to the login page.
-			\item~Insert correct data.
-			\item~Click the login button.
+			\item~Try to load a page inside the application without being logged in.
 		\end{enumerate}
-	 \\ \hline
-	\textbf{Expected Output}  &  The system shows you your calendar.   \\ \hline
-	\textbf{Actual Output}       &  The system shows you your calendar.   \\ \hline
-	\textbf{Notes} & \\ \hline
-\end{tabular}
-\caption{Valid Login}
+		\\ \hline
+		\textbf{Expected Output}  &  The system prevents you from doing that.   \\ \hline
+		\textbf{Actual Output}       &  The system prevents you from doing that.   \\ \hline
+		\textbf{Notes} & The system redirects you to the login page. \\ \hline
+	\end{tabular}
+	\caption{Unauthorized access}
 \end{table}
 
 
@@ -113,19 +114,19 @@
 \def\arraystretch{1.5}
 \begin{tabular}{|m{7cm}|m{7cm}|}
 	\hline
-	\textbf{Test Name}            & Appointment Valid Creation   \\ \hline
+	\textbf{Test Name}            & Valid Appointment Creation   \\ \hline
 	\textbf{Event Flow}             & 
 	 	\begin{enumerate}
 	 	\item Login.
 	 	\item Click on the button to create a new appointment.
 	 	\item Insert a title, two subsequent dates.
-	 	\item Click on 'ADD' button.
+	 	\item Click on save button.
 	 \end{enumerate} \\ \hline
 	\textbf{Expected Output}  &  The system redirects you to the calendar page where the new appointment is placed.   \\ \hline
 	\textbf{Actual Output}       & The system redirects you to the calendar page where the new appointment is placed.    \\ \hline
 	\textbf{Notes} & A user can create an appointment without inserting a location. However this is in contradiction with requirements number 8 of the RASD document. \\ \hline
 \end{tabular}
-\caption{Appointment Valid Creation}
+\caption{Valid Appointment Creation}
 \end{table}
 
 
@@ -134,19 +135,19 @@
 	\def\arraystretch{1.5}
 	\begin{tabular}{|m{7cm}|m{7cm}|}
 		\hline
-		\textbf{Test Name}            & Appointment Invalid Creation   \\ \hline
+		\textbf{Test Name}            & Invalid Appointment Creation   \\ \hline
 		\textbf{Event Flow}             & 
 		\begin{enumerate}
 			\item Login.
 			\item Click on the button to create a new appointment.
 			\item Insert a title, an end date that is before a start date and a location.
-			\item Click on 'ADD' button.
+			\item Click on save button.
 		\end{enumerate} \\ \hline
 		\textbf{Expected Output}  &  The system do not allow you to create an appointment because of invalid dates.   \\ \hline
 		\textbf{Actual Output}       & The system redirects you to the calendar page where the new appointment is placed without an ending date with a default duration of 2 hours.    \\ \hline
 		\textbf{Notes} & This is in contradiction with requirements number 10 of the RASD document that prevents an appointment to have such dates. \\ \hline
 	\end{tabular}
-	\caption{Appointment Invalid Creation}
+	\caption{Invalid Appointment Creation}
 \end{table}
 
 
@@ -183,8 +184,7 @@
 		\begin{enumerate}
 			\item Login.
 			\item Click on an appointment.
-			\item Click on 'Delete' button.
-			\item Click on 'Yes' to confirm the deletion.
+			\item Click on the delete button and confirm.
 		\end{enumerate} \\ \hline
 		\textbf{Expected Output}  &  The system redirects you to the calendar page where the deleted appointment do not exist anymore.  \\ \hline
 		\textbf{Actual Output}       & The system redirects you to the calendar page where the deleted appointment do not exist anymore.    \\ \hline
@@ -226,13 +226,13 @@
 			\item Login.
 			\item Click on the button to create a new appointment.
 			\item Insert a title, a start date that is in the middle of an other appointment, a later end date and a location.
-			\item Click on 'ADD' button.
+			\item Click on save button.
 		\end{enumerate} \\ \hline
 		\textbf{Expected Output}  &  The system prevent the user creating a new appointment because it overlaps with an existing one and signal it to the user.  \\ \hline
 		\textbf{Actual Output}       & The system redirects you to the calendar page where the deleted appointment do not exist anymore.    \\ \hline
 		\textbf{Notes} & \\ \hline
 	\end{tabular}
-	\caption{Appointment Delete}
+	\caption{ Create an appointment that overlaps with another already present and generate a warning }
 \end{table}
 
 
@@ -268,7 +268,7 @@
 			\item Login.
 			\item Click on the button to create a new appointment.
 			\item Insert a title, a start date that before 12.00, an end date that is after 14.00 and a location.
-			\item Click on 'ADD' button.
+			\item Click on save button.
 		\end{enumerate} \\ \hline
 		\textbf{Expected Output}  &  The system creates the appointment and signals to the user that the break of that day is not doable anymore.  \\ \hline
 		\textbf{Actual Output}       & The system creates the appointment.   \\ \hline
