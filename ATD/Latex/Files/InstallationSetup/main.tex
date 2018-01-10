@@ -2,7 +2,7 @@
 listing only,listing options={language=sh,breaklines=true},
 every listing line={\textcolor{green}{\small\ttfamily\bfseries \$> }}}
 
-To install and configure the project we have closely followed the instructions given in Chapter 4 of their ITD. We needed a little bit more work to have a working version on python 3.6, with pip and all needed dependencies, on a fresh Ubuntu 16.04 Xenial machine, so we think the Prerequisite section may have been expanded more. \\
+To install and configure the project we have closely followed the instructions given in Chapter 4 of their ITD. To have a running version of python 3.6, with pip and all needed dependencies, on a fresh Ubuntu 16.04 Xenial machine, we needed some additional work not reported on the document, so we think that the Prerequisite section of the ITD should have been expanded more. \\
 In particular, to install a working version of Django we had to invoke the following console commands: \\
 
 \begin{commandshell}
@@ -14,9 +14,9 @@ cd path/to/Implementation
 sudo pip3 install -r requirements.txt
 \end{commandshell}
 ~\\
-After that, we had problems in running the Django server from the I\&T/Implementation folder, while everything worked perfectly in the folder extracted from the implementation2017\_01\_07.rar archive. \\
+After that, we had problems in running the Django server from the "I\&T/Implementation" folder, while everything worked perfectly in the folder extracted from the "implementation2017\_01\_07.rar" archive; for the rest of the tests, we kept using the code from the archive. \\
 ~\\
-We also installed the project on a Windows 10 machine using the python3 installer found \href{https://www.python.it/download/}{here}, and then typing 
+We also successfully installed the project on a Windows 10 machine using the python3 installer found \href{https://www.python.it/download/}{here}, and then typing 
 \begin{commandshell}
-sudo pip3 install -r requirements.txt
+pip install -r requirements.txt
 \end{commandshell}
