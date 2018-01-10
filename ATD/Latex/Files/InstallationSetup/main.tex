@@ -1,0 +1,22 @@
+\newtcblisting{commandshell}{colback=black,colupper=white,
+listing only,listing options={language=sh,breaklines=true},
+every listing line={\textcolor{green}{\small\ttfamily\bfseries \$> }}}
+
+To install and configure the project we have closely followed the instructions given in Chapter 4 of their ITD. We needed a little bit more work to have a working version on python 3.6, with pip and all needed dependencies, on a fresh Ubuntu 16.04 Xenial machine, so we think the Prerequisite section may have been expanded more. \\
+In particular, to install a working version of Django we had to invoke the following console commands: \\
+
+\begin{commandshell}
+sudo apt-get update
+sudo apt-get upgrade python3
+sudo apt-get install python3-pip
+sudo pip3 install --upgrade setuptools
+cd path/to/Implementation
+sudo pip3 install -r requirements.txt
+\end{commandshell}
+~\\
+After that, we had problems in running the Django server from the I\&T/Implementation folder, while everything worked perfectly in the folder extracted from the implementation2017\_01\_07.rar archive. \\
+~\\
+We also installed the project on a Windows 10 machine using the python3 installer found \href{https://www.python.it/download/}{here}, and then typing 
+\begin{commandshell}
+sudo pip3 install -r requirements.txt
+\end{commandshell}
