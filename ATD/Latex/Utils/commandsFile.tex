@@ -1,0 +1,177 @@
+\documentclass [11pt,twoside]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+
+%Page margins, header and footer positions
+\usepackage{geometry}
+ \geometry{
+ a4paper,
+ total={210mm,297mm},
+ left=25mm,
+ right=25mm,
+ top=30mm,
+ bottom=25mm,
+ headsep=7mm}
+
+\interfootnotelinepenalty=10000
+
+%To display filling dots in the TOC for all entries
+%\usepackage[titles]{tocloft}
+%\renewcommand{\cftsecleader}{\cftdotfill{\cftdotsep}}
+
+%Define new header and footer style
+\usepackage{fancyhdr}
+
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{\color{Gray}{\small{Travlendar+ project by \names}}}
+\lfoot{\textcolor{Gray}{\small{Copyright © 2018, \names – All rights reserved}}}
+\rfoot{\textcolor{Gray}{\thepage}}
+\renewcommand{\headrulewidth}{0pt}
+
+%PACKAGES
+\usepackage{wasysym}
+\usepackage{pifont}
+
+\newcommand{\supported}{\ding{52}\xspace}
+\newcommand{\unsupported}{\ding{55}\xspace}
+\newcommand{\partsupported}{\textcolor{black!40}{\ding{52}}\xspace}
+\newcommand{\lowsupported}{\textcolor{black!20}{\ding{52}}\xspace}
+\newcommand{\unknowsupported}{\textbf{?}\xspace}
+
+%Font: Times
+\usepackage{times}
+%Change monospaced font
+\renewcommand{\ttdefault}{lmtt}
+
+%tables
+\usepackage{tabu}
+\usepackage{tabularx}
+\usepackage{ltablex}
+\usepackage{longtable}
+\usepackage{float} % To allow the use of H modifier in long tables
+
+%landscape mode
+\usepackage{pdflscape}
+\usepackage{rotating}
+\usepackage{caption}
+
+%make landscape mode be sensitive to even and odd pages
+%start
+\def\myrotate{\ifodd\c@page\else-\fi 90}
+\makeatletter
+\global\let\orig@begin@landscape=\landscape%
+\global\let\orig@end@landscape=\endlandscape%
+\gdef\@true{1}
+\gdef\@false{0}
+\gdef\landscape{%
+    \global\let\within@landscape=\@true%
+    \orig@begin@landscape%
+}%
+\gdef\endlandscape{%
+    \orig@end@landscape%
+    \global\let\within@landscape=\@false%
+}%
+\@ifpackageloaded{pdflscape}{%
+    \gdef\pdf@landscape@rotate{\PLS@Rotate}%
+}{
+    \gdef\pdf@landscape@rotate#1{}%
+}
+\let\latex@outputpage\@outputpage
+\def\@outputpage{
+    \ifx\within@landscape\@true%
+        \if@twoside%
+            \ifodd\c@page%
+                \gdef\LS@rot{\setbox\@outputbox\vbox{%
+                    \pdf@landscape@rotate{-90}%
+                    \hbox{\rotatebox{90}{\hbox{\rotatebox{180}{\box\@outputbox}}}}}%
+                }%
+            \else%
+                \gdef\LS@rot{\setbox\@outputbox\vbox{%
+                    \pdf@landscape@rotate{+90}%
+                    \hbox{\rotatebox{90}{\hbox{\rotatebox{0}{\box\@outputbox}}}}}%
+                }%
+            \fi%
+        \else%
+            \gdef\LS@rot{\setbox\@outputbox\vbox{%
+                \pdf@landscape@rotate{+90}%
+                \hbox{\rotatebox{90}{\hbox{\rotatebox{0}{\box\@outputbox}}}}}%
+            }%
+        \fi%
+    \fi%
+    \latex@outputpage%
+}
+\makeatother
+%end
+
+%graphics
+\usepackage{graphicx}
+\usepackage[dvipsnames, table]{xcolor}
+%If you upload images from PC, you need to insert code for the path here (different for Windows and Unix OS)
+
+%References
+%\usepackage{xpatch}
+%\usepackage[backend=biber, style=numeric, citestyle=numeric, sorting=none]{biblatex}
+%\addbibresource{main.bib}
+
+%Other
+\usepackage{ifthen}
+\usepackage{xspace}
+\usepackage{enumitem}
+\usepackage{amssymb}
+\usepackage[listings]{tcolorbox} % for displaying an ubuntu-like black terminal
+\usepackage{hyperref}
+\usepackage[superscript,biblabel]{cite} % superscript citations
+\usepackage{float}	% make figures and table stay where I want them to be
+\usepackage{soul}	% horizontally cross words
+\usepackage{listings} % code syntax highlighting for alloy
+\usepackage{algorithmicx} % algorithm pseudocode
+\usepackage{algpseudocode}
+\usepackage{algorithm}
+\makeatletter
+\renewcommand{\ALG@beginalgorithmic}{\small}
+\makeatother
+\algrenewcommand\algorithmicindent{0.8em}
+\usepackage{longtable} % make tables span over multiple pages
+
+% links configuration
+\hypersetup{
+	colorlinks = true,
+	linkcolor = Black,
+  urlcolor = Black,
+  citecolor = Black,
+}
+
+% titles configuration
+\usepackage{titlesec}
+
+\titleformat{\section}
+  {\normalfont\fontfamily{phv}\fontsize{18}{22}\bfseries}{\thesection}{1em}{}
+\titleformat{\subsection}
+  {\normalfont\fontfamily{phv}\fontsize{16}{19}\selectfont}{\thesubsection}{1em}{}
+\titleformat{\subsubsection}
+  {\normalfont\fontfamily{phv}\fontsize{13}{16}\selectfont}{\thesubsubsection}{1em}{}
+
+%\newcommand{\comment}[1]{{\color{Red}$\blacktriangleright$ Comment: #1 $\blacktriangleleft$}}
+
+%hack to be able to nameref items in description list
+\makeatletter
+\let\orgdescriptionlabel\descriptionlabel
+\renewcommand*{\descriptionlabel}[1]{
+  \let\orglabel\label
+  \let\label\@gobble
+  \phantomsection
+  \edef\@currentlabel{#1}
+  \let\label\orglabel
+  \orgdescriptionlabel{#1}
+}
+\makeatother
+
+%to include pdf files
+\usepackage{pdfpages}
+
+% Some utilities\ldots
+\input{Utils/highlight}
+\input{Utils/abbrev}
+
+\date{}
