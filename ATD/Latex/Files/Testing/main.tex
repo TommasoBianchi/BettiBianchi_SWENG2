@@ -186,13 +186,19 @@
 \def\arraystretch{1.5}
 \begin{tabular}{|m{7cm}|m{7cm}|}
 	\hline
-	\textbf{Test Name}            &    \\ \hline
-	\textbf{Event Flow}             &   \\ \hline
-	\textbf{Expected Output}  &     \\ \hline
-	\textbf{Actual Output}       &     \\ \hline
-	\textbf{Notes} & \\ \hline
+	\textbf{Test Name}            &  Two meetings in the same day generates a travel  \\ \hline
+	\textbf{Event Flow}             & 
+		\begin{enumerate}
+			\item~Login.
+			\item~Create a meeting in the morning of some day.
+			\item~Create a meeting in the afternoon of the same day.
+		\end{enumerate}
+	  \\ \hline
+	\textbf{Expected Output}  &   The system shows the calendar with the two new meetings and the travel between them.  \\ \hline
+	\textbf{Actual Output}       &  The system shows the calendar with the two new meetings and the travel between them.   \\ \hline
+	\textbf{Notes} &  Make sure the two meetings have reasonably near locations, otherwise travel cannot be computed.  \\ \hline
 \end{tabular}
-\caption{Test name}
+\caption{Two meetings in the same day generates a travel}
 \end{table}
 
 
@@ -216,13 +222,19 @@
 \def\arraystretch{1.5}
 \begin{tabular}{|m{7cm}|m{7cm}|}
 	\hline
-	\textbf{Test Name}            &    \\ \hline
-	\textbf{Event Flow}             &   \\ \hline
-	\textbf{Expected Output}  &     \\ \hline
-	\textbf{Actual Output}       &     \\ \hline
-	\textbf{Notes} & \\ \hline
+	\textbf{Test Name}            &  Two meetings in the same day generates a warning if the travel is too long  \\ \hline
+	\textbf{Event Flow}             &   
+		\begin{enumerate}
+			\item~Login.
+			\item~Create a meeting in the morning of some day.
+			\item~Create a meeting in the afternoon of the same day, with a location so distant from the one of the other meeting that a travel would take more than the available time.
+		\end{enumerate}
+	\\ \hline
+	\textbf{Expected Output}  &  The system shows the user a warning.   \\ \hline
+	\textbf{Actual Output}       &   The system shows the user a warning.  \\ \hline
+	\textbf{Notes} &  Meetings are kept in the calendar.   \\ \hline
 \end{tabular}
-\caption{Test name}
+\caption{Two meetings in the same day generates a warning if the travel is too long}
 \end{table}
 
 
@@ -246,13 +258,20 @@
 \def\arraystretch{1.5}
 \begin{tabular}{|m{7cm}|m{7cm}|}
 	\hline
-	\textbf{Test Name}            &    \\ \hline
-	\textbf{Event Flow}             &   \\ \hline
-	\textbf{Expected Output}  &     \\ \hline
-	\textbf{Actual Output}       &     \\ \hline
+	\textbf{Test Name}            &  Two meetings in the same day generates a travel with a specific travel means if that's the only available one  \\ \hline
+	\textbf{Event Flow}             &   
+		\begin{enumerate}
+			\item~Login.
+			\item~Open the preferences and disable all travel means but one.
+			\item~Create a meeting in the morning of some day.
+			\item~Create a meeting in the afternoon of the same day.
+		\end{enumerate}
+	\\ \hline
+	\textbf{Expected Output}  &   The system shows the calendar with the two new meetings and the travel between them, computed with the only available travel mean.  \\ \hline
+	\textbf{Actual Output}       &  The system shows the calendar with the two new meetings and the travel between them, computed with the only available travel mean.   \\ \hline
 	\textbf{Notes} & \\ \hline
 \end{tabular}
-\caption{Test name}
+\caption{Two meetings in the same day generates a travel with a specific travel means if that's the only available one}
 \end{table}
 
 
