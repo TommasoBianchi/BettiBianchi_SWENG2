@@ -15,7 +15,7 @@
 		\textbf{Actual Output}       & The system redirects the user to an empty calendar page.    \\ \hline
 		\textbf{Notes} & \\ \hline
 	\end{tabular}
-	\caption{Valid Signup}
+	\caption{Test - Valid Signup}
 \end{table}
 
 
@@ -36,7 +36,7 @@
 		\textbf{Actual Output}       &  The system shows you your calendar page.   \\ \hline
 		\textbf{Notes} & \\ \hline
 	\end{tabular}
-	\caption{Valid Login}
+	\caption{Test - Valid Login}
 \end{table}
 
 
@@ -67,7 +67,7 @@
 		\end{enumerate}    \\ \hline
 		\textbf{Notes} &  If you click on the registration button after having been redirected to the login page, you can find error messages about your invalid data. \\ \hline
 	\end{tabular}
-	\caption{Invalid Signup}
+	\caption{Test - Invalid Signup}
 \end{table}
 
 
@@ -88,7 +88,7 @@
 	\textbf{Actual Output}       &  The system prevents you from logging in.   \\ \hline
 	\textbf{Notes} & \\ \hline
 \end{tabular}
-\caption{Invalid Login}
+\caption{Test - Invalid Login}
 \end{table}
 
 
@@ -107,7 +107,7 @@
 		\textbf{Actual Output}       &  The system prevents you from doing that.   \\ \hline
 		\textbf{Notes} & The system redirects you to the login page. \\ \hline
 	\end{tabular}
-	\caption{Unauthorized access}
+	\caption{Test - Unauthorized access}
 \end{table}
 
 
@@ -128,7 +128,7 @@
 	\textbf{Actual Output}       & The system redirects you to the calendar page where the new appointment is placed.    \\ \hline
 	\textbf{Notes} & A user can create an appointment without inserting a location. However this is in contradiction with requirements number 8 of the RASD document. \\ \hline
 \end{tabular}
-\caption{Valid Appointment Creation}
+\caption{Test - Valid Appointment Creation}
 \end{table}
 
 
@@ -149,7 +149,7 @@
 		\textbf{Actual Output}       & The system redirects you to the calendar page where the new appointment is placed without an ending date and with a default duration of 2 hours.    \\ \hline
 		\textbf{Notes} & This is in contradiction with requirements number 10 of the RASD document that prevents an appointment to have such invalid dates. \\ \hline
 	\end{tabular}
-	\caption{Invalid Appointment Creation}
+	\caption{Test - Invalid Appointment Creation}
 \end{table}
 
 
@@ -172,7 +172,7 @@
 	\textbf{Actual Output}       &  The system shows the calendar with the updated version of the appointment.   \\ \hline
 	\textbf{Notes} & \\ \hline
 \end{tabular}
-\caption{Appointment Update}
+\caption{Test - Appointment Update}
 \end{table}
 
 
@@ -192,7 +192,7 @@
 		\textbf{Actual Output}       & The system redirects you to the calendar page where the deleted appointment does not exist anymore.    \\ \hline
 		\textbf{Notes} & \\ \hline
 	\end{tabular}
-	\caption{Appointment Delete}
+	\caption{Test - Appointment Delete}
 \end{table}
 
 
@@ -213,7 +213,7 @@
 	\textbf{Actual Output}       &  The system shows the calendar with the two new appointments and the travel between them.   \\ \hline
 	\textbf{Notes} &  Make sure the two appointments have reasonably near locations, otherwise travel cannot be computed.  \\ \hline
 \end{tabular}
-\caption{Two appointments in the same day generate a travel}
+\caption{Test - Two appointments in the same day generate a travel}
 \end{table}
 
 
@@ -234,7 +234,7 @@
 		\textbf{Actual Output}       & The system redirects you to the calendar page where the deleted appointment does not exist anymore.    \\ \hline
 		\textbf{Notes} & \\ \hline
 	\end{tabular}
-	\caption{ Create an appointment that overlaps with another already present and generate a warning }
+	\caption{Test -  Create an appointment that overlaps with another already present and generate a warning }
 \end{table}
 
 
@@ -255,7 +255,7 @@
 	\textbf{Actual Output}       &   The system shows the user a warning.  \\ \hline
 	\textbf{Notes} &  Appointments are kept in the calendar, but no travel is created.   \\ \hline
 \end{tabular}
-\caption{Two appointments in the same day generate a warning if the travel is too long}
+\caption{Test - Two appointments in the same day generate a warning if the travel is too long}
 \end{table}
 
 
@@ -276,7 +276,7 @@
 		\textbf{Actual Output}       & The system creates the appointment.   \\ \hline
 		\textbf{Notes} & In case the break is inhibited due to an appointment that starts before 12.00 and ends after 14.00, the warning is not signalled. When the break is inhibited by a travel that the system should plan between two subsequent appointments, a warning is generated but it is not shown to the user because it is covered by the warning that signals that the appointment has been created. \\ \hline
 	\end{tabular}
-	\caption{Create an appointment that covers the entire break time slot and signal it to the user}
+	\caption{Test - Create an appointment that covers the entire break time slot and signal it to the user}
 \end{table}
 
 
@@ -298,5 +298,5 @@
 	\textbf{Actual Output}       &  The system shows the calendar with the two new appointments and the travel between them, computed with the only available travel mean.   \\ \hline
 	\textbf{Notes} & \\ \hline
 \end{tabular}
-\caption{Two appointments in the same day generate a travel with a specific travel mean if that's the only available one}
+\caption{Test - Two appointments in the same day generate a travel with a specific travel mean if that's the only available one}
 \end{table}
