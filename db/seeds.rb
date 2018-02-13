@@ -39,10 +39,10 @@ NUM_GROUPS = 3
 NUM_SOCIALS = Social::Social_type.count
 NUM_EMAILS_PER_USER = 2
 # NUM_STATUSES_PER_USER = 2
-NUM_CONTACTS_PER_USER = 3
+NUM_CONTACTS_PER_USER = 1
 NUM_BREAKS_PER_USER = 4
-NUM_USERS = 5
-NUM_MEETINGS_DAYS = 5
+NUM_USERS = 3
+NUM_MEETINGS_DAYS = 10
 NUM_MEETINGS_PER_DAY = 3
 NUM_MEETINGS = NUM_MEETINGS_DAYS * NUM_MEETINGS_PER_DAY
 NUM_CATEGORIES = 10
@@ -99,7 +99,7 @@ end
 NUM_SUBJECTS = Subject::Subjects.keys.length
 
 for i in 1..NUM_USERS do
-	user = User.create(name: 'User' + i.to_s, surname: 'Surname' + i.to_s, password: '0000', password_confirmation: '0000', nickname: 'PP' + i.to_s, preference_list: '021', website: 'http://www.google.com', company: 'BettiBianchi s.r.l.')
+	user = User.create(name: 'User' + i.to_s, surname: 'Surname' + i.to_s, password: '0000', password_confirmation: '0000', nickname: 'U' + i.to_s, preference_list: '021', website: 'http://www.google.com', company: 'BettiBianchi s.r.l.')
 	IncompleteUser.create(email: 'User' + i.to_s + '.Surname@travlendar.com', password: '0000', password_confirmation: '0000')
 	user.groups.push(Group.find(i % NUM_GROUPS + 1))
 	k = Social::Social_type.keys.sample
