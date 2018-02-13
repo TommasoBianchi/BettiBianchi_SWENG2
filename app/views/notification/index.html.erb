@@ -6,46 +6,50 @@
 
 		<%= render 'shared/title_back_action', title: 'Notifications Page' %>
 
-		<% first = true %>
-		<h2>
-			WARNINGS
-		</h2>
-		<% @warning_meeting.each do |warning_mps| %>
-			<% if warning_mps.is_a? Array %>
+		<% if @warning_meeting.count > 0 %>
 
-				<div class="warning-container colored-container light-grey-container" id=<%= warning_mps[0].id %>>
-					<% warning_mps.each do |single_warning_mp| %>
-						<% meeting = single_warning_mp.meeting %>
-						<div class="single-warning meeting rounded-box">
-							<div class="meeting-date">
-								<%= meeting.start_date.strftime "%I:%M %p" %>
-								-
-								<%= meeting.end_date.strftime "%I:%M %p" %></div>
-							<div class="meeting-title"><%= meeting.title %></div>
-							<div class="meeting-location"><%= meeting.location.description %></div>
+			<% first = true %>
+			<h2>
+				WARNINGS
+			</h2>
+			<% @warning_meeting.each do |warning_mps| %>
+				<% if warning_mps.is_a? Array %>
+
+					<div class="warning-container colored-container light-grey-container" id=<%= warning_mps[0].id %>>
+						<% warning_mps.each do |single_warning_mp| %>
+							<% meeting = single_warning_mp.meeting %>
+							<div class="single-warning meeting rounded-box">
+								<div class="meeting-date">
+									<%= meeting.start_date.strftime "%I:%M %p" %>
+									-
+									<%= meeting.end_date.strftime "%I:%M %p" %></div>
+								<div class="meeting-title"><%= meeting.title %></div>
+								<div class="meeting-location"><%= meeting.location.description %></div>
+							</div>
+						<% end %>
+					</div>
+
+				<% else %>
+					<% if first %>
+						<% first = false %>
+					<% else %>
 						</div>
 					<% end %>
-				</div>
-
-			<% else %>
-				<% if first %>
-					<% first = false %>
-				<% else %>
+					<% item = warning_mps %>
+					<div class="date-separator rounded-box" id="<%= item.strftime '%Y%m%d' %>-w-separator" onclick="toggle('<%= item.strftime "%Y%m%d" %>-w')">
+						<div><%= item.strftime "%a %d %b %Y" %></div>
 					</div>
+					<div id="<%= item.strftime '%Y%m%d' %>-w-accordion" class="date-accordion">
+						<script type="text/javascript">
+				  $(window).on('load', function () {
+					  setMaxHeight("<%= item.strftime '%Y%m%d' %>-w")
+				  })
+						</script>
 				<% end %>
-				<% item = warning_mps %>
-				<div class="date-separator rounded-box" id="<%= item.strftime '%Y%m%d' %>-w-separator" onclick="toggle('<%= item.strftime "%Y%m%d" %>-w')">
-					<div><%= item.strftime "%a %d %b %Y" %></div>
-				</div>
-				<div id="<%= item.strftime '%Y%m%d' %>-w-accordion" class="date-accordion">
-					<script type="text/javascript">
-			  $(window).on('load', function () {
-				  setMaxHeight("<%= item.strftime '%Y%m%d' %>-w")
-			  })
-					</script>
 			<% end %>
+			</div>
 		<% end %>
-		</div>
+
 		<% if @pending_meetings.count > 0 %>
 
 			<% first = true %>
