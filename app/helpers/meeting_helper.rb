@@ -219,11 +219,6 @@ module MeetingHelper
 		# Grab all conflicting meeting participations from the db
 		conflicts = meeting_participation.conflicting_meeting_participations
 
-		# Drop all the conflicts
-		MeetingParticipationConflict.where(meeting_participation_1_id: conflicts.ids)
-				.or(MeetingParticipationConflict.where(meeting_participation_2_id: conflicts.ids)).delete_all
-
-		# Update the schedule
 		update_schedule(conflicts)
 	end
 
