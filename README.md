@@ -1,6 +1,6 @@
 # Travlendar+
 
-The	objective	of this	project, named Travlendar+,	is to apply in practice what we have learny during lectures with the purpose of becoming familiar with software engineering practices and able to address new software engineering issues in a rigorous way.
+The	objective	of this	project, named Travlendar+,	is to apply in practice what we have learnt during Software Engineering 2 lectures with the purpose of becoming familiar with software engineering practices and able to address new software engineering issues in a rigorous way.
 
 The project is subdivided into 4 main parts:
 * The Requirement Analysis and Specification Document (RASD), with the purpose of completely analyzing and describing in a formal and non-ambiguous way the system in terms of its intended domain of use, of the goals it should aim at and of the requirements it should enforce.
